@@ -1,0 +1,10 @@
+node_modules/
+dist/
+src/
+public/
+*.lock
+package.json
+package-lock.json
+vite.config.js
+eslint.config.js
+proposal.html
