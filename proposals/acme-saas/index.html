@@ -129,16 +129,16 @@ a{color:inherit;text-decoration:none}
 .audit-finding-num.warning{background:var(--warning);color:#000;box-shadow:0 0 8px rgba(245,158,11,0.2)}
 
 /* ===== PROBLEMS ===== */
-.problems-stack{display:flex;flex-direction:column;gap:1.5rem}
-.problem-card{border-left:3px solid;padding:2.5rem;position:relative;overflow:hidden}
-.problem-card::after{content:'';position:absolute;top:0;left:0;bottom:0;width:80px;pointer-events:none}
-.problem-card.danger{border-left-color:var(--danger)}
-.problem-card.danger::after{background:linear-gradient(90deg,rgba(239,68,68,0.04),transparent)}
-.problem-card.warning{border-left-color:var(--warning)}
-.problem-card.warning::after{background:linear-gradient(90deg,rgba(245,158,11,0.04),transparent)}
-.problem-statement{font-family:var(--font-heading);font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:600;margin-bottom:0.75rem;line-height:1.4;position:relative}
-.problem-context{color:var(--muted);margin-bottom:1rem;font-size:0.95rem;position:relative}
-.problem-data{font-family:var(--font-mono);font-size:0.85rem;color:var(--warning);position:relative}
+.problems-stack{display:flex;flex-direction:column;gap:2.5rem;max-width:900px}
+.problem-card{padding:0;background:none;backdrop-filter:none;border:none;box-shadow:none;position:relative;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start}
+.problem-card:hover{transform:none;box-shadow:none;border-color:transparent}
+.problem-num{font-family:var(--font-mono);font-size:clamp(3rem,5vw,4.5rem);font-weight:700;line-height:1;color:rgba(255,255,255,0.04);position:relative;min-width:60px;text-align:right}
+.problem-card.danger .problem-num::after{content:'';position:absolute;top:50%;right:-1rem;width:6px;height:6px;border-radius:50%;background:var(--danger);box-shadow:0 0 12px rgba(239,68,68,0.4);transform:translateY(-50%)}
+.problem-card.warning .problem-num::after{content:'';position:absolute;top:50%;right:-1rem;width:6px;height:6px;border-radius:50%;background:var(--warning);box-shadow:0 0 12px rgba(245,158,11,0.4);transform:translateY(-50%)}
+.problem-body{padding:0.5rem 0}
+.problem-statement{font-family:var(--font-heading);font-size:clamp(1.3rem,2.5vw,1.75rem);font-weight:600;margin-bottom:0.75rem;line-height:1.35;letter-spacing:-0.01em}
+.problem-context{color:var(--muted);margin-bottom:1rem;font-size:0.9rem;line-height:1.7}
+.problem-data{font-family:var(--font-mono);font-size:0.8rem;color:var(--warning);display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;border-radius:100px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.1)}
 
 /* ===== COMPETITORS ===== */
 .comp-table-wrap{overflow-x:auto;margin:2rem 0}
@@ -608,12 +608,16 @@ function renderPage() {
 <section class="section">
   <div class="container">
     <span class="section-label" data-anim="fade-up">The Challenge</span>
+    <h2 class="section-headline" data-anim="blur-in">What's Holding <span class="accent">${cn}</span> Back</h2>
     <div class="problems-stack">
       ${p.problems.map((prob, i) => `
-        <div class="card problem-card ${i === 0 ? 'danger' : i === 1 ? 'warning' : 'danger'}" data-anim="slide-in" data-delay="${i * 0.15}">
-          <div class="problem-statement">${prob.statement}</div>
-          <div class="problem-context">${prob.context}</div>
-          <div class="problem-data">${prob.data_point}</div>
+        <div class="problem-card ${i === 0 ? 'danger' : i === 1 ? 'warning' : 'danger'}" data-anim="slide-in" data-delay="${i * 0.15}">
+          <div class="problem-num">0${i + 1}</div>
+          <div class="problem-body">
+            <div class="problem-statement">${prob.statement}</div>
+            <div class="problem-context">${prob.context}</div>
+            <div class="problem-data">${prob.data_point}</div>
+          </div>
         </div>
       `).join('')}
     </div>
@@ -800,12 +804,8 @@ function renderPage() {
           ${s.case_studies.drsw.media.map(m => `<span class="pill">${m}</span>`).join('')}
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:2rem;align-items:center" data-anim="scale-in" data-delay="0.15">
+      <div style="display:flex;justify-content:center" data-anim="scale-in" data-delay="0.15">
         ${phoneFrame(`<img src="${s.case_studies.drsw.image}" alt="Dr SW Instagram" style="width:100%;display:block" onerror="this.parentElement.innerHTML='<div style=\\'padding:4rem 2rem;text-align:center;color:var(--muted);font-family:var(--font-mono);font-size:0.8rem\\'>Dr. SW Instagram</div>'">`)}
-        <div style="max-width:320px;width:100%">
-          ${browserFrame('booking-calendar', `<img src="${s.case_studies.drsw.calendar_image}" alt="Booking Calendar" style="width:100%;display:block" onerror="this.parentElement.innerHTML='<div class=\\'dashboard-placeholder\\'>What a Full Pipeline Looks Like</div>'">`)}
-          <div style="text-align:center;margin-top:0.75rem;font-family:var(--font-mono);font-size:0.7rem;color:var(--subtle)">What a Full Pipeline Looks Like</div>
-        </div>
       </div>
     </div>
   </div>
