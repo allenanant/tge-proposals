@@ -193,11 +193,11 @@ a{color:inherit;text-decoration:none}
 .media-strip{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:2rem}
 
 /* ===== DASHBOARDS ===== */
-.dashboard-stack{position:relative;max-width:900px;margin:3rem auto 0;perspective:1000px}
+.dashboard-stack{position:relative;max-width:900px;margin:3rem auto 0;perspective:1000px;display:flex;flex-direction:column;gap:2rem}
 .dashboard-frame{position:relative;transition:transform 0.4s ease}
-.dashboard-frame:nth-child(1){transform:rotate(-1.5deg) translateY(0);z-index:3}
-.dashboard-frame:nth-child(2){transform:rotate(0.5deg) translateY(-60%);z-index:2;opacity:0.85}
-.dashboard-frame:nth-child(3){transform:rotate(1.5deg) translateY(-120%);z-index:1;opacity:0.7}
+.dashboard-frame:nth-child(1){transform:rotate(-0.5deg);z-index:3}
+.dashboard-frame:nth-child(2){transform:rotate(0.3deg);z-index:2;opacity:0.9}
+.dashboard-frame:nth-child(3){transform:rotate(-0.3deg);z-index:1;opacity:0.8}
 .dashboard-placeholder{background:var(--surface-alt);min-height:300px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--font-mono);font-size:0.85rem}
 
 /* ===== SYSTEM TABS ===== */
@@ -311,8 +311,8 @@ a{color:inherit;text-decoration:none}
   .roi-strip{grid-template-columns:1fr;gap:1.5rem}
   .case-before-after{grid-template-columns:1fr}
   .contact-strip{flex-direction:column;align-items:center;gap:1rem}
-  .dashboard-frame:nth-child(2){transform:rotate(0.5deg) translateY(-40%)}
-  .dashboard-frame:nth-child(3){transform:rotate(1.5deg) translateY(-80%)}
+  .dashboard-frame:nth-child(2){transform:rotate(0.3deg)}
+  .dashboard-frame:nth-child(3){transform:rotate(-0.3deg)}
   .timeline-line{display:none}
 }
 </style>
@@ -797,7 +797,7 @@ function renderPage() {
       <div class="card system-content" id="system-content">
         <div class="system-content-title">${s.system_pillars[0].title}</div>
         <div class="system-content-desc">${s.system_pillars[0].description}</div>
-        ${s.system_pillars[0].image ? browserFrame(s.system_pillars[0].title.toLowerCase(), `<img src="${s.system_pillars[0].image}" alt="${s.system_pillars[0].title}" style="width:100%;display:block" onerror="this.parentElement.innerHTML='<div class=\\'dashboard-placeholder\\'>${s.system_pillars[0].title}</div>'">`) : ''}
+        ${s.system_pillars[0].image ? browserFrame(s.system_pillars[0].title.toLowerCase(), `<div style="max-height:400px;overflow:hidden"><img src="${s.system_pillars[0].image}" alt="${s.system_pillars[0].title}" style="width:100%;display:block;object-fit:cover;object-position:top" onerror="this.parentElement.innerHTML='<div class=\\'dashboard-placeholder\\'>${s.system_pillars[0].title}</div>'"></div>`) : ''}
       </div>
     </div>
     <div style="margin-top:3rem" data-anim="fade-up">
@@ -972,7 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (content) {
         let imgHtml = '';
         if (pillar.image) {
-          imgHtml = `<div class="browser-frame"><div class="browser-bar"><span class="browser-dot red"></span><span class="browser-dot amber"></span><span class="browser-dot green"></span><span class="browser-url">${pillar.title.toLowerCase()}</span></div><div class="browser-content"><img src="${pillar.image}" alt="${pillar.title}" style="width:100%;display:block" onerror="this.parentElement.innerHTML='<div class=\\'dashboard-placeholder\\'>${pillar.title}</div>'"></div></div>`;
+          imgHtml = `<div class="browser-frame"><div class="browser-bar"><span class="browser-dot red"></span><span class="browser-dot amber"></span><span class="browser-dot green"></span><span class="browser-url">${pillar.title.toLowerCase()}</span></div><div class="browser-content" style="max-height:400px;overflow:hidden"><img src="${pillar.image}" alt="${pillar.title}" style="width:100%;display:block;object-fit:cover;object-position:top" onerror="this.parentElement.innerHTML='<div class=\\'dashboard-placeholder\\'>${pillar.title}</div>'"></div></div>`;
         }
         content.innerHTML = `
           <div class="system-content-title">${pillar.title}</div>
@@ -1036,30 +1036,28 @@ function initAnimations() {
     );
   }
 
-  // Counter animations with IntersectionObserver
-  const counterEls = document.querySelectorAll('[data-counter]');
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseInt(el.dataset.counter);
-        if (isNaN(target)) return;
+  // Counter animations with ScrollTrigger
+  document.querySelectorAll('[data-counter]').forEach(el => {
+    const target = parseInt(el.dataset.counter);
+    if (isNaN(target)) return;
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
         const duration = 1500;
         const startTime = performance.now();
-        const hasSuffix = '+';
         function tick(now) {
           const elapsed = now - startTime;
           const progress = Math.min(elapsed / duration, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = Math.round(target * eased) + hasSuffix;
+          el.textContent = Math.round(target * eased) + '+';
           if (progress < 1) requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
-        counterObserver.unobserve(el);
       }
     });
-  }, { threshold: 0.3 });
-  counterEls.forEach(el => counterObserver.observe(el));
+  });
 }
 </script>
 </body>
