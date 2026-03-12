@@ -1,0 +1,94 @@
+{
+  "proof_metrics": [
+    { "value": "20M+", "label": "Impressions Generated" },
+    { "value": "11.58x", "label": "Average Client Growth" },
+    { "value": "20x", "label": "Follower to Customer" },
+    { "value": "10.8K", "label": "Followers in 6 Months" },
+    { "value": "67%", "label": "CTR on Marketing Assets" },
+    { "value": "98%", "label": "Email Open Rate" },
+    { "value": "5 min", "label": "Lead Response Time" },
+    { "value": "24/7", "label": "System Uptime" },
+    { "value": "$0", "label": "Cost Per Organic Lead" },
+    { "value": "78%", "label": "Funnel Conversion Rate" }
+  ],
+  "case_studies": {
+    "frenchify": {
+      "name": "Frenchify with Vyom",
+      "industry": "Education / Language Learning",
+      "hero_metric": "20x",
+      "hero_metric_label": "Growth",
+      "sub_metrics": ["+10,800 followers", "6 months", "10K to 31K+"],
+      "story": [
+        "Vyom had a small YouTube channel teaching French. Good content, but zero system for growth.",
+        "TGE built a research-driven content engine: scripted reels based on trending search terms, strategic posting.",
+        "Result: 616K views on a single reel, 20x follower growth, and a follower-to-student pipeline."
+      ],
+      "before": "10K followers, sporadic posting, no conversion system",
+      "after": "31K+ followers, 616K view reels, student conversions",
+      "image": "/tge-proposals/assets/static/frenchify-instagram.jpeg"
+    },
+    "drsw": {
+      "name": "Dr. SW Clinics",
+      "industry": "Healthcare / Aesthetic Medicine",
+      "hero_metric": "20M+",
+      "hero_metric_label": "Impressions",
+      "sub_metrics": ["11.58x growth", "981K followers", "Harley Street, London"],
+      "story": [
+        "Dr. Sherif Wakil is one of Europe's leading cosmetic practitioners. Strong reputation, limited digital growth.",
+        "TGE's approach: 'Less Is More.' Premium content matching brand positioning. Quality over quantity.",
+        "Result: 20M+ impressions, verified, packed booking calendar. As seen in Daily Mail, Sky, The Sun."
+      ],
+      "before": "Strong reputation, limited digital presence",
+      "after": "20M+ impressions, verified, packed bookings",
+      "image": "/tge-proposals/assets/static/drswclinics-instagram.jpeg",
+      "calendar_image": "/tge-proposals/assets/static/booking-calendar.png",
+      "media": ["Daily Mail", "Sky", "The Sun", "Tatler", "Fabulous", "Daily Express"]
+    }
+  },
+  "dashboard_images": [
+    "/tge-proposals/assets/static/meta-dashboard-1.png",
+    "/tge-proposals/assets/static/meta-dashboard-2.png",
+    "/tge-proposals/assets/static/meta-dashboard-3.png"
+  ],
+  "system_pillars": [
+    { "title": "Content Generation", "description": "AI-assisted + human scripting so you scale without frustration", "image": "/tge-proposals/assets/static/ai-avatar-tool.png" },
+    { "title": "Social Media Management", "description": "All platforms handled. Posting, engagement, community." },
+    { "title": "Paid Advertising", "description": "Meta, Google, TikTok, LinkedIn. Scale and generate qualified leads.", "image": "/tge-proposals/assets/static/meta-dashboard-1.png" },
+    { "title": "CRM Optimization", "description": "Full infrastructure. Lead tracking, pipeline, automation.", "image": "/tge-proposals/assets/static/booking-calendar.png" },
+    { "title": "Sales Optimization", "description": "Voice AI agents + automation for 24/7 qualification." },
+    { "title": "Reporting & Audit", "description": "Weekly reports. Monthly reviews. Complete transparency." }
+  ],
+  "automation_stack": [
+    { "title": "Voice AI Agent", "description": "Calls every lead in 5 minutes. 24/7. No human needed.", "stat": "5 min response" },
+    { "title": "Email Nurture", "description": "30-day sequences. Trust from first click to contract.", "stat": "98% open rate" },
+    { "title": "SMS", "description": "98% open rate. Booking reminders, high-intent moments.", "stat": "3x vs email" },
+    { "title": "WhatsApp", "description": "3x higher response. Behavior-triggered, feels human.", "stat": "89% read rate" }
+  ],
+  "funnel_stages": [
+    { "stage": "Awareness", "description": "Organic content, industry insights, discovery ads" },
+    { "stage": "Consideration", "description": "Retargeting, testimonials, case studies, education" },
+    { "stage": "Decision", "description": "Urgency, limited offers, direct conversion CTAs" }
+  ],
+  "channels": [
+    { "name": "Meta Ads", "role": "Primary acquisition", "icon": "target" },
+    { "name": "Google Ads", "role": "Intent capture", "icon": "search" },
+    { "name": "LinkedIn", "role": "B2B outreach", "icon": "briefcase" },
+    { "name": "Email", "role": "Nurture + convert", "icon": "mail" },
+    { "name": "SMS", "role": "High-intent moments", "icon": "smartphone" },
+    { "name": "WhatsApp", "role": "Behavior-triggered", "icon": "message-circle" },
+    { "name": "SEO", "role": "Organic compounding", "icon": "trending-up" },
+    { "name": "YouTube", "role": "Authority content", "icon": "play-circle" },
+    { "name": "TikTok", "role": "Discovery + reach", "icon": "zap" }
+  ],
+  "features_list": {
+    "content_creative": ["10 reels/month (scripted, edited, posted)", "15 static creatives/month", "Content calendar with strategic posting", "AI-powered ideas + trend tracking", "Professional copywriting", "Hashtag research + SEO"],
+    "paid_advertising": ["Meta Ads management", "Google Ads management", "TikTok Ads management", "LinkedIn Ads management", "A/B testing on all campaigns", "Retargeting + lookalike audiences", "Weekly optimization cycles", "Monthly spend recommendations"],
+    "automation_sales": ["Voice AI Agent (24/7)", "Email nurture sequences", "SMS campaigns", "WhatsApp automation", "CRM setup + management", "Lead scoring + routing", "Appointment booking automation", "Pipeline tracking + reporting"],
+    "strategy_reporting": ["Weekly performance reports", "Monthly strategy reviews", "Competitor monitoring", "SEO audits + recommendations", "Conversion tracking setup", "Custom analytics dashboard"]
+  },
+  "contact": {
+    "email": "info@thegrowthengine.net",
+    "phone": "+91 6397016179",
+    "website": "thegrowthengine.net"
+  }
+}

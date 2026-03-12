@@ -362,6 +362,7 @@ a{color:inherit;text-decoration:none}
 <div id="app"></div>
 
 <script>
+// __CONFIG_START__
 const CONFIG = {
   meta: { generated_date: "March 11, 2026", style_variation: "dark-standard" },
   prospect: {
@@ -506,6 +507,7 @@ const CONFIG = {
     contact: { email: "info@thegrowthengine.net", phone: "+91 6397016179", website: "thegrowthengine.net" }
   }
 };
+// __CONFIG_END__
 
 /* ===== RENDER HELPERS ===== */
 const cn = CONFIG.prospect.company_name;
@@ -565,8 +567,11 @@ function renderPage() {
     <div class="audit-layout">
       <div class="audit-screenshot" data-anim="fade-up">
         ${browserFrame(p.website, `
-          <div style="background:var(--surface-alt);min-height:350px;display:flex;align-items:center;justify-content:center;position:relative;padding:2rem">
-            <span style="color:var(--subtle);font-family:var(--font-mono);font-size:0.85rem">Website Screenshot &mdash; ${p.website}</span>
+          <div style="position:relative;${p.website_screenshot ? '' : 'background:var(--surface-alt);min-height:350px;display:flex;align-items:center;justify-content:center;'}padding:0">
+            ${p.website_screenshot
+              ? `<img src="${p.website_screenshot}" alt="${p.website}" style="width:100%;display:block">`
+              : `<div style="min-height:350px;display:flex;align-items:center;justify-content:center;background:var(--surface-alt)"><span style="color:var(--subtle);font-family:var(--font-mono);font-size:0.85rem">Website Screenshot &mdash; ${p.website}</span></div>`
+            }
             ${p.website_audit.findings.map((f, i) => `
               <div class="audit-dot ${f.severity}" style="left:${f.x}%;top:${f.y}%">
                 ${i + 1}
