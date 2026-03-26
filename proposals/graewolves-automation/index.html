@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upwork Automation System | Built for Graewolves</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:#0A0A09;color:#FFFFFF;font-family:'Hanken Grotesk',sans-serif;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* ===== CSS VARIABLES ===== */
+:root{
+  --bg:#0A0A09;--surface:rgba(22,22,22,0.55);--surface-solid:#151515;--surface-alt:#1E1E1E;
+  --accent:#C069DD;--accent-glow:#9B3FC7;--accent-bright:#D48EF0;
+  --success:#22C55E;--warning:#F59E0B;--danger:#EF4444;
+  --text:#FFFFFF;--muted:#888888;--subtle:#555555;
+  --border:rgba(255,255,255,0.06);--border-glow:rgba(192,105,221,0.15);
+  --font-heading:'Outfit',sans-serif;
+  --font-body:'Hanken Grotesk',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --font-serif:'Instrument Serif',serif;
+  --radius:1.5rem;
+  --glow-sm:0 0 20px rgba(192,105,221,0.08);
+  --glow-md:0 0 40px rgba(192,105,221,0.12);
+  --glow-lg:0 0 80px rgba(192,105,221,0.15);
+  --shadow-card:0 4px 24px rgba(0,0,0,0.3),0 1px 4px rgba(0,0,0,0.2);
+  --shadow-hover:0 12px 48px rgba(0,0,0,0.4),0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ===== SCROLL PROGRESS ===== */
+#scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-bright),var(--accent-glow));width:0;z-index:10000;box-shadow:0 0 12px var(--accent)}
+
+/* ===== NOISE OVERLAY ===== */
+#noise-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;opacity:0.025}
+
+/* ===== GRADIENT TEXT ===== */
+.gradient-text{background:linear-gradient(135deg,var(--accent-bright),var(--accent),#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ===== SECTION DIVIDER ===== */
+.section::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent)}
+
+/* ===== LAYOUT ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 2rem}
+.section{padding:8rem 0;position:relative}
+.section-label{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.25em;color:var(--accent);margin-bottom:1rem;display:inline-flex;align-items:center;gap:0.75rem}
+.section-label::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent)}
+.section-headline{font-family:var(--font-heading);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem;letter-spacing:-0.02em}
+.section-headline .accent{color:var(--accent)}
+.drama{font-family:var(--font-serif);font-style:italic;color:var(--accent);font-size:clamp(1.1rem,2vw,1.4rem);margin-top:2.5rem;opacity:0.85}
+
+/* ===== CARDS ===== */
+.card{background:var(--surface);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow-card);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s cubic-bezier(0.16,1,0.3,1),border-color 0.4s ease}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--border-glow)}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2.5rem;border-radius:100px;font-family:var(--font-heading);font-weight:600;font-size:1rem;cursor:pointer;border:none;transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-glow));color:#fff;box-shadow:0 4px 24px rgba(192,105,221,0.3),inset 0 1px 0 rgba(255,255,255,0.1)}
+.btn-primary:hover{transform:scale(1.04) translateY(-2px);box-shadow:0 8px 40px rgba(192,105,221,0.45),inset 0 1px 0 rgba(255,255,255,0.1)}
+
+/* ===== PILL BADGES ===== */
+.pill{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem 1rem;border-radius:100px;font-size:0.75rem;font-family:var(--font-mono);background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--muted);backdrop-filter:blur(8px)}
+.pill-accent{background:rgba(192,105,221,0.08);border-color:rgba(192,105,221,0.2);color:var(--accent)}
+.pill-success{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.2);color:var(--success)}
+
+/* ===== HERO ===== */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;padding:2rem}
+#hero::before{content:none}
+#hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-gradient{position:absolute;border-radius:50%;filter:blur(140px);opacity:0.3;animation:float 15s ease-in-out infinite}
+.hero-gradient.g1{width:700px;height:700px;background:var(--accent);top:-250px;left:-150px;animation-delay:0s}
+.hero-gradient.g2{width:500px;height:500px;background:var(--accent-glow);bottom:-150px;right:-100px;animation-delay:4s}
+.hero-gradient.g3{width:400px;height:400px;background:#7C3AED;top:40%;left:50%;animation-delay:8s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-20px) scale(1.05)}50%{transform:translate(-20px,30px) scale(0.95)}75%{transform:translate(20px,20px) scale(1.02)}}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:80px 80px}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-eyebrow{font-family:var(--font-mono);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.35em;color:var(--muted);margin-bottom:2rem}
+.hero-company{font-family:var(--font-heading);font-size:clamp(3.5rem,12vw,9rem);font-weight:900;line-height:0.95;margin-bottom:1.5rem;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.5) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.04em}
+.hero-subline{font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:600px;margin:0 auto 3rem;line-height:1.8;font-weight:300}
+.hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:0.6rem;margin-bottom:3.5rem}
+.hero-meta{position:absolute;bottom:2.5rem;right:2.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--subtle);text-align:right;letter-spacing:0.05em}
+.scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--subtle);font-size:0.65rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.2em}
+.scroll-chevron{animation:bounce 2.5s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(10px);opacity:0.5}}
+
+/* ===== PROBLEM ===== */
+.problems-stack{display:flex;flex-direction:column;gap:2.5rem;max-width:900px}
+.problem-card{padding:0;background:none;backdrop-filter:none;border:none;box-shadow:none;position:relative;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start}
+.problem-card:hover{transform:none;box-shadow:none;border-color:transparent}
+.problem-num{font-family:var(--font-mono);font-size:clamp(3rem,5vw,4.5rem);font-weight:700;line-height:1;color:rgba(255,255,255,0.04);position:relative;min-width:60px;text-align:right}
+.problem-card.danger .problem-num::after{content:'';position:absolute;top:50%;right:-1rem;width:6px;height:6px;border-radius:50%;background:var(--danger);box-shadow:0 0 12px rgba(239,68,68,0.4);transform:translateY(-50%)}
+.problem-card.warning .problem-num::after{content:'';position:absolute;top:50%;right:-1rem;width:6px;height:6px;border-radius:50%;background:var(--warning);box-shadow:0 0 12px rgba(245,158,11,0.4);transform:translateY(-50%)}
+.problem-body{padding:0.5rem 0}
+.problem-statement{font-family:var(--font-heading);font-size:clamp(1.3rem,2.5vw,1.75rem);font-weight:600;margin-bottom:0.75rem;line-height:1.35;letter-spacing:-0.01em}
+.problem-context{color:var(--muted);margin-bottom:1rem;font-size:0.9rem;line-height:1.7}
+.problem-data{font-family:var(--font-mono);font-size:0.8rem;display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;border-radius:100px}
+.problem-data.danger{color:var(--danger);background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.1)}
+.problem-data.warning{color:var(--warning);background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.1)}
+
+/* ===== PIPELINE ===== */
+.pipeline-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin:3rem 0;position:relative}
+.pipeline-flow::before{content:'';position:absolute;top:40px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,var(--accent),var(--success));opacity:0.15}
+.pipeline-step{text-align:center;position:relative;z-index:1}
+.pipeline-icon{width:64px;height:64px;border-radius:1.25rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border:1px solid var(--border-glow);backdrop-filter:blur(12px);background:rgba(192,105,221,0.06);color:var(--accent);box-shadow:0 0 20px rgba(192,105,221,0.1);transition:all 0.3s ease}
+.pipeline-step:hover .pipeline-icon{transform:translateY(-4px);box-shadow:0 0 30px rgba(192,105,221,0.2)}
+.pipeline-step-title{font-family:var(--font-heading);font-weight:600;font-size:0.95rem;margin-bottom:0.4rem}
+.pipeline-step-desc{font-size:0.8rem;color:var(--muted);line-height:1.5;max-width:180px;margin:0 auto}
+.pipeline-arrow{position:absolute;top:40px;right:-8px;color:var(--subtle);font-size:0.8rem}
+
+/* ===== CUSTOMIZE ===== */
+.customize-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem}
+.customize-card{padding:2rem;position:relative;overflow:hidden}
+.customize-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-glow));opacity:0;transition:opacity 0.3s}
+.customize-card:hover::before{opacity:1}
+.customize-icon{width:48px;height:48px;border-radius:1rem;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;background:rgba(192,105,221,0.08);border:1px solid rgba(192,105,221,0.15);color:var(--accent)}
+.customize-title{font-family:var(--font-heading);font-weight:600;font-size:1.1rem;margin-bottom:0.75rem}
+.customize-desc{color:var(--muted);font-size:0.9rem;line-height:1.7}
+
+/* ===== RESULTS ===== */
+.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:3rem 0}
+.result-card{padding:2rem;text-align:center}
+.result-value{font-family:var(--font-mono);font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:0.5rem;line-height:1}
+.result-label{font-size:0.8rem;color:var(--muted);line-height:1.4}
+
+/* ===== ONBOARDING TIMELINE ===== */
+.onboard-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin:3rem 0;position:relative}
+.onboard-steps::before{content:'';position:absolute;top:24px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,var(--accent),var(--success),var(--warning),#8B5CF6);opacity:0.2}
+.onboard-step{position:relative;z-index:1}
+.onboard-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.85rem;font-weight:700;margin-bottom:1.25rem;border:1px solid var(--border-glow);backdrop-filter:blur(12px)}
+.onboard-step:nth-child(1) .onboard-num{color:var(--accent);background:rgba(192,105,221,0.06);box-shadow:0 0 20px rgba(192,105,221,0.15)}
+.onboard-step:nth-child(2) .onboard-num{color:var(--success);background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.2);box-shadow:0 0 20px rgba(34,197,94,0.1)}
+.onboard-step:nth-child(3) .onboard-num{color:var(--warning);background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2);box-shadow:0 0 20px rgba(245,158,11,0.1)}
+.onboard-step:nth-child(4) .onboard-num{color:#8B5CF6;background:rgba(139,92,246,0.06);border-color:rgba(139,92,246,0.2);box-shadow:0 0 20px rgba(139,92,246,0.1)}
+.onboard-title{font-family:var(--font-heading);font-weight:600;font-size:1rem;margin-bottom:0.5rem}
+.onboard-desc{font-size:0.85rem;color:var(--muted);line-height:1.6}
+.onboard-day{font-family:var(--font-mono);font-size:0.7rem;color:var(--subtle);margin-bottom:0.5rem;letter-spacing:0.1em}
+
+/* ===== PRICING ===== */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:900px;margin:3rem auto 0}
+.pricing-card{padding:2.5rem;position:relative;overflow:hidden}
+.pricing-card.recommended{border-color:var(--border-glow);box-shadow:var(--glow-md)}
+.pricing-badge{position:absolute;top:1.5rem;right:1.5rem}
+.pricing-name{font-family:var(--font-heading);font-weight:600;font-size:1.2rem;margin-bottom:0.5rem}
+.pricing-desc{color:var(--muted);font-size:0.9rem;margin-bottom:2rem;line-height:1.6}
+.pricing-price{font-family:var(--font-mono);font-size:clamp(2.5rem,5vw,3.5rem);font-weight:700;margin-bottom:0.25rem;line-height:1}
+.pricing-sub{font-family:var(--font-mono);font-size:0.8rem;color:var(--muted);margin-bottom:2rem}
+.pricing-features{list-style:none;display:flex;flex-direction:column;gap:0.75rem;margin-bottom:2rem}
+.pricing-features li{font-size:0.9rem;color:var(--muted);display:flex;align-items:flex-start;gap:0.75rem}
+.pricing-features li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:0.55rem;flex-shrink:0}
+.pricing-card.recommended .pricing-features li::before{background:var(--success)}
+
+/* ===== CLOSE / CTA ===== */
+#close{text-align:center;padding:10rem 0}
+.close-headline{font-family:var(--font-heading);font-size:clamp(2.5rem,6vw,4rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem;letter-spacing:-0.02em}
+.close-headline .accent{color:var(--accent)}
+.close-subline{font-size:clamp(1rem,2vw,1.15rem);color:var(--muted);max-width:500px;margin:0 auto 3rem;line-height:1.8}
+.contact-strip{display:flex;justify-content:center;gap:2rem;margin-top:3rem;flex-wrap:wrap}
+.contact-item{font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);display:flex;align-items:center;gap:0.5rem}
+.footer-note{margin-top:4rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--subtle);letter-spacing:0.05em}
+.system-status{display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--success);margin-top:2rem}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 4px var(--success)}50%{opacity:0.5;box-shadow:0 0 12px var(--success)}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .pipeline-flow{grid-template-columns:repeat(3,1fr)}
+  .pipeline-step:nth-child(4),.pipeline-step:nth-child(5){grid-column:span 1}
+  .customize-grid{grid-template-columns:1fr 1fr}
+  .results-grid{grid-template-columns:repeat(2,1fr)}
+  .onboard-steps{grid-template-columns:repeat(2,1fr)}
+  .pricing-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .section{padding:5rem 0}
+  .pipeline-flow{grid-template-columns:1fr 1fr}
+  .pipeline-flow::before{display:none}
+  .customize-grid{grid-template-columns:1fr}
+  .results-grid{grid-template-columns:1fr 1fr}
+  .onboard-steps{grid-template-columns:1fr}
+  .onboard-steps::before{display:none}
+  .pricing-grid{grid-template-columns:1fr;max-width:480px}
+  .contact-strip{flex-direction:column;align-items:center;gap:1rem}
+  .hero-company{font-size:clamp(2.5rem,10vw,5rem)}
+}
+@media(max-width:480px){
+  .container{padding:0 1.25rem}
+  .pipeline-flow{grid-template-columns:1fr}
+  .results-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div id="scroll-progress"></div>
+
+<!-- Noise Overlay -->
+<svg id="noise-overlay"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#noiseFilter)"/></svg>
+
+<!-- ===== SECTION 1: HERO ===== -->
+<section id="hero">
+  <div id="hero-bg">
+    <div class="hero-gradient g1"></div>
+    <div class="hero-gradient g2"></div>
+    <div class="hero-gradient g3"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">A System Built Exclusively For</div>
+    <h1 class="hero-company">Graewolves</h1>
+    <p class="hero-subline">Your Upwork pipeline, fully automated. Custom-built to find, qualify, and reach out to your ideal clients while you focus on strategy.</p>
+    <div class="hero-stats">
+      <span class="pill pill-accent">Automated Scraping</span>
+      <span class="pill pill-accent">Lead Enrichment</span>
+      <span class="pill pill-accent">Auto-Proposals</span>
+      <span class="pill pill-accent">CRM Dashboard</span>
+      <span class="pill pill-accent">Email Outreach</span>
+    </div>
+    <a href="#system" class="btn btn-primary">See How It Works</a>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <span class="scroll-chevron">&#8964;</span>
+  </div>
+  <div class="hero-meta">Prepared by The Growth Engine<br>March 2026</div>
+</section>
+
+<!-- ===== SECTION 2: THE PROBLEM ===== -->
+<section class="section" id="problem">
+  <div class="container">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-headline">Manual Prospecting Is <span class="accent">Killing Your Time</span></h2>
+    <div class="problems-stack">
+
+      <div class="problem-card danger">
+        <div class="problem-num">01</div>
+        <div class="problem-body">
+          <div class="problem-statement">You're spending hours scrolling Upwork instead of closing deals.</div>
+          <div class="problem-context">Every hour spent manually searching for jobs is an hour not spent on strategy, client delivery, or sales calls. For a branding studio charging $15K-$50K+ per engagement, that's expensive time.</div>
+          <div class="problem-data danger">Time lost per week: 8-12 hours</div>
+        </div>
+      </div>
+
+      <div class="problem-card warning">
+        <div class="problem-num">02</div>
+        <div class="problem-body">
+          <div class="problem-statement">Good jobs disappear before you even see them.</div>
+          <div class="problem-context">The best Upwork jobs get 20+ proposals within the first hour. By the time you manually find them, the client has already shortlisted candidates. Speed is the differentiator.</div>
+          <div class="problem-data warning">Average response window: &lt; 60 minutes</div>
+        </div>
+      </div>
+
+      <div class="problem-card danger">
+        <div class="problem-num">03</div>
+        <div class="problem-body">
+          <div class="problem-statement">Generic proposals don't convert. Personalized ones take forever.</div>
+          <div class="problem-context">You know personalization wins. But researching each company, understanding their pain points, and crafting a custom proposal for every lead? That doesn't scale. So you either send generic pitches or burn out.</div>
+          <div class="problem-data danger">Average proposal conversion rate: 2-5%</div>
+        </div>
+      </div>
+
+    </div>
+    <p class="drama">What if the entire pipeline ran itself?</p>
+  </div>
+</section>
+
+<!-- ===== SECTION 3: THE SYSTEM ===== -->
+<section class="section" id="system">
+  <div class="container">
+    <div class="section-label">The System</div>
+    <h2 class="section-headline">End-to-End <span class="accent">Upwork Automation</span></h2>
+    <p style="color:var(--muted);max-width:700px;margin-bottom:1rem;font-size:1.05rem;line-height:1.7">A fully managed system that scrapes jobs matching your exact criteria, enriches every lead with company research, builds personalized proposals, and sends outreach automatically.</p>
+
+    <div class="pipeline-flow">
+      <div class="pipeline-step">
+        <div class="pipeline-icon"><i data-lucide="search" style="width:24px;height:24px"></i></div>
+        <div class="pipeline-step-title">Scrape</div>
+        <div class="pipeline-step-desc">Custom keywords scan Upwork 24/7. New jobs captured instantly.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-icon"><i data-lucide="database" style="width:24px;height:24px"></i></div>
+        <div class="pipeline-step-title">Enrich</div>
+        <div class="pipeline-step-desc">AI researches each company. Finds decision-makers and emails.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-icon"><i data-lucide="filter" style="width:24px;height:24px"></i></div>
+        <div class="pipeline-step-title">Qualify</div>
+        <div class="pipeline-step-desc">Auto-scores leads by budget, fit, and project scope. Only quality gets through.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-icon"><i data-lucide="file-text" style="width:24px;height:24px"></i></div>
+        <div class="pipeline-step-title">Propose</div>
+        <div class="pipeline-step-desc">Personalized proposals built from your templates and the client's context.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-icon"><i data-lucide="send" style="width:24px;height:24px"></i></div>
+        <div class="pipeline-step-title">Outreach</div>
+        <div class="pipeline-step-desc">Emails sent automatically. Follow-ups scheduled. Replies tracked.</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:3rem">
+      <span class="pill pill-success" style="font-size:0.85rem;padding:0.6rem 1.5rem">Runs 24/7. Zero manual work.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 4: WHAT GETS CUSTOMIZED ===== -->
+<section class="section" id="customize">
+  <div class="container">
+    <div class="section-label">Built For You</div>
+    <h2 class="section-headline">Customized for <span class="accent">Graewolves</span></h2>
+    <p style="color:var(--muted);max-width:700px;margin-bottom:1rem;font-size:1.05rem;line-height:1.7">This isn't a generic tool. Every component is configured specifically for your agency's positioning, ideal clients, and brand voice.</p>
+
+    <div class="customize-grid">
+      <div class="card customize-card">
+        <div class="customize-icon"><i data-lucide="crosshair" style="width:22px;height:22px"></i></div>
+        <div class="customize-title">Your Keywords</div>
+        <div class="customize-desc">We configure the exact search terms that match Graewolves' sweet spot: brand strategy, brand identity, trust funnels, B2B branding, coaching brand, fractional CMO, and more. Only jobs you'd actually want.</div>
+      </div>
+      <div class="card customize-card">
+        <div class="customize-icon"><i data-lucide="layout-grid" style="width:22px;height:22px"></i></div>
+        <div class="customize-title">Your CRM</div>
+        <div class="customize-desc">Leads flow directly into whatever CRM you use. Clarify, Notion, HubSpot, Airtable. We build the integration so every qualified lead lands in your pipeline with full context attached.</div>
+      </div>
+      <div class="card customize-card">
+        <div class="customize-icon"><i data-lucide="pen-tool" style="width:22px;height:22px"></i></div>
+        <div class="customize-title">Your Proposals</div>
+        <div class="customize-desc">Custom proposal templates that match Graewolves' voice, positioning, and pricing. Research-backed, behavioral science framing. Feels handcrafted. Generated in seconds.</div>
+      </div>
+      <div class="card customize-card">
+        <div class="customize-icon"><i data-lucide="sliders" style="width:22px;height:22px"></i></div>
+        <div class="customize-title">Your Filters</div>
+        <div class="customize-desc">Budget minimums, client history requirements, project type filters. Only leads above your threshold make it through. No noise, no low-ballers, no time wasters.</div>
+      </div>
+      <div class="card customize-card">
+        <div class="customize-icon"><i data-lucide="mail" style="width:22px;height:22px"></i></div>
+        <div class="customize-title">Your Email Voice</div>
+        <div class="customize-desc">Outreach emails written in Graewolves' tone. Direct, research-backed, no fluff. Each email references the prospect's specific situation and links to a personalized proposal page.</div>
+      </div>
+      <div class="card customize-card">
+        <div class="customize-icon"><i data-lucide="bar-chart-3" style="width:22px;height:22px"></i></div>
+        <div class="customize-title">Your Dashboard</div>
+        <div class="customize-desc">A live web dashboard showing every lead, their status, proposal links, email history, and conversion metrics. Mobile-friendly. Check your pipeline from anywhere.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 5: RESULTS ===== -->
+<section class="section" id="results">
+  <div class="container">
+    <div class="section-label">Proven Results</div>
+    <h2 class="section-headline">This System Is <span class="accent">Already Running</span></h2>
+    <p style="color:var(--muted);max-width:700px;margin-bottom:1rem;font-size:1.05rem;line-height:1.7">This isn't a concept or a prototype. We built this for our own agency and it's been running in production. Here's what day one looked like.</p>
+
+    <div class="results-grid">
+      <div class="card result-card">
+        <div class="result-value gradient-text" data-counter="14">0</div>
+        <div class="result-label">Personalized emails sent automatically</div>
+      </div>
+      <div class="card result-card">
+        <div class="result-value gradient-text" data-counter="8">0</div>
+        <div class="result-label">LinkedIn DMs delivered via Sales Navigator</div>
+      </div>
+      <div class="card result-card">
+        <div class="result-value gradient-text" data-counter="2">0</div>
+        <div class="result-label">Replies received on first day</div>
+      </div>
+      <div class="card result-card">
+        <div class="result-value" style="color:var(--success)" data-counter-prefix="$" data-counter="0">$0</div>
+        <div class="result-label">Manual work required</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-top:3rem">
+      <div class="card" style="padding:1.5rem;text-align:center">
+        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--accent);margin-bottom:0.5rem">SPEED</div>
+        <div style="font-size:0.9rem;color:var(--muted)">New jobs detected and proposals sent within <strong style="color:#fff">minutes</strong>, not hours</div>
+      </div>
+      <div class="card" style="padding:1.5rem;text-align:center">
+        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--accent);margin-bottom:0.5rem">PERSONALIZATION</div>
+        <div style="font-size:0.9rem;color:var(--muted)">Each proposal references the prospect's <strong style="color:#fff">specific business</strong> and needs</div>
+      </div>
+      <div class="card" style="padding:1.5rem;text-align:center">
+        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--accent);margin-bottom:0.5rem">SCALE</div>
+        <div style="font-size:0.9rem;color:var(--muted)">Runs <strong style="color:#fff">24/7</strong> across every timezone. Never misses a post.</div>
+      </div>
+    </div>
+
+    <p class="drama">One system. Zero manual prospecting.</p>
+  </div>
+</section>
+
+<!-- ===== SECTION 6: ONBOARDING ===== -->
+<section class="section" id="onboarding">
+  <div class="container">
+    <div class="section-label">Getting Started</div>
+    <h2 class="section-headline">Live in <span class="accent">7 Days</span></h2>
+
+    <div class="onboard-steps">
+      <div class="onboard-step">
+        <div class="onboard-num">01</div>
+        <div class="onboard-day">DAY 1-2</div>
+        <div class="onboard-title">Discovery</div>
+        <div class="onboard-desc">We map your ideal client profile, keyword strategy, budget thresholds, and proposal voice. You tell us what a perfect Upwork job looks like for Graewolves.</div>
+      </div>
+      <div class="onboard-step">
+        <div class="onboard-num">02</div>
+        <div class="onboard-day">DAY 3-4</div>
+        <div class="onboard-title">Build</div>
+        <div class="onboard-desc">We configure the scraping engine with your keywords, set up CRM integration, build your proposal templates, and configure email sequences in your brand voice.</div>
+      </div>
+      <div class="onboard-step">
+        <div class="onboard-num">03</div>
+        <div class="onboard-day">DAY 5-6</div>
+        <div class="onboard-title">Test</div>
+        <div class="onboard-desc">We run the system in test mode. You review the first batch of scraped leads, proposals, and email drafts. We refine until everything matches your standards.</div>
+      </div>
+      <div class="onboard-step">
+        <div class="onboard-num">04</div>
+        <div class="onboard-day">DAY 7</div>
+        <div class="onboard-title">Launch</div>
+        <div class="onboard-desc">System goes live. Your dashboard is active. Leads start flowing. You get a Slack notification every time a new qualified lead enters the pipeline.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 7: PRICING ===== -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-label">Investment</div>
+    <h2 class="section-headline" style="text-align:center">Two Ways to <span class="accent">Get Started</span></h2>
+
+    <div class="pricing-grid">
+      <!-- Offer A: Recommended -->
+      <div class="card pricing-card recommended">
+        <div class="pricing-badge"><span class="pill pill-success">Recommended</span></div>
+        <div class="pricing-name">Setup + Launch</div>
+        <div class="pricing-desc">Full custom build with dedicated onboarding. Everything configured from scratch for Graewolves.</div>
+        <div class="pricing-price gradient-text">$2,200</div>
+        <div class="pricing-sub">first month (setup + service)</div>
+        <div style="margin-bottom:1.5rem;padding:1rem;border-radius:1rem;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.1)">
+          <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--success);margin-bottom:0.25rem">THEN</div>
+          <div style="font-family:var(--font-mono);font-size:1.5rem;font-weight:700;color:var(--success)">$1,200<span style="font-size:0.8rem;color:var(--muted)">/mo</span></div>
+        </div>
+        <ul class="pricing-features">
+          <li>Custom keyword configuration</li>
+          <li>CRM integration (Clarify or any platform)</li>
+          <li>Personalized proposal templates</li>
+          <li>Automated email outreach sequences</li>
+          <li>Live web dashboard</li>
+          <li>Lead enrichment + contact finding</li>
+          <li>Budget filtering + lead scoring</li>
+          <li>Slack notifications for new leads</li>
+          <li>Ongoing maintenance + support</li>
+          <li>Monthly optimization calls</li>
+        </ul>
+        <a href="https://cal.com/grawoth/consultation-call-with-allen" class="btn btn-primary" style="width:100%;justify-content:center">Get Started</a>
+      </div>
+
+      <!-- Offer B: Flat Rate -->
+      <div class="card pricing-card">
+        <div class="pricing-name">All-Inclusive Flat Rate</div>
+        <div class="pricing-desc">Same system, same features. No upfront setup fee. Simple monthly billing from day one.</div>
+        <div class="pricing-price" style="color:var(--text)">$1,500</div>
+        <div class="pricing-sub">per month, starting month 1</div>
+        <div style="margin-bottom:1.5rem;padding:1rem;border-radius:1rem;background:rgba(255,255,255,0.03);border:1px solid var(--border)">
+          <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);margin-bottom:0.25rem">NO SETUP FEE</div>
+          <div style="font-size:0.85rem;color:var(--muted)">Everything included from month 1</div>
+        </div>
+        <ul class="pricing-features">
+          <li>Custom keyword configuration</li>
+          <li>CRM integration (Clarify or any platform)</li>
+          <li>Personalized proposal templates</li>
+          <li>Automated email outreach sequences</li>
+          <li>Live web dashboard</li>
+          <li>Lead enrichment + contact finding</li>
+          <li>Budget filtering + lead scoring</li>
+          <li>Slack notifications for new leads</li>
+          <li>Ongoing maintenance + support</li>
+          <li>Monthly optimization calls</li>
+        </ul>
+        <a href="https://cal.com/grawoth/consultation-call-with-allen" class="btn btn-primary" style="width:100%;justify-content:center;background:rgba(255,255,255,0.08);box-shadow:none;border:1px solid var(--border)">Get Started</a>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:3rem;max-width:600px;margin-left:auto;margin-right:auto">
+      <p style="color:var(--muted);font-size:0.95rem;line-height:1.7">Both plans include the same features. The only difference is how you want to pay. If this system helps you land even <strong style="color:#fff">one extra client</strong> at your deal size, the ROI is measured in multiples.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 8: CTA / CLOSE ===== -->
+<section id="close">
+  <div class="container">
+    <h2 class="close-headline">Ready to automate<br><span class="accent">Graewolves' pipeline?</span></h2>
+    <p class="close-subline">Everything you just saw can be live and running for your agency in 7 days. Let's set it up.</p>
+    <a href="https://cal.com/grawoth/consultation-call-with-allen" class="btn btn-primary" style="font-size:1.1rem;padding:1.25rem 3rem">Book a Call With Allen</a>
+
+    <div class="contact-strip">
+      <div class="contact-item"><i data-lucide="mail" style="width:14px;height:14px"></i> info@thegrowthengine.net</div>
+      <div class="contact-item"><i data-lucide="phone" style="width:14px;height:14px"></i> +91 6397016179</div>
+      <div class="contact-item"><i data-lucide="globe" style="width:14px;height:14px"></i> thegrowthengine.net</div>
+    </div>
+
+    <div class="system-status"><span class="status-dot"></span> System Operational</div>
+
+    <div class="footer-note">This page was prepared exclusively for Graewolves by The Growth Engine</div>
+  </div>
+</section>
+
+<script>
+/* ===== GSAP SETUP ===== */
+gsap.registerPlugin(ScrollTrigger);
+
+/* Scroll Progress */
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('scroll-progress').style.width=pct+'%';
+});
+
+/* Lucide Icons */
+lucide.createIcons();
+
+/* Hero Animation */
+gsap.timeline({delay:0.3})
+  .from('.hero-eyebrow',{y:30,opacity:0,duration:0.8,ease:'power3.out'})
+  .from('.hero-company',{y:50,opacity:0,duration:1,ease:'power3.out'},'-=0.4')
+  .from('.hero-subline',{y:30,opacity:0,duration:0.8,ease:'power3.out'},'-=0.5')
+  .from('.hero-stats .pill',{y:20,opacity:0,duration:0.5,stagger:0.08,ease:'power3.out'},'-=0.4')
+  .from('.hero-content .btn',{y:20,opacity:0,duration:0.6,ease:'power3.out'},'-=0.2')
+  .from('.scroll-indicator',{opacity:0,duration:0.8},'-=0.3')
+  .from('.hero-meta',{opacity:0,duration:0.8},'-=0.6');
+
+/* Section Reveals */
+document.querySelectorAll('.section').forEach(section=>{
+  const label=section.querySelector('.section-label');
+  const headline=section.querySelector('.section-headline');
+  const desc=section.querySelector('.section-headline + p');
+  const drama=section.querySelector('.drama');
+
+  const tl=gsap.timeline({scrollTrigger:{trigger:section,start:'top 80%',toggleActions:'play none none none'}});
+
+  if(label) tl.from(label,{y:20,opacity:0,duration:0.6,ease:'power3.out'});
+  if(headline) tl.from(headline,{y:30,opacity:0,duration:0.8,ease:'power3.out'},'-=0.3');
+  if(desc) tl.from(desc,{y:20,opacity:0,duration:0.6,ease:'power3.out'},'-=0.4');
+  if(drama) tl.from(drama,{y:20,opacity:0,duration:0.6,ease:'power3.out'},'-=0.2');
+});
+
+/* Problem Cards */
+gsap.utils.toArray('.problem-card').forEach((card,i)=>{
+  gsap.from(card,{x:-40,opacity:0,duration:0.8,ease:'power3.out',delay:i*0.15,scrollTrigger:{trigger:card,start:'top 85%'}});
+});
+
+/* Pipeline Steps */
+gsap.utils.toArray('.pipeline-step').forEach((step,i)=>{
+  gsap.from(step,{y:40,opacity:0,duration:0.7,ease:'power3.out',delay:i*0.12,scrollTrigger:{trigger:'.pipeline-flow',start:'top 80%'}});
+});
+
+/* Customize Cards */
+gsap.utils.toArray('.customize-card').forEach((card,i)=>{
+  gsap.from(card,{y:30,opacity:0,duration:0.6,ease:'power3.out',delay:i*0.1,scrollTrigger:{trigger:'.customize-grid',start:'top 80%'}});
+});
+
+/* Result Counters */
+gsap.utils.toArray('[data-counter]').forEach(el=>{
+  const target=parseInt(el.getAttribute('data-counter'));
+  const prefix=el.getAttribute('data-counter-prefix')||'';
+  ScrollTrigger.create({
+    trigger:el,start:'top 85%',once:true,
+    onEnter:()=>{
+      gsap.to({val:0},{val:target,duration:1.5,ease:'power2.out',
+        onUpdate:function(){el.textContent=prefix+Math.round(this.targets()[0].val)}
+      });
+    }
+  });
+});
+
+/* Onboarding Steps */
+gsap.utils.toArray('.onboard-step').forEach((step,i)=>{
+  gsap.from(step,{y:40,opacity:0,duration:0.7,ease:'power3.out',delay:i*0.15,scrollTrigger:{trigger:'.onboard-steps',start:'top 80%'}});
+});
+
+/* Pricing Cards */
+gsap.utils.toArray('.pricing-card').forEach((card,i)=>{
+  gsap.from(card,{y:50,opacity:0,duration:0.8,ease:'power3.out',delay:i*0.2,scrollTrigger:{trigger:'.pricing-grid',start:'top 80%'}});
+});
+
+/* Close Section */
+gsap.from('#close .close-headline',{y:40,opacity:0,duration:0.8,ease:'power3.out',scrollTrigger:{trigger:'#close',start:'top 80%'}});
+gsap.from('#close .close-subline',{y:30,opacity:0,duration:0.6,ease:'power3.out',delay:0.2,scrollTrigger:{trigger:'#close',start:'top 80%'}});
+gsap.from('#close .btn',{y:20,opacity:0,duration:0.6,ease:'power3.out',delay:0.4,scrollTrigger:{trigger:'#close',start:'top 80%'}});
+</script>
+
+</body>
+</html>
