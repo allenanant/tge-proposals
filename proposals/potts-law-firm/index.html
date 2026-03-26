@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth Proposal | The Growth Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:#0A0A09;color:#FFFFFF;font-family:'Hanken Grotesk',sans-serif;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* ===== CSS VARIABLES ===== */
+:root{
+  --bg:#0A0A09;--surface:rgba(22,22,22,0.55);--surface-solid:#151515;--surface-alt:#1E1E1E;
+  --accent:#C069DD;--accent-glow:#9B3FC7;--accent-bright:#D48EF0;
+  --success:#22C55E;--warning:#F59E0B;--danger:#EF4444;
+  --text:#FFFFFF;--muted:#888888;--subtle:#555555;
+  --border:rgba(255,255,255,0.06);--border-glow:rgba(192,105,221,0.15);
+  --font-heading:'Outfit',sans-serif;
+  --font-body:'Hanken Grotesk',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --font-serif:'Instrument Serif',serif;
+  --radius:1.5rem;
+  --glow-sm:0 0 20px rgba(192,105,221,0.08);
+  --glow-md:0 0 40px rgba(192,105,221,0.12);
+  --glow-lg:0 0 80px rgba(192,105,221,0.15);
+  --shadow-card:0 4px 24px rgba(0,0,0,0.3),0 1px 4px rgba(0,0,0,0.2);
+  --shadow-hover:0 12px 48px rgba(0,0,0,0.4),0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ===== SCROLL PROGRESS ===== */
+#scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-bright),var(--accent-glow));width:0;z-index:10000;box-shadow:0 0 12px var(--accent)}
+
+/* ===== NOISE OVERLAY ===== */
+#noise-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;opacity:0.025}
+
+/* ===== GRADIENT TEXT ===== */
+.gradient-text{background:linear-gradient(135deg,var(--accent-bright),var(--accent),#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ===== SECTION DIVIDER ===== */
+.section::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent)}
+
+/* ===== LAYOUT ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 2rem}
+.section{padding:10rem 0;position:relative}
+.section-label{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.25em;color:var(--accent);margin-bottom:1rem;display:inline-flex;align-items:center;gap:0.75rem}
+.section-label::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent)}
+.section-headline{font-family:var(--font-heading);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem;letter-spacing:-0.02em}
+.section-headline .accent,.close-headline .accent{color:var(--accent)}
+.drama{font-family:var(--font-serif);font-style:italic;color:var(--accent);font-size:clamp(1.1rem,2vw,1.4rem);margin-top:2.5rem;opacity:0.85}
+
+/* ===== CARDS (GLASS MORPHISM) ===== */
+.card{background:var(--surface);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow-card);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s cubic-bezier(0.16,1,0.3,1),border-color 0.4s ease}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--border-glow)}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2.5rem;border-radius:100px;font-family:var(--font-heading);font-weight:600;font-size:1rem;cursor:pointer;border:none;transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-glow));color:#fff;box-shadow:0 4px 24px rgba(192,105,221,0.3),inset 0 1px 0 rgba(255,255,255,0.1)}
+.btn-primary:hover{transform:scale(1.04) translateY(-2px);box-shadow:0 8px 40px rgba(192,105,221,0.45),inset 0 1px 0 rgba(255,255,255,0.1)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--accent);transform:scale(1.03)}
+
+/* ===== PILL BADGES ===== */
+.pill{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem 1rem;border-radius:100px;font-size:0.75rem;font-family:var(--font-mono);background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--muted);backdrop-filter:blur(8px)}
+.pill-accent{background:rgba(192,105,221,0.08);border-color:rgba(192,105,221,0.2);color:var(--accent)}
+.pill-success{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.2);color:var(--success)}
+.pill-danger{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2);color:var(--danger)}
+.pill-warning{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:var(--warning)}
+
+/* ===== BROWSER FRAME ===== */
+.browser-frame{background:rgba(17,17,17,0.8);border-radius:1rem;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-card)}
+.browser-bar{display:flex;align-items:center;gap:0.5rem;padding:0.75rem 1rem;background:rgba(0,0,0,0.5);border-bottom:1px solid var(--border)}
+.browser-dot{width:10px;height:10px;border-radius:50%}
+.browser-dot.red{background:#EF4444}.browser-dot.amber{background:#F59E0B}.browser-dot.green{background:#22C55E}
+.browser-url{font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);margin-left:0.5rem;background:rgba(255,255,255,0.04);padding:0.25rem 0.75rem;border-radius:4px;flex:1}
+.browser-content{padding:0;min-height:200px;position:relative}
+.browser-content img{width:100%;display:block}
+
+/* ===== PHONE FRAME ===== */
+.phone-frame{background:rgba(17,17,17,0.8);border-radius:2.5rem;padding:8px;border:2px solid rgba(255,255,255,0.08);display:inline-block;max-width:320px;box-shadow:var(--shadow-card)}
+.phone-screen{border-radius:2rem;overflow:hidden;background:var(--surface-solid)}
+.phone-screen img{width:100%;display:block}
+
+/* ===== HERO ===== */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;padding:2rem}
+#hero::before{content:none}
+#hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-gradient{position:absolute;border-radius:50%;filter:blur(140px);opacity:0.3;animation:float 15s ease-in-out infinite}
+.hero-gradient.g1{width:700px;height:700px;background:var(--accent);top:-250px;left:-150px;animation-delay:0s}
+.hero-gradient.g2{width:500px;height:500px;background:var(--accent-glow);bottom:-150px;right:-100px;animation-delay:4s}
+.hero-gradient.g3{width:400px;height:400px;background:#7C3AED;top:40%;left:50%;animation-delay:8s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-20px) scale(1.05)}50%{transform:translate(-20px,30px) scale(0.95)}75%{transform:translate(20px,20px) scale(1.02)}}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:80px 80px}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-eyebrow{font-family:var(--font-mono);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.35em;color:var(--muted);margin-bottom:2rem}
+.hero-company{font-family:var(--font-heading);font-size:clamp(3.5rem,12vw,10rem);font-weight:900;line-height:0.95;margin-bottom:1.5rem;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.5) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.04em}
+.hero-subline{font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:550px;margin:0 auto 3rem;line-height:1.8;font-weight:300}
+.hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:0.6rem;margin-bottom:3.5rem}
+.hero-meta{position:absolute;bottom:2.5rem;right:2.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--subtle);text-align:right;letter-spacing:0.05em}
+.scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--subtle);font-size:0.65rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.2em}
+.scroll-chevron{animation:bounce 2.5s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(10px);opacity:0.5}}
+
+/* ===== AUDIT ===== */
+.audit-layout{display:grid;grid-template-columns:1.5fr 1fr;gap:3rem;align-items:start}
+.audit-screenshot{position:relative}
+.audit-dot{position:absolute;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;font-family:var(--font-mono);cursor:pointer;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);z-index:2}
+.audit-dot:hover{transform:scale(1.4)}
+.audit-dot.warning{background:var(--warning);color:#000;box-shadow:0 0 12px rgba(245,158,11,0.3)}
+.audit-dot.danger{background:var(--danger);color:#fff;box-shadow:0 0 12px rgba(239,68,68,0.3)}
+.audit-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface-solid);border:1px solid var(--border);border-radius:0.75rem;padding:0.6rem 1rem;font-size:0.75rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:10;backdrop-filter:blur(12px)}
+.audit-dot:hover .audit-tooltip{opacity:1}
+.audit-score-ring{width:160px;height:160px;margin:0 auto 1.5rem}
+.audit-score-ring svg{width:100%;height:100%}
+.audit-score-number{font-family:var(--font-mono);font-size:2.5rem;font-weight:700}
+.audit-findings{list-style:none;display:flex;flex-direction:column;gap:0.75rem}
+.audit-finding{display:flex;align-items:flex-start;gap:0.75rem;font-size:0.9rem;color:var(--muted)}
+.audit-finding-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;font-family:var(--font-mono);flex-shrink:0}
+.audit-finding-num.danger{background:var(--danger);color:#fff;box-shadow:0 0 8px rgba(239,68,68,0.2)}
+.audit-finding-num.warning{background:var(--warning);color:#000;box-shadow:0 0 8px rgba(245,158,11,0.2)}
+
+/* ===== PROBLEMS ===== */
+.problems-stack{display:flex;flex-direction:column;gap:2.5rem;max-width:900px}
+.problem-card{padding:0;background:none;backdrop-filter:none;border:none;box-shadow:none;position:relative;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start}
+.problem-card:hover{transform:none;box-shadow:none;border-color:transparent}
+.problem-num{font-family:var(--font-mono);font-size:clamp(3rem,5vw,4.5rem);font-weight:700;line-height:1;color:rgba(255,255,255,0.04);position:relative;min-width:60px;text-align:right}
+.problem-card.danger .problem-num::after{content:'';position:absolute;top:50%;right:-1rem;width:6px;height:6px;border-radius:50%;background:var(--danger);box-shadow:0 0 12px rgba(239,68,68,0.4);transform:translateY(-50%)}
+.problem-card.warning .problem-num::after{content:'';position:absolute;top:50%;right:-1rem;width:6px;height:6px;border-radius:50%;background:var(--warning);box-shadow:0 0 12px rgba(245,158,11,0.4);transform:translateY(-50%)}
+.problem-body{padding:0.5rem 0}
+.problem-statement{font-family:var(--font-heading);font-size:clamp(1.3rem,2.5vw,1.75rem);font-weight:600;margin-bottom:0.75rem;line-height:1.35;letter-spacing:-0.01em}
+.problem-context{color:var(--muted);margin-bottom:1rem;font-size:0.9rem;line-height:1.7}
+.problem-data{font-family:var(--font-mono);font-size:0.8rem;color:var(--warning);display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;border-radius:100px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.1)}
+
+/* ===== COMPETITORS ===== */
+.comp-table-wrap{overflow-x:auto;margin:2rem 0}
+.comp-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);backdrop-filter:blur(20px);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+.comp-table th,.comp-table td{padding:1rem 1.25rem;text-align:center;border-bottom:1px solid var(--border);font-size:0.9rem}
+.comp-table th{font-family:var(--font-heading);font-weight:600;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);background:rgba(0,0,0,0.4)}
+.comp-table th:first-child,.comp-table td:first-child{text-align:left}
+.comp-table .col-tge{background:rgba(192,105,221,0.04)}
+.comp-table th.col-tge{color:var(--accent)}
+.check{color:var(--success);font-weight:700;font-size:1.2rem}
+.cross{color:rgba(239,68,68,0.5);font-weight:700;font-size:1.2rem}
+.gap-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2.5rem}
+.gap-card{padding:2rem}
+.gap-number{font-family:var(--font-mono);font-size:2rem;font-weight:700;margin-bottom:0.5rem;background:linear-gradient(135deg,var(--danger),#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gap-title{font-family:var(--font-heading);font-weight:600;font-size:1.1rem;margin-bottom:0.5rem}
+.gap-desc{color:var(--muted);font-size:0.9rem}
+
+/* ===== ROADMAP ===== */
+.timeline-line{display:flex;justify-content:space-between;align-items:center;position:relative;margin:3rem 0 2rem;padding:0 2rem}
+.timeline-line::before{content:'';position:absolute;top:50%;left:2rem;right:2rem;height:2px;background:linear-gradient(90deg,var(--accent),var(--success),var(--warning),#8B5CF6);transform:translateY(-50%);opacity:0.3}
+.timeline-dot{width:16px;height:16px;border-radius:50%;position:relative;z-index:2;border:2px solid var(--bg)}
+.timeline-dot.w1{background:var(--accent);box-shadow:0 0 12px rgba(192,105,221,0.4)}
+.timeline-dot.w2{background:var(--success);box-shadow:0 0 12px rgba(34,197,94,0.4)}
+.timeline-dot.w3{background:var(--warning);box-shadow:0 0 12px rgba(245,158,11,0.4)}
+.timeline-dot.w4{background:#8B5CF6;box-shadow:0 0 12px rgba(139,92,246,0.4)}
+.roadmap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.week-card{padding:1.5rem}
+.week-dot{width:10px;height:10px;border-radius:50%;margin-bottom:0.75rem}
+.week-title{font-family:var(--font-heading);font-weight:600;font-size:1rem;margin-bottom:1rem}
+.week-items{list-style:none;display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem}
+.week-items li{font-size:0.8rem;color:var(--muted)}
+.week-items li::before{content:'+ ';color:var(--accent);font-weight:600}
+.week-count{font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);background:rgba(192,105,221,0.08);padding:0.25rem 0.75rem;border-radius:100px;display:inline-block}
+.roadmap-total{text-align:center;margin-top:4rem}
+.roadmap-total .big-number{font-family:var(--font-mono);font-size:clamp(4rem,8vw,7rem);font-weight:700;line-height:1}
+.roadmap-total p{color:var(--muted);font-size:1rem;margin-top:0.5rem}
+
+/* ===== STRATEGY ===== */
+.strategy-cards{display:flex;flex-direction:column;gap:2rem}
+.strategy-card{position:relative;overflow:hidden;padding:3rem}
+.strategy-bg-num{position:absolute;top:-30px;right:20px;font-family:var(--font-heading);font-size:14rem;font-weight:900;background:linear-gradient(180deg,rgba(255,255,255,0.03),transparent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;pointer-events:none}
+.strategy-title{font-family:var(--font-heading);font-size:1.5rem;font-weight:700;margin-bottom:1.25rem;position:relative}
+.strategy-bullets{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem;position:relative}
+.strategy-bullets li{font-size:0.95rem;color:var(--muted)}
+.strategy-bullets li::before{content:'+ ';color:var(--accent);font-weight:600}
+.strategy-projected{display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1.25rem;border-radius:100px;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);color:var(--success);font-family:var(--font-mono);font-size:0.85rem;position:relative}
+
+/* ===== PROOF WALL ===== */
+.bento-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;gap:1rem}
+.bento-card{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:1.5rem}
+.bento-card.span-2x2{grid-column:span 2;grid-row:span 2}
+.bento-card.span-2c{grid-column:span 2}
+.bento-value{font-family:var(--font-mono);font-weight:700;margin-bottom:0.4rem}
+.bento-card.span-2x2 .bento-value{font-size:clamp(2.5rem,5vw,4rem)}
+.bento-card:not(.span-2x2) .bento-value{font-size:clamp(1.5rem,3vw,2.2rem)}
+.bento-label{font-size:0.75rem;color:var(--muted);letter-spacing:0.03em}
+
+/* ===== CASE STUDIES ===== */
+.case-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:center}
+.case-layout.reverse{grid-template-columns:1.2fr 1fr}
+.case-hero-metric{font-family:var(--font-mono);font-size:clamp(3rem,8vw,6rem);font-weight:700;line-height:1}
+.case-hero-label{font-size:1rem;color:var(--muted);margin-bottom:1.5rem}
+.case-sub-metrics{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem}
+.case-story{display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem}
+.case-story p{color:var(--muted);font-size:0.95rem;line-height:1.7}
+.case-before-after{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.case-ba-card{padding:1.25rem;border-radius:1.25rem;font-size:0.85rem;backdrop-filter:blur(8px)}
+.case-ba-card.before{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.12);color:rgba(239,68,68,0.9)}
+.case-ba-card.after{background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.12);color:rgba(34,197,94,0.9)}
+.case-ba-label{font-family:var(--font-mono);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.4rem;opacity:0.7}
+.media-strip{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:2rem}
+
+/* ===== DASHBOARDS ===== */
+.dashboard-stack{position:relative;max-width:900px;margin:3rem auto 0;perspective:1000px;display:flex;flex-direction:column;gap:2rem}
+.dashboard-frame{position:relative;transition:transform 0.5s cubic-bezier(0.16,1,0.3,1)}
+.dashboard-frame:nth-child(1){transform:rotate(-0.5deg);z-index:3}
+.dashboard-frame:nth-child(2){transform:rotate(0.3deg);z-index:2;opacity:0.85}
+.dashboard-frame:nth-child(3){transform:rotate(-0.3deg);z-index:1;opacity:0.7}
+.dashboard-placeholder{background:var(--surface-alt);min-height:300px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--font-mono);font-size:0.85rem}
+
+/* ===== SYSTEM TABS ===== */
+.system-layout{display:grid;grid-template-columns:280px 1fr;gap:2rem;margin-top:2rem}
+.system-tabs{display:flex;flex-direction:column;gap:0.25rem}
+.system-tab{padding:1rem 1.25rem;border-radius:1rem;cursor:pointer;font-family:var(--font-heading);font-weight:500;color:var(--muted);transition:all 0.3s cubic-bezier(0.16,1,0.3,1);border-left:3px solid transparent;font-size:0.95rem}
+.system-tab:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.system-tab.active{color:var(--text);background:var(--surface);border-left-color:var(--accent);box-shadow:var(--glow-sm)}
+.system-content{padding:2rem}
+.system-content-title{font-family:var(--font-heading);font-size:1.3rem;font-weight:600;margin-bottom:0.75rem}
+.system-content-desc{color:var(--muted);margin-bottom:1.5rem;font-size:0.95rem}
+.automation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:3rem}
+.auto-card{padding:1.5rem}
+.auto-card-title{font-family:var(--font-heading);font-weight:600;margin-bottom:0.5rem}
+.auto-card-desc{font-size:0.85rem;color:var(--muted);margin-bottom:1rem}
+.auto-stat{font-family:var(--font-mono);font-size:0.7rem;color:var(--success);background:rgba(34,197,94,0.08);padding:0.25rem 0.75rem;border-radius:100px;display:inline-block}
+
+/* ===== CAMPAIGN ARCHITECTURE (PREMIUM) ===== */
+.campaign-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin:3rem 0;position:relative}
+.campaign-flow::before{content:'';position:absolute;top:24px;left:15%;right:15%;height:1px;background:linear-gradient(90deg,var(--accent),var(--accent-glow),#8B5CF6);opacity:0.2;z-index:0}
+.campaign-step{text-align:center;position:relative;z-index:1}
+.campaign-step-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.85rem;font-weight:700;margin:0 auto 1.25rem;border:1px solid var(--border-glow);backdrop-filter:blur(12px);background:rgba(192,105,221,0.06)}
+.campaign-step:nth-child(1) .campaign-step-num{color:var(--accent);box-shadow:0 0 20px rgba(192,105,221,0.15)}
+.campaign-step:nth-child(2) .campaign-step-num{color:var(--warning);border-color:rgba(245,158,11,0.2);background:rgba(245,158,11,0.06);box-shadow:0 0 20px rgba(245,158,11,0.1)}
+.campaign-step:nth-child(3) .campaign-step-num{color:var(--success);border-color:rgba(34,197,94,0.2);background:rgba(34,197,94,0.06);box-shadow:0 0 20px rgba(34,197,94,0.1)}
+.campaign-step-title{font-family:var(--font-heading);font-weight:600;font-size:1.1rem;margin-bottom:0.5rem}
+.campaign-step-desc{font-size:0.85rem;color:var(--muted);line-height:1.6;max-width:280px;margin:0 auto}
+.channel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:3rem}
+.channel-card{padding:1.25rem;text-align:center}
+.channel-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;border:1px solid var(--border)}
+.channel-icon i{width:18px;height:18px}
+.channel-name{font-family:var(--font-heading);font-weight:600;font-size:0.9rem;margin-bottom:0.25rem}
+.channel-role{font-size:0.75rem;color:var(--muted)}
+
+/* ===== DELIVERABLES (PREMIUM) ===== */
+.deliverables-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.deliverable-card{padding:2rem;position:relative;overflow:hidden}
+.deliverable-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent);opacity:0;transition:opacity 0.4s}
+.deliverable-card:hover::before{opacity:1}
+.deliverable-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;border:1px solid var(--border)}
+.deliverable-icon i{width:20px;height:20px}
+.deliverable-icon.reel{background:rgba(224,64,251,0.06);border-color:rgba(224,64,251,0.15);color:#E040FB}
+.deliverable-icon.ad{background:rgba(255,109,0,0.06);border-color:rgba(255,109,0,0.15);color:#FF6D00}
+.deliverable-icon.email{background:rgba(0,188,212,0.06);border-color:rgba(0,188,212,0.15);color:#00BCD4}
+.deliverable-icon.landing{background:rgba(192,105,221,0.06);border-color:rgba(192,105,221,0.15);color:var(--accent)}
+.deliverable-icon.whatsapp{background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.15);color:var(--success)}
+.deliverable-icon.calendar{background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.15);color:var(--warning)}
+.deliverable-platform{font-family:var(--font-mono);font-size:0.65rem;color:var(--subtle);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.5rem}
+.deliverable-title{font-family:var(--font-heading);font-weight:600;margin-bottom:0.5rem;font-size:1rem}
+.deliverable-desc{font-size:0.85rem;color:var(--muted);line-height:1.6}
+
+/* ===== FEATURES LIST ===== */
+.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:2rem}
+.feature-col-title{font-family:var(--font-heading);font-weight:600;font-size:0.95rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem}
+.feature-col-title i{width:16px;height:16px;color:var(--accent)}
+.feature-item{font-size:0.8rem;color:var(--muted);padding:0.35rem 0;line-height:1.5}
+.feature-item::before{content:'+ ';color:var(--accent);font-weight:600;font-family:var(--font-mono)}
+
+/* ===== PRICING ===== */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:900px;margin:0 auto}
+.pricing-card{padding:2.5rem;position:relative;overflow:hidden}
+.pricing-card.recommended{border-color:rgba(192,105,221,0.25);box-shadow:var(--glow-lg)}
+.pricing-card.recommended::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-bright))}
+.pricing-badge{position:absolute;top:1.5rem;right:1.5rem;font-family:var(--font-mono);font-size:0.65rem;background:linear-gradient(135deg,var(--accent),var(--accent-glow));color:#fff;padding:0.3rem 0.75rem;border-radius:100px;display:flex;align-items:center;gap:0.3rem;box-shadow:0 4px 12px rgba(192,105,221,0.3)}
+.pricing-name{font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--muted);margin-bottom:0.5rem}
+.pricing-price{font-family:var(--font-heading);font-size:clamp(2.5rem,5vw,3.5rem);font-weight:800;margin-bottom:0.25rem}
+.pricing-period{font-size:0.8rem;color:var(--subtle);margin-bottom:2rem}
+.pricing-features{list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2rem}
+.pricing-features li{font-size:0.85rem;color:var(--muted);display:flex;align-items:center;gap:0.6rem}
+.pricing-features li::before{content:'';display:inline-block;width:5px;height:5px;background:var(--success);border-radius:50%;flex-shrink:0;box-shadow:0 0 6px rgba(34,197,94,0.4)}
+.roi-strip{max-width:900px;margin:3rem auto 0;padding:2.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center}
+.roi-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);font-family:var(--font-mono);margin-bottom:0.5rem}
+.roi-value{font-family:var(--font-mono);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:700}
+.roi-value.green{color:var(--success)}
+.roi-value.accent{color:var(--accent)}
+
+/* ===== CLOSE ===== */
+#close-section{text-align:center;padding:10rem 2rem}
+#close-section::before{content:none}
+.close-headline{font-family:var(--font-heading);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-bottom:1rem;letter-spacing:-0.02em}
+.close-subline{color:var(--muted);font-size:1.15rem;margin-bottom:3rem;max-width:600px;margin-left:auto;margin-right:auto}
+
+
+
+
+.contact-strip{display:flex;justify-content:center;gap:2rem;margin-top:3rem;flex-wrap:wrap}
+.contact-item{font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);display:flex;align-items:center;gap:0.4rem}
+.contact-item i{width:14px;height:14px;opacity:0.5}
+.footer{display:flex;justify-content:center;align-items:center;gap:0.75rem;margin-top:4rem;padding:2rem;font-size:0.7rem;color:var(--subtle)}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,0.4)}50%{opacity:0.8;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .audit-layout{grid-template-columns:1fr}
+  .roadmap-grid{grid-template-columns:repeat(2,1fr)}
+  .bento-grid{grid-template-columns:repeat(2,1fr)}
+  .bento-card.span-2x2{grid-column:span 2;grid-row:span 2}
+  .case-layout,.case-layout.reverse{grid-template-columns:1fr}
+  .system-layout{grid-template-columns:1fr}
+  .system-tabs{flex-direction:row;overflow-x:auto;padding-bottom:0.5rem}
+  .system-tab{border-left:none;border-bottom:3px solid transparent;white-space:nowrap}
+  .system-tab.active{border-bottom-color:var(--accent);border-left-color:transparent}
+  .automation-grid{grid-template-columns:repeat(2,1fr)}
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .deliverables-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-grid{grid-template-columns:1fr;max-width:500px}
+  .campaign-flow{grid-template-columns:1fr;gap:1.5rem}
+  .campaign-flow::before{display:none}
+  .channel-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .container{padding:0 1.25rem}
+  .section{padding:6rem 0}
+  .roadmap-grid{grid-template-columns:1fr}
+  .bento-grid{grid-template-columns:1fr;grid-auto-rows:140px}
+  .bento-card.span-2x2,.bento-card.span-2c{grid-column:span 1;grid-row:span 1}
+  .deliverables-grid{grid-template-columns:1fr}
+  .features-grid{grid-template-columns:1fr}
+  .automation-grid{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column;align-items:center}
+  .comp-table{font-size:0.75rem}
+  .comp-table th,.comp-table td{padding:0.6rem 0.5rem}
+  .roi-strip{grid-template-columns:1fr;gap:1.5rem}
+  .case-before-after{grid-template-columns:1fr}
+  .contact-strip{flex-direction:column;align-items:center;gap:1rem}
+  .dashboard-frame:nth-child(2){transform:rotate(0.3deg)}
+  .dashboard-frame:nth-child(3){transform:rotate(-0.3deg)}
+  .timeline-line{display:none}
+  .channel-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div id="scroll-progress"></div>
+
+<!-- Noise Overlay -->
+<svg id="noise-overlay" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#noise)" opacity="1"/></svg>
+
+<!-- App Root -->
+<div id="app"></div>
+
+<script>
+// __CONFIG_START__
+const CONFIG = {
+  "meta": {
+    "generated_date": "March 26, 2026",
+    "style_variation": "dark-standard"
+  },
+  "prospect": {
+    "company_name": "Potts Law Firm",
+    "contact_name": "Derek",
+    "industry": "Personal Injury Law",
+    "website": "pottslawfirm.com",
+    "hero_subline": "Potts Law Firm fights for victims of trucking, oilfield, and catastrophic injury — we build the full-funnel ad machine that turns ad spend into signed high-value cases.",
+    "website_audit": {
+      "score": 38,
+      "findings": [
+        {
+          "text": "No practice-area-specific landing pages — trucking & oilfield cases share generic copy",
+          "severity": "danger",
+          "x": 55,
+          "y": 22
+        },
+        {
+          "text": "No live chat or intake form above the fold — visitors leave before converting",
+          "severity": "danger",
+          "x": 20,
+          "y": 40
+        },
+        {
+          "text": "Page load speed exceeds 4.8s on mobile — critical for paid traffic quality scores",
+          "severity": "danger",
+          "x": 75,
+          "y": 58
+        },
+        {
+          "text": "Missing structured schema markup for local SEO and attorney reviews",
+          "severity": "warning",
+          "x": 35,
+          "y": 68
+        },
+        {
+          "text": "No trust signals (verdicts, settlements, case counts) visible on homepage hero",
+          "severity": "warning",
+          "x": 62,
+          "y": 35
+        }
+      ]
+    },
+    "problems": [
+      {
+        "statement": "Your Google Ads budget is bleeding on broad, unqualified clicks with no practice-area separation",
+        "context": "Personal injury keywords average $150–$400 per click on Google Search — without tightly themed ad groups for trucking, oilfield, and catastrophic injury, you're paying premium CPCs for low-intent traffic",
+        "data_point": "PI firms with segmented campaigns see 3.2x higher lead-to-case conversion rates"
+      },
+      {
+        "statement": "You're invisible on Meta where injury victims research their options after the accident",
+        "context": "68% of personal injury claimants use social media within 72 hours of an accident to research law firms — most PI firms run zero retargeting, leaving warm leads to sign with competitors",
+        "data_point": "Law firms using Meta retargeting reduce cost-per-signed-case by up to 47%"
+      },
+      {
+        "statement": "Without dedicated landing pages per practice area, your paid traffic converts at a fraction of its potential",
+        "context": "Generic law firm homepages convert paid visitors at 1–2%; purpose-built landing pages for trucking accident victims or oilfield injury claimants consistently hit 8–14% conversion rates",
+        "data_point": "A single additional signed trucking case can represent $50,000–$500,000 in firm revenue"
+      }
+    ],
+    "competitors": {
+      "names": [
+        "Morgan & Morgan",
+        "The Barnes Firm"
+      ],
+      "comparison": [
+        {
+          "feature": "Paid Ads (Meta + Google)",
+          "prospect": false,
+          "comp_a": true,
+          "comp_b": true
+        },
+        {
+          "feature": "Practice-Area Landing Pages",
+          "prospect": false,
+          "comp_a": true,
+          "comp_b": true
+        },
+        {
+          "feature": "24/7 Intake Chatbot / AI",
+          "prospect": false,
+          "comp_a": true,
+          "comp_b": false
+        },
+        {
+          "feature": "Retargeting Campaigns",
+          "prospect": false,
+          "comp_a": true,
+          "comp_b": true
+        },
+        {
+          "feature": "Email + SMS Lead Nurture",
+          "prospect": false,
+          "comp_a": false,
+          "comp_b": false
+        },
+        {
+          "feature": "Verdict & Settlement Social Proof Ads",
+          "prospect": false,
+          "comp_a": true,
+          "comp_b": false
+        },
+        {
+          "feature": "Weekly Performance Reporting",
+          "prospect": false,
+          "comp_a": false,
+          "comp_b": false
+        }
+      ],
+      "gaps": [
+        {
+          "title": "No Emotional Storytelling on Social",
+          "description": "Both Morgan & Morgan and The Barnes Firm run volume-based ad creative with minimal emotional narrative — there's a clear gap for a firm that leads with victim stories, outcomes, and community trust to dominate the social feed"
+        },
+        {
+          "title": "Slow Lead Response Time",
+          "description": "Large PI firms are notorious for slow intake follow-up — automated SMS and email sequences triggered within 60 seconds of a form fill can capture cases before competitors even call back"
+        },
+        {
+          "title": "Generic Creative, No Niche Authority",
+          "description": "Competing firms don't run targeted creative specifically for trucking accident victims or oilfield workers — owning that niche visually and in ad copy creates a dominant brand position in high-value case categories"
+        }
+      ]
+    },
+    "roadmap": {
+      "week1": {
+        "title": "Foundation",
+        "items": [
+          "Audit existing Google Ads account structure and identify wasted spend",
+          "Set up conversion tracking for calls, form fills, and case intake submissions",
+          "Install Meta Pixel with custom events for PI intake funnel stages",
+          "Map out keyword strategy by practice area: trucking, oilfield, catastrophic injury, general PI",
+          "Build dedicated landing page wireframes for top 3 practice areas",
+          "Conduct competitor ad library audit (Morgan & Morgan, Barnes Firm, local TX competitors)",
+          "Establish CRM intake pipeline with lead stage tracking",
+          "Define KPIs and reporting dashboard structure with Derek"
+        ],
+        "count": 8
+      },
+      "week2": {
+        "title": "Launch",
+        "items": [
+          "Launch Google Search campaigns: trucking accident attorney, oilfield injury lawyer, catastrophic injury attorney",
+          "Build tightly themed ad groups with 3 ad variations each (RSAs)",
+          "Deploy landing page v1 for trucking accident practice area with click-to-call + intake form",
+          "Deploy landing page v1 for oilfield injury practice area",
+          "Launch Meta awareness campaign targeting adults 25–55 in Potts Law Firm service areas",
+          "Create and launch Meta lead gen ads with instant forms for PI inquiries",
+          "Set up automated SMS follow-up sequence triggered within 60 seconds of form fill",
+          "Configure Google call extensions with call recording for intake quality review",
+          "Launch retargeting campaign for website visitors who did not convert",
+          "Deploy email welcome + intake nurture sequence (3-email flow)",
+          "Set up Google Display remarketing with verdict/settlement social proof creative",
+          "Schedule first weekly strategy call with Derek and marketing team"
+        ],
+        "count": 12
+      },
+      "week3": {
+        "title": "Optimize",
+        "items": [
+          "Review Week 2 data: pause underperforming keywords and reallocate budget",
+          "A/B test landing page headlines — urgency vs. empathy framing",
+          "Analyze call recordings to identify highest-quality lead sources",
+          "Expand negative keyword list to eliminate non-qualifying traffic (workers comp, insurance, DIY)",
+          "Optimize Meta audiences based on lead quality feedback from intake team",
+          "Launch catastrophic injury practice area landing page and corresponding ad group",
+          "Add Google Local Services Ads (LSA) for verified attorney badge placement",
+          "Introduce video ad creative on Meta — client testimonial or attorney authority piece",
+          "Review and tighten bidding strategy based on conversion data",
+          "Deliver Week 3 performance report with case-signed attribution analysis"
+        ],
+        "count": 10
+      },
+      "week4": {
+        "title": "Scale",
+        "items": [
+          "Scale budget incrementally into highest-performing campaigns and practice areas",
+          "Launch LinkedIn Ads targeting HR directors and safety managers (oilfield B2B referral angle)",
+          "Build lookalike audiences from CRM data of past signed clients",
+          "Present Month 1 results to Derek: cost-per-lead, cost-per-signed-case, ROAS by practice area"
+        ],
+        "count": 6
+      }
+    },
+    "strategies": [
+      {
+        "number": "01",
+        "title": "Practice-Area Google Search Dominance",
+        "bullets": [
+          "Separate campaigns for trucking accident, oilfield injury, and catastrophic injury — each with its own budget, keywords, and landing page to maximize Quality Score and lower CPC",
+          "Aggressive negative keyword sculpting to block non-PI, workers comp, and insurance traffic from consuming budget",
+          "Call-only ads running during business hours + click-to-call landing pages optimized for mobile — where 74% of PI searches occur",
+          "Google Local Services Ads running in parallel for the verified Google Screened attorney badge, driving trust at the top of SERP"
+        ],
+        "projected_result": "Target cost-per-qualified-lead of $180–$320 and 3–6 signed cases per month from search alone"
+      },
+      {
+        "number": "02",
+        "title": "Meta Full-Funnel Lead Generation & Retargeting",
+        "bullets": [
+          "Top-of-funnel awareness ads featuring real case outcomes, client testimonials, and Derek's authority as National Managing Partner — building brand trust before the accident happens",
+          "Mid-funnel lead gen campaigns with instant forms targeting adults in high-risk occupations (trucking, oil & gas, construction) across Texas and Potts Law Firm's national footprint",
+          "Bottom-of-funnel retargeting ads to website visitors and video viewers — urgency-driven creative with specific practice area messaging and free consultation CTA",
+          "Automated 60-second SMS + email follow-up sequence triggered the moment a Meta lead form is submitted — capturing leads before they contact a competing firm"
+        ],
+        "projected_result": "25–40 additional qualified PI leads per month from Meta with cost-per-lead under $200"
+      },
+      {
+        "number": "03",
+        "title": "High-Converting Practice-Area Landing Pages + Intake Optimization",
+        "bullets": [
+          "Dedicated landing pages for trucking accident, oilfield injury, and catastrophic injury — each with above-the-fold intake form, click-to-call button, and practice-specific social proof (verdicts, settlements, case counts)",
+          "Mobile-first page design built for sub-2-second load speed to improve Google Ads Quality Score and reduce cost-per-click by 20–35%",
+          "Trust architecture: attorney bar certifications, Google reviews integration, case result highlights, and a clear 'No Fee Unless We Win' guarantee prominent on every page",
+          "Heatmap and session recording analysis after launch to continuously optimize form completion rates and reduce bounce on paid traffic"
+        ],
+        "projected_result": "Increase paid traffic conversion rate from ~1–2% to 8–12%, directly reducing cost-per-signed-case"
+      }
+    ],
+    "platforms": [
+      "meta",
+      "google",
+      "linkedin",
+      "email"
+    ],
+    "mock_deliverables": [
+      {
+        "type": "reel",
+        "title": "Instagram Reel Concept",
+        "description": "'What to do in the first 24 hours after a trucking accident' — Derek speaks directly to camera, authoritative and empathetic, ending with a direct CTA to call Potts Law Firm for a free case review",
+        "platform": "Instagram"
+      },
+      {
+        "type": "ad",
+        "title": "Meta Ad Creative",
+        "description": "Split-test static ad: Version A — bold verdict amount with 'Potts Law Firm secured $X for an oilfield accident victim in Texas. You may be entitled to more than you think.' Version B — victim empathy angle with free consultation CTA",
+        "platform": "Facebook / Instagram"
+      },
+      {
+        "type": "email",
+        "title": "Email Nurture Sequence",
+        "description": "3-email post-inquiry sequence: Email 1 (instant) — 'Your case review request is confirmed' + what to expect. Email 2 (Day 2) — 'Here's what makes a strong trucking/oilfield injury case.' Email 3 (Day 5) — 'Don't let the clock run out' (statute of limitations urgency)",
+        "platform": "Email"
+      },
+      {
+        "type": "landing",
+        "title": "Trucking Accident Landing Page",
+        "description": "Dedicated page for 'Trucking Accident Attorney' Google Ads traffic — above-fold intake form, click-to-call, Derek's photo + credentials, settlement highlights, Google reviews feed, and 'No Fee Unless We Win' guarantee",
+        "platform": "Web"
+      },
+      {
+        "type": "whatsapp",
+        "title": "WhatsApp Intake Automation",
+        "description": "Automated WhatsApp follow-up triggered when a lead doesn't answer the intake call — sends a bilingual (English/Spanish) message introducing Potts Law Firm and offering to connect with a case evaluator immediately",
+        "platform": "WhatsApp"
+      },
+      {
+        "type": "calendar",
+        "title": "30-Day Social Content Calendar",
+        "description": "Monthly content plan covering: weekly attorney tip reels, bi-weekly case result spotlights (anonymized), client testimonial posts, oilfield/trucking safety awareness content, and firm culture posts to humanize the Potts brand",
+        "platform": "All Platforms"
+      }
+    ],
+    "pricing": {
+      "recommended": "scale",
+      "growth": {
+        "name": "Growth Plan",
+        "price": "$3,500",
+        "period": "per month",
+        "features": [
+          "Google Search Ads management (2 practice areas)",
+          "Meta Ads management (awareness + lead gen)",
+          "2 dedicated practice-area landing pages",
+          "Conversion tracking + call tracking setup",
+          "Automated SMS + email intake follow-up sequence",
+          "Retargeting campaigns (Google Display + Meta)",
+          "Weekly performance reports",
+          "Weekly 30-min strategy call with Derek"
+        ]
+      },
+      "scale": {
+        "name": "Scale Plan",
+        "price": "$4,800",
+        "period": "per month",
+        "features": [
+          "Everything in Growth Plan",
+          "Google Search Ads (all practice areas incl. oilfield + catastrophic injury)",
+          "Google Local Services Ads (LSA) setup + management",
+          "LinkedIn Ads for oilfield B2B referral targeting",
+          "Unlimited practice-area landing pages",
+          "Full intake CRM setup + pipeline automation",
+          "Video ad creative production (2 reels/month)",
+          "Monthly competitive intelligence report",
+          "Advanced attribution dashboard (cost-per-signed-case tracking)",
+          "Priority Slack access + monthly executive strategy review with Derek"
+        ]
+      }
+    },
+    "roi_projection": {
+      "leads_per_month": 45,
+      "close_rate": "8%",
+      "projected_monthly_revenue": "$144,000",
+      "investment": "$4,800",
+      "roi_multiple": "30.0x"
+    }
+  },
+  "static": {
+    "proof_metrics": [
+      {
+        "value": "20M+",
+        "label": "Impressions Generated"
+      },
+      {
+        "value": "11.58x",
+        "label": "Average Client Growth"
+      },
+      {
+        "value": "20x",
+        "label": "Follower to Customer"
+      },
+      {
+        "value": "10.8K",
+        "label": "Followers in 6 Months"
+      },
+      {
+        "value": "67%",
+        "label": "CTR on Marketing Assets"
+      },
+      {
+        "value": "98%",
+        "label": "Email Open Rate"
+      },
+      {
+        "value": "5 min",
+        "label": "Lead Response Time"
+      },
+      {
+        "value": "24/7",
+        "label": "System Uptime"
+      },
+      {
+        "value": "$0",
+        "label": "Cost Per Organic Lead"
+      },
+      {
+        "value": "78%",
+        "label": "Funnel Conversion Rate"
+      }
+    ],
+    "case_studies": {
+      "frenchify": {
+        "name": "Frenchify with Vyom",
+        "industry": "Education / Language Learning",
+        "hero_metric": "20x",
+        "hero_metric_label": "Growth",
+        "sub_metrics": [
+          "+10,800 followers",
+          "6 months",
+          "10K to 31K+"
+        ],
+        "story": [
+          "Vyom had a small YouTube channel teaching French. Good content, but zero system for growth.",
+          "TGE built a research-driven content engine: scripted reels based on trending search terms, strategic posting.",
+          "Result: 616K views on a single reel, 20x follower growth, and a follower-to-student pipeline."
+        ],
+        "before": "10K followers, sporadic posting, no conversion system",
+        "after": "31K+ followers, 616K view reels, student conversions",
+        "image": "/tge-proposals/assets/static/frenchify-instagram.jpeg"
+      },
+      "drsw": {
+        "name": "Dr. SW Clinics",
+        "industry": "Healthcare / Aesthetic Medicine",
+        "hero_metric": "20M+",
+        "hero_metric_label": "Impressions",
+        "sub_metrics": [
+          "11.58x growth",
+          "981K followers",
+          "Harley Street, London"
+        ],
+        "story": [
+          "Dr. Sherif Wakil is one of Europe's leading cosmetic practitioners. Strong reputation, limited digital growth.",
+          "TGE's approach: 'Less Is More.' Premium content matching brand positioning. Quality over quantity.",
+          "Result: 20M+ impressions, verified, packed booking calendar. As seen in Daily Mail, Sky, The Sun."
+        ],
+        "before": "Strong reputation, limited digital presence",
+        "after": "20M+ impressions, verified, packed bookings",
+        "image": "/tge-proposals/assets/static/drswclinics-instagram.jpeg",
+        "calendar_image": "/tge-proposals/assets/static/booking-calendar.png",
+        "media": [
+          "Daily Mail",
+          "Sky",
+          "The Sun",
+          "Tatler",
+          "Fabulous",
+          "Daily Express"
+        ]
+      }
+    },
+    "dashboard_images": [
+      "/tge-proposals/assets/static/meta-dashboard-1.png",
+      "/tge-proposals/assets/static/meta-dashboard-2.png",
+      "/tge-proposals/assets/static/meta-dashboard-3.png"
+    ],
+    "system_pillars": [
+      {
+        "title": "Content Generation",
+        "description": "AI-assisted + human scripting so you scale without frustration",
+        "image": "/tge-proposals/assets/static/ai-avatar-tool.png"
+      },
+      {
+        "title": "Social Media Management",
+        "description": "All platforms handled. Posting, engagement, community."
+      },
+      {
+        "title": "Paid Advertising",
+        "description": "Meta, Google, TikTok, LinkedIn. Scale and generate qualified leads.",
+        "image": "/tge-proposals/assets/static/meta-dashboard-1.png"
+      },
+      {
+        "title": "CRM Optimization",
+        "description": "Full infrastructure. Lead tracking, pipeline, automation.",
+        "image": "/tge-proposals/assets/static/booking-calendar.png"
+      },
+      {
+        "title": "Sales Optimization",
+        "description": "Voice AI agents + automation for 24/7 qualification."
+      },
+      {
+        "title": "Reporting & Audit",
+        "description": "Weekly reports. Monthly reviews. Complete transparency."
+      }
+    ],
+    "automation_stack": [
+      {
+        "title": "Voice AI Agent",
+        "description": "Calls every lead in 5 minutes. 24/7. No human needed.",
+        "stat": "5 min response"
+      },
+      {
+        "title": "Email Nurture",
+        "description": "30-day sequences. Trust from first click to contract.",
+        "stat": "98% open rate"
+      },
+      {
+        "title": "SMS",
+        "description": "98% open rate. Booking reminders, high-intent moments.",
+        "stat": "3x vs email"
+      },
+      {
+        "title": "WhatsApp",
+        "description": "3x higher response. Behavior-triggered, feels human.",
+        "stat": "89% read rate"
+      }
+    ],
+    "funnel_stages": [
+      {
+        "stage": "Awareness",
+        "description": "Organic content, industry insights, discovery ads"
+      },
+      {
+        "stage": "Consideration",
+        "description": "Retargeting, testimonials, case studies, education"
+      },
+      {
+        "stage": "Decision",
+        "description": "Urgency, limited offers, direct conversion CTAs"
+      }
+    ],
+    "channels": [
+      {
+        "name": "Meta Ads",
+        "role": "Primary acquisition",
+        "icon": "target"
+      },
+      {
+        "name": "Google Ads",
+        "role": "Intent capture",
+        "icon": "search"
+      },
+      {
+        "name": "LinkedIn",
+        "role": "B2B outreach",
+        "icon": "briefcase"
+      },
+      {
+        "name": "Email",
+        "role": "Nurture + convert",
+        "icon": "mail"
+      },
+      {
+        "name": "SMS",
+        "role": "High-intent moments",
+        "icon": "smartphone"
+      },
+      {
+        "name": "WhatsApp",
+        "role": "Behavior-triggered",
+        "icon": "message-circle"
+      },
+      {
+        "name": "SEO",
+        "role": "Organic compounding",
+        "icon": "trending-up"
+      },
+      {
+        "name": "YouTube",
+        "role": "Authority content",
+        "icon": "play-circle"
+      },
+      {
+        "name": "TikTok",
+        "role": "Discovery + reach",
+        "icon": "zap"
+      }
+    ],
+    "features_list": {
+      "content_creative": [
+        "10 reels/month (scripted, edited, posted)",
+        "15 static creatives/month",
+        "Content calendar with strategic posting",
+        "AI-powered ideas + trend tracking",
+        "Professional copywriting",
+        "Hashtag research + SEO"
+      ],
+      "paid_advertising": [
+        "Meta Ads management",
+        "Google Ads management",
+        "TikTok Ads management",
+        "LinkedIn Ads management",
+        "A/B testing on all campaigns",
+        "Retargeting + lookalike audiences",
+        "Weekly optimization cycles",
+        "Monthly spend recommendations"
+      ],
+      "automation_sales": [
+        "Voice AI Agent (24/7)",
+        "Email nurture sequences",
+        "SMS campaigns",
+        "WhatsApp automation",
+        "CRM setup + management",
+        "Lead scoring + routing",
+        "Appointment booking automation",
+        "Pipeline tracking + reporting"
+      ],
+      "strategy_reporting": [
+        "Weekly performance reports",
+        "Monthly strategy reviews",
+        "Competitor monitoring",
+        "SEO audits + recommendations",
+        "Conversion tracking setup",
+        "Custom analytics dashboard"
+      ]
+    },
+    "contact": {
+      "email": "info@thegrowthengine.net",
+      "phone": "+91 6397016179",
+      "website": "thegrowthengine.net"
+    }
+  }
+};
+// __CONFIG_END__
+
+/* ===== RENDER HELPERS ===== */
+const cn = CONFIG.prospect.company_name;
+const ico = (name) => `<i data-lucide="${name}"></i>`;
+
+function browserFrame(url, content) {
+  return `<div class="browser-frame"><div class="browser-bar"><span class="browser-dot red"></span><span class="browser-dot amber"></span><span class="browser-dot green"></span><span class="browser-url">${url}</span></div><div class="browser-content">${content}</div></div>`;
+}
+
+function phoneFrame(content) {
+  return `<div class="phone-frame"><div class="phone-screen">${content}</div></div>`;
+}
+
+/* ===== RENDER PAGE ===== */
+function renderPage() {
+  const p = CONFIG.prospect;
+  const s = CONFIG.static;
+  const totalDeliverables = p.roadmap.week1.count + p.roadmap.week2.count + p.roadmap.week3.count + p.roadmap.week4.count;
+  const scoreColor = p.website_audit.score <= 40 ? 'var(--danger)' : p.website_audit.score <= 70 ? 'var(--warning)' : 'var(--success)';
+
+  document.getElementById('app').innerHTML = `
+
+<!-- ===== 1. HERO ===== -->
+<section id="hero">
+  <div id="hero-bg">
+    <div class="hero-gradient g1"></div>
+    <div class="hero-gradient g2"></div>
+    <div class="hero-gradient g3"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="hero-content" data-anim="fade-up">
+    <div class="hero-eyebrow">A Growth Strategy Prepared Exclusively For</div>
+    <h1 class="hero-company">${cn}</h1>
+    <p class="hero-subline">${p.hero_subline}</p>
+    <div class="hero-stats">
+      <span class="pill">16 sections</span>
+      <span class="pill">3 case studies</span>
+      <span class="pill">30-day roadmap</span>
+      <span class="pill">Custom pricing</span>
+    </div>
+    <a href="#audit" class="btn btn-primary">See What We Built</a>
+  </div>
+  <div class="hero-meta">
+    Prepared by The Growth Engine<br>${CONFIG.meta.generated_date}
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-chevron">${ico('chevron-down')}</div>
+  </div>
+</section>
+
+<!-- ===== 2. WEBSITE AUDIT ===== -->
+<section id="audit" class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">We Looked At Your Website</span>
+    <h2 class="section-headline" data-anim="blur-in">Here's What We Found</h2>
+    <div class="audit-layout">
+      <div class="audit-screenshot" data-anim="fade-up">
+        ${browserFrame(p.website, `
+          <div style="position:relative;${p.website_screenshot ? '' : 'background:var(--surface-alt);min-height:350px;display:flex;align-items:center;justify-content:center;'}padding:0">
+            ${p.website_screenshot
+              ? `<img src="${p.website_screenshot}" alt="${p.website}" style="width:100%;display:block">`
+              : `<div style="min-height:350px;display:flex;align-items:center;justify-content:center;background:var(--surface-alt)"><span style="color:var(--subtle);font-family:var(--font-mono);font-size:0.85rem">Website Screenshot &mdash; ${p.website}</span></div>`
+            }
+            ${p.website_audit.findings.map((f, i) => `
+              <div class="audit-dot ${f.severity}" style="left:${f.x}%;top:${f.y}%">
+                ${i + 1}
+                <div class="audit-tooltip">${f.text}</div>
+              </div>
+            `).join('')}
+          </div>
+        `)}
+      </div>
+      <div data-anim="scale-in" data-delay="0.2">
+        <div class="audit-score-ring">
+          <svg viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="70" fill="none" stroke="var(--border)" stroke-width="8"/>
+            <circle cx="80" cy="80" r="70" fill="none" stroke="${scoreColor}" stroke-width="8"
+              stroke-dasharray="${2 * Math.PI * 70}"
+              stroke-dashoffset="${2 * Math.PI * 70 * (1 - p.website_audit.score / 100)}"
+              stroke-linecap="round" transform="rotate(-90 80 80)"
+              class="audit-ring-path"/>
+            <text x="80" y="80" text-anchor="middle" dominant-baseline="central"
+              fill="${scoreColor}" class="audit-score-number" style="font-family:var(--font-mono);font-size:2.5rem;font-weight:700">${p.website_audit.score}</text>
+            <text x="80" y="105" text-anchor="middle" fill="var(--muted)" style="font-size:0.7rem;font-family:var(--font-mono)">/100</text>
+          </svg>
+        </div>
+        <ul class="audit-findings">
+          ${p.website_audit.findings.map((f, i) => `
+            <li class="audit-finding">
+              <span class="audit-finding-num ${f.severity}">${i + 1}</span>
+              <span>${f.text}</span>
+            </li>
+          `).join('')}
+        </ul>
+        <p class="drama">Don't worry. We fix all of this.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. THE PROBLEM ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">The Challenge</span>
+    <h2 class="section-headline" data-anim="blur-in">What's Holding <span class="accent">${cn}</span> Back</h2>
+    <div class="problems-stack">
+      ${p.problems.map((prob, i) => `
+        <div class="problem-card ${i === 0 ? 'danger' : i === 1 ? 'warning' : 'danger'}" data-anim="slide-in" data-delay="${i * 0.15}">
+          <div class="problem-num">0${i + 1}</div>
+          <div class="problem-body">
+            <div class="problem-statement">${prob.statement}</div>
+            <div class="problem-context">${prob.context}</div>
+            <div class="problem-data">${prob.data_point}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. COMPETITOR LANDSCAPE ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">The Competitive Landscape</span>
+    <h2 class="section-headline" data-anim="blur-in">Where <span class="accent">${cn}</span> Stands</h2>
+    <div class="comp-table-wrap" data-anim="fade-up">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>${cn}</th>
+            <th>${p.competitors.names[0]}</th>
+            <th>${p.competitors.names[1]}</th>
+            <th class="col-tge">With TGE</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${p.competitors.comparison.map(row => `
+            <tr>
+              <td>${row.feature}</td>
+              <td>${row.prospect ? '<span class="check">&#10003;</span>' : '<span class="cross">&#10005;</span>'}</td>
+              <td>${row.comp_a ? '<span class="check">&#10003;</span>' : '<span class="cross">&#10005;</span>'}</td>
+              <td>${row.comp_b ? '<span class="check">&#10003;</span>' : '<span class="cross">&#10005;</span>'}</td>
+              <td class="col-tge"><span class="check">&#10003;</span></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="gap-cards">
+      ${p.competitors.gaps.map((gap, i) => `
+        <div class="card gap-card" data-anim="scale-in" data-delay="${i * 0.12}">
+          <div class="gap-number">0${i + 1}</div>
+          <div class="gap-title">${gap.title}</div>
+          <div class="gap-desc">${gap.description}</div>
+        </div>
+      `).join('')}
+    </div>
+    <p class="drama" data-anim="fade-up" style="text-align:center;margin-top:2.5rem">${cn} can own this space.</p>
+  </div>
+</section>
+
+<!-- ===== 5. YOUR FIRST 30 DAYS ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">Your First 30 Days</span>
+    <h2 class="section-headline" data-anim="blur-in">Here's Exactly What Happens</h2>
+    <div class="timeline-line" data-anim="fade-up">
+      <div class="timeline-dot w1"></div>
+      <div class="timeline-dot w2"></div>
+      <div class="timeline-dot w3"></div>
+      <div class="timeline-dot w4"></div>
+    </div>
+    <div class="roadmap-grid">
+      ${[['week1','w1','var(--accent)'],['week2','w2','var(--success)'],['week3','w3','var(--warning)'],['week4','w4','#8B5CF6']].map(([key,cls,color], i) => {
+        const w = p.roadmap[key];
+        return `
+          <div class="card week-card" data-anim="scale-in" data-delay="${i * 0.1}">
+            <div class="week-dot" style="background:${color};box-shadow:0 0 8px ${color}"></div>
+            <div class="week-title">Week ${i + 1}: ${w.title}</div>
+            <ul class="week-items">
+              ${w.items.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+            <span class="week-count">${w.count} deliverables</span>
+          </div>
+        `;
+      }).join('')}
+    </div>
+    <div class="roadmap-total" data-anim="scale-in">
+      <div class="big-number gradient-text" data-counter="${totalDeliverables}">0</div>
+      <p>deliverables in your first month</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. THE STRATEGY ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">The Strategy We'd Build For ${cn}</span>
+    <div class="strategy-cards">
+      ${p.strategies.map((strat, i) => `
+        <div class="card strategy-card" data-anim="slide-in" data-delay="${i * 0.12}">
+          <div class="strategy-bg-num">${strat.number}</div>
+          <div class="strategy-title">${strat.title}</div>
+          <ul class="strategy-bullets">
+            ${strat.bullets.map(b => `<li>${b}</li>`).join('')}
+          </ul>
+          <span class="strategy-projected">Projected: ${strat.projected_result}</span>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. PROOF WALL ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">The Numbers Don't Lie</span>
+    <h2 class="section-headline" data-anim="blur-in">Proof, Not Promises</h2>
+    <div class="bento-grid">
+      ${s.proof_metrics.map((m, i) => {
+        let sizeClass = '';
+        if (i === 0) sizeClass = 'span-2x2';
+        else if (i === 3 || i === 7) sizeClass = 'span-2c';
+        return `
+          <div class="card bento-card ${sizeClass}" data-anim="scale-in" data-delay="${Math.min(i * 0.06, 0.5)}">
+            <div class="bento-value gradient-text" data-counter-text="${m.value}">${m.value}</div>
+            <div class="bento-label">${m.label}</div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8. CASE STUDY: FRENCHIFY ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">Case Study 01</span>
+    <div class="case-layout">
+      <div style="display:flex;justify-content:center" data-anim="scale-in">
+        ${phoneFrame(`<img src="${s.case_studies.frenchify.image}" alt="Frenchify Instagram" style="width:100%;display:block" onerror="this.parentElement.innerHTML='<div style=\\'padding:4rem 2rem;text-align:center;color:var(--muted);font-family:var(--font-mono);font-size:0.8rem\\'>Frenchify Instagram</div>'">`)}
+      </div>
+      <div data-anim="fade-up" data-delay="0.15">
+        <h3 style="font-family:var(--font-heading);font-size:1.8rem;font-weight:700;margin-bottom:0.5rem">${s.case_studies.frenchify.name}</h3>
+        <span class="pill" style="margin-bottom:1.5rem;display:inline-block">${s.case_studies.frenchify.industry}</span>
+        <div class="case-hero-metric gradient-text" data-counter-text="${s.case_studies.frenchify.hero_metric}">${s.case_studies.frenchify.hero_metric}</div>
+        <div class="case-hero-label">${s.case_studies.frenchify.hero_metric_label}</div>
+        <div class="case-sub-metrics">
+          ${s.case_studies.frenchify.sub_metrics.map(m => `<span class="pill pill-accent">${m}</span>`).join('')}
+        </div>
+        <div class="case-story">
+          ${s.case_studies.frenchify.story.map(p => `<p>${p}</p>`).join('')}
+        </div>
+        <div class="case-before-after">
+          <div class="case-ba-card before">
+            <div class="case-ba-label">Before TGE</div>
+            ${s.case_studies.frenchify.before}
+          </div>
+          <div class="case-ba-card after">
+            <div class="case-ba-label">After TGE</div>
+            ${s.case_studies.frenchify.after}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 9. CASE STUDY: DR. SW ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">Case Study 02</span>
+    <div class="case-layout reverse">
+      <div data-anim="fade-up">
+        <h3 style="font-family:var(--font-heading);font-size:1.8rem;font-weight:700;margin-bottom:0.5rem">${s.case_studies.drsw.name}</h3>
+        <span class="pill" style="margin-bottom:1.5rem;display:inline-block">${s.case_studies.drsw.industry}</span>
+        <div class="case-hero-metric gradient-text" data-counter-text="${s.case_studies.drsw.hero_metric}">${s.case_studies.drsw.hero_metric}</div>
+        <div class="case-hero-label">${s.case_studies.drsw.hero_metric_label}</div>
+        <div class="case-sub-metrics">
+          ${s.case_studies.drsw.sub_metrics.map(m => `<span class="pill pill-accent">${m}</span>`).join('')}
+        </div>
+        <div class="case-story">
+          ${s.case_studies.drsw.story.map(p => `<p>${p}</p>`).join('')}
+        </div>
+        <div class="case-before-after">
+          <div class="case-ba-card before">
+            <div class="case-ba-label">Before TGE</div>
+            ${s.case_studies.drsw.before}
+          </div>
+          <div class="case-ba-card after">
+            <div class="case-ba-label">After TGE</div>
+            ${s.case_studies.drsw.after}
+          </div>
+        </div>
+        <div class="media-strip" style="margin-top:1.5rem">
+          <span style="font-size:0.7rem;color:var(--subtle);font-family:var(--font-mono);margin-right:0.5rem;align-self:center">As Seen In:</span>
+          ${s.case_studies.drsw.media.map(m => `<span class="pill">${m}</span>`).join('')}
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center" data-anim="scale-in" data-delay="0.15">
+        ${phoneFrame(`<img src="${s.case_studies.drsw.image}" alt="Dr SW Instagram" style="width:100%;display:block" onerror="this.parentElement.innerHTML='<div style=\\'padding:4rem 2rem;text-align:center;color:var(--muted);font-family:var(--font-mono);font-size:0.8rem\\'>Dr. SW Instagram</div>'">`)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10. LIVE DASHBOARDS ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">What Your Dashboard Looks Like</span>
+    <h2 class="section-headline" data-anim="blur-in">Real Campaigns. Real Spend. Real Results.</h2>
+    <div class="dashboard-stack" data-anim="fade-up">
+      ${s.dashboard_images.map((img, i) => `
+        <div class="dashboard-frame">
+          ${browserFrame(`dashboard-view-${i + 1}`, `<img src="${img}" alt="Dashboard ${i + 1}" style="width:100%;display:block" onerror="this.parentElement.innerHTML='<div class=\\'dashboard-placeholder\\'>Meta Ads Dashboard ${i + 1}</div>'">`)}
+        </div>
+      `).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11. THE SYSTEM ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">The Full Stack</span>
+    <h2 class="section-headline" data-anim="blur-in">Everything Under One Roof</h2>
+    <div class="system-layout" data-anim="fade-up">
+      <div class="system-tabs">
+        ${s.system_pillars.map((tab, i) => `
+          <div class="system-tab ${i === 0 ? 'active' : ''}" data-tab="${i}">${tab.title}</div>
+        `).join('')}
+      </div>
+      <div class="card system-content" id="system-content">
+        <div class="system-content-title">${s.system_pillars[0].title}</div>
+        <div class="system-content-desc">${s.system_pillars[0].description}</div>
+        ${s.system_pillars[0].image ? browserFrame(s.system_pillars[0].title.toLowerCase(), `<div style="max-height:400px;overflow:hidden"><img src="${s.system_pillars[0].image}" alt="${s.system_pillars[0].title}" style="width:100%;display:block;object-fit:cover;object-position:top" onerror="this.parentElement.innerHTML='<div class=\\'dashboard-placeholder\\'>${s.system_pillars[0].title}</div>'"></div>`) : ''}
+      </div>
+    </div>
+    <div style="margin-top:3rem" data-anim="fade-up">
+      <div style="font-family:var(--font-heading);font-weight:600;font-size:1.2rem;margin-bottom:1.5rem;text-align:center">Marketing Automation Stack</div>
+      <div class="automation-grid">
+        ${s.automation_stack.map((a, i) => `
+          <div class="card auto-card" data-anim="scale-in" data-delay="${i * 0.08}">
+            <div class="auto-card-title">${a.title}</div>
+            <div class="auto-card-desc">${a.description}</div>
+            <span class="auto-stat">${a.stat}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12. CAMPAIGN ARCHITECTURE ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">The Campaign Architecture</span>
+    <h2 class="section-headline" data-anim="blur-in">From Stranger to Customer</h2>
+    <div class="campaign-flow">
+      ${s.funnel_stages.map((f, i) => `
+        <div class="campaign-step" data-anim="scale-in" data-delay="${i * 0.15}">
+          <div class="campaign-step-num">0${i + 1}</div>
+          <div class="campaign-step-title">${f.stage}</div>
+          <div class="campaign-step-desc">${f.description}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="font-family:var(--font-heading);font-weight:600;font-size:1rem;margin-bottom:1.25rem;text-align:center;color:var(--muted)" data-anim="fade-up">Channels We Activate</div>
+    <div class="channel-grid" data-anim="fade-up">
+      ${s.channels.map((ch, i) => `
+        <div class="card channel-card" style="padding:1.25rem;text-align:center" data-anim="scale-in" data-delay="${i * 0.05}">
+          <div class="channel-icon" style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;border:1px solid var(--border);background:rgba(192,105,221,0.04)">
+            ${ico(ch.icon)}
+          </div>
+          <div style="font-family:var(--font-heading);font-weight:600;font-size:0.85rem;margin-bottom:0.2rem">${ch.name}</div>
+          <div style="font-size:0.7rem;color:var(--muted)">${ch.role}</div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13. WHAT WE BUILD ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">What Your Content Could Look Like</span>
+    <h2 class="section-headline" data-anim="blur-in">We Don't Just Plan. We Build.</h2>
+    <div class="deliverables-grid">
+      ${p.mock_deliverables.map((d, i) => {
+        const icons = { reel: 'film', ad: 'megaphone', email: 'mail', landing: 'layout', whatsapp: 'message-circle', calendar: 'calendar' };
+        return `
+          <div class="card deliverable-card" data-anim="scale-in" data-delay="${i * 0.08}">
+            <div class="deliverable-icon ${d.type}">${ico(icons[d.type] || 'file')}</div>
+            <div class="deliverable-platform">${d.platform}</div>
+            <div class="deliverable-title">${d.title}</div>
+            <div class="deliverable-desc">${d.description}</div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+    <p class="drama" data-anim="fade-up" style="text-align:center;margin-top:3rem">This is what Week 1 looks like. Imagine Month 3.</p>
+  </div>
+</section>
+
+<!-- ===== 14. FEATURE LIST ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up">The Full Package</span>
+    <h2 class="section-headline" data-anim="blur-in">Everything You Get <span class="pill pill-accent" style="margin-left:1rem;vertical-align:middle;font-size:0.75rem" data-counter-text="${Object.values(s.features_list).flat().length}+">${Object.values(s.features_list).flat().length}+ features included</span></h2>
+    <div class="features-grid" data-anim="fade-up">
+      <div>
+        <div class="feature-col-title">${ico('pen-tool')} Content & Creative</div>
+        ${s.features_list.content_creative.map(f => `<div class="feature-item">${f}</div>`).join('')}
+      </div>
+      <div>
+        <div class="feature-col-title">${ico('target')} Paid Advertising</div>
+        ${s.features_list.paid_advertising.map(f => `<div class="feature-item">${f}</div>`).join('')}
+      </div>
+      <div>
+        <div class="feature-col-title">${ico('zap')} Automation & Sales</div>
+        ${s.features_list.automation_sales.map(f => `<div class="feature-item">${f}</div>`).join('')}
+      </div>
+      <div>
+        <div class="feature-col-title">${ico('bar-chart-2')} Strategy & Reporting</div>
+        ${s.features_list.strategy_reporting.map(f => `<div class="feature-item">${f}</div>`).join('')}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15. PRICING ===== -->
+<section class="section">
+  <div class="container">
+    <span class="section-label" data-anim="fade-up" style="display:block;text-align:center">Investment</span>
+    <div class="pricing-grid" data-anim="fade-up">
+      <div class="card pricing-card ${p.pricing.recommended === 'growth' ? 'recommended' : ''}">
+        ${p.pricing.recommended === 'growth' ? '<div class="pricing-badge">&#9733; Recommended</div>' : ''}
+        <div class="pricing-name">${p.pricing.growth.name}</div>
+        <div class="pricing-price">${p.pricing.growth.price}</div>
+        <div class="pricing-period">${p.pricing.growth.period}</div>
+        <ul class="pricing-features">
+          ${p.pricing.growth.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+        <a href="https://cal.com/grawoth/consultation-call-with-allen" target="_blank" class="btn ${p.pricing.recommended === 'growth' ? 'btn-primary' : 'btn-outline'}" style="width:100%;justify-content:center">Get Started</a>
+      </div>
+      <div class="card pricing-card ${p.pricing.recommended === 'scale' ? 'recommended' : ''}">
+        ${p.pricing.recommended === 'scale' ? '<div class="pricing-badge">&#9733; Recommended</div>' : ''}
+        <div class="pricing-name">${p.pricing.scale.name}</div>
+        <div class="pricing-price">${p.pricing.scale.price}</div>
+        <div class="pricing-period">${p.pricing.scale.period}</div>
+        <ul class="pricing-features">
+          ${p.pricing.scale.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+        <a href="https://cal.com/grawoth/consultation-call-with-allen" target="_blank" class="btn ${p.pricing.recommended === 'scale' ? 'btn-primary' : 'btn-outline'}" style="width:100%;justify-content:center">Get Started</a>
+      </div>
+    </div>
+    <div class="card roi-strip" data-anim="scale-in">
+      <div>
+        <div class="roi-label">Projected Monthly Revenue</div>
+        <div class="roi-value green">${p.roi_projection.projected_monthly_revenue}</div>
+      </div>
+      <div>
+        <div class="roi-label">Monthly Investment</div>
+        <div class="roi-value">${p.roi_projection.investment}</div>
+      </div>
+      <div>
+        <div class="roi-label">ROI Multiple</div>
+        <div class="roi-value accent">${p.roi_projection.roi_multiple}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 16. THE CLOSE ===== -->
+<section id="close-section" class="section" style="padding-bottom:4rem">
+  <div class="container" style="text-align:center">
+    <h2 class="close-headline" data-anim="blur-in">Ready to build this for <span class="accent">${cn}</span>?</h2>
+    <p class="close-subline" data-anim="fade-up">Everything you just saw? We can have it running in 30 days.</p>
+    <a href="https://cal.com/grawoth/consultation-call-with-allen" target="_blank" class="btn btn-primary" style="font-size:1.1rem;padding:1.25rem 3rem" data-anim="fade-up">Book a 15-Minute Strategy Call</a>
+    <div class="contact-strip" data-anim="fade-up">
+      <span class="contact-item">${ico('mail')} ${s.contact.email}</span>
+      <span class="contact-item">${ico('phone')} ${s.contact.phone}</span>
+      <span class="contact-item">${ico('globe')} ${s.contact.website}</span>
+    </div>
+    <div class="footer">
+      <span class="pulse-dot"></span>
+      <span>System Operational</span>
+      <span style="margin-left:1rem">This proposal was prepared exclusively for ${cn}. Please do not distribute.</span>
+    </div>
+  </div>
+</section>
+`;
+}
+
+/* ===== INIT ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  renderPage();
+
+  // Initialize Lucide icons
+  if (window.lucide) lucide.createIcons();
+
+  // System tabs
+  document.querySelectorAll('.system-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.system-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const idx = parseInt(tab.dataset.tab);
+      const pillar = CONFIG.static.system_pillars[idx];
+      const content = document.getElementById('system-content');
+      if (content) {
+        let imgHtml = '';
+        if (pillar.image) {
+          imgHtml = `<div class="browser-frame"><div class="browser-bar"><span class="browser-dot red"></span><span class="browser-dot amber"></span><span class="browser-dot green"></span><span class="browser-url">${pillar.title.toLowerCase()}</span></div><div class="browser-content" style="max-height:400px;overflow:hidden"><img src="${pillar.image}" alt="${pillar.title}" style="width:100%;display:block;object-fit:cover;object-position:top" onerror="this.parentElement.innerHTML='<div class=\\'dashboard-placeholder\\'>${pillar.title}</div>'"></div></div>`;
+        }
+        content.innerHTML = `
+          <div class="system-content-title">${pillar.title}</div>
+          <div class="system-content-desc">${pillar.description}</div>
+          ${imgHtml}
+        `;
+      }
+    });
+  });
+
+  // Initialize animations
+  initAnimations();
+});
+
+function initAnimations() {
+  // Lucide icons
+  if (window.lucide) lucide.createIcons();
+
+  // Scroll progress
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('scroll-progress').style.width = progress + '%';
+  });
+
+  // GSAP animations
+  if (!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Fade-up animation
+  document.querySelectorAll('[data-anim="fade-up"]').forEach(el => {
+    const delay = parseFloat(el.dataset.delay) || 0;
+    gsap.from(el, {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      delay: delay,
+      ease: 'power4.out',
+      scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // Blur-in animation (headlines)
+  document.querySelectorAll('[data-anim="blur-in"]').forEach(el => {
+    const delay = parseFloat(el.dataset.delay) || 0;
+    gsap.from(el, {
+      y: 30,
+      opacity: 0,
+      filter: 'blur(12px)',
+      duration: 1.2,
+      delay: delay,
+      ease: 'power4.out',
+      scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // Scale-in animation (cards)
+  document.querySelectorAll('[data-anim="scale-in"]').forEach(el => {
+    const delay = parseFloat(el.dataset.delay) || 0;
+    gsap.from(el, {
+      scale: 0.92,
+      opacity: 0,
+      duration: 0.9,
+      delay: delay,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // Slide-in animation (problem cards, strategy cards)
+  document.querySelectorAll('[data-anim="slide-in"]').forEach(el => {
+    const delay = parseFloat(el.dataset.delay) || 0;
+    gsap.from(el, {
+      x: -40,
+      opacity: 0,
+      duration: 1,
+      delay: delay,
+      ease: 'power4.out',
+      scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // Parallax on section headlines
+  document.querySelectorAll('.section-headline').forEach(el => {
+    gsap.to(el, {
+      y: -20,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 0.5
+      }
+    });
+  });
+
+  // Audit ring animation
+  const ringPath = document.querySelector('.audit-ring-path');
+  if (ringPath) {
+    const circumference = 2 * Math.PI * 70;
+    const target = CONFIG.prospect.website_audit.score;
+    const finalOffset = circumference * (1 - target / 100);
+    gsap.fromTo(ringPath,
+      { strokeDashoffset: circumference },
+      {
+        strokeDashoffset: finalOffset,
+        duration: 1.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: ringPath, start: 'top 80%' }
+      }
+    );
+  }
+
+  // Counter animations with ScrollTrigger
+  document.querySelectorAll('[data-counter]').forEach(el => {
+    const target = parseInt(el.dataset.counter);
+    if (isNaN(target)) return;
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        const duration = 1800;
+        const startTime = performance.now();
+        function tick(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 4);
+          el.textContent = Math.round(target * eased) + '+';
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+    });
+  });
+
+  // Dashboard frames stagger reveal
+  document.querySelectorAll('.dashboard-frame').forEach((frame, i) => {
+    gsap.from(frame, {
+      y: 60,
+      opacity: 0,
+      rotation: 0,
+      duration: 1,
+      delay: i * 0.2,
+      ease: 'power4.out',
+      scrollTrigger: { trigger: frame.parentElement, start: 'top 80%', toggleActions: 'play none none none' }
+    });
+  });
+}
+</script>
+</body>
+</html>
