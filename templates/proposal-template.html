@@ -485,6 +485,86 @@ section:last-of-type { border-bottom: 0; }
   .cta-text, .cta-action { grid-column: 1 / -1; text-align: left; }
   .cta-foot div { grid-column: span 6; margin-bottom: 16px; }
 }
+
+/* Mobile (≤640px) — phone-optimized */
+@media (max-width: 640px) {
+  body { font-size: 15px; line-height: 1.6; }
+  .shell { padding: 0 20px; }
+  section { padding: 64px 0; }
+
+  /* Section heads */
+  .section-head { padding-bottom: 36px; margin-bottom: 36px; }
+  .section-num { font-size: 32px; }
+  .section-label { font-size: 11px; }
+  .section-meta { font-size: 11px; margin-top: 8px; }
+
+  /* Cover */
+  .cover { padding: 56px 0 80px; min-height: auto; }
+  .cover-top { margin-bottom: 56px; }
+  .cover-mark img { height: 28px; }
+  .cover-tag { font-size: 10px; }
+  .cover-pre { font-size: 11px; margin-bottom: 28px; }
+  .cover-h1 { font-size: clamp(40px, 11vw, 56px); line-height: 1.05; letter-spacing: -0.02em; }
+  .cover-bottom { margin-top: 56px; gap: 0; }
+  .cover-prepared, .cover-by, .cover-meta { font-size: 11px; }
+  .cover-prepared b, .cover-by b, .cover-meta b { font-size: 13px; margin-top: 4px; }
+
+  /* The Read */
+  .read-lede { font-size: 24px; line-height: 1.3; margin-bottom: 28px; }
+  .read-paras p { font-size: 15px; line-height: 1.65; margin-bottom: 18px; }
+  .read-margin { padding-top: 24px; font-size: 12px; }
+  .read-margin b { font-size: 10px; }
+
+  /* Diagnosis */
+  .dx-quote { font-size: clamp(28px, 7vw, 36px); line-height: 1.2; }
+  .dx-stats { padding-top: 28px; gap: 32px; }
+  .dx-stat .num { font-size: 42px; margin-bottom: 8px; }
+  .dx-stat .label { font-size: 10px; }
+
+  /* Plan pillars */
+  .plan-col { padding: 28px 0; }
+  .plan-num { font-size: 36px; margin-bottom: 12px; }
+  .plan-col h3 { font-size: 20px; margin-bottom: 12px; }
+  .plan-col .lede { font-size: 13px; margin-bottom: 22px; }
+  .plan-col li { font-size: 13px; }
+
+  /* ICP grid */
+  .icp-cell { padding: 28px 0 !important; }
+  .icp-cell h4 { font-size: 10px; margin-bottom: 14px; }
+  .icp-cell .icp-headline { font-size: 22px; line-height: 1.25; margin-bottom: 12px; }
+  .icp-cell p { font-size: 14px; }
+
+  /* Proof / Dr. SW */
+  .proof-stat { padding: 24px 0; }
+  .proof-stat .num { font-size: clamp(36px, 9vw, 52px) !important; }
+  .proof-stat .label { font-size: 10px; }
+  .proof-stat p { font-size: 13px; }
+
+  /* Engagement / pricing */
+  .eng-tier { padding: 32px 0; }
+  .eng-tier .price { font-size: clamp(48px, 13vw, 64px) !important; line-height: 1; letter-spacing: -0.03em; }
+  .eng-tier h3 { font-size: 18px; }
+  .eng-tier li { font-size: 13px; }
+
+  /* Timeline */
+  .tl-phase { padding: 28px 0; }
+  .tl-phase h4 { font-size: 18px; }
+  .tl-phase p { font-size: 13px; }
+
+  /* CTA */
+  .cta-text { font-size: 28px !important; line-height: 1.2; }
+  .cta-action a { font-size: 14px; padding: 14px 24px; }
+  .cta-foot div { grid-column: 1 / -1 !important; font-size: 11px; margin-bottom: 14px; }
+  .cta-foot b { font-size: 12px; }
+}
+
+/* Small phones (≤380px) — guard against overflow */
+@media (max-width: 380px) {
+  .shell { padding: 0 16px; }
+  .cover-h1 { font-size: 36px; }
+  .read-lede { font-size: 22px; }
+  .dx-quote { font-size: 26px; }
+}
 </style>
 </head>
 <body>
