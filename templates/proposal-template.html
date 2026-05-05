@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A 90-day acquisition system for Aspen Aesthetics Med Spa · The Growth Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D0D0C;
+  --surface: #141413;
+  --ink: #FFFFFF;
+  --muted: #8E8E88;
+  --rule: #2A2A28;
+  --accent: #C069DD;
+  --col-gap: 32px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  font-weight: 300;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 400; letter-spacing: -0.025em; }
+
+.shell {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+/* 12 column grid */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+}
+
+/* Section scaffolding */
+section {
+  padding: 140px 0;
+  border-bottom: 1px solid var(--rule);
+}
+section:last-of-type { border-bottom: 0; }
+
+.section-head {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  margin-bottom: 88px;
+  align-items: baseline;
+}
+.section-num {
+  grid-column: 1 / span 1;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+}
+.section-label {
+  grid-column: 2 / span 4;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+}
+.section-meta {
+  grid-column: 10 / span 3;
+  text-align: right;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* ============== COVER ============== */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 56px 0 56px;
+  border-bottom: 1px solid var(--rule);
+}
+.cover-top {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  align-items: center;
+}
+.cover-mark img { height: 22px; opacity: 0.95; }
+.cover-tag {
+  grid-column: 8 / span 5;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+}
+.cover-tag span { color: var(--accent); }
+
+.cover-mid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  align-items: center;
+  padding: 60px 0;
+}
+.cover-pre {
+  grid-column: 1 / span 12;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cover-pre::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  display: inline-block;
+}
+.cover-h1 {
+  grid-column: 1 / span 11;
+  font-size: clamp(72px, 9vw, 168px);
+  line-height: 0.92;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+.cover-h1 em {
+  font-style: italic;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 300;
+  color: var(--accent);
+}
+.cover-bottom {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  align-items: end;
+  padding-top: 56px;
+  border-top: 1px solid var(--rule);
+}
+.cover-prepared {
+  grid-column: 1 / span 4;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+.cover-prepared b { color: var(--ink); font-weight: 500; display: block; margin-top: 6px; font-size: 14px; letter-spacing: 0.05em; }
+.cover-by {
+  grid-column: 5 / span 4;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+.cover-by b { color: var(--ink); font-weight: 500; display: block; margin-top: 6px; font-size: 14px; letter-spacing: 0.05em; }
+.cover-meta {
+  grid-column: 9 / span 4;
+  text-align: right;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+.cover-meta b { color: var(--ink); font-weight: 500; display: block; margin-top: 6px; font-size: 14px; letter-spacing: 0.05em; }
+
+/* ============== READ ============== */
+.read-body { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.read-lede {
+  grid-column: 2 / span 7;
+  font-family: 'Outfit', sans-serif;
+  font-size: 38px;
+  line-height: 1.18;
+  font-weight: 300;
+  letter-spacing: -0.018em;
+  margin-bottom: 56px;
+}
+.read-lede em { color: var(--accent); font-style: italic; font-family: 'Hanken Grotesk', sans-serif; font-weight: 400; }
+.read-paras { grid-column: 2 / span 6; }
+.read-paras p { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.78); margin-bottom: 22px; }
+.read-margin {
+  grid-column: 9 / span 4;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  padding-left: 24px;
+  border-left: 1px solid var(--rule);
+}
+.read-margin b { font-style: normal; font-weight: 600; color: var(--ink); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 8px; }
+.read-margin p { margin-bottom: 18px; }
+
+/* ============== DIAGNOSIS ============== */
+.dx-quote {
+  grid-column: 2 / span 9;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(40px, 4.6vw, 76px);
+  line-height: 1.08;
+  font-weight: 300;
+  letter-spacing: -0.028em;
+  margin-bottom: 80px;
+}
+.dx-quote em {
+  font-style: italic;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 400;
+  color: var(--accent);
+}
+.dx-stats { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); padding-top: 40px; border-top: 1px solid var(--rule); }
+.dx-stat { grid-column: span 4; }
+.dx-stat .num { font-family: 'Outfit', sans-serif; font-size: 64px; font-weight: 300; letter-spacing: -0.03em; line-height: 1; margin-bottom: 14px; }
+.dx-stat .num span { color: var(--accent); }
+.dx-stat .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); }
+
+/* ============== PLAN ============== */
+.plan-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.plan-col {
+  grid-column: span 4;
+  padding-right: 24px;
+  border-right: 1px solid var(--rule);
+}
+.plan-col:last-child { border-right: 0; }
+.plan-col .num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 56px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+.plan-col h3 {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 18px;
+  letter-spacing: -0.015em;
+}
+.plan-col h3 em { font-style: italic; font-family: 'Hanken Grotesk', sans-serif; font-weight: 400; color: var(--accent); }
+.plan-col .lede { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+.plan-col ul { list-style: none; padding: 0; }
+.plan-col li {
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+  line-height: 1.55;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 8px;
+}
+.plan-col li:last-child { border-bottom: 1px solid var(--rule); }
+.plan-col li::before {
+  content: '·';
+  color: var(--accent);
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* ============== ICP ============== */
+.icp-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0; border-top: 1px solid var(--rule); }
+.icp-cell {
+  grid-column: span 6;
+  padding: 56px 56px 56px 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+.icp-cell:nth-child(odd) { padding-right: 56px; padding-left: 0; border-right: 1px solid var(--rule); }
+.icp-cell:nth-child(even) { padding-left: 56px; padding-right: 0; }
+.icp-cell .label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+.icp-cell h4 {
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  line-height: 1.15;
+}
+.icp-cell h4 em { font-style: italic; font-family: 'Hanken Grotesk', sans-serif; font-weight: 400; }
+.icp-cell p { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 440px; }
+
+/* ============== PROOF ============== */
+.proof-wrap { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); align-items: start; }
+.proof-meta {
+  grid-column: 1 / span 3;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+.proof-meta b { color: var(--ink); display: block; font-weight: 500; margin-top: 6px; font-size: 14px; letter-spacing: 0.05em; }
+.proof-stats {
+  grid-column: 4 / span 9;
+}
+.proof-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); padding: 40px 0; border-top: 1px solid var(--rule); }
+.proof-row:last-child { border-bottom: 1px solid var(--rule); }
+.proof-stat { grid-column: span 4; }
+.proof-stat .num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 88px;
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 14px;
+}
+.proof-stat .num span { color: var(--accent); font-size: 38px; vertical-align: super; margin-right: 4px; }
+.proof-stat .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); margin-bottom: 8px; }
+.proof-stat .desc { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.55; }
+.proof-narr { grid-column: 4 / span 7; padding-top: 40px; }
+.proof-narr p { font-size: 17px; color: rgba(255,255,255,0.78); line-height: 1.7; margin-bottom: 18px; }
+
+/* ============== ENGAGEMENT (PRICING) ============== */
+.eng-wrap { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.eng-tier {
+  grid-column: span 6;
+  padding: 56px 48px 56px 0;
+  border-right: 1px solid var(--rule);
+  position: relative;
+}
+.eng-tier:last-child { border-right: 0; padding-right: 0; padding-left: 48px; }
+.eng-tier .tier-tag {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+.eng-tier h3 {
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+}
+.eng-tier h3 em { font-style: italic; font-family: 'Hanken Grotesk', sans-serif; font-weight: 400; }
+.eng-tier .price {
+  font-family: 'Outfit', sans-serif;
+  font-size: 84px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 8px;
+}
+.eng-tier .price-meta {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  margin-bottom: 36px;
+}
+.eng-tier ul { list-style: none; padding: 0; }
+.eng-tier li {
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+  line-height: 1.55;
+}
+.eng-tier li:last-child { border-bottom: 1px solid var(--rule); }
+.eng-tier li b { color: var(--accent); font-weight: 500; }
+
+/* ============== TIMELINE ============== */
+.tl-wrap { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.tl-phase { grid-column: span 4; padding-right: 24px; border-right: 1px solid var(--rule); }
+.tl-phase:last-child { border-right: 0; }
+.tl-phase .when {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+.tl-phase h4 {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+.tl-phase ul { list-style: none; padding: 0; }
+.tl-phase li {
+  font-size: 14px;
+  color: rgba(255,255,255,0.78);
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+  line-height: 1.55;
+}
+.tl-phase li:last-child { border-bottom: 1px solid var(--rule); }
+
+/* ============== CTA ============== */
+.cta-wrap {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  align-items: end;
+  padding: 60px 0 0;
+}
+.cta-text { grid-column: 1 / span 8; }
+.cta-text h2 {
+  font-size: clamp(52px, 6vw, 96px);
+  line-height: 0.96;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  margin-bottom: 28px;
+}
+.cta-text h2 em { font-style: italic; font-family: 'Hanken Grotesk', sans-serif; font-weight: 400; color: var(--accent); }
+.cta-text p { font-size: 18px; color: var(--muted); max-width: 520px; line-height: 1.65; }
+.cta-action { grid-column: 9 / span 4; text-align: right; }
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 40px;
+  background: var(--accent);
+  color: #0D0D0C;
+  text-decoration: none;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border: 0;
+  transition: background 0.2s ease;
+}
+.cta-btn:hover { background: #D38AE8; }
+.cta-btn svg { width: 14px; height: 14px; }
+.cta-foot {
+  margin-top: 100px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+.cta-foot div { grid-column: span 3; }
+.cta-foot b { display: block; color: var(--ink); font-weight: 500; margin-top: 6px; font-size: 13px; letter-spacing: 0.05em; }
+
+@media (max-width: 900px) {
+  .shell { padding: 0 28px; }
+  section { padding: 88px 0; }
+  .cover-h1 { font-size: 64px; }
+  .read-lede, .dx-quote { font-size: 32px; grid-column: 1 / -1; }
+  .read-paras { grid-column: 1 / -1; }
+  .read-margin { grid-column: 1 / -1; padding-left: 0; border-left: 0; padding-top: 32px; border-top: 1px solid var(--rule); }
+  .plan-col, .tl-phase, .eng-tier, .icp-cell, .proof-stat { grid-column: 1 / -1; border-right: 0; padding: 32px 0; }
+  .icp-cell:nth-child(odd), .icp-cell:nth-child(even) { padding-left: 0; padding-right: 0; }
+  .cover-h1 { grid-column: 1 / -1; }
+  .cover-bottom > * { grid-column: 1 / -1; text-align: left; margin-bottom: 24px; }
+  .cta-text, .cta-action { grid-column: 1 / -1; text-align: left; }
+  .cta-foot div { grid-column: span 6; margin-bottom: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ========== COVER ========== -->
+  <header class="cover">
+    <div class="cover-top">
+      <div class="cover-mark" style="grid-column: 1 / span 7;">
+        <img src="assets/tge-logo.png" alt="The Growth Engine">
+      </div>
+      <div class="cover-tag">Proposal <span>·</span> 2026 Q2</div>
+    </div>
+
+    <div class="cover-mid">
+      <div class="cover-pre" style="grid-column: 1 / span 12;">For Aspen Aesthetics Med Spa <span style="margin: 0 12px; opacity: 0.4;">/</span> Boulder, Colorado</div>
+      <h1 class="cover-h1">A 90-day acquisition system <em>built for med spas</em> who want booked chairs, not vanity reach.</h1>
+    </div>
+
+    <div class="cover-bottom">
+      <div class="cover-prepared">
+        Prepared for
+        <b>Sarah Thompson, Founder</b>
+      </div>
+      <div class="cover-by">
+        Prepared by
+        <b>Allen Thomas, The Growth Engine</b>
+      </div>
+      <div class="cover-meta">
+        Document
+        <b>v1.0 · 2 May 2026</b>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== 01 THE READ ========== -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div class="section-label">The Read</div>
+      <div class="section-meta">Observations from the past 14 days</div>
+    </div>
+
+    <div class="read-body">
+      <p class="read-lede">
+        You are running a respected clinic in a competitive market, but the paid layer is <em>doing the work of organic</em>. That is the gap.
+      </p>
+
+      <div class="read-paras">
+        <p>Aspen Aesthetics has the operational fundamentals dialed in. The reviews on Google and the consistency on Instagram show a brand that takes itself seriously. The patient experience is clearly a 9 out of 10. None of that is the problem.</p>
+        <p>The problem is upstream. Meta and Google are being treated as awareness channels, not as a booking system. The ads run, the impressions land, the cost per lead climbs every month, and bookings stay flat. You are paying retail for traffic you should be converting on autopilot.</p>
+        <p>The opportunity is not to spend more. It is to rebuild the funnel underneath the spend so every dollar pushes a real booking, not a lurker.</p>
+      </div>
+
+      <aside class="read-margin">
+        <b>Sources</b>
+        <p>Aspenaestheticsboulder.com (audit run 1 May 2026), public Meta Ad Library, your last 30 days of Instagram posts, and the Boulder med spa Google SERP for the top 8 queries.</p>
+        <p>No internal data accessed. All observations are from public surfaces.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ========== 02 DIAGNOSIS ========== -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div class="section-label">The Diagnosis</div>
+      <div class="section-meta">Where the dollars are leaking</div>
+    </div>
+
+    <p class="dx-quote">
+      Your spend is buying <em>impressions</em>. Your operations need <em>booked appointments</em>. The funnel between the two does not exist yet.
+    </p>
+
+    <div class="dx-stats">
+      <div class="dx-stat">
+        <div class="num"><span>~$8K</span></div>
+        <div class="label">Estimated monthly Meta spend, current</div>
+      </div>
+      <div class="dx-stat">
+        <div class="num">11<span>%</span></div>
+        <div class="label">Approx landing page conversion (industry: 24%)</div>
+      </div>
+      <div class="dx-stat">
+        <div class="num">4.2<span>x</span></div>
+        <div class="label">CPL inflation since Jan 2026 (Meta benchmark: 1.4x)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 03 THE PLAN ========== -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div class="section-label">The Plan</div>
+      <div class="section-meta">Three pillars, ninety days, one operator</div>
+    </div>
+
+    <div class="plan-grid">
+      <div class="plan-col">
+        <div class="num">01</div>
+        <h3>Acquisition <em>rebuild</em></h3>
+        <p class="lede">Stop paying for awareness. Start paying for bookings.</p>
+        <ul>
+          <li>Three ad concepts per service category, refreshed every 14 days</li>
+          <li>Geo-fenced campaigns within 18 miles of your Pearl St location</li>
+          <li>Lookalike audiences seeded from your last 12 months of bookings</li>
+          <li>Whitelisted creator content from two local micro-influencers</li>
+        </ul>
+      </div>
+      <div class="plan-col">
+        <div class="num">02</div>
+        <h3>Conversion <em>system</em></h3>
+        <p class="lede">The moment after the click is where revenue is made.</p>
+        <ul>
+          <li>Service-specific landing pages with calendar booking inline</li>
+          <li>SMS confirmation and one-click reschedule on the thank-you page</li>
+          <li>Social proof that matches the service the visitor came for</li>
+          <li>Pixel and CAPI hardening so retargeting actually works</li>
+        </ul>
+      </div>
+      <div class="plan-col">
+        <div class="num">03</div>
+        <h3>Retention <em>compounding</em></h3>
+        <p class="lede">Your second booking is your most profitable booking.</p>
+        <ul>
+          <li>Post-treatment SMS sequence keyed to each service protocol</li>
+          <li>Monthly client newsletter sent from your name, not the brand</li>
+          <li>Referral incentive that pays patients in credit, not cash</li>
+          <li>Quarterly returning patient campaign timed to filler half-life</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 04 ICP ========== -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div class="section-label">Their Customer</div>
+      <div class="section-meta">Who the funnel is built for</div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-cell">
+        <div class="label">Demographics</div>
+        <h4>Women, <em>34 to 54</em>, household income above $120K, residing within 18 miles of Boulder.</h4>
+        <p>The most profitable segment in Boulder med spa is dual-income professional women in their late thirties and forties. Geo-density is highest in Niwot, Gunbarrel, and South Boulder.</p>
+      </div>
+      <div class="icp-cell">
+        <div class="label">Psychographics</div>
+        <h4>They want to look like <em>themselves</em>, just rested, not augmented.</h4>
+        <p>This audience reads the language of restraint. Subtle. Natural. Refreshed. Anything that hints at overdone or trend-chasing repels them.</p>
+      </div>
+      <div class="icp-cell">
+        <div class="label">Decision drivers</div>
+        <h4>Trust the injector first, the brand second, the price <em>last</em>.</h4>
+        <p>Bio detail and credentialing on the team page outperforms before-and-after grids. A real photo of the NP outconverts a stock shot 3 to 1.</p>
+      </div>
+      <div class="icp-cell">
+        <div class="label">Platforms</div>
+        <h4>Instagram for <em>discovery</em>, Google for <em>verification</em>, your site for the booking.</h4>
+        <p>The path is almost always: see ad on Instagram, search you on Google, read 3 reviews, click the website, book or bounce. Optimize for that path or lose the lead.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 05 PROOF ========== -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div class="section-label">What We Ship</div>
+      <div class="section-meta">Reference: Dr. SW Clinics, multi-location men's health</div>
+    </div>
+
+    <div class="proof-wrap">
+      <div class="proof-meta">
+        Client
+        <b>Dr. SW Clinics</b>
+        <p style="font-style: italic; font-size: 12px; margin-top: 16px; color: var(--muted); letter-spacing: 0.05em; text-transform: none;">Aesthetic and men's health, multi-city across India and Middle East. Engaged with TGE since Jan 2025.</p>
+      </div>
+
+      <div class="proof-stats">
+        <div class="proof-row">
+          <div class="proof-stat">
+            <div class="num"><span>+</span>20M</div>
+            <div class="label">Impressions across paid social</div>
+            <div class="desc">In the first 9 months of the engagement, across Meta and Google, with cost per impression dropping by 38%.</div>
+          </div>
+          <div class="proof-stat">
+            <div class="num">3.4<span>x</span></div>
+            <div class="label">Increase in monthly leads</div>
+            <div class="desc">From 142 qualified leads per month at engagement start to 487 monthly leads as of April 2026.</div>
+          </div>
+          <div class="proof-stat">
+            <div class="num"><span>$</span>14</div>
+            <div class="label">Cost per qualified lead</div>
+            <div class="desc">Down from $61 at start. Ad-to-booking conversion held above 22% across 12 city-level campaigns.</div>
+          </div>
+        </div>
+
+        <div class="proof-narr">
+          <p>The Dr. SW engagement followed the same three pillar structure proposed here: rebuild acquisition, install a real conversion system, and compound through retention. The work is not creative for creative's sake. It is operational, measurable, and audited weekly with the founder.</p>
+          <p>Med spa unit economics are very close to men's health clinic unit economics. The audience profile is different, but the funnel mechanics are the same. We bring the playbook, not the guesswork.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 06 ENGAGEMENT ========== -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <div class="section-label">The Engagement</div>
+      <div class="section-meta">Two ways to start. Both fixed monthly.</div>
+    </div>
+
+    <div class="eng-wrap">
+      <div class="eng-tier">
+        <div class="tier-tag">Tier I · Foundation</div>
+        <h3>Build the <em>system</em>.</h3>
+        <div class="price">$2,400<span style="font-size: 22px; color: var(--muted); letter-spacing: 0.05em;"> /mo</span></div>
+        <div class="price-meta">3 month minimum · No setup fee</div>
+        <ul>
+          <li>Meta ads management, fully owned by us</li>
+          <li>Two service-specific landing pages, hosted</li>
+          <li>Pixel, CAPI, and conversion tracking install</li>
+          <li>Weekly performance review, sent Friday</li>
+          <li>Monthly creative refresh, three new concepts</li>
+          <li>Direct Slack channel with the operator on it</li>
+        </ul>
+      </div>
+
+      <div class="eng-tier">
+        <div class="tier-tag">Tier II · Compound <span style="color: var(--muted); margin-left: 8px;">(recommended)</span></div>
+        <h3>Build the system, then <em>compound</em> it.</h3>
+        <div class="price">$3,600<span style="font-size: 22px; color: var(--muted); letter-spacing: 0.05em;"> /mo</span></div>
+        <div class="price-meta">3 month minimum · No setup fee</div>
+        <ul>
+          <li><b>Everything in Foundation, plus:</b></li>
+          <li>Google Ads management with high-intent search campaigns</li>
+          <li>Two whitelisted creator partnerships per month</li>
+          <li>Patient retention SMS and email automation</li>
+          <li>Monthly strategy call with Allen, recorded</li>
+          <li>Quarterly funnel audit and creative direction reset</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 07 TIMELINE ========== -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">07</div>
+      <div class="section-label">First 90 Days</div>
+      <div class="section-meta">What you see, week by week</div>
+    </div>
+
+    <div class="tl-wrap">
+      <div class="tl-phase">
+        <div class="when">Days 1 to 14 · Setup</div>
+        <h4>Audit, install, and hand-off the foundations.</h4>
+        <ul>
+          <li>Account audit, pixel and CAPI install</li>
+          <li>Two landing pages live on your domain</li>
+          <li>First creative batch shot or sourced from your library</li>
+          <li>First campaigns launched by day 14</li>
+        </ul>
+      </div>
+      <div class="tl-phase">
+        <div class="when">Days 15 to 60 · Optimize</div>
+        <h4>Find the winners. Kill the losers. Compound the math.</h4>
+        <ul>
+          <li>Weekly creative iteration, two new concepts per week</li>
+          <li>Audience refinement based on first 30 days of data</li>
+          <li>Landing page A/B tests on the two highest-traffic pages</li>
+          <li>First clear cost per booking benchmark by day 45</li>
+        </ul>
+      </div>
+      <div class="tl-phase">
+        <div class="when">Days 61 to 90 · Scale</div>
+        <h4>Lift the floor. Then push the ceiling.</h4>
+        <ul>
+          <li>Increase spend on validated winning sets</li>
+          <li>Launch retention SMS for first 90 days of clients</li>
+          <li>First quarterly review with bookings and revenue ledger</li>
+          <li>90-day plan delivered for the next quarter</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 08 CTA ========== -->
+  <section style="border-bottom: 0;">
+    <div class="section-head">
+      <div class="section-num">08</div>
+      <div class="section-label">Next</div>
+      <div class="section-meta">Twenty minutes, no obligation</div>
+    </div>
+
+    <div class="cta-wrap">
+      <div class="cta-text">
+        <h2>Let us walk you through this <em>on a call</em>.</h2>
+        <p>If anything in this document missed the mark, the call is the fastest way to fix it. If it landed, the call is the fastest way to start. Either way, twenty minutes.</p>
+      </div>
+      <div class="cta-action">
+        <a href="https://cal.com/grawoth/consultation-call-with-allen" class="cta-btn">
+          Book the call
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="cta-foot">
+      <div>Allen Thomas<b>Founder, The Growth Engine</b></div>
+      <div>Direct<b>allen@thegrowthengine.net</b></div>
+      <div>LinkedIn<b>linkedin.com/in/allenanantthomas</b></div>
+      <div>Web<b>thegrowthengine.net</b></div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
