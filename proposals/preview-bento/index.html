@@ -122,27 +122,25 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .progress.danger > span{background:linear-gradient(90deg,var(--danger),#FCA5A5)}
 
 /* ===== HERO ===== */
-#hero{min-height:100dvh;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:2rem;position:relative;overflow:hidden}
-#hero::before{content:none}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%)}
-.hero-blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.35;animation:float 16s ease-in-out infinite}
-.hero-blob.b1{width:560px;height:560px;background:var(--accent);top:-180px;right:-120px}
-.hero-blob.b2{width:400px;height:400px;background:var(--accent-glow);bottom:-100px;left:-80px;animation-delay:5s}
-@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.06)}66%{transform:translate(-20px,20px) scale(0.96)}}
-.hero-statusbar{position:absolute;top:1.5rem;left:1.5rem;right:1.5rem;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;z-index:3}
-.hero-statusbar .left,.hero-statusbar .right{display:flex;align-items:center;gap:0.75rem}
-.hero-content{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto}
-.hero-eyebrow{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.3em;color:var(--muted);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem}
-.hero-eyebrow .pulse{width:8px;height:8px;border-radius:50%;background:var(--success);animation:pulse 1.8s ease-in-out infinite}
-.hero-company{font-family:var(--font-heading);font-size:clamp(3rem,11vw,9rem);font-weight:800;line-height:0.92;letter-spacing:-0.045em;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1.25rem;max-width:1100px}
-.hero-subline{font-size:clamp(1rem,1.6vw,1.2rem);color:var(--muted);max-width:620px;line-height:1.7;font-weight:300;margin-bottom:2.5rem}
-.hero-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.75rem;margin-bottom:2.5rem;max-width:1100px}
-.hero-bento .cell{padding:1.1rem;min-height:auto}
-.hero-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-bottom:1.5rem}
-.hero-meta{position:absolute;bottom:1.5rem;right:1.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--subtle);text-align:right;letter-spacing:0.05em}
-.scroll-indicator{position:absolute;bottom:1.75rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.4rem;color:var(--subtle);font-size:0.6rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.2em}
-.scroll-chevron{animation:bounce 2.5s ease-in-out infinite}
-@keyframes bounce{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(8px);opacity:0.5}}
+#hero{min-height:100dvh;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:3rem 3rem 4.5rem;position:relative;overflow:hidden}
+.hero-rule{position:absolute;top:2.5rem;left:3rem;right:3rem;height:1px;background:rgba(255,255,255,0.08);z-index:1}
+.hero-mark{position:absolute;top:2.75rem;left:3rem;font-family:var(--font-serif);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.85);letter-spacing:0;z-index:3}
+.hero-mark sup{font-family:var(--font-mono);font-style:normal;font-size:0.55rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-left:0.5rem;vertical-align:super;top:-0.3em;position:relative}
+.hero-folio{position:absolute;top:2.75rem;right:3rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;color:var(--muted);text-transform:uppercase;z-index:3}
+.hero-content{position:relative;z-index:2;width:100%;max-width:1280px;margin:0 auto}
+.hero-eyebrow-clean{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.32em;color:var(--muted);margin-bottom:2.25rem}
+.hero-display{font-family:var(--font-serif);font-size:clamp(3.5rem,12vw,11rem);font-weight:400;line-height:0.95;letter-spacing:-0.02em;color:#fff;margin-bottom:2.5rem;max-width:1180px}
+.hero-display em{font-style:italic;color:var(--accent);font-weight:400}
+.hero-subline-clean{font-family:var(--font-body);font-size:clamp(1.05rem,1.4vw,1.25rem);line-height:1.55;color:rgba(255,255,255,0.78);font-weight:300;max-width:560px;margin-bottom:4.5rem}
+.hero-stats-row{display:flex;gap:3.5rem;margin-bottom:4rem;flex-wrap:wrap;align-items:flex-end;padding-top:2.5rem;border-top:1px solid rgba(255,255,255,0.08);max-width:760px}
+.hero-stat{display:flex;flex-direction:column;gap:0.35rem}
+.hero-stat .num{font-family:var(--font-serif);font-size:1.85rem;font-weight:400;color:#fff;line-height:1;font-style:italic}
+.hero-stat .lbl{font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--muted)}
+.hero-cta-row-clean{display:flex;flex-wrap:wrap;align-items:center;gap:2rem}
+.hero-cta-row-clean .tagged{font-family:var(--font-serif);font-style:italic;font-size:0.95rem;color:var(--muted)}
+.hero-colophon{position:absolute;bottom:2.5rem;right:3rem;font-family:var(--font-serif);font-size:0.85rem;color:rgba(255,255,255,0.7);text-align:right;line-height:1.45;letter-spacing:0;z-index:3}
+.hero-colophon .label{font-family:var(--font-mono);font-style:normal;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.25em;color:var(--subtle);display:block;margin-bottom:0.4rem}
+.hero-colophon strong{font-style:italic;font-weight:400;color:#fff}
 
 /* ===== BUTTONS ===== */
 .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.95rem 2rem;border-radius:100px;font-family:var(--font-heading);font-weight:600;font-size:0.95rem;cursor:pointer;border:none;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);white-space:nowrap}
@@ -691,62 +689,34 @@ function tpl_hero() {
   const p = CONFIG.prospect;
   return `
   <section id="hero">
-    <div class="hero-grid"></div>
-    <div class="hero-blob b1"></div>
-    <div class="hero-blob b2"></div>
-
-    <div class="hero-statusbar">
-      <div class="left">
-        <span class="row"><span class="dot live"></span>SYSTEM LIVE</span>
-        <span class="row" style="opacity:0.7">PROPOSAL // ${escapeHTML(p.industry)}</span>
-      </div>
-      <div class="right">
-        <span style="opacity:0.7">REV.01 // ${escapeHTML(CONFIG.meta.generated_date)}</span>
-      </div>
-    </div>
+    <div class="hero-rule"></div>
+    <div class="hero-mark">The Growth Engine<sup>est. 2022</sup></div>
+    <div class="hero-folio">No. 01 &middot; ${escapeHTML(CONFIG.meta.generated_date)}</div>
 
     <div class="hero-content">
-      <div class="hero-eyebrow"><span class="pulse"></span>A GROWTH STRATEGY PREPARED EXCLUSIVELY FOR</div>
-      <h1 class="hero-company">${escapeHTML(p.company_name)}.</h1>
-      <p class="hero-subline">${escapeHTML(p.hero_subline)}</p>
+      <div class="hero-eyebrow-clean">A growth strategy prepared exclusively for</div>
+      <h1 class="hero-display"><em>${escapeHTML(p.company_name)}</em>.</h1>
+      <p class="hero-subline-clean">${escapeHTML(p.hero_subline)}</p>
 
-      <div class="hero-bento">
-        <div class="cell c-3">
-          <div class="cell-eyebrow"><span>SECTIONS</span><span class="right">LIVE</span></div>
-          <div class="metric metric-md" data-counter="16">0</div>
-          <div class="metric-label">Sections</div>
-        </div>
-        <div class="cell c-3">
-          <div class="cell-eyebrow"><span>CASES</span><span class="right">VERIFIED</span></div>
-          <div class="metric metric-md" data-counter="3">0</div>
-          <div class="metric-label">Case Studies</div>
-        </div>
-        <div class="cell c-3">
-          <div class="cell-eyebrow"><span>ROADMAP</span><span class="right">DAYS</span></div>
-          <div class="metric metric-md" data-counter="30">0</div>
-          <div class="metric-label">Day Roadmap</div>
-        </div>
-        <div class="cell c-3 accent">
-          <div class="cell-eyebrow"><span>READ TIME</span><span class="right" style="color:var(--accent)">EST</span></div>
-          <div class="metric metric-md" style="color:var(--accent)">~7 min</div>
-          <div class="metric-label">Detailed Strategy</div>
-        </div>
+      <div class="hero-stats-row">
+        <div class="hero-stat"><span class="num">16</span><span class="lbl">Sections</span></div>
+        <div class="hero-stat"><span class="num">03</span><span class="lbl">Case studies</span></div>
+        <div class="hero-stat"><span class="num">30</span><span class="lbl">Day roadmap</span></div>
+        <div class="hero-stat"><span class="num">7&prime;</span><span class="lbl">Read time</span></div>
       </div>
 
-      <div class="hero-cta-row">
+      <div class="hero-cta-row-clean">
         <button class="btn btn-primary" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">
-          See What We Built ${ico('arrow-right', 16)}
+          See what we built ${ico('arrow-right', 16)}
         </button>
-        <span class="status-pill"><span class="dot live"></span>Tailored for ${escapeHTML(p.company_name)}</span>
+        <span class="tagged">Tailored for ${escapeHTML(p.company_name)}.</span>
       </div>
     </div>
 
-    <div class="hero-meta">
-      Prepared by The Growth Engine<br>${escapeHTML(CONFIG.meta.generated_date)}
-    </div>
-    <div class="scroll-indicator">
-      <span>SCROLL</span>
-      <span class="scroll-chevron">${ico('chevron-down', 16)}</span>
+    <div class="hero-colophon">
+      <span class="label">Prepared by</span>
+      <strong>The Growth Engine</strong><br>
+      ${escapeHTML(CONFIG.meta.generated_date)}
     </div>
   </section>`;
 }
