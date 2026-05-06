@@ -64,7 +64,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .section-headline{font-family:var(--font-heading);font-size:clamp(2rem,4.6vw,3.4rem);font-weight:700;line-height:1.1;margin-bottom:1rem;letter-spacing:-0.025em}
 .section-sub{color:var(--muted);font-size:1.05rem;max-width:680px;margin-bottom:3rem}
 .section-headline .accent{color:var(--accent)}
-.drama{font-family:var(--font-serif);font-style:italic;color:var(--accent);font-size:clamp(1.2rem,2.2vw,1.6rem);margin-top:2.5rem;display:block}
+.drama{font-family:var(--font-heading);font-weight:600;color:var(--accent);font-size:clamp(1.2rem,2.2vw,1.6rem);margin-top:2.5rem;display:block;letter-spacing:-0.015em}
 
 /* ===== BENTO PRIMITIVES ===== */
 .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
@@ -124,23 +124,23 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 /* ===== HERO ===== */
 #hero{min-height:100dvh;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:3rem 3rem 4.5rem;position:relative;overflow:hidden}
 .hero-rule{position:absolute;top:2.5rem;left:3rem;right:3rem;height:1px;background:rgba(255,255,255,0.08);z-index:1}
-.hero-mark{position:absolute;top:2.75rem;left:3rem;font-family:var(--font-serif);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.85);letter-spacing:0;z-index:3}
-.hero-mark sup{font-family:var(--font-mono);font-style:normal;font-size:0.55rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-left:0.5rem;vertical-align:super;top:-0.3em;position:relative}
-.hero-folio{position:absolute;top:2.75rem;right:3rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;color:var(--muted);text-transform:uppercase;z-index:3}
+.hero-mark{position:absolute;top:2.75rem;left:3rem;font-family:var(--font-heading);font-weight:500;font-size:0.78rem;color:rgba(255,255,255,0.92);letter-spacing:0.18em;text-transform:uppercase;z-index:3}
+.hero-mark sup{font-family:var(--font-mono);font-weight:400;font-size:0.55rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-left:0.6rem;vertical-align:super;top:-0.3em;position:relative}
+.hero-folio{position:absolute;top:2.95rem;right:3rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;color:var(--muted);text-transform:uppercase;z-index:3}
 .hero-content{position:relative;z-index:2;width:100%;max-width:1280px;margin:0 auto}
 .hero-eyebrow-clean{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.32em;color:var(--muted);margin-bottom:2.25rem}
-.hero-display{font-family:var(--font-serif);font-size:clamp(3.5rem,12vw,11rem);font-weight:400;line-height:0.95;letter-spacing:-0.02em;color:#fff;margin-bottom:2.5rem;max-width:1180px}
-.hero-display em{font-style:italic;color:var(--accent);font-weight:400}
-.hero-subline-clean{font-family:var(--font-body);font-size:clamp(1.05rem,1.4vw,1.25rem);line-height:1.55;color:rgba(255,255,255,0.78);font-weight:300;max-width:560px;margin-bottom:4.5rem}
+.hero-display{font-family:var(--font-heading);font-size:clamp(3.5rem,11vw,9.5rem);font-weight:800;line-height:0.95;letter-spacing:-0.035em;color:#fff;margin-bottom:2.5rem;max-width:1180px}
+.hero-display em{font-style:normal;font-weight:800;background:linear-gradient(180deg,#E5BFF1 0%,var(--accent) 55%,var(--accent-glow) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.hero-subline-clean{font-family:var(--font-body);font-size:clamp(1.05rem,1.4vw,1.25rem);line-height:1.55;color:rgba(255,255,255,0.7);font-weight:400;max-width:560px;margin-bottom:4.5rem}
 .hero-stats-row{display:flex;gap:3.5rem;margin-bottom:4rem;flex-wrap:wrap;align-items:flex-end;padding-top:2.5rem;border-top:1px solid rgba(255,255,255,0.08);max-width:760px}
-.hero-stat{display:flex;flex-direction:column;gap:0.35rem}
-.hero-stat .num{font-family:var(--font-serif);font-size:1.85rem;font-weight:400;color:#fff;line-height:1;font-style:italic}
+.hero-stat{display:flex;flex-direction:column;gap:0.4rem}
+.hero-stat .num{font-family:var(--font-heading);font-size:1.85rem;font-weight:700;color:#fff;line-height:1;letter-spacing:-0.02em}
 .hero-stat .lbl{font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--muted)}
 .hero-cta-row-clean{display:flex;flex-wrap:wrap;align-items:center;gap:2rem}
-.hero-cta-row-clean .tagged{font-family:var(--font-serif);font-style:italic;font-size:0.95rem;color:var(--muted)}
-.hero-colophon{position:absolute;bottom:2.5rem;right:3rem;font-family:var(--font-serif);font-size:0.85rem;color:rgba(255,255,255,0.7);text-align:right;line-height:1.45;letter-spacing:0;z-index:3}
-.hero-colophon .label{font-family:var(--font-mono);font-style:normal;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.25em;color:var(--subtle);display:block;margin-bottom:0.4rem}
-.hero-colophon strong{font-style:italic;font-weight:400;color:#fff}
+.hero-cta-row-clean .tagged{font-family:var(--font-body);font-weight:400;font-size:0.92rem;color:var(--muted)}
+.hero-colophon{position:absolute;bottom:2.5rem;right:3rem;font-family:var(--font-body);font-size:0.85rem;color:rgba(255,255,255,0.78);text-align:right;line-height:1.5;z-index:3}
+.hero-colophon .label{font-family:var(--font-mono);font-size:0.55rem;text-transform:uppercase;letter-spacing:0.25em;color:var(--subtle);display:block;margin-bottom:0.4rem}
+.hero-colophon strong{font-family:var(--font-heading);font-weight:600;color:#fff}
 
 /* ===== BUTTONS ===== */
 .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.95rem 2rem;border-radius:100px;font-family:var(--font-heading);font-weight:600;font-size:0.95rem;cursor:pointer;border:none;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);white-space:nowrap}
@@ -783,7 +783,7 @@ function tpl_audit() {
             <span class="status-pill danger"><span class="dot danger"></span>${dangerCount} CRITICAL</span>
             <span class="status-pill warn"><span class="dot warn"></span>${warnCount} WARNINGS</span>
           </div>
-          <div style="font-family:var(--font-serif);font-style:italic;color:var(--accent);font-size:1rem;margin-top:1rem;text-align:center;line-height:1.4">Don't worry. We fix all of this.</div>
+          <div style="font-family:var(--font-heading);font-weight:600;color:var(--accent);font-size:1rem;margin-top:1rem;text-align:center;line-height:1.4;letter-spacing:-0.01em">Don't worry. We fix all of this.</div>
         </div>
 
         <div class="cell c-7" style="padding:1.4rem">
