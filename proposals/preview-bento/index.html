@@ -153,8 +153,24 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 /* ===== AUDIT ===== */
 .audit-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
 .audit-screenshot-cell{grid-column:span 7;grid-row:span 2;padding:0;overflow:hidden;background:#0A0A09}
-.audit-screenshot{position:relative;width:100%;height:100%;min-height:420px;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);display:flex;align-items:center;justify-content:center;color:var(--subtle);font-family:var(--font-mono);font-size:0.75rem}
-.audit-screenshot .placeholder-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:30px 30px}
+.audit-screenshot{position:relative;width:100%;height:100%;min-height:420px;background:linear-gradient(135deg,#141414,#0a0a0a);display:flex;align-items:center;justify-content:center;color:var(--subtle);font-family:var(--font-mono);font-size:0.75rem}
+.audit-screenshot .placeholder-grid{position:absolute;inset:38px 0 0 0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:40px 40px;opacity:0.6}
+.audit-screenshot .site-skel{position:absolute;inset:38px 0 38px 0;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:1.1rem;pointer-events:none}
+.site-skel-nav{display:flex;align-items:center;justify-content:space-between;padding-bottom:0.85rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.site-skel-nav .logo{width:90px;height:14px;background:rgba(255,255,255,0.18);border-radius:3px}
+.site-skel-nav .nav-items{display:flex;gap:0.7rem}
+.site-skel-nav .nav-items span{width:46px;height:8px;background:rgba(255,255,255,0.08);border-radius:3px}
+.site-skel-hero{margin-top:0.4rem;display:flex;flex-direction:column;gap:0.6rem}
+.site-skel-hero .h1{width:78%;height:22px;background:rgba(255,255,255,0.16);border-radius:4px}
+.site-skel-hero .h1-2{width:54%;height:22px;background:rgba(255,255,255,0.16);border-radius:4px}
+.site-skel-hero .sub{width:60%;height:8px;background:rgba(255,255,255,0.08);border-radius:3px;margin-top:0.4rem}
+.site-skel-hero .sub-2{width:48%;height:8px;background:rgba(255,255,255,0.08);border-radius:3px}
+.site-skel-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:auto}
+.site-skel-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:0.85rem;display:flex;flex-direction:column;gap:0.45rem;min-height:70px}
+.site-skel-card .ico{width:18px;height:18px;background:rgba(255,255,255,0.18);border-radius:4px}
+.site-skel-card .ttl{width:70%;height:8px;background:rgba(255,255,255,0.14);border-radius:3px;margin-top:0.3rem}
+.site-skel-card .ln{width:90%;height:5px;background:rgba(255,255,255,0.06);border-radius:3px}
+.site-skel-card .ln-2{width:65%;height:5px;background:rgba(255,255,255,0.06);border-radius:3px}
 .audit-screenshot .browser-bar-mini{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:0.4rem;padding:0.6rem 0.9rem;background:rgba(0,0,0,0.6);border-bottom:1px solid var(--border);z-index:2}
 .audit-screenshot .dot-rgba{width:8px;height:8px;border-radius:50%}
 .audit-screenshot .url-bar{flex:1;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);background:rgba(255,255,255,0.04);padding:0.2rem 0.6rem;border-radius:4px;margin-left:0.4rem}
@@ -595,7 +611,7 @@ const CONFIG = {
         name: "Dr. SW Clinics",
         industry: "Healthcare / Aesthetic Medicine",
         hero_metric: "20M+", hero_metric_label: "Impressions",
-        sub_metrics: ["11.58x growth", "981K followers", "Harley Street, London"],
+        sub_metrics: ["11.58x growth", "981K followers", "6 press features"],
         story: ["Dr. Sherif Wakil is one of Europe's leading cosmetic practitioners. Strong reputation, limited digital growth.", "TGE's approach: 'Less Is More.' Premium content matching brand positioning. Quality over quantity.", "Result: 20M+ impressions, verified, packed booking calendar. As seen in Daily Mail, Sky, The Sun."],
         before: "Strong reputation, limited digital presence",
         after: "20M+ impressions, verified, packed bookings",
@@ -760,6 +776,23 @@ function tpl_audit() {
               <span class="dot-rgba" style="background:#22C55E"></span>
               <span class="url-bar">https://${escapeHTML(p.website)}</span>
             </div>
+            <div class="site-skel">
+              <div class="site-skel-nav">
+                <div class="logo"></div>
+                <div class="nav-items"><span></span><span></span><span></span><span></span></div>
+              </div>
+              <div class="site-skel-hero">
+                <div class="h1"></div>
+                <div class="h1-2"></div>
+                <div class="sub"></div>
+                <div class="sub-2"></div>
+              </div>
+              <div class="site-skel-cards">
+                <div class="site-skel-card"><div class="ico"></div><div class="ttl"></div><div class="ln"></div><div class="ln-2"></div></div>
+                <div class="site-skel-card"><div class="ico"></div><div class="ttl"></div><div class="ln"></div><div class="ln-2"></div></div>
+                <div class="site-skel-card"><div class="ico"></div><div class="ttl"></div><div class="ln"></div><div class="ln-2"></div></div>
+              </div>
+            </div>
             <div class="canvas">${dots}</div>
             <div style="position:absolute;bottom:1rem;left:1rem;right:1rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--subtle);display:flex;justify-content:space-between">
               <span>screenshot.png</span>
@@ -783,7 +816,7 @@ function tpl_audit() {
             <span class="status-pill danger"><span class="dot danger"></span>${dangerCount} CRITICAL</span>
             <span class="status-pill warn"><span class="dot warn"></span>${warnCount} WARNINGS</span>
           </div>
-          <div style="font-family:var(--font-heading);font-weight:600;color:var(--accent);font-size:1rem;margin-top:1rem;text-align:center;line-height:1.4;letter-spacing:-0.01em">Don't worry. We fix all of this.</div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);margin-top:1rem;text-align:center;line-height:1.5;letter-spacing:0.06em;text-transform:uppercase">All 5 issues addressed in the 30-day plan below</div>
         </div>
 
         <div class="cell c-7" style="padding:1.4rem">
@@ -853,7 +886,7 @@ function tpl_competitors() {
 
   const gaps = c.gaps.map((g, i) => `
     <div class="cell gap-cell">
-      <div class="gap-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="cell-eyebrow"><span>COMPETITOR GAP // ${String(i+1).padStart(2,'0')}</span><span class="right" style="color:var(--danger)">UNADDRESSED</span></div>
       <div class="gap-title">${escapeHTML(g.title)}</div>
       <div class="gap-desc">${escapeHTML(g.description)}</div>
     </div>`).join('');
@@ -963,7 +996,7 @@ function tpl_roadmap() {
         </div>
         ${weekCells}
         <div class="cell roadmap-total-cell">
-          <div class="metric metric-xl" style="color:var(--accent)" data-counter="${total}" data-suffix="+">0+</div>
+          <div class="metric metric-xl" style="color:var(--accent)" data-counter="${total}">0</div>
           <p class="text-muted">deliverables in your first month</p>
         </div>
       </div>
@@ -1241,7 +1274,7 @@ function tpl_system() {
     { num: '4', label: 'ad networks', bar: 80 },
     { num: '24/7', label: 'auto-route', bar: 100 },
     { num: '5 min', label: 'response SLA', bar: 96 },
-    { num: 'WK', label: 'reporting cadence', bar: 100 }
+    { num: 'Weekly', label: 'reports + reviews', bar: 100 }
   ];
   const tones = ['accent','','accent','success','warning','accent'];
 
