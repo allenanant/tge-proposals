@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth Dashboard | The Growth Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:#0D0D0C;color:#FFFFFF;font-family:'Hanken Grotesk',sans-serif;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+/* ===== TOKENS ===== */
+:root{
+  --bg:#0D0D0C;--bg-2:#0A0A09;
+  --surface:#141414;--surface-2:#191919;--surface-3:#222222;--surface-glass:rgba(22,22,22,0.55);
+  --accent:#C069DD;--accent-glow:#9B3FC7;--accent-bright:#D48EF0;
+  --success:#22C55E;--success-soft:rgba(34,197,94,0.08);
+  --warning:#F59E0B;--warning-soft:rgba(245,158,11,0.08);
+  --danger:#EF4444;--danger-soft:rgba(239,68,68,0.08);
+  --info:#38BDF8;--info-soft:rgba(56,189,248,0.08);
+  --text:#FFFFFF;--muted:#888888;--subtle:#555555;
+  --border:rgba(255,255,255,0.06);--border-strong:rgba(255,255,255,0.10);--border-glow:rgba(192,105,221,0.18);
+  --font-heading:'Outfit',sans-serif;
+  --font-body:'Hanken Grotesk',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --font-serif:'Instrument Serif',serif;
+  --radius:1.25rem;
+  --radius-lg:2rem;
+  --radius-xl:2.5rem;
+  --shadow-card:0 4px 24px rgba(0,0,0,0.3),0 1px 4px rgba(0,0,0,0.2);
+  --shadow-hover:0 12px 48px rgba(0,0,0,0.4),0 4px 12px rgba(0,0,0,0.3);
+  --glow-accent:0 0 60px rgba(192,105,221,0.18);
+}
+
+/* ===== SCROLL PROGRESS ===== */
+#scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-bright),var(--accent-glow));width:0;z-index:10000;box-shadow:0 0 12px var(--accent)}
+
+/* ===== NOISE OVERLAY ===== */
+#noise-overlay{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.03;mix-blend-mode:overlay}
+
+/* ===== BG MESH ===== */
+.bg-mesh{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(900px 600px at 90% -10%, rgba(192,105,221,0.10), transparent 60%),
+  radial-gradient(700px 500px at -10% 30%, rgba(155,63,199,0.08), transparent 60%),
+  radial-gradient(600px 400px at 50% 110%, rgba(56,189,248,0.04), transparent 60%);
+}
+
+/* ===== LAYOUT ===== */
+.container{max-width:1280px;margin:0 auto;padding:0 1.75rem}
+.section{padding:7rem 0;position:relative}
+.section.tight{padding:5rem 0}
+.section-label{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.25em;color:var(--accent);margin-bottom:0.75rem;display:inline-flex;align-items:center;gap:0.6rem}
+.section-label::before{content:'';width:18px;height:1px;background:var(--accent);display:inline-block}
+.section-headline{font-family:var(--font-heading);font-size:clamp(2rem,4.6vw,3.4rem);font-weight:700;line-height:1.1;margin-bottom:1rem;letter-spacing:-0.025em}
+.section-sub{color:var(--muted);font-size:1.05rem;max-width:680px;margin-bottom:3rem}
+.section-headline .accent{color:var(--accent)}
+.drama{font-family:var(--font-serif);font-style:italic;color:var(--accent);font-size:clamp(1.2rem,2.2vw,1.6rem);margin-top:2.5rem;display:block}
+
+/* ===== BENTO PRIMITIVES ===== */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.bento-rows-180 .cell{min-height:180px}
+.bento-rows-220 .cell{min-height:220px}
+.cell{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;position:relative;overflow:hidden;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1),border-color 0.4s,box-shadow 0.4s}
+.cell:hover{transform:translateY(-3px);border-color:var(--border-strong);box-shadow:var(--shadow-hover)}
+.cell.flat:hover{transform:none;box-shadow:none}
+.cell.accent{background:linear-gradient(140deg,rgba(192,105,221,0.10),rgba(192,105,221,0.02) 60%,transparent);border-color:var(--border-glow)}
+.cell.success{background:linear-gradient(140deg,rgba(34,197,94,0.10),rgba(34,197,94,0.02) 60%,transparent);border-color:rgba(34,197,94,0.18)}
+.cell.warning{background:linear-gradient(140deg,rgba(245,158,11,0.10),rgba(245,158,11,0.02) 60%,transparent);border-color:rgba(245,158,11,0.18)}
+.cell.danger{background:linear-gradient(140deg,rgba(239,68,68,0.10),rgba(239,68,68,0.02) 60%,transparent);border-color:rgba(239,68,68,0.18)}
+.cell.dark{background:#0F0F0E;border-color:var(--border)}
+.cell.image{padding:0}
+.cell.image img{width:100%;height:100%;object-fit:cover;display:block;border-radius:calc(var(--radius) - 1px)}
+
+/* span helpers */
+.c-3{grid-column:span 3}.c-4{grid-column:span 4}.c-5{grid-column:span 5}.c-6{grid-column:span 6}.c-7{grid-column:span 7}.c-8{grid-column:span 8}.c-9{grid-column:span 9}.c-12{grid-column:span 12}
+.r-2{grid-row:span 2}.r-3{grid-row:span 3}
+
+/* ===== STATUS PILL / DOT ===== */
+.status-pill{display:inline-flex;align-items:center;gap:0.5rem;padding:0.35rem 0.85rem;border-radius:100px;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.05em;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted)}
+.status-pill.live{color:var(--success);background:var(--success-soft);border-color:rgba(34,197,94,0.18)}
+.status-pill.warn{color:var(--warning);background:var(--warning-soft);border-color:rgba(245,158,11,0.18)}
+.status-pill.danger{color:var(--danger);background:var(--danger-soft);border-color:rgba(239,68,68,0.18)}
+.status-pill.accent{color:var(--accent);background:rgba(192,105,221,0.06);border-color:rgba(192,105,221,0.18)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--muted)}
+.dot.live{background:var(--success);box-shadow:0 0 10px rgba(34,197,94,0.5);animation:pulse 1.8s ease-in-out infinite}
+.dot.warn{background:var(--warning);box-shadow:0 0 10px rgba(245,158,11,0.5)}
+.dot.danger{background:var(--danger);box-shadow:0 0 10px rgba(239,68,68,0.5)}
+.dot.accent{background:var(--accent);box-shadow:0 0 10px rgba(192,105,221,0.5)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.55;transform:scale(0.85)}}
+
+/* ===== METRIC TYPOGRAPHY ===== */
+.metric{font-family:var(--font-mono);font-weight:700;line-height:0.95;letter-spacing:-0.02em}
+.metric-xl{font-size:clamp(3rem,7vw,5rem)}
+.metric-lg{font-size:clamp(2rem,4vw,3rem)}
+.metric-md{font-size:clamp(1.4rem,2.4vw,1.9rem)}
+.metric-sm{font-size:1.1rem}
+.metric-label{font-family:var(--font-mono);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);margin-top:0.6rem}
+.cell-eyebrow{font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--subtle);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between}
+.cell-eyebrow .right{color:var(--muted)}
+
+/* ===== SPARKLINE ===== */
+.sparkline{width:100%;height:60px;display:block;margin-top:0.6rem}
+.sparkline path.area{fill:url(#spark-grad);opacity:0.55}
+.sparkline path.line{stroke-width:2;fill:none}
+.sparkline circle{fill:#fff}
+
+/* ===== PROGRESS BAR (HORIZONTAL) ===== */
+.progress{position:relative;height:6px;border-radius:100px;background:rgba(255,255,255,0.06);overflow:hidden;margin-top:0.6rem}
+.progress > span{position:absolute;inset:0;border-radius:100px;background:linear-gradient(90deg,var(--accent),var(--accent-bright));width:0;transition:width 1.4s cubic-bezier(0.16,1,0.3,1)}
+.progress.success > span{background:linear-gradient(90deg,var(--success),#86EFAC)}
+.progress.warning > span{background:linear-gradient(90deg,var(--warning),#FCD34D)}
+.progress.danger > span{background:linear-gradient(90deg,var(--danger),#FCA5A5)}
+
+/* ===== HERO ===== */
+#hero{min-height:100dvh;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:2rem;position:relative;overflow:hidden}
+#hero::before{content:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%)}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.35;animation:float 16s ease-in-out infinite}
+.hero-blob.b1{width:560px;height:560px;background:var(--accent);top:-180px;right:-120px}
+.hero-blob.b2{width:400px;height:400px;background:var(--accent-glow);bottom:-100px;left:-80px;animation-delay:5s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.06)}66%{transform:translate(-20px,20px) scale(0.96)}}
+.hero-statusbar{position:absolute;top:1.5rem;left:1.5rem;right:1.5rem;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;z-index:3}
+.hero-statusbar .left,.hero-statusbar .right{display:flex;align-items:center;gap:0.75rem}
+.hero-content{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto}
+.hero-eyebrow{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.3em;color:var(--muted);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem}
+.hero-eyebrow .pulse{width:8px;height:8px;border-radius:50%;background:var(--success);animation:pulse 1.8s ease-in-out infinite}
+.hero-company{font-family:var(--font-heading);font-size:clamp(3rem,11vw,9rem);font-weight:800;line-height:0.92;letter-spacing:-0.045em;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1.25rem;max-width:1100px}
+.hero-subline{font-size:clamp(1rem,1.6vw,1.2rem);color:var(--muted);max-width:620px;line-height:1.7;font-weight:300;margin-bottom:2.5rem}
+.hero-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.75rem;margin-bottom:2.5rem;max-width:1100px}
+.hero-bento .cell{padding:1.1rem;min-height:auto}
+.hero-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.hero-meta{position:absolute;bottom:1.5rem;right:1.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--subtle);text-align:right;letter-spacing:0.05em}
+.scroll-indicator{position:absolute;bottom:1.75rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.4rem;color:var(--subtle);font-size:0.6rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.2em}
+.scroll-chevron{animation:bounce 2.5s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(8px);opacity:0.5}}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.95rem 2rem;border-radius:100px;font-family:var(--font-heading);font-weight:600;font-size:0.95rem;cursor:pointer;border:none;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-glow));color:#fff;box-shadow:0 4px 24px rgba(192,105,221,0.3),inset 0 1px 0 rgba(255,255,255,0.1)}
+.btn-primary:hover{transform:scale(1.04) translateY(-2px);box-shadow:0 8px 40px rgba(192,105,221,0.5),inset 0 1px 0 rgba(255,255,255,0.1)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border-strong)}
+.btn-outline:hover{border-color:var(--accent);transform:scale(1.03)}
+.btn-mono{font-family:var(--font-mono);font-weight:500;letter-spacing:0.03em}
+
+/* ===== AUDIT ===== */
+.audit-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.audit-screenshot-cell{grid-column:span 7;grid-row:span 2;padding:0;overflow:hidden;background:#0A0A09}
+.audit-screenshot{position:relative;width:100%;height:100%;min-height:420px;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);display:flex;align-items:center;justify-content:center;color:var(--subtle);font-family:var(--font-mono);font-size:0.75rem}
+.audit-screenshot .placeholder-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:30px 30px}
+.audit-screenshot .browser-bar-mini{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:0.4rem;padding:0.6rem 0.9rem;background:rgba(0,0,0,0.6);border-bottom:1px solid var(--border);z-index:2}
+.audit-screenshot .dot-rgba{width:8px;height:8px;border-radius:50%}
+.audit-screenshot .url-bar{flex:1;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);background:rgba(255,255,255,0.04);padding:0.2rem 0.6rem;border-radius:4px;margin-left:0.4rem}
+.audit-screenshot .canvas{position:absolute;inset:38px 0 0 0}
+.audit-dot{position:absolute;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;font-family:var(--font-mono);cursor:pointer;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);z-index:3}
+.audit-dot:hover{transform:scale(1.4)}
+.audit-dot.warning{background:var(--warning);color:#000;box-shadow:0 0 16px rgba(245,158,11,0.5)}
+.audit-dot.danger{background:var(--danger);color:#fff;box-shadow:0 0 16px rgba(239,68,68,0.5)}
+.audit-dot::after{content:'';position:absolute;inset:-6px;border:1px solid currentColor;border-radius:50%;opacity:0.4;animation:ping 2s ease-out infinite}
+@keyframes ping{0%{transform:scale(0.8);opacity:0.7}100%{transform:scale(1.6);opacity:0}}
+.audit-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface-2);border:1px solid var(--border);border-radius:0.6rem;padding:0.5rem 0.85rem;font-size:0.7rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:10}
+.audit-dot:hover .audit-tooltip{opacity:1}
+
+/* ring score */
+.ring-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:0.5rem}
+.ring{position:relative;width:140px;height:140px}
+.ring svg{transform:rotate(-90deg);width:100%;height:100%}
+.ring .ring-bg{stroke:rgba(255,255,255,0.06);fill:none;stroke-width:10}
+.ring .ring-fg{stroke:url(#ring-grad);fill:none;stroke-width:10;stroke-linecap:round;stroke-dasharray:0 1000;transition:stroke-dasharray 1.5s cubic-bezier(0.16,1,0.3,1)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-family:var(--font-mono);font-size:2.2rem;font-weight:700;line-height:1}
+.ring-label{font-family:var(--font-mono);font-size:0.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.18em;margin-top:0.2rem}
+
+.audit-finding-row{display:flex;align-items:flex-start;gap:0.7rem;padding:0.55rem 0;border-bottom:1px dashed var(--border);font-size:0.85rem;color:var(--muted);line-height:1.4}
+.audit-finding-row:last-child{border-bottom:none}
+.audit-finding-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;font-family:var(--font-mono);margin-top:1px}
+.audit-finding-num.danger{background:var(--danger);color:#fff}
+.audit-finding-num.warning{background:var(--warning);color:#000}
+.audit-finding-sev{margin-left:auto;font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.15em}
+.audit-finding-sev.danger{color:var(--danger)}
+.audit-finding-sev.warning{color:var(--warning)}
+
+/* ===== PROBLEMS BENTO ===== */
+.problems-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.problem-cell{padding:1.6rem;display:flex;flex-direction:column;justify-content:space-between;min-height:240px;position:relative;overflow:hidden}
+.problem-cell .pcell-num{position:absolute;top:1rem;right:1.25rem;font-family:var(--font-mono);font-size:5rem;font-weight:800;line-height:1;color:rgba(255,255,255,0.04);letter-spacing:-0.03em;pointer-events:none}
+.problem-cell .pcell-statement{font-family:var(--font-heading);font-size:1.1rem;font-weight:600;line-height:1.35;letter-spacing:-0.01em;margin-bottom:0.5rem;position:relative;z-index:1}
+.problem-cell .pcell-context{font-size:0.85rem;color:var(--muted);line-height:1.55;margin-bottom:1rem;position:relative;z-index:1}
+.problem-cell .pcell-data{font-family:var(--font-mono);font-size:0.78rem;color:var(--warning);background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);padding:0.45rem 0.85rem;border-radius:100px;display:inline-flex;align-items:center;gap:0.5rem;align-self:flex-start;position:relative;z-index:1}
+.problem-cell.danger .pcell-data{color:var(--danger);background:var(--danger-soft);border-color:rgba(239,68,68,0.15)}
+
+/* ===== COMPETITORS ===== */
+.comp-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.comp-stack-cell{padding:0;overflow:hidden}
+.comp-stack-cell .head{display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:0;padding:0.85rem 1.25rem;background:rgba(0,0,0,0.45);border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.15em}
+.comp-stack-cell .head .you{color:var(--accent)}
+.comp-stack-cell .row{display:grid;grid-template-columns:1.6fr repeat(3,1fr);align-items:center;padding:0.7rem 1.25rem;border-bottom:1px solid var(--border);font-size:0.85rem}
+.comp-stack-cell .row:last-child{border-bottom:none}
+.comp-stack-cell .row .feat{color:var(--text);font-weight:500}
+.comp-stack-cell .row .col{text-align:center;font-family:var(--font-mono);font-size:0.85rem}
+.comp-stack-cell .row .col.you{background:rgba(192,105,221,0.05)}
+.check{color:var(--success);font-weight:700;font-size:1rem;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--success-soft);border:1px solid rgba(34,197,94,0.18)}
+.cross{color:rgba(239,68,68,0.6);font-weight:700;font-size:1rem;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--danger-soft);border:1px solid rgba(239,68,68,0.15)}
+
+.comp-coverage-cell .donut{position:relative;width:100%;display:flex;justify-content:center;margin:0.5rem 0 1rem}
+.comp-coverage-cell .donut svg{width:140px;height:140px;transform:rotate(-90deg)}
+.comp-coverage-cell .donut .seg{fill:none;stroke-width:14}
+.comp-coverage-cell .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.coverage-legend{display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;color:var(--muted);font-family:var(--font-mono)}
+.coverage-legend .lg-row{display:flex;align-items:center;gap:0.55rem}
+.coverage-legend .lg-row .swatch{width:10px;height:10px;border-radius:3px}
+
+.gap-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem;margin-top:1.5rem}
+.gap-cell{padding:1.5rem;grid-column:span 4}
+.gap-num{font-family:var(--font-mono);font-size:1.5rem;font-weight:700;color:var(--danger);margin-bottom:0.4rem}
+.gap-title{font-family:var(--font-heading);font-weight:600;font-size:1rem;margin-bottom:0.4rem}
+.gap-desc{color:var(--muted);font-size:0.85rem;line-height:1.55}
+
+/* ===== ROADMAP TIMELINE ===== */
+.roadmap-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.timeline-cell{grid-column:span 12;padding:1.5rem 1.25rem 1rem;background:linear-gradient(180deg,rgba(192,105,221,0.06),transparent);border:1px solid var(--border-glow)}
+.timeline-bar{position:relative;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 1rem 0.5rem}
+.timeline-bar::before{content:'';position:absolute;top:calc(1.5rem + 8px);left:1rem;right:1rem;height:2px;background:linear-gradient(90deg,var(--accent),var(--success),var(--warning),#8B5CF6);opacity:0.35;z-index:0}
+.tl-step{position:relative;z-index:1;text-align:center;flex:1}
+.tl-dot{width:18px;height:18px;border-radius:50%;margin:0 auto 0.5rem;border:3px solid var(--bg);box-shadow:0 0 0 1px var(--border)}
+.tl-dot.w1{background:var(--accent)}
+.tl-dot.w2{background:var(--success)}
+.tl-dot.w3{background:var(--warning)}
+.tl-dot.w4{background:#8B5CF6}
+.tl-week{font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.18em}
+.tl-title{font-family:var(--font-heading);font-weight:600;font-size:0.9rem;margin-top:0.2rem}
+.week-cell{grid-column:span 3;padding:1.4rem;display:flex;flex-direction:column}
+.week-pill{display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);background:rgba(255,255,255,0.04);padding:0.3rem 0.7rem;border-radius:100px;align-self:flex-start;margin-bottom:0.85rem}
+.week-pill .dot{width:6px;height:6px}
+.week-title{font-family:var(--font-heading);font-weight:600;font-size:1rem;margin-bottom:0.85rem}
+.week-items{list-style:none;display:flex;flex-direction:column;gap:0.4rem;font-size:0.78rem;color:var(--muted);margin-bottom:1rem}
+.week-items li{padding-left:0.9rem;position:relative;line-height:1.4}
+.week-items li::before{content:'+';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-weight:600}
+.week-count{font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);background:rgba(192,105,221,0.08);padding:0.3rem 0.75rem;border-radius:100px;align-self:flex-start;margin-top:auto}
+.roadmap-total-cell{grid-column:span 12;text-align:center;padding:2.5rem 1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;background:radial-gradient(circle at 50% 50%,rgba(192,105,221,0.08),transparent 70%);border:1px solid var(--border-glow)}
+
+/* ===== STRATEGY CARDS ===== */
+.strategy-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.strategy-cell{grid-column:span 12;padding:2.4rem;display:grid;grid-template-columns:auto 1fr 240px;gap:2rem;align-items:center;position:relative;overflow:hidden}
+.strategy-bg-num{position:absolute;top:-30px;right:1rem;font-family:var(--font-heading);font-size:11rem;font-weight:900;color:rgba(255,255,255,0.025);line-height:1;pointer-events:none;letter-spacing:-0.04em}
+.strategy-num-block{font-family:var(--font-mono);font-size:1rem;color:var(--accent);font-weight:600}
+.strategy-num-block .lg{font-family:var(--font-heading);font-size:3rem;font-weight:800;color:var(--text);display:block;line-height:1;margin-top:0.25rem;letter-spacing:-0.03em}
+.strategy-body .strategy-title{font-family:var(--font-heading);font-size:1.5rem;font-weight:700;margin-bottom:0.85rem;letter-spacing:-0.015em}
+.strategy-body .strategy-bullets{list-style:none;display:flex;flex-direction:column;gap:0.4rem}
+.strategy-body .strategy-bullets li{font-size:0.9rem;color:var(--muted);padding-left:1rem;position:relative}
+.strategy-body .strategy-bullets li::before{content:'+';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-weight:600}
+.strategy-result{display:flex;flex-direction:column;align-items:flex-end;gap:0.6rem;padding:1.25rem;border-radius:1rem;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15)}
+.strategy-result .label{font-family:var(--font-mono);font-size:0.6rem;color:var(--success);text-transform:uppercase;letter-spacing:0.18em}
+.strategy-result .val{font-family:var(--font-heading);font-size:1.1rem;font-weight:700;color:var(--text);text-align:right;line-height:1.3}
+
+/* ===== PROOF WALL BENTO ===== */
+.proof-bento{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:160px;gap:0.85rem}
+.proof-bento .cell{display:flex;flex-direction:column;justify-content:space-between;padding:1.4rem}
+.proof-bento .cell.center{justify-content:center;align-items:flex-start}
+
+/* ===== CASE STUDIES ===== */
+.case-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.case-hero-cell{grid-column:span 5;grid-row:span 3;padding:0;overflow:hidden;background:#0A0A09}
+.case-hero-cell .phone{padding:1.5rem;display:flex;align-items:center;justify-content:center;height:100%;min-height:480px}
+.phone-frame{background:#0F0F0E;border-radius:2rem;padding:8px;border:2px solid rgba(255,255,255,0.08);max-width:280px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.phone-screen{border-radius:1.6rem;overflow:hidden;background:var(--surface-2);aspect-ratio:9/19;position:relative;display:flex;flex-direction:column}
+.phone-screen .pf-stub{flex:1;background:linear-gradient(160deg,#1a1a1a,#0a0a0a);display:flex;align-items:center;justify-content:center;color:var(--subtle);font-family:var(--font-mono);font-size:0.65rem;text-align:center;padding:1rem}
+.phone-screen img{width:100%;height:100%;object-fit:cover}
+
+.case-metric-cell{padding:1.6rem;display:flex;flex-direction:column;justify-content:space-between}
+.case-metric-cell .industry{font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.18em}
+.case-metric-cell h3{font-family:var(--font-heading);font-size:1.2rem;font-weight:700;margin:0.4rem 0 0.85rem}
+.case-metric-cell .case-hero-num{font-family:var(--font-mono);font-size:clamp(2.5rem,5vw,3.6rem);font-weight:700;color:var(--accent);line-height:1}
+.case-metric-cell .case-hero-num-label{font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.15em;margin-top:0.4rem}
+
+.case-story-cell{padding:1.6rem}
+.case-story-cell p{color:var(--muted);font-size:0.85rem;line-height:1.65;margin-bottom:0.7rem}
+.case-story-cell p:last-child{margin-bottom:0}
+
+.case-ba-cell{padding:1.4rem;display:flex;flex-direction:column;gap:0.85rem;justify-content:center}
+.case-ba-row{padding:0.85rem 1rem;border-radius:0.85rem;font-size:0.78rem;line-height:1.5}
+.case-ba-row.before{background:var(--danger-soft);border:1px solid rgba(239,68,68,0.15);color:rgba(239,68,68,0.9)}
+.case-ba-row.after{background:var(--success-soft);border:1px solid rgba(34,197,94,0.15);color:rgba(34,197,94,0.95)}
+.case-ba-row .ba-label{font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.18em;opacity:0.7;margin-bottom:0.25rem;display:block}
+
+.case-media-cell{padding:1.4rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-content:flex-start}
+.case-media-cell .label{font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.18em;width:100%;margin-bottom:0.5rem}
+
+/* ===== DASHBOARDS ===== */
+.dash-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.dash-img-cell{padding:0;overflow:hidden;background:#0A0A09;display:flex;align-items:center;justify-content:center;color:var(--subtle);font-family:var(--font-mono);font-size:0.7rem;min-height:240px;position:relative}
+.dash-img-cell .placeholder-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:30px 30px}
+.dash-img-cell img{width:100%;height:100%;object-fit:cover}
+.dash-callout-cell{display:flex;flex-direction:column;justify-content:center}
+
+/* ===== SYSTEM PILLARS BENTO ===== */
+.system-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.pillar-cell{grid-column:span 4;padding:1.6rem;display:flex;flex-direction:column;gap:0.6rem;min-height:220px;position:relative;overflow:hidden}
+.pillar-cell .pillar-num{font-family:var(--font-mono);font-size:0.65rem;color:var(--accent);letter-spacing:0.15em}
+.pillar-cell .pillar-title{font-family:var(--font-heading);font-size:1.1rem;font-weight:700;letter-spacing:-0.01em}
+.pillar-cell .pillar-desc{color:var(--muted);font-size:0.85rem;line-height:1.55;flex:1}
+.pillar-cell .pillar-stat{display:flex;align-items:baseline;gap:0.5rem;font-family:var(--font-mono);margin-top:auto}
+.pillar-cell .pillar-stat .num{font-size:1.5rem;font-weight:700;color:var(--text)}
+.pillar-cell .pillar-stat .lbl{font-size:0.7rem;color:var(--muted)}
+.pillar-cell .pillar-bar{height:5px;border-radius:100px;background:rgba(255,255,255,0.05);overflow:hidden;margin-top:0.5rem}
+.pillar-cell .pillar-bar > span{display:block;height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent),var(--accent-bright));width:0;transition:width 1.4s cubic-bezier(0.16,1,0.3,1)}
+
+/* automation grid */
+.auto-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem;margin-top:2rem}
+.auto-cell{grid-column:span 3;padding:1.4rem;display:flex;flex-direction:column;gap:0.6rem;min-height:180px}
+.auto-cell .auto-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(192,105,221,0.08);border:1px solid var(--border-glow);color:var(--accent)}
+.auto-cell .auto-icon i{width:16px;height:16px}
+.auto-title{font-family:var(--font-heading);font-weight:600;font-size:0.95rem}
+.auto-desc{color:var(--muted);font-size:0.8rem;line-height:1.5;flex:1}
+.auto-stat{font-family:var(--font-mono);font-size:0.7rem;color:var(--success);background:var(--success-soft);padding:0.3rem 0.75rem;border-radius:100px;align-self:flex-start;border:1px solid rgba(34,197,94,0.15)}
+
+/* ===== CAMPAIGN ARCHITECTURE ===== */
+.camp-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.funnel-cell{grid-column:span 12;padding:2rem;display:flex;flex-direction:column;gap:0.7rem}
+.funnel-row{display:flex;align-items:center;gap:1.25rem;padding:1.1rem 1.5rem;border-radius:1rem;border:1px solid var(--border);background:linear-gradient(90deg,rgba(255,255,255,0.025),transparent)}
+.funnel-row .stage-num{font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);width:32px}
+.funnel-row .stage-name{font-family:var(--font-heading);font-weight:700;font-size:1.1rem;min-width:140px}
+.funnel-row .stage-desc{color:var(--muted);font-size:0.85rem;flex:1}
+.funnel-row .stage-pct{font-family:var(--font-mono);font-size:0.85rem;color:var(--accent)}
+.funnel-row.s1{background:linear-gradient(90deg,rgba(192,105,221,0.10),transparent);border-color:rgba(192,105,221,0.18)}
+.funnel-row.s2{background:linear-gradient(90deg,rgba(245,158,11,0.10),transparent);border-color:rgba(245,158,11,0.18);width:88%;margin-left:auto;margin-right:auto;align-self:center}
+.funnel-row.s3{background:linear-gradient(90deg,rgba(34,197,94,0.10),transparent);border-color:rgba(34,197,94,0.18);width:74%;margin-left:auto;margin-right:auto;align-self:center}
+
+.channel-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.7rem;margin-top:1.5rem}
+.channel-cell{grid-column:span 4;padding:1.1rem;display:flex;align-items:center;gap:0.85rem;border:1px solid var(--border)}
+.channel-cell.active{background:rgba(192,105,221,0.06);border-color:var(--border-glow);box-shadow:0 0 30px rgba(192,105,221,0.08)}
+.channel-cell .ch-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border)}
+.channel-cell.active .ch-icon{background:rgba(192,105,221,0.12);border-color:var(--border-glow);color:var(--accent)}
+.channel-cell .ch-icon i{width:16px;height:16px}
+.channel-cell .ch-name{font-family:var(--font-heading);font-weight:600;font-size:0.85rem}
+.channel-cell .ch-role{font-size:0.7rem;color:var(--muted);margin-top:0.15rem}
+.channel-cell .ch-status{margin-left:auto;font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--subtle)}
+.channel-cell.active .ch-status{color:var(--success)}
+
+/* ===== DELIVERABLES ===== */
+.deliverables-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.deliverable-cell{grid-column:span 4;padding:1.6rem;min-height:200px;display:flex;flex-direction:column;gap:0.7rem;position:relative;overflow:hidden}
+.del-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
+.del-icon i{width:18px;height:18px}
+.del-icon.reel{background:rgba(224,64,251,0.08);color:#E040FB;border-color:rgba(224,64,251,0.18)}
+.del-icon.ad{background:rgba(255,109,0,0.08);color:#FF6D00;border-color:rgba(255,109,0,0.18)}
+.del-icon.email{background:rgba(0,188,212,0.08);color:#00BCD4;border-color:rgba(0,188,212,0.18)}
+.del-icon.landing{background:rgba(192,105,221,0.08);color:var(--accent);border-color:var(--border-glow)}
+.del-icon.whatsapp{background:var(--success-soft);color:var(--success);border-color:rgba(34,197,94,0.18)}
+.del-icon.calendar{background:var(--warning-soft);color:var(--warning);border-color:rgba(245,158,11,0.18)}
+.del-platform{font-family:var(--font-mono);font-size:0.6rem;color:var(--subtle);text-transform:uppercase;letter-spacing:0.18em}
+.del-title{font-family:var(--font-heading);font-weight:600;font-size:1rem}
+.del-desc{font-size:0.85rem;color:var(--muted);line-height:1.55;flex:1}
+
+/* ===== FEATURES BENTO ===== */
+.features-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
+.feat-stack-cell{grid-column:span 6;padding:1.7rem;min-height:280px}
+.feat-stack-cell .head{display:flex;align-items:center;gap:0.7rem;margin-bottom:1.25rem}
+.feat-stack-cell .head .ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(192,105,221,0.08);border:1px solid var(--border-glow);color:var(--accent)}
+.feat-stack-cell .head .ic i{width:16px;height:16px}
+.feat-stack-cell .head .ttl{font-family:var(--font-heading);font-weight:700;font-size:1rem}
+.feat-stack-cell .head .ct{margin-left:auto;font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);background:rgba(192,105,221,0.06);border:1px solid rgba(192,105,221,0.15);padding:0.25rem 0.6rem;border-radius:100px}
+.feat-stack-cell ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0.45rem 1.25rem}
+.feat-stack-cell li{font-size:0.8rem;color:var(--muted);padding-left:1rem;position:relative;line-height:1.45}
+.feat-stack-cell li::before{content:'+';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-weight:600}
+
+.feat-counter-cell{grid-column:span 12;padding:2rem 2.5rem;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:2.5rem;background:radial-gradient(circle at 0% 50%,rgba(192,105,221,0.08),transparent 60%);border-color:var(--border-glow)}
+.feat-counter-cell .big{font-family:var(--font-mono);font-size:clamp(3rem,6vw,5rem);font-weight:800;color:var(--accent);line-height:1;letter-spacing:-0.03em}
+.feat-counter-cell p{color:var(--muted);font-size:1.05rem;line-height:1.55}
+
+/* ===== PRICING ===== */
+.pricing-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem;max-width:1100px;margin:0 auto}
+.price-cell{grid-column:span 6;padding:2.2rem;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.price-cell.recommended{border-color:var(--border-glow);box-shadow:0 0 50px rgba(192,105,221,0.08)}
+.price-cell.recommended::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-bright))}
+.price-badge{position:absolute;top:1.25rem;right:1.25rem;font-family:var(--font-mono);font-size:0.6rem;background:linear-gradient(135deg,var(--accent),var(--accent-glow));color:#fff;padding:0.3rem 0.7rem;border-radius:100px;letter-spacing:0.1em;text-transform:uppercase}
+.price-name{font-family:var(--font-heading);font-size:0.9rem;font-weight:600;color:var(--muted);margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.15em}
+.price-amount{font-family:var(--font-heading);font-size:clamp(2.4rem,4.5vw,3.2rem);font-weight:800;letter-spacing:-0.03em;line-height:1}
+.price-period{font-size:0.85rem;color:var(--subtle);margin:0.4rem 0 1.5rem}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.75rem;flex:1}
+.price-features li{font-size:0.85rem;color:var(--muted);display:flex;align-items:center;gap:0.55rem;line-height:1.45}
+.price-features li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px rgba(34,197,94,0.45);flex-shrink:0}
+
+.roi-cell{grid-column:span 12;margin-top:0.5rem;padding:1.75rem 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(192,105,221,0.04));border-color:rgba(34,197,94,0.18)}
+.roi-cell .roi-block{display:flex;flex-direction:column;gap:0.4rem;padding-right:1.25rem;border-right:1px solid var(--border)}
+.roi-cell .roi-block:last-child{border-right:none;padding-right:0}
+.roi-cell .roi-label{font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.15em}
+.roi-cell .roi-val{font-family:var(--font-mono);font-size:clamp(1.4rem,2.4vw,2rem);font-weight:700;letter-spacing:-0.02em}
+.roi-cell .roi-val.green{color:var(--success)}
+.roi-cell .roi-val.accent{color:var(--accent)}
+
+/* ===== CLOSE ===== */
+#close-section{text-align:center;padding:8rem 2rem 6rem}
+#close-section::before{content:none}
+.close-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);pointer-events:none}
+.close-headline{font-family:var(--font-heading);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-bottom:1rem;letter-spacing:-0.025em;line-height:1.15}
+.close-headline .accent{color:var(--accent)}
+.close-subline{color:var(--muted);font-size:1.1rem;margin-bottom:3rem;max-width:620px;margin-left:auto;margin-right:auto}
+.close-cta-row{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-bottom:3rem}
+.close-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem;max-width:900px;margin:0 auto 2rem}
+.close-contact{grid-column:span 4;padding:1.4rem;display:flex;flex-direction:column;gap:0.4rem;text-align:left}
+.close-contact .lbl{font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.18em}
+.close-contact .val{font-family:var(--font-heading);font-size:0.95rem;font-weight:500;color:var(--text);word-break:break-all}
+.close-footer{margin-top:3rem;display:flex;justify-content:center;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--subtle)}
+.close-footer .dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 1.8s ease-in-out infinite;box-shadow:0 0 8px rgba(34,197,94,0.5)}
+
+/* ===== UTILITIES ===== */
+.row{display:flex;align-items:center;gap:0.5rem}
+.flex-wrap{display:flex;flex-wrap:wrap;gap:0.4rem}
+.text-muted{color:var(--muted)}
+.text-success{color:var(--success)}
+.text-warning{color:var(--warning)}
+.text-danger{color:var(--danger)}
+.text-accent{color:var(--accent)}
+.mono{font-family:var(--font-mono)}
+.mt-2{margin-top:1rem}.mt-3{margin-top:1.5rem}.mt-4{margin-top:2rem}.mt-5{margin-top:2.5rem}
+.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:980px){
+  .c-3,.c-4,.c-5,.c-6,.c-7,.c-8,.c-9{grid-column:span 6}
+  .audit-screenshot-cell{grid-column:span 12;grid-row:span 1}
+  .week-cell{grid-column:span 6}
+  .strategy-cell{grid-template-columns:1fr;gap:1.25rem}
+  .strategy-result{align-items:flex-start}
+  .pillar-cell{grid-column:span 6}
+  .auto-cell{grid-column:span 6}
+  .channel-cell,.deliverable-cell,.gap-cell{grid-column:span 6}
+  .feat-stack-cell{grid-column:span 12}
+  .feat-stack-cell ul{grid-template-columns:1fr}
+  .feat-counter-cell{grid-template-columns:1fr;text-align:center;gap:1rem}
+  .price-cell{grid-column:span 12}
+  .roi-cell{grid-template-columns:repeat(2,1fr)}
+  .roi-cell .roi-block{border-right:none}
+  .close-contact{grid-column:span 12}
+  .case-hero-cell{grid-column:span 12;grid-row:auto}
+  .case-hero-cell .phone{min-height:380px}
+  .funnel-row.s2,.funnel-row.s3{width:100%;margin-left:0;margin-right:0}
+}
+@media (max-width:640px){
+  .section{padding:5rem 0}
+  .container{padding:0 1.25rem}
+  .c-3,.c-4,.c-5,.c-6,.c-7,.c-8,.c-9{grid-column:span 12}
+  .week-cell,.pillar-cell,.auto-cell,.channel-cell,.deliverable-cell,.gap-cell{grid-column:span 12}
+  .roi-cell{grid-template-columns:1fr}
+  .funnel-row{flex-wrap:wrap}
+  .funnel-row .stage-name{min-width:auto}
+  .comp-stack-cell .head,.comp-stack-cell .row{grid-template-columns:1fr 60px 60px 60px;font-size:0.75rem}
+  .hero-bento{grid-template-columns:1fr 1fr}
+  .hero-bento .cell.c-4,.hero-bento .cell.c-3{grid-column:span 1}
+  #hero{padding:1.5rem 1.25rem 4rem}
+  .hero-statusbar{font-size:0.55rem;letter-spacing:0.1em}
+  .strategy-cell{padding:1.5rem}
+  .strategy-bg-num{font-size:7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- noise overlay -->
+<svg id="noise-overlay" xmlns="http://www.w3.org/2000/svg">
+  <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#noise)" opacity="0.6"/>
+</svg>
+
+<!-- shared SVG defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="spark-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C069DD" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#C069DD" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="spark-grad-success" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#22C55E" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EF4444"/>
+      <stop offset="60%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#C069DD"/>
+    </linearGradient>
+    <linearGradient id="ring-grad-success" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22C55E"/>
+      <stop offset="100%" stop-color="#86EFAC"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div id="scroll-progress"></div>
+<div class="bg-mesh"></div>
+
+<main id="app"></main>
+
+<script>
+// __CONFIG_START__
+const CONFIG = {
+  meta: { generated_date: "March 11, 2026", style_variation: "dark-standard" },
+  prospect: {
+    company_name: "Acme SaaS",
+    contact_name: "John Smith",
+    industry: "SaaS / B2B",
+    website: "acmesaas.com",
+    hero_subline: "You're building best-in-class project management software. We'll build the pipeline to fill it with paying customers.",
+    website_audit: {
+      score: 38,
+      findings: [
+        { text: "No clear CTA above the fold", severity: "warning", x: 45, y: 25 },
+        { text: "Zero social proof on homepage", severity: "danger", x: 70, y: 45 },
+        { text: "No lead capture or demo booking", severity: "danger", x: 30, y: 65 },
+        { text: "Blog exists but no SEO strategy", severity: "warning", x: 80, y: 15 },
+        { text: "Mobile nav hides key pages", severity: "warning", x: 15, y: 35 }
+      ]
+    },
+    problems: [
+      { statement: "Your product is category-defining, but your pipeline depends on referrals and hope.", context: "80% of SaaS companies plateau when inbound can't keep up with growth targets.", data_point: "Average cost of a lost SaaS lead: $247" },
+      { statement: "You've hired freelancers before. The campaigns ran, the reports looked fine, but the pipeline didn't grow.", context: "Freelancers optimize for platform metrics. Agencies should optimize for revenue.", data_point: "73% of SaaS founders say agency ROI is unclear" },
+      { statement: "Your sales team is closing at 20%, but only getting 15 qualified leads a month.", context: "The bottleneck isn't closing. It's feeding the machine with the right leads at scale.", data_point: "You need 75+ leads/month to hit targets" }
+    ],
+    competitors: {
+      names: ["CompetitorPM", "TaskFlow Pro"],
+      comparison: [
+        { feature: "Paid Ads (Meta + Google)", prospect: false, comp_a: true, comp_b: true },
+        { feature: "Content Strategy", prospect: false, comp_a: false, comp_b: true },
+        { feature: "Lead Capture System", prospect: false, comp_a: true, comp_b: false },
+        { feature: "Email Automation", prospect: false, comp_a: false, comp_b: false },
+        { feature: "Voice AI / Chatbot", prospect: false, comp_a: false, comp_b: false },
+        { feature: "CRM Integration", prospect: false, comp_a: true, comp_b: false },
+        { feature: "Retargeting Campaigns", prospect: false, comp_a: false, comp_b: true }
+      ],
+      gaps: [
+        { title: "Spray-and-Pray Paid Ads", description: "Your competitors run broad targeting with generic copy. No intent signals, no retargeting funnels." },
+        { title: "No Nurture System", description: "Leads land on a form, get one email, then silence. No 30-day nurture, no SMS follow-up." },
+        { title: "Content Without Strategy", description: "Blog posts exist but aren't SEO-optimized, aren't distributed, and don't convert." }
+      ]
+    },
+    roadmap: {
+      week1: { title: "Foundation", items: ["Full brand + competitor audit", "Meta + Google ad account setup", "CRM + automation infrastructure", "Content calendar for Month 1", "Landing page wireframes", "Voice AI agent configuration", "Email nurture sequence drafting", "Tracking + analytics setup"], count: 8 },
+      week2: { title: "Launch", items: ["First 5 ad creatives go live", "2 landing pages launched", "Email nurture activated", "Voice AI agent live", "First 10 content pieces scheduled", "SMS + WhatsApp flows configured", "Retargeting pixel confirmed", "A/B test variants created"], count: 12 },
+      week3: { title: "Optimize", items: ["First data review + optimization", "Top creatives doubled down", "Underperformers replaced", "Retargeting campaigns launched", "Blog posts published", "Lead scoring refined", "CRM pipeline review", "Content engagement analysis"], count: 10 },
+      week4: { title: "Scale", items: ["Full performance report", "Strategy adjustments", "Winning campaigns scaled 2-3x", "Month 2 roadmap presented", "New creative batch in production", "ROI analysis delivered"], count: 6 }
+    },
+    strategies: [
+      { number: "01", title: "Intent-Based Paid Acquisition", bullets: ["Meta + Google targeting decision-makers actively searching", "Lookalike audiences from existing customer list for 3x conversion", "Retargeting funnels across platforms with escalating urgency", "Dynamic creative optimization testing 50+ variants"], projected_result: "3x qualified leads within 60 days" },
+      { number: "02", title: "Authority Content Engine", bullets: ["SEO-optimized posts targeting long-tail keywords", "LinkedIn thought leadership for founders", "Case study videos and comparison content", "Webinar + resource download funnels"], projected_result: "10K+ organic monthly visitors by Month 6" },
+      { number: "03", title: "Automated Lead Machine", bullets: ["Voice AI calls every lead within 5 minutes, 24/7", "30-day email nurture sequences", "SMS + WhatsApp triggered by behavior", "CRM with automated scoring, routing, follow-ups"], projected_result: "85% lead response rate" }
+    ],
+    platforms: ["meta", "google", "linkedin", "email"],
+    mock_deliverables: [
+      { type: "reel", title: "Instagram Reel Concept", description: "'Why 73% of project managers are switching from spreadsheets' - 30s hook-driven reel", platform: "Instagram" },
+      { type: "ad", title: "Meta Ad Creative", description: "Carousel: '5 Signs Your Team Needs Better PM Software' - pain point per slide", platform: "Facebook / Instagram" },
+      { type: "email", title: "Email Nurture Sequence", description: "Day 1: educational. Day 7: case study. Day 14: demo offer. No hard sell.", platform: "Email" },
+      { type: "landing", title: "Landing Page", description: "Dedicated LP: headline, 3 benefits, social proof, demo CTA, exit-intent popup", platform: "Web" },
+      { type: "whatsapp", title: "WhatsApp Automation", description: "Trigger: visited pricing page. Message: 'Want me to walk you through it?'", platform: "WhatsApp" },
+      { type: "calendar", title: "Content Calendar", description: "Mon=LinkedIn, Tue=Blog, Wed=Reel, Thu=Story, Fri=Case study, Sat=BTS", platform: "All Platforms" }
+    ],
+    pricing: {
+      recommended: "scale",
+      growth: { name: "Growth Plan", price: "$2,400", period: "per month", features: ["10 reels/month (scripted + edited)", "15 static ad creatives/month", "Meta Ads management", "Google Ads management", "Voice AI Agent (24/7)", "CRM setup + management", "Email nurture sequences", "SMS + WhatsApp automation", "Weekly reports", "Unlimited landing pages"] },
+      scale: { name: "Scale Plan", price: "$3,200", period: "per month", features: ["Everything in Growth Plan", "LinkedIn Ads management", "TikTok Ads management", "SEO + Blogging (3-5/week)", "Full website SEO audit", "Technical + Local SEO", "Advanced analytics dashboard", "Monthly strategy reviews", "Priority support"] }
+    },
+    roi_projection: { leads_per_month: 75, close_rate: "20%", projected_monthly_revenue: "$7,500", investment: "$2,400", roi_multiple: "3.1x" }
+  },
+  static: {
+    proof_metrics: [
+      { value: "20M+", label: "Impressions Generated" },
+      { value: "11.58x", label: "Average Client Growth" },
+      { value: "20x", label: "Follower to Customer" },
+      { value: "10.8K", label: "Followers in 6 Months" },
+      { value: "67%", label: "CTR on Marketing Assets" },
+      { value: "98%", label: "Email Open Rate" },
+      { value: "5 min", label: "Lead Response Time" },
+      { value: "24/7", label: "System Uptime" },
+      { value: "$0", label: "Cost Per Organic Lead" },
+      { value: "78%", label: "Funnel Conversion Rate" }
+    ],
+    case_studies: {
+      frenchify: {
+        name: "Frenchify with Vyom",
+        industry: "Education / Language Learning",
+        hero_metric: "20x", hero_metric_label: "Growth",
+        sub_metrics: ["+10,800 followers", "6 months", "10K to 31K+"],
+        story: ["Vyom had a small YouTube channel teaching French. Good content, but zero system for growth.", "TGE built a research-driven content engine: scripted reels based on trending search terms, strategic posting.", "Result: 616K views on a single reel, 20x follower growth, and a follower-to-student pipeline."],
+        before: "10K followers, sporadic posting, no conversion system",
+        after: "31K+ followers, 616K view reels, student conversions",
+        image: "/tge-proposals/assets/static/frenchify-instagram.jpeg"
+      },
+      drsw: {
+        name: "Dr. SW Clinics",
+        industry: "Healthcare / Aesthetic Medicine",
+        hero_metric: "20M+", hero_metric_label: "Impressions",
+        sub_metrics: ["11.58x growth", "981K followers", "Harley Street, London"],
+        story: ["Dr. Sherif Wakil is one of Europe's leading cosmetic practitioners. Strong reputation, limited digital growth.", "TGE's approach: 'Less Is More.' Premium content matching brand positioning. Quality over quantity.", "Result: 20M+ impressions, verified, packed booking calendar. As seen in Daily Mail, Sky, The Sun."],
+        before: "Strong reputation, limited digital presence",
+        after: "20M+ impressions, verified, packed bookings",
+        image: "/tge-proposals/assets/static/drswclinics-instagram.jpeg",
+        calendar_image: "/tge-proposals/assets/static/booking-calendar.png",
+        media: ["Daily Mail", "Sky", "The Sun", "Tatler", "Fabulous", "Daily Express"]
+      }
+    },
+    dashboard_images: ["/tge-proposals/assets/static/meta-dashboard-1.png", "/tge-proposals/assets/static/meta-dashboard-2.png", "/tge-proposals/assets/static/meta-dashboard-3.png"],
+    system_pillars: [
+      { title: "Content Generation", description: "AI-assisted + human scripting so you scale without frustration", image: "/tge-proposals/assets/static/ai-avatar-tool.png" },
+      { title: "Social Media Management", description: "All platforms handled. Posting, engagement, community." },
+      { title: "Paid Advertising", description: "Meta, Google, TikTok, LinkedIn. Scale and generate qualified leads.", image: "/tge-proposals/assets/static/meta-dashboard-1.png" },
+      { title: "CRM Optimization", description: "Full infrastructure. Lead tracking, pipeline, automation.", image: "/tge-proposals/assets/static/booking-calendar.png" },
+      { title: "Sales Optimization", description: "Voice AI agents + automation for 24/7 qualification." },
+      { title: "Reporting & Audit", description: "Weekly reports. Monthly reviews. Complete transparency." }
+    ],
+    automation_stack: [
+      { title: "Voice AI Agent", description: "Calls every lead in 5 minutes. 24/7. No human needed.", stat: "5 min response" },
+      { title: "Email Nurture", description: "30-day sequences. Trust from first click to contract.", stat: "98% open rate" },
+      { title: "SMS", description: "98% open rate. Booking reminders, high-intent moments.", stat: "3x vs email" },
+      { title: "WhatsApp", description: "3x higher response. Behavior-triggered, feels human.", stat: "89% read rate" }
+    ],
+    funnel_stages: [
+      { stage: "Awareness", description: "Organic content, industry insights, discovery ads" },
+      { stage: "Consideration", description: "Retargeting, testimonials, case studies, education" },
+      { stage: "Decision", description: "Urgency, limited offers, direct conversion CTAs" }
+    ],
+    channels: [
+      { name: "Meta Ads", role: "Primary acquisition", icon: "target" },
+      { name: "Google Ads", role: "Intent capture", icon: "search" },
+      { name: "LinkedIn", role: "B2B outreach", icon: "briefcase" },
+      { name: "Email", role: "Nurture + convert", icon: "mail" },
+      { name: "SMS", role: "High-intent moments", icon: "smartphone" },
+      { name: "WhatsApp", role: "Behavior-triggered", icon: "message-circle" },
+      { name: "SEO", role: "Organic compounding", icon: "trending-up" },
+      { name: "YouTube", role: "Authority content", icon: "play-circle" },
+      { name: "TikTok", role: "Discovery + reach", icon: "zap" }
+    ],
+    features_list: {
+      content_creative: ["10 reels/month (scripted, edited, posted)", "15 static creatives/month", "Content calendar with strategic posting", "AI-powered ideas + trend tracking", "Professional copywriting", "Hashtag research + SEO"],
+      paid_advertising: ["Meta Ads management", "Google Ads management", "TikTok Ads management", "LinkedIn Ads management", "A/B testing on all campaigns", "Retargeting + lookalike audiences", "Weekly optimization cycles", "Monthly spend recommendations"],
+      automation_sales: ["Voice AI Agent (24/7)", "Email nurture sequences", "SMS campaigns", "WhatsApp automation", "CRM setup + management", "Lead scoring + routing", "Appointment booking automation", "Pipeline tracking + reporting"],
+      strategy_reporting: ["Weekly performance reports", "Monthly strategy reviews", "Competitor monitoring", "SEO audits + recommendations", "Conversion tracking setup", "Custom analytics dashboard"]
+    },
+    contact: { email: "info@thegrowthengine.net", phone: "+91 6397016179", website: "thegrowthengine.net" }
+  }
+};
+// __CONFIG_END__
+
+/* ===== HELPERS ===== */
+const cn = CONFIG.prospect.company_name;
+const ico = (name, size=16) => `<i data-lucide="${name}" style="width:${size}px;height:${size}px"></i>`;
+const escapeHTML = (s) => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const numFromValue = (v) => {
+  // pulls leading number out of strings like "20M+", "11.58x", "$0", "5 min", "24/7", "10.8K"
+  const s = String(v);
+  const m = s.match(/-?\d+\.?\d*/);
+  return m ? parseFloat(m[0]) : 0;
+};
+
+// inline SVG sparkline. data is 0..1 normalized array.
+function sparkline(points, opts={}) {
+  const w = opts.w || 220, h = opts.h || 56, color = opts.color || '#C069DD', grad = opts.grad || 'spark-grad';
+  const min = Math.min(...points), max = Math.max(...points), span = max - min || 1;
+  const step = w / (points.length - 1);
+  const coords = points.map((p,i) => [i*step, h - ((p - min)/span)*(h-8) - 4]);
+  const linePath = coords.map((c,i) => (i===0?'M':'L')+c[0].toFixed(1)+','+c[1].toFixed(1)).join(' ');
+  const areaPath = linePath + ` L ${w},${h} L 0,${h} Z`;
+  const last = coords[coords.length-1];
+  return `<svg class="sparkline" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <path class="area" d="${areaPath}" fill="url(#${grad})"/>
+    <path class="line" d="${linePath}" stroke="${color}" />
+    <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3" fill="${color}" />
+  </svg>`;
+}
+
+// gentle synthetic trend, optionally jittered
+function genTrend(n=14, slope=0.06, noise=0.18, seed=1) {
+  const out=[]; let x=0.2 + Math.sin(seed)*0.05;
+  for (let i=0;i<n;i++) {
+    x += slope + (Math.sin(i*1.7+seed*3.1)*noise*0.5) + ((i%5===0)?0.04:0);
+    if (x<0.05) x=0.05; if (x>0.95) x=0.95;
+    out.push(x);
+  }
+  return out;
+}
+
+/* ===== TEMPLATES ===== */
+function tpl_hero() {
+  const p = CONFIG.prospect;
+  return `
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-blob b1"></div>
+    <div class="hero-blob b2"></div>
+
+    <div class="hero-statusbar">
+      <div class="left">
+        <span class="row"><span class="dot live"></span>SYSTEM LIVE</span>
+        <span class="row" style="opacity:0.7">PROPOSAL // ${escapeHTML(p.industry)}</span>
+      </div>
+      <div class="right">
+        <span style="opacity:0.7">REV.01 // ${escapeHTML(CONFIG.meta.generated_date)}</span>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow"><span class="pulse"></span>A GROWTH STRATEGY PREPARED EXCLUSIVELY FOR</div>
+      <h1 class="hero-company">${escapeHTML(p.company_name)}.</h1>
+      <p class="hero-subline">${escapeHTML(p.hero_subline)}</p>
+
+      <div class="hero-bento">
+        <div class="cell c-3">
+          <div class="cell-eyebrow"><span>SECTIONS</span><span class="right">LIVE</span></div>
+          <div class="metric metric-md" data-counter="16">0</div>
+          <div class="metric-label">Sections</div>
+        </div>
+        <div class="cell c-3">
+          <div class="cell-eyebrow"><span>CASES</span><span class="right">VERIFIED</span></div>
+          <div class="metric metric-md" data-counter="3">0</div>
+          <div class="metric-label">Case Studies</div>
+        </div>
+        <div class="cell c-3">
+          <div class="cell-eyebrow"><span>ROADMAP</span><span class="right">DAYS</span></div>
+          <div class="metric metric-md" data-counter="30">0</div>
+          <div class="metric-label">Day Roadmap</div>
+        </div>
+        <div class="cell c-3 accent">
+          <div class="cell-eyebrow"><span>READ TIME</span><span class="right" style="color:var(--accent)">EST</span></div>
+          <div class="metric metric-md" style="color:var(--accent)">~7 min</div>
+          <div class="metric-label">Detailed Strategy</div>
+        </div>
+      </div>
+
+      <div class="hero-cta-row">
+        <button class="btn btn-primary" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">
+          See What We Built ${ico('arrow-right', 16)}
+        </button>
+        <span class="status-pill"><span class="dot live"></span>Tailored for ${escapeHTML(p.company_name)}</span>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      Prepared by The Growth Engine<br>${escapeHTML(CONFIG.meta.generated_date)}
+    </div>
+    <div class="scroll-indicator">
+      <span>SCROLL</span>
+      <span class="scroll-chevron">${ico('chevron-down', 16)}</span>
+    </div>
+  </section>`;
+}
+
+function tpl_audit() {
+  const p = CONFIG.prospect;
+  const a = p.website_audit;
+  const dots = a.findings.map((f, i) => `
+    <div class="audit-dot ${escapeHTML(f.severity)}" style="left:${f.x}%;top:${f.y}%">${i+1}
+      <span class="audit-tooltip">${escapeHTML(f.text)}</span>
+    </div>`).join('');
+  const findingsRows = a.findings.map((f, i) => `
+    <div class="audit-finding-row">
+      <span class="audit-finding-num ${escapeHTML(f.severity)}">${i+1}</span>
+      <span>${escapeHTML(f.text)}</span>
+      <span class="audit-finding-sev ${escapeHTML(f.severity)}">${f.severity.toUpperCase()}</span>
+    </div>`).join('');
+
+  // counts by severity
+  const dangerCount = a.findings.filter(f => f.severity === 'danger').length;
+  const warnCount = a.findings.filter(f => f.severity === 'warning').length;
+
+  // ring math
+  const r = 60, c = 2 * Math.PI * r;
+  const scoreStrokeTarget = (a.score / 100) * c;
+
+  return `
+  <section id="audit" class="section">
+    <div class="container">
+      <div class="section-label">WE LOOKED AT YOUR WEBSITE</div>
+      <h2 class="section-headline">Here's What We Found On <span class="accent">${escapeHTML(p.website)}</span></h2>
+      <p class="section-sub">Manual audit. Five issues identified. Score below. We fix all of this.</p>
+
+      <div class="audit-bento">
+        <div class="cell audit-screenshot-cell">
+          <div class="audit-screenshot">
+            <div class="placeholder-grid"></div>
+            <div class="browser-bar-mini">
+              <span class="dot-rgba" style="background:#EF4444"></span>
+              <span class="dot-rgba" style="background:#F59E0B"></span>
+              <span class="dot-rgba" style="background:#22C55E"></span>
+              <span class="url-bar">https://${escapeHTML(p.website)}</span>
+            </div>
+            <div class="canvas">${dots}</div>
+            <div style="position:absolute;bottom:1rem;left:1rem;right:1rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--subtle);display:flex;justify-content:space-between">
+              <span>screenshot.png</span>
+              <span class="status-pill warn"><span class="dot warn"></span>${a.findings.length} ISSUES</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell c-5 ring-wrap" style="grid-row:span 2">
+          <div class="ring">
+            <svg viewBox="0 0 140 140">
+              <circle class="ring-bg" cx="70" cy="70" r="${r}" />
+              <circle class="ring-fg" cx="70" cy="70" r="${r}" data-stroke-target="${scoreStrokeTarget.toFixed(1)}" stroke-dasharray="0 ${c}" />
+            </svg>
+            <div class="ring-center">
+              <div class="ring-num" data-counter="${a.score}">0</div>
+              <div class="ring-label">/ 100 SCORE</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center;margin-top:0.5rem">
+            <span class="status-pill danger"><span class="dot danger"></span>${dangerCount} CRITICAL</span>
+            <span class="status-pill warn"><span class="dot warn"></span>${warnCount} WARNINGS</span>
+          </div>
+          <div style="font-family:var(--font-serif);font-style:italic;color:var(--accent);font-size:1rem;margin-top:1rem;text-align:center;line-height:1.4">Don't worry. We fix all of this.</div>
+        </div>
+
+        <div class="cell c-7" style="padding:1.4rem">
+          <div class="cell-eyebrow"><span>FINDINGS LOG</span><span class="right">${a.findings.length} ITEMS</span></div>
+          <div>${findingsRows}</div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function tpl_problems() {
+  const p = CONFIG.prospect;
+  const order = ['danger','warning','danger'];
+  const cards = p.problems.map((pr, i) => {
+    const tone = order[i] || 'warning';
+    return `
+    <div class="cell problem-cell ${tone} c-${i===0?'12':i===1?'7':'5'}">
+      <div class="pcell-num">0${i+1}</div>
+      <div>
+        <div class="cell-eyebrow"><span>SIGNAL ${i+1}</span><span class="right ${tone==='danger'?'text-danger':'text-warning'}">${tone.toUpperCase()}</span></div>
+        <div class="pcell-statement">${escapeHTML(pr.statement)}</div>
+        <div class="pcell-context">${escapeHTML(pr.context)}</div>
+      </div>
+      <div class="pcell-data"><span class="dot ${tone}"></span>${escapeHTML(pr.data_point)}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <section id="problems" class="section">
+    <div class="container">
+      <div class="section-label">THE CHALLENGE</div>
+      <h2 class="section-headline">3 Signals We Picked Up</h2>
+      <p class="section-sub">Listening for the unsaid stuff. Here's the read on what's quietly bleeding revenue.</p>
+      <div class="problems-bento">${cards}</div>
+    </div>
+  </section>`;
+}
+
+function tpl_competitors() {
+  const p = CONFIG.prospect;
+  const c = p.competitors;
+  // headers: feature | YOU | COMPA | COMPB
+  const head = `
+    <div class="head">
+      <div>FEATURE</div>
+      <div class="you">${escapeHTML(cn).toUpperCase()}</div>
+      <div>${escapeHTML(c.names[0]).toUpperCase()}</div>
+      <div>${escapeHTML(c.names[1]).toUpperCase()}</div>
+    </div>`;
+  const rows = c.comparison.map(r => `
+    <div class="row">
+      <div class="feat">${escapeHTML(r.feature)}</div>
+      <div class="col you">${r.prospect ? '<span class="check">${ico("check",12)}</span>' : '<span class="cross">${ico("x",12)}</span>'}</div>
+      <div class="col">${r.comp_a ? '<span class="check">${ico("check",12)}</span>' : '<span class="cross">${ico("x",12)}</span>'}</div>
+      <div class="col">${r.comp_b ? '<span class="check">${ico("check",12)}</span>' : '<span class="cross">${ico("x",12)}</span>'}</div>
+    </div>`).join('').replaceAll('${ico("check",12)}', ico('check', 12)).replaceAll('${ico("x",12)}', ico('x', 12));
+
+  // coverage donut: count true-counts per actor
+  const total = c.comparison.length;
+  const youScore = c.comparison.filter(r => r.prospect).length;
+  const aScore = c.comparison.filter(r => r.comp_a).length;
+  const bScore = c.comparison.filter(r => r.comp_b).length;
+  const youPct = Math.round((youScore/total)*100);
+  const aPct = Math.round((aScore/total)*100);
+  const bPct = Math.round((bScore/total)*100);
+
+  const gaps = c.gaps.map((g, i) => `
+    <div class="cell gap-cell">
+      <div class="gap-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="gap-title">${escapeHTML(g.title)}</div>
+      <div class="gap-desc">${escapeHTML(g.description)}</div>
+    </div>`).join('');
+
+  // sparklines: each competitor pretend trend
+  const youTrend = sparkline(genTrend(14, 0.005, 0.06, 1), { color:'#888', grad:'spark-grad' });
+  const aTrend = sparkline(genTrend(14, 0.04, 0.12, 4), { color:'#F59E0B', grad:'spark-grad' });
+  const bTrend = sparkline(genTrend(14, 0.05, 0.1, 7), { color:'#38BDF8', grad:'spark-grad' });
+
+  return `
+  <section id="competitors" class="section">
+    <div class="container">
+      <div class="section-label">THE COMPETITIVE LANDSCAPE</div>
+      <h2 class="section-headline">Where ${escapeHTML(cn)} Stands</h2>
+      <p class="section-sub">Side-by-side capability snapshot. Numbers below are coverage, out of ${total} categories tracked.</p>
+
+      <div class="comp-bento">
+        <div class="cell c-8 comp-stack-cell">
+          <div class="cell-eyebrow" style="padding:0.85rem 1.25rem 0">
+            <span>CAPABILITY MATRIX</span><span class="right">${total} ROWS</span>
+          </div>
+          ${head}
+          ${rows}
+        </div>
+
+        <div class="cell c-4 comp-coverage-cell" style="padding:1.4rem">
+          <div class="cell-eyebrow"><span>COVERAGE</span><span class="right">% OF ${total}</span></div>
+          <div class="donut">
+            <svg viewBox="0 0 140 140">
+              <circle class="seg" cx="70" cy="70" r="60" stroke="rgba(255,255,255,0.04)" stroke-width="14"/>
+              <circle class="seg" cx="70" cy="70" r="60" stroke="#EF4444" data-target-dasharray="${(youPct*3.77).toFixed(1)} 1000" stroke-dasharray="0 1000"/>
+            </svg>
+            <div class="center">
+              <div class="metric metric-md" style="color:var(--danger)" data-counter="${youPct}" data-suffix="%">0%</div>
+              <div class="metric-label">You</div>
+            </div>
+          </div>
+          <div class="coverage-legend">
+            <div class="lg-row"><span class="swatch" style="background:#EF4444"></span>${escapeHTML(cn)} <span style="margin-left:auto" class="text-danger">${youPct}%</span></div>
+            <div class="lg-row"><span class="swatch" style="background:#F59E0B"></span>${escapeHTML(c.names[0])} <span style="margin-left:auto" class="text-warning">${aPct}%</span></div>
+            <div class="lg-row"><span class="swatch" style="background:#38BDF8"></span>${escapeHTML(c.names[1])} <span style="margin-left:auto" style="color:#38BDF8">${bPct}%</span></div>
+          </div>
+        </div>
+
+        <div class="cell c-4">
+          <div class="cell-eyebrow"><span>${escapeHTML(cn).toUpperCase()}</span><span class="right text-danger">FLAT</span></div>
+          <div class="metric metric-lg text-muted">${youPct}%</div>
+          <div class="metric-label">Capability Coverage</div>
+          ${youTrend}
+        </div>
+        <div class="cell c-4">
+          <div class="cell-eyebrow"><span>${escapeHTML(c.names[0]).toUpperCase()}</span><span class="right text-warning">+${aPct - youPct}%</span></div>
+          <div class="metric metric-lg" style="color:var(--warning)">${aPct}%</div>
+          <div class="metric-label">Capability Coverage</div>
+          ${aTrend}
+        </div>
+        <div class="cell c-4">
+          <div class="cell-eyebrow"><span>${escapeHTML(c.names[1]).toUpperCase()}</span><span class="right" style="color:#38BDF8">+${bPct - youPct}%</span></div>
+          <div class="metric metric-lg" style="color:#38BDF8">${bPct}%</div>
+          <div class="metric-label">Capability Coverage</div>
+          ${bTrend}
+        </div>
+      </div>
+
+      <div class="gap-bento">${gaps}</div>
+      <div class="drama">${escapeHTML(cn)} can own this space.</div>
+    </div>
+  </section>`;
+}
+
+function tpl_roadmap() {
+  const r = CONFIG.prospect.roadmap;
+  const weeks = ['week1','week2','week3','week4'];
+  const total = weeks.reduce((s,w) => s + r[w].count, 0);
+  const dotColors = ['w1','w2','w3','w4'];
+
+  const tlSteps = weeks.map((w, i) => `
+    <div class="tl-step">
+      <div class="tl-dot ${dotColors[i]}"></div>
+      <div class="tl-week">WEEK ${i+1}</div>
+      <div class="tl-title">${escapeHTML(r[w].title)}</div>
+    </div>`).join('');
+
+  const weekCells = weeks.map((w, i) => {
+    const wk = r[w];
+    const tone = ['accent','success','warning','accent'][i];
+    return `
+    <div class="cell week-cell c-3">
+      <span class="week-pill"><span class="dot ${dotColors[i]==='w1'?'accent':dotColors[i]==='w2'?'live':dotColors[i]==='w3'?'warn':'accent'}"></span>WEEK ${i+1} // ${escapeHTML(wk.title.toUpperCase())}</span>
+      <div class="week-title">${escapeHTML(wk.title)}</div>
+      <ul class="week-items">${wk.items.map(it => `<li>${escapeHTML(it)}</li>`).join('')}</ul>
+      <span class="week-count" data-counter="${wk.count}" data-suffix=" deliverables">0 deliverables</span>
+    </div>`;
+  }).join('');
+
+  return `
+  <section id="roadmap" class="section">
+    <div class="container">
+      <div class="section-label">YOUR FIRST 30 DAYS</div>
+      <h2 class="section-headline">Here's Exactly What Happens</h2>
+      <p class="section-sub">Day 1 to day 30, broken out. Counts are real. Items per week are below.</p>
+
+      <div class="roadmap-bento">
+        <div class="cell timeline-cell">
+          <div class="cell-eyebrow"><span>TIMELINE // 30 DAYS</span><span class="right text-success">ON TRACK</span></div>
+          <div class="timeline-bar">${tlSteps}</div>
+        </div>
+        ${weekCells}
+        <div class="cell roadmap-total-cell">
+          <div class="metric metric-xl" style="color:var(--accent)" data-counter="${total}" data-suffix="+">0+</div>
+          <p class="text-muted">deliverables in your first month</p>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function tpl_strategy() {
+  const cards = CONFIG.prospect.strategies.map((s, i) => `
+    <div class="cell strategy-cell">
+      <div class="strategy-bg-num">${escapeHTML(s.number)}</div>
+      <div class="strategy-num-block">
+        STRATEGY
+        <span class="lg">${escapeHTML(s.number)}</span>
+      </div>
+      <div class="strategy-body">
+        <div class="strategy-title">${escapeHTML(s.title)}</div>
+        <ul class="strategy-bullets">
+          ${s.bullets.map(b => `<li>${escapeHTML(b)}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="strategy-result">
+        <span class="label">PROJECTED RESULT</span>
+        <span class="val">${escapeHTML(s.projected_result)}</span>
+        ${sparkline(genTrend(12, 0.07, 0.08, i+2), { color:'#22C55E', grad:'spark-grad-success', w:200, h:48 })}
+      </div>
+    </div>`).join('');
+
+  return `
+  <section id="strategy" class="section">
+    <div class="container">
+      <div class="section-label">THE STRATEGY WE'D BUILD FOR ${escapeHTML(cn).toUpperCase()}</div>
+      <h2 class="section-headline">3 Plays. Compounding.</h2>
+      <p class="section-sub">Each one stands alone. Together they multiply.</p>
+      <div class="strategy-bento">${cards}</div>
+    </div>
+  </section>`;
+}
+
+function tpl_proof() {
+  const m = CONFIG.static.proof_metrics;
+  // Layout strategy: hero metric (4x2), then mix sizes
+  // Use 12-col grid with grid-auto-rows:160px
+  // 0: 20M+ (4 col, 2 rows) hero with sparkline
+  // 1: 11.58x (4 col)
+  // 2: 20x (4 col)
+  // 3: 10.8K (4 col, 2 rows) with sparkline
+  // 4: 67% (4 col) with progress bar
+  // 5: 98% (4 col, 2 rows) ring
+  // 6: 5 min (4 col)
+  // 7: 24/7 (4 col)
+  // 8: $0 (4 col)
+  // 9: 78% (4 col, 2 rows) bar
+  const sizes = [
+    { c:'c-4', r:'r-2', kind:'hero-spark' },
+    { c:'c-4', r:'',    kind:'simple' },
+    { c:'c-4', r:'',    kind:'simple' },
+    { c:'c-4', r:'r-2', kind:'spark' },
+    { c:'c-4', r:'',    kind:'progress' },
+    { c:'c-4', r:'r-2', kind:'ring-sm' },
+    { c:'c-4', r:'',    kind:'icon' },
+    { c:'c-4', r:'',    kind:'icon' },
+    { c:'c-4', r:'',    kind:'simple' },
+    { c:'c-4', r:'',    kind:'progress' }
+  ];
+
+  const tones = ['accent','','','success','warning','accent','','success','','warning'];
+
+  const cells = m.map((it, i) => {
+    const sz = sizes[i] || { c:'c-3', r:'', kind:'simple' };
+    const tone = tones[i] || '';
+    const counterTarget = numFromValue(it.value);
+    const valueRaw = it.value;
+    const isNumeric = /^\$?-?\d+\.?\d*[KkMm%+x]*$/.test(valueRaw) || /^\d/.test(valueRaw);
+
+    let body = '';
+    if (sz.kind === 'hero-spark') {
+      body = `
+        <div class="cell-eyebrow"><span>METRIC // 01</span><span class="right text-accent">VERIFIED</span></div>
+        <div>
+          <div class="metric metric-xl" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric-label">${escapeHTML(it.label)}</div>
+        </div>
+        ${sparkline(genTrend(20, 0.04, 0.1, i+11), { color:'#C069DD', grad:'spark-grad', w:280, h:80 })}
+        <div class="row" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:0.4rem;justify-content:space-between">
+          <span class="row"><span class="dot live"></span>LIVE</span>
+          <span>30D ROLLING</span>
+        </div>`;
+    } else if (sz.kind === 'spark') {
+      body = `
+        <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right text-success">+TRENDING</span></div>
+        <div>
+          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric-label">${escapeHTML(it.label)}</div>
+        </div>
+        ${sparkline(genTrend(16, 0.05, 0.12, i+5), { color:'#22C55E', grad:'spark-grad-success', w:240, h:64 })}`;
+    } else if (sz.kind === 'progress') {
+      body = `
+        <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right text-warning">RATE</span></div>
+        <div>
+          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric-label">${escapeHTML(it.label)}</div>
+        </div>
+        <div class="progress ${tone||''}"><span data-bar-target="${counterTarget}"></span></div>`;
+    } else if (sz.kind === 'ring-sm') {
+      const r = 50, c = 2*Math.PI*r;
+      const target = (counterTarget/100) * c;
+      body = `
+        <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right text-success">RATE</span></div>
+        <div style="display:flex;align-items:center;gap:1rem;margin-top:0.5rem">
+          <div style="position:relative;width:96px;height:96px;flex-shrink:0">
+            <svg viewBox="0 0 120 120" style="width:100%;height:100%;transform:rotate(-90deg)">
+              <circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="9"/>
+              <circle cx="60" cy="60" r="${r}" fill="none" stroke="url(#ring-grad-success)" stroke-width="9" stroke-linecap="round" data-stroke-target="${target.toFixed(1)}" stroke-dasharray="0 ${c}"/>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:1.3rem;font-weight:700;color:var(--success)" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          </div>
+          <div>
+            <div class="metric-label" style="margin-top:0">${escapeHTML(it.label)}</div>
+          </div>
+        </div>
+        <div class="row" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:auto;justify-content:space-between">
+          <span class="row"><span class="dot live"></span>STABLE</span>
+          <span>VS BENCHMARK</span>
+        </div>`;
+    } else if (sz.kind === 'icon') {
+      const iconName = i === 6 ? 'clock' : i === 7 ? 'activity' : 'sparkle';
+      body = `
+        <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right text-success">${ico(iconName,12)}</span></div>
+        <div>
+          <div class="metric metric-lg" style="color:var(--success)" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric && !valueRaw.includes('/') ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric-label">${escapeHTML(it.label)}</div>
+        </div>
+        <div class="row" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:auto;justify-content:space-between">
+          <span class="row"><span class="dot live"></span>OPERATIONAL</span>
+        </div>`;
+    } else {
+      body = `
+        <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right">VERIFIED</span></div>
+        <div>
+          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric-label">${escapeHTML(it.label)}</div>
+        </div>`;
+    }
+
+    return `<div class="cell ${sz.c} ${sz.r} ${tone}">${body}</div>`;
+  }).join('');
+
+  return `
+  <section id="proof" class="section">
+    <div class="container">
+      <div class="section-label">THE NUMBERS DON'T LIE</div>
+      <h2 class="section-headline">Proof Wall <span class="text-muted" style="font-weight:400">// last 12 months</span></h2>
+      <p class="section-sub">Every cell is a real number from a real client engagement. No vanity metrics.</p>
+      <div class="proof-bento bento-rows-180">${cells}</div>
+    </div>
+  </section>`;
+}
+
+function tpl_caseStudy(key, reverse=false) {
+  const cs = CONFIG.static.case_studies[key];
+  const num = key === 'frenchify' ? '01' : '02';
+  const heroTrend = sparkline(genTrend(14, 0.08, 0.08, key==='frenchify'?2:5), { color:'#C069DD', grad:'spark-grad', w:240, h:60 });
+
+  const subMetricsRow = `
+    <div class="cell c-7" style="padding:1.1rem 1.25rem;display:grid;grid-template-columns:repeat(${cs.sub_metrics.length},1fr);gap:0.75rem;align-items:center">
+      ${cs.sub_metrics.map((sm, i) => `
+        <div style="display:flex;flex-direction:column;gap:0.4rem;padding:0.4rem 0.6rem;border-right:${i<cs.sub_metrics.length-1?'1px solid var(--border)':'none'}">
+          <span class="metric-label" style="margin:0">SUB // 0${i+1}</span>
+          <span class="metric metric-sm" style="font-size:0.95rem">${escapeHTML(sm)}</span>
+        </div>`).join('')}
+    </div>`;
+
+  const phoneInner = cs.image
+    ? `<img src="${escapeHTML(cs.image)}" alt="${escapeHTML(cs.name)}" onerror="this.parentElement.innerHTML='<div class=\\'pf-stub\\'>Profile<br>Screenshot<br>Loading</div>'"/>`
+    : `<div class="pf-stub">Profile<br>Screenshot</div>`;
+
+  const mediaCell = cs.media ? `
+    <div class="cell case-media-cell c-12">
+      <span class="label">AS SEEN IN</span>
+      ${cs.media.map(m => `<span class="status-pill">${escapeHTML(m)}</span>`).join('')}
+    </div>` : '';
+
+  return `
+  <section id="case-${escapeHTML(key)}" class="section">
+    <div class="container">
+      <div class="section-label">CASE STUDY ${num}</div>
+      <h2 class="section-headline">${escapeHTML(cs.name)}</h2>
+      <p class="section-sub"><span class="status-pill accent"><span class="dot accent"></span>${escapeHTML(cs.industry)}</span></p>
+
+      <div class="case-bento">
+        <div class="cell case-hero-cell">
+          <div class="phone">
+            <div class="phone-frame">
+              <div class="phone-screen">
+                ${phoneInner}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell c-7 case-metric-cell" style="grid-row:span 2">
+          <div>
+            <div class="industry">HERO METRIC</div>
+            <div class="case-hero-num" data-counter-text="${escapeHTML(cs.hero_metric)}">0</div>
+            <div class="case-hero-num-label">${escapeHTML(cs.hero_metric_label)}</div>
+            ${heroTrend}
+          </div>
+          <div class="row" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);justify-content:space-between;margin-top:1rem">
+            <span class="row"><span class="dot live"></span>VERIFIED // ${escapeHTML(cs.industry.split('/')[0].trim().toUpperCase())}</span>
+            <span>+CONFIRMED</span>
+          </div>
+        </div>
+
+        ${subMetricsRow}
+
+        <div class="cell c-7 case-story-cell">
+          <div class="cell-eyebrow"><span>STORY LOG</span><span class="right">${cs.story.length} BEATS</span></div>
+          ${cs.story.map(s => `<p>${escapeHTML(s)}</p>`).join('')}
+        </div>
+
+        <div class="cell c-5 case-ba-cell">
+          <div class="cell-eyebrow"><span>BEFORE / AFTER</span><span class="right text-success">DELTA</span></div>
+          <div class="case-ba-row before"><span class="ba-label">Before</span>${escapeHTML(cs.before)}</div>
+          <div class="case-ba-row after"><span class="ba-label">After</span>${escapeHTML(cs.after)}</div>
+        </div>
+
+        ${mediaCell}
+      </div>
+    </div>
+  </section>`;
+}
+
+function tpl_dashboards() {
+  const imgs = CONFIG.static.dashboard_images;
+  const callouts = [
+    { label: 'TOTAL SPEND', value: '$24,840', tone: 'accent' },
+    { label: 'RESULTS', value: '1,287', tone: 'success' },
+    { label: 'COST / RESULT', value: '$19.30', tone: 'warning' }
+  ];
+  return `
+  <section id="dashboards" class="section">
+    <div class="container">
+      <div class="section-label">WHAT YOUR DASHBOARD LOOKS LIKE</div>
+      <h2 class="section-headline">Real Campaigns. Real Spend. Real Results.</h2>
+      <p class="section-sub">No reports. No screenshots in PowerPoint. Live ad manager, refreshing.</p>
+
+      <div class="dash-bento">
+        <div class="cell dash-img-cell c-8" style="grid-row:span 2">
+          <div class="placeholder-grid"></div>
+          <img src="${escapeHTML(imgs[0])}" alt="Meta Dashboard 1" onerror="this.style.display='none';this.parentElement.innerHTML+='<div style=\\'position:relative;z-index:2\\'>meta-dashboard-1.png</div>'"/>
+        </div>
+
+        ${callouts.map((c, i) => `
+        <div class="cell c-4 ${c.tone} dash-callout-cell">
+          <div class="cell-eyebrow"><span>CALLOUT // 0${i+1}</span><span class="right text-${c.tone==='accent'?'accent':c.tone}">LIVE</span></div>
+          <div class="metric metric-lg" style="color:var(${c.tone==='accent'?'--accent':c.tone==='success'?'--success':'--warning'})" data-counter-text="${escapeHTML(c.value)}">${c.value}</div>
+          <div class="metric-label">${escapeHTML(c.label)}</div>
+          ${sparkline(genTrend(12, c.tone==='warning'?-0.03:0.05, 0.12, i+13), { color: c.tone==='accent'?'#C069DD':c.tone==='success'?'#22C55E':'#F59E0B', grad: c.tone==='success'?'spark-grad-success':'spark-grad', w:200, h:48 })}
+        </div>`).join('')}
+
+        <div class="cell dash-img-cell c-6">
+          <div class="placeholder-grid"></div>
+          <img src="${escapeHTML(imgs[1])}" alt="Meta Dashboard 2" onerror="this.style.display='none';this.parentElement.innerHTML+='<div style=\\'position:relative;z-index:2\\'>meta-dashboard-2.png</div>'"/>
+        </div>
+        <div class="cell dash-img-cell c-6">
+          <div class="placeholder-grid"></div>
+          <img src="${escapeHTML(imgs[2])}" alt="Content Dashboard" onerror="this.style.display='none';this.parentElement.innerHTML+='<div style=\\'position:relative;z-index:2\\'>meta-dashboard-3.png</div>'"/>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function tpl_system() {
+  const pillars = CONFIG.static.system_pillars;
+  // Each pillar gets a fake utilization stat to feel dashboard-y
+  const stats = [
+    { num: '92', label: '% scripted', bar: 92 },
+    { num: '6', label: 'platforms', bar: 100 },
+    { num: '4', label: 'ad networks', bar: 80 },
+    { num: '24/7', label: 'auto-route', bar: 100 },
+    { num: '5 min', label: 'response SLA', bar: 96 },
+    { num: 'WK', label: 'reporting cadence', bar: 100 }
+  ];
+  const tones = ['accent','','accent','success','warning','accent'];
+
+  const pillarCells = pillars.map((p, i) => {
+    const tone = tones[i] || '';
+    const st = stats[i];
+    return `
+    <div class="cell pillar-cell ${tone}">
+      <span class="pillar-num">PILLAR // 0${i+1}</span>
+      <div class="pillar-title">${escapeHTML(p.title)}</div>
+      <div class="pillar-desc">${escapeHTML(p.description)}</div>
+      <div class="pillar-stat">
+        <span class="num">${escapeHTML(st.num)}</span>
+        <span class="lbl">${escapeHTML(st.label)}</span>
+      </div>
+      <div class="pillar-bar"><span data-bar-target="${st.bar}"></span></div>
+    </div>`;
+  }).join('');
+
+  const auto = CONFIG.static.automation_stack.map((a, i) => `
+    <div class="cell auto-cell">
+      <div class="auto-icon">${ico(['phone-call','mail','message-square','message-circle'][i] || 'zap', 16)}</div>
+      <div class="auto-title">${escapeHTML(a.title)}</div>
+      <div class="auto-desc">${escapeHTML(a.description)}</div>
+      <span class="auto-stat">${escapeHTML(a.stat)}</span>
+    </div>`).join('');
+
+  return `
+  <section id="system" class="section">
+    <div class="container">
+      <div class="section-label">THE SYSTEM</div>
+      <h2 class="section-headline">The Full Stack <span class="text-muted" style="font-weight:400">// 6 pillars + 4 automations</span></h2>
+      <p class="section-sub">All pillars active by week 2. Status bar on each shows current build coverage.</p>
+
+      <div class="system-bento">${pillarCells}</div>
+
+      <div style="margin-top:3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+        <div>
+          <div class="section-label" style="margin-bottom:0.4rem">AUTOMATION STACK</div>
+          <div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:700;letter-spacing:-0.01em">4 Channels. Always On.</div>
+        </div>
+        <span class="status-pill live"><span class="dot live"></span>ALL CHANNELS OPERATIONAL</span>
+      </div>
+      <div class="auto-bento">${auto}</div>
+    </div>
+  </section>`;
+}
+
+function tpl_campaign() {
+  const fs = CONFIG.static.funnel_stages;
+  const platforms = CONFIG.prospect.platforms || [];
+  const channels = CONFIG.static.channels;
+  const stagePcts = ['100%', '42%', '12%'];
+
+  const funnelRows = fs.map((s, i) => `
+    <div class="funnel-row s${i+1}">
+      <div class="stage-num">0${i+1}</div>
+      <div class="stage-name">${escapeHTML(s.stage)}</div>
+      <div class="stage-desc">${escapeHTML(s.description)}</div>
+      <div class="stage-pct">${stagePcts[i]}</div>
+    </div>`).join('');
+
+  const platformMap = { meta:'Meta Ads', google:'Google Ads', linkedin:'LinkedIn', email:'Email' };
+  const isActive = (n) => Object.keys(platformMap).some(k => platforms.includes(k) && platformMap[k].toLowerCase() === n.toLowerCase());
+
+  const chs = channels.map(c => {
+    const active = isActive(c.name);
+    return `
+    <div class="cell channel-cell ${active?'active':''}">
+      <div class="ch-icon">${ico(c.icon, 16)}</div>
+      <div>
+        <div class="ch-name">${escapeHTML(c.name)}</div>
+        <div class="ch-role">${escapeHTML(c.role)}</div>
+      </div>
+      <div class="ch-status">${active?'SELECTED':''}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <section id="campaign" class="section">
+    <div class="container">
+      <div class="section-label">THE CAMPAIGN ARCHITECTURE</div>
+      <h2 class="section-headline">The Blueprint</h2>
+      <p class="section-sub">Funnel + channel mix. Bands narrow as intent rises. Highlighted channels are recommended for ${escapeHTML(cn)}.</p>
+
+      <div class="camp-bento">
+        <div class="cell funnel-cell">
+          <div class="cell-eyebrow"><span>FUNNEL // 3 STAGES</span><span class="right text-success">CONVERTING</span></div>
+          ${funnelRows}
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2.5rem;margin-bottom:1rem">
+        <div class="section-label" style="margin-bottom:0">CHANNELS // 9 TRACKED</div>
+        <span class="status-pill accent"><span class="dot accent"></span>${platforms.length} SELECTED FOR ${escapeHTML(cn).toUpperCase()}</span>
+      </div>
+      <div class="channel-bento">${chs}</div>
+    </div>
+  </section>`;
+}
+
+function tpl_deliverables() {
+  const items = CONFIG.prospect.mock_deliverables;
+  const iconMap = { reel:'video', ad:'image', email:'mail', landing:'layout', whatsapp:'message-circle', calendar:'calendar' };
+  const cells = items.map((d, i) => `
+    <div class="cell deliverable-cell">
+      <div class="del-icon ${escapeHTML(d.type)}">${ico(iconMap[d.type] || 'file', 18)}</div>
+      <div class="del-platform">${escapeHTML(d.platform)}</div>
+      <div class="del-title">${escapeHTML(d.title)}</div>
+      <div class="del-desc">${escapeHTML(d.description)}</div>
+      <div class="row" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--subtle);margin-top:auto;justify-content:space-between;letter-spacing:0.15em">
+        <span class="row"><span class="dot live"></span>READY</span>
+        <span>SAMPLE // 0${i+1}</span>
+      </div>
+    </div>`).join('');
+
+  return `
+  <section id="deliverables" class="section">
+    <div class="container">
+      <div class="section-label">WHAT YOUR CONTENT COULD LOOK LIKE</div>
+      <h2 class="section-headline">We Don't Just Plan. We Build.</h2>
+      <p class="section-sub">Six sample deliverables drafted for ${escapeHTML(cn)} before the call. Imagine month three.</p>
+      <div class="deliverables-bento">${cells}</div>
+      <div class="drama">This is what week 1 looks like. Imagine month 3.</div>
+    </div>
+  </section>`;
+}
+
+function tpl_features() {
+  const f = CONFIG.static.features_list;
+  const groups = [
+    { key: 'content_creative', title: 'Content & Creative', icon: 'pen-tool' },
+    { key: 'paid_advertising', title: 'Paid Advertising', icon: 'target' },
+    { key: 'automation_sales', title: 'Automation & Sales', icon: 'zap' },
+    { key: 'strategy_reporting', title: 'Strategy & Reporting', icon: 'bar-chart-3' }
+  ];
+  const total = groups.reduce((s,g) => s + (f[g.key]||[]).length, 0);
+
+  const cells = groups.map(g => {
+    const list = f[g.key] || [];
+    return `
+    <div class="cell feat-stack-cell">
+      <div class="head">
+        <div class="ic">${ico(g.icon, 16)}</div>
+        <div class="ttl">${escapeHTML(g.title)}</div>
+        <div class="ct">${list.length} ITEMS</div>
+      </div>
+      <ul>${list.map(it => `<li>${escapeHTML(it)}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+
+  return `
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-label">WHAT YOU GET</div>
+      <h2 class="section-headline">The Full Package</h2>
+      <p class="section-sub">Every line item. Grouped, counted, and verified.</p>
+
+      <div class="features-bento">
+        <div class="cell feat-counter-cell">
+          <div class="big" data-counter="${total}" data-suffix="+">0+</div>
+          <div>
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:1.2rem;letter-spacing:-0.01em;margin-bottom:0.4rem">Features included</div>
+            <p>Across content, paid, automation, and reporting. Activated by week 2 of your engagement.</p>
+          </div>
+        </div>
+        ${cells}
+      </div>
+    </div>
+  </section>`;
+}
+
+function tpl_pricing() {
+  const p = CONFIG.prospect.pricing;
+  const r = CONFIG.prospect.roi_projection;
+
+  const card = (key, c, recommended) => `
+    <div class="cell price-cell ${recommended?'recommended':''}">
+      ${recommended ? '<span class="price-badge">RECOMMENDED</span>' : ''}
+      <div class="price-name">${escapeHTML(c.name)}</div>
+      <div class="price-amount" data-counter-text="${escapeHTML(c.price)}">${c.price}</div>
+      <div class="price-period">${escapeHTML(c.period)}</div>
+      <ul class="price-features">
+        ${c.features.map(f => `<li>${escapeHTML(f)}</li>`).join('')}
+      </ul>
+      <button class="btn ${recommended?'btn-primary':'btn-outline'}" onclick="document.getElementById('close-section').scrollIntoView({behavior:'smooth'})">
+        Get Started ${ico('arrow-right',14)}
+      </button>
+    </div>`;
+
+  return `
+  <section id="pricing" class="section">
+    <div class="container" style="text-align:center">
+      <div class="section-label" style="display:inline-flex">YOUR PLAN</div>
+      <h2 class="section-headline">Investment</h2>
+      <p class="section-sub" style="margin-left:auto;margin-right:auto">Two tiers. One recommended for ${escapeHTML(cn)} based on your stage.</p>
+
+      <div class="pricing-bento" style="text-align:left">
+        ${card('growth', p.growth, p.recommended==='growth')}
+        ${card('scale', p.scale, p.recommended==='scale')}
+
+        <div class="cell roi-cell">
+          <div class="roi-block">
+            <span class="roi-label">Leads / month</span>
+            <span class="roi-val accent" data-counter="${r.leads_per_month}">0</span>
+          </div>
+          <div class="roi-block">
+            <span class="roi-label">Close rate</span>
+            <span class="roi-val">${escapeHTML(r.close_rate)}</span>
+          </div>
+          <div class="roi-block">
+            <span class="roi-label">Projected revenue / mo</span>
+            <span class="roi-val green" data-counter-text="${escapeHTML(r.projected_monthly_revenue)}">${escapeHTML(r.projected_monthly_revenue)}</span>
+          </div>
+          <div class="roi-block">
+            <span class="roi-label">ROI multiple</span>
+            <span class="roi-val accent" data-counter-text="${escapeHTML(r.roi_multiple)}">${escapeHTML(r.roi_multiple)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function tpl_close() {
+  const c = CONFIG.static.contact;
+  return `
+  <section id="close-section" class="section">
+    <div class="close-grid"></div>
+    <div class="container">
+      <div class="section-label" style="display:inline-flex">LET'S BUILD THIS</div>
+      <h1 class="close-headline">Ready to build this for <span class="accent">${escapeHTML(cn)}</span>?</h1>
+      <p class="close-subline">Everything you just saw? We can have it running in 30 days.</p>
+      <div class="close-cta-row">
+        <a class="btn btn-primary" href="https://cal.com/grawoth/consultation-call-with-allen" target="_blank" rel="noopener">
+          ${ico('calendar', 16)} Book a 15-Minute Strategy Call
+        </a>
+      </div>
+
+      <div class="close-bento">
+        <div class="cell close-contact">
+          <span class="lbl">EMAIL</span>
+          <span class="val">${escapeHTML(c.email)}</span>
+        </div>
+        <div class="cell close-contact">
+          <span class="lbl">PHONE</span>
+          <span class="val">${escapeHTML(c.phone)}</span>
+        </div>
+        <div class="cell close-contact">
+          <span class="lbl">WEB</span>
+          <span class="val">${escapeHTML(c.website)}</span>
+        </div>
+      </div>
+
+      <div class="close-footer">
+        <span class="dot"></span>SYSTEM OPERATIONAL // PREPARED EXCLUSIVELY FOR ${escapeHTML(cn).toUpperCase()}
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ===== RENDER ===== */
+const app = document.getElementById('app');
+app.innerHTML = [
+  tpl_hero(),
+  tpl_audit(),
+  tpl_problems(),
+  tpl_competitors(),
+  tpl_roadmap(),
+  tpl_strategy(),
+  tpl_proof(),
+  tpl_caseStudy('frenchify'),
+  tpl_caseStudy('drsw', true),
+  tpl_dashboards(),
+  tpl_system(),
+  tpl_campaign(),
+  tpl_deliverables(),
+  tpl_features(),
+  tpl_pricing(),
+  tpl_close()
+].join('');
+
+// hydrate icons
+if (window.lucide) lucide.createIcons();
+
+/* ===== SCROLL PROGRESS ===== */
+const scrollBar = document.getElementById('scroll-progress');
+function updateProgress(){
+  const h = document.documentElement;
+  const pct = (h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  scrollBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+/* ===== ANIMATIONS ===== */
+gsap.registerPlugin(ScrollTrigger);
+
+// fade-up sections
+document.querySelectorAll('.section').forEach(sec => {
+  gsap.from(sec.querySelectorAll('.section-label, .section-headline, .section-sub, .drama'), {
+    scrollTrigger: { trigger: sec, start: 'top 80%' },
+    y: 24, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08
+  });
+  gsap.from(sec.querySelectorAll('.cell'), {
+    scrollTrigger: { trigger: sec, start: 'top 75%' },
+    y: 30, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.06
+  });
+});
+
+// hero entrance
+gsap.from('#hero .hero-eyebrow, #hero .hero-company, #hero .hero-subline, #hero .hero-cta-row, #hero .hero-bento .cell', {
+  y: 40, opacity: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08, delay: 0.15
+});
+
+// numeric counters (data-counter -> number)
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.counter);
+  const suffix = el.dataset.suffix || '';
+  const isFloat = String(target).indexOf('.') !== -1;
+  const decimals = isFloat ? 2 : 0;
+  const obj = { v: 0 };
+  gsap.to(obj, {
+    v: target, duration: 1.6, ease: 'power2.out',
+    onUpdate: () => {
+      const v = obj.v.toFixed(decimals);
+      el.textContent = (isFloat ? v : Math.round(obj.v).toLocaleString()) + suffix;
+    }
+  });
+}
+
+// text counters (data-counter-text -> e.g. "20M+", "11.58x", "$2,400") - count the leading number
+function animateCounterText(el) {
+  const target = el.dataset.counterText;
+  const m = target.match(/^(-?[\$]?)(-?\d+\.?\d*)([^\d].*)?$/);
+  if (!m) { el.textContent = target; return; }
+  const prefix = m[1] || '';
+  const num = parseFloat(m[2]);
+  const suffix = m[3] || '';
+  const isFloat = m[2].indexOf('.') !== -1;
+  const decimals = isFloat ? 2 : 0;
+  const obj = { v: 0 };
+  gsap.to(obj, {
+    v: num, duration: 1.8, ease: 'power2.out',
+    onUpdate: () => {
+      const v = obj.v.toFixed(decimals);
+      const display = isFloat ? v : Math.round(obj.v).toLocaleString();
+      el.textContent = prefix + display + suffix;
+    }
+  });
+}
+
+document.querySelectorAll('[data-counter]').forEach(el => {
+  ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => animateCounter(el) });
+});
+document.querySelectorAll('[data-counter-text]').forEach(el => {
+  // skip non-numeric (e.g., "24/7", "5 min")
+  const t = el.dataset.counterText || '';
+  if (!/^[-\$]?\d/.test(t)) { el.textContent = t; return; }
+  ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => animateCounterText(el) });
+});
+
+// progress bars
+document.querySelectorAll('[data-bar-target]').forEach(el => {
+  ScrollTrigger.create({
+    trigger: el, start: 'top 90%', once: true,
+    onEnter: () => { el.style.width = (parseFloat(el.dataset.barTarget)) + '%'; }
+  });
+});
+
+// stroke ring animation
+document.querySelectorAll('[data-stroke-target]').forEach(el => {
+  const target = parseFloat(el.dataset.strokeTarget);
+  ScrollTrigger.create({
+    trigger: el, start: 'top 90%', once: true,
+    onEnter: () => {
+      const dasharray = el.getAttribute('stroke-dasharray') || '0 1000';
+      const max = parseFloat(dasharray.split(' ')[1]) || 1000;
+      gsap.to({ v: 0 }, {
+        v: target, duration: 1.5, ease: 'power2.out',
+        onUpdate: function() {
+          el.setAttribute('stroke-dasharray', `${this.targets()[0].v} ${max}`);
+        }
+      });
+    }
+  });
+});
+
+// stroke ring animation (data-target-dasharray full string)
+document.querySelectorAll('[data-target-dasharray]').forEach(el => {
+  const targetStr = el.dataset.targetDasharray;
+  const targetV = parseFloat(targetStr.split(' ')[0]);
+  const max = parseFloat(targetStr.split(' ')[1]);
+  ScrollTrigger.create({
+    trigger: el, start: 'top 90%', once: true,
+    onEnter: () => {
+      gsap.to({ v: 0 }, {
+        v: targetV, duration: 1.5, ease: 'power2.out',
+        onUpdate: function() {
+          el.setAttribute('stroke-dasharray', `${this.targets()[0].v} ${max}`);
+        }
+      });
+    }
+  });
+});
+
+// re-create lucide icons after dynamic insertion (just in case)
+setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 50);
+
+</script>
+
+</body>
+</html>

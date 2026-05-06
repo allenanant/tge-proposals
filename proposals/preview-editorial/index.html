@@ -1,0 +1,3672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Growth Strategy | The Growth Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* =====================================================================
+   EDITORIAL AUTHORITY — Magazine-grade typography, generous whitespace.
+   The grid is a 12-column discipline. Color is rationed, not rationed out.
+   Every section is an editorial spread, not a slide.
+   ===================================================================== */
+
+/* ===== RESET ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  background: #0F0E0C;
+  color: #E8E4DA;
+  font-family: 'Hanken Grotesk', sans-serif;
+  line-height: 1.65;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "ss02", "kern", "liga";
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+
+/* ===== TOKENS ===== */
+:root {
+  /* Surface */
+  --bg: #0F0E0C;
+  --bg-warm: #161410;
+  --bg-cool: #0B0B0A;
+  --paper: #F5EFE6;
+  --paper-dim: #D8D2C5;
+  --paper-faint: rgba(245, 239, 230, 0.08);
+  --rule: rgba(245, 239, 230, 0.12);
+  --rule-faint: rgba(245, 239, 230, 0.06);
+  /* Ink */
+  --ink: #F5EFE6;
+  --ink-mid: #A8A294;
+  --ink-faint: #6E695E;
+  --ink-deep: #44413B;
+  /* Accent — used sparingly */
+  --accent: #C069DD;
+  --accent-quiet: rgba(192, 105, 221, 0.6);
+  --accent-faint: rgba(192, 105, 221, 0.18);
+  /* Semantic — only in margin notes / annotations */
+  --good: #6FA678;
+  --warn: #C99750;
+  --bad: #B86A5C;
+  /* Type */
+  --serif: 'Instrument Serif', serif;
+  --sans: 'Hanken Grotesk', sans-serif;
+  --display: 'Outfit', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  /* Grid */
+  --col-gap: 2rem;
+  --max-width: 1320px;
+  --margin: clamp(1.5rem, 5vw, 4rem);
+}
+
+::selection { background: var(--accent); color: var(--bg); }
+
+/* ===== SCROLL PROGRESS — single hairline ===== */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 1px;
+  background: var(--accent);
+  width: 0; z-index: 10000;
+  transition: width 0.05s linear;
+}
+
+/* ===== PAPER GRAIN (very subtle) ===== */
+#grain {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+
+/* ===== MASTHEAD ===== */
+.masthead {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 1.25rem var(--margin);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+  background: linear-gradient(180deg, rgba(15, 14, 12, 0.92), rgba(15, 14, 12, 0));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule-faint);
+}
+.masthead-left { justify-self: start; }
+.masthead-center { justify-self: center; color: var(--ink-mid); }
+.masthead-right { justify-self: end; display: flex; gap: 1.5rem; align-items: center; }
+.masthead-right .folio { color: var(--ink-faint); }
+
+/* ===== GRID ===== */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--margin);
+}
+.section {
+  position: relative;
+  padding: clamp(6rem, 12vw, 10rem) 0;
+  border-top: 1px solid var(--rule-faint);
+}
+.section:first-of-type { border-top: none; }
+
+/* ===== EDITORIAL CHROME ===== */
+.section-folio {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  align-items: baseline;
+}
+.section-numeral {
+  grid-column: 1 / span 2;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.section-numeral-rule {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--accent);
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+.section-kicker {
+  grid-column: 3 / span 4;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-mid);
+  align-self: end;
+}
+.section-folio-meta {
+  grid-column: 9 / span 4;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-align: right;
+  align-self: end;
+}
+
+/* ===== HEADLINES ===== */
+.headline-display {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 6vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.headline-display em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+.headline-feature {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+.headline-feature em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+}
+.deck {
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--ink-mid);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+
+/* ===== BODY — long-form ===== */
+.body-copy {
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.85;
+  font-weight: 300;
+  color: var(--ink-mid);
+  max-width: 38em;
+}
+.body-copy p + p { margin-top: 1.25em; text-indent: 1.5em; }
+.body-copy p:first-of-type { text-indent: 0; }
+
+/* ===== DROP CAP ===== */
+.drop-cap::first-letter {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 4.5em;
+  line-height: 0.9;
+  float: left;
+  padding: 0.05em 0.12em 0 0;
+  color: var(--accent);
+}
+
+/* ===== HAIRLINE RULE ===== */
+.rule { height: 1px; background: var(--rule); width: 100%; }
+.rule-accent { height: 1px; background: var(--accent); width: 3rem; }
+.rule-vertical { width: 1px; background: var(--rule); height: 100%; }
+
+/* ===== MARGINALIA ===== */
+.margin-note {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.margin-note em {
+  font-family: var(--serif);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink-mid);
+  font-size: 1.2em;
+}
+.margin-note .num {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+/* ===== FIGURES ===== */
+.figure {
+  position: relative;
+}
+.figure-caption {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  margin-top: 0.85rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--accent);
+  max-width: 32em;
+}
+.figure-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--ink-faint);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+/* ===== PULL QUOTE ===== */
+.pull-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  line-height: 1.25;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  position: relative;
+  padding-left: 2rem;
+  border-left: 1px solid var(--accent);
+}
+.pull-quote-attr {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--ink-faint);
+  margin-top: 1.2rem;
+  display: block;
+}
+
+/* ===== TABULAR FIGURES ===== */
+.tabular { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ===== EYEBROW LABEL ===== */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--ink-mid);
+}
+
+/* ===== BUTTONS — restrained ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2.2rem;
+  font-family: var(--display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 0;
+  transition: background 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+.btn .btn-arrow {
+  width: 14px; height: 14px;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+.btn:hover .btn-arrow { transform: translateX(4px); }
+.btn-ghost {
+  border-color: var(--rule);
+  color: var(--ink-mid);
+}
+.btn-ghost:hover {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* ============================================================
+   I. THE OPENING
+   ============================================================ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0;
+  border-top: none;
+}
+.hero-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  padding: 8rem var(--margin) 4rem;
+  align-content: end;
+  position: relative;
+  z-index: 2;
+}
+.hero-tag {
+  grid-column: 1 / span 5;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--ink-mid);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.hero-tag .rule-accent { width: 2rem; }
+.hero-volume {
+  grid-column: 9 / span 4;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--ink-faint);
+  align-self: start;
+  margin-bottom: 2.5rem;
+}
+.hero-volume em {
+  font-family: var(--serif);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink-mid);
+  font-size: 1.4em;
+  display: block;
+  margin-top: 0.2rem;
+}
+.hero-eyebrow {
+  grid-column: 1 / span 12;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  color: var(--ink-mid);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.005em;
+}
+.hero-company {
+  grid-column: 1 / span 12;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(4rem, 13vw, 11rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  margin-bottom: 2rem;
+}
+.hero-company .ampersand {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+.hero-deck {
+  grid-column: 1 / span 6;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 1.7vw, 1.6rem);
+  line-height: 1.4;
+  color: var(--ink-mid);
+  font-weight: 400;
+  margin-bottom: 3rem;
+}
+.hero-deck::before {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background: var(--accent);
+  margin-bottom: 1.5rem;
+}
+.hero-cta-row {
+  grid-column: 1 / span 7;
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hero-toc {
+  grid-column: 9 / span 4;
+  align-self: end;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--rule-faint);
+  padding-top: 1rem;
+}
+.hero-toc-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--rule-faint);
+}
+.hero-toc-row:last-child { border-bottom: none; }
+.hero-toc-row span:first-child { color: var(--ink-mid); }
+.hero-toc-row span:last-child { color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+.hero-foot {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  padding: 1.5rem var(--margin);
+  border-top: 1px solid var(--rule-faint);
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+  position: relative;
+  z-index: 2;
+}
+.hero-foot-l { grid-column: 1 / span 4; }
+.hero-foot-c { grid-column: 5 / span 4; text-align: center; }
+.hero-foot-r { grid-column: 9 / span 4; text-align: right; }
+
+#hero-bg {
+  position: absolute; inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.hero-rule-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, var(--rule-faint) 1px, transparent 1px);
+  background-size: calc((100vw - 2 * var(--margin)) / 12) 100%;
+  background-position: var(--margin) 0;
+  opacity: 0.5;
+}
+.hero-glow {
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 50%;
+  height: 60%;
+  background: radial-gradient(circle at center, var(--accent-faint), transparent 60%);
+  filter: blur(60px);
+  opacity: 0.5;
+}
+
+/* ============================================================
+   II. THE WEBSITE AUDIT
+   ============================================================ */
+.audit-spread {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  align-items: start;
+}
+.audit-headline {
+  grid-column: 1 / span 12;
+  margin-bottom: 3rem;
+}
+.audit-headline .deck {
+  margin-top: 1.5rem;
+  max-width: 32em;
+}
+.audit-screenshot-wrap {
+  grid-column: 1 / span 7;
+  position: relative;
+}
+.audit-browser {
+  background: var(--bg-warm);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+.audit-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-cool);
+  border-bottom: 1px solid var(--rule-faint);
+  font-family: var(--mono);
+}
+.audit-browser-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ink-deep);
+}
+.audit-browser-url {
+  margin-left: 1rem;
+  font-size: 0.7rem;
+  color: var(--ink-mid);
+  letter-spacing: 0.02em;
+}
+.audit-browser-url::before {
+  content: 'https://';
+  color: var(--ink-faint);
+}
+.audit-screenshot-canvas {
+  position: relative;
+  height: 480px;
+  background:
+    linear-gradient(135deg, rgba(245,239,230,0.04) 0%, rgba(245,239,230,0.01) 100%),
+    repeating-linear-gradient(0deg, transparent 0, transparent 22px, var(--rule-faint) 22px, var(--rule-faint) 23px);
+  background-color: var(--bg-warm);
+}
+.audit-screenshot-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.audit-marker {
+  position: absolute;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: var(--paper);
+  color: var(--bg);
+  border: 1px solid var(--paper);
+  box-shadow: 0 0 0 4px rgba(245, 239, 230, 0.08);
+  z-index: 2;
+}
+.audit-marker.warn {
+  background: var(--bg-warm);
+  color: var(--warn);
+  border-color: var(--warn);
+}
+.audit-marker.bad {
+  background: var(--bg-warm);
+  color: var(--bad);
+  border-color: var(--bad);
+}
+.audit-marker:hover { transform: scale(1.15); }
+.audit-marker-line {
+  position: absolute;
+  height: 1px;
+  background: var(--accent-quiet);
+  transform-origin: left center;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.audit-figure-caption {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-mid);
+  margin-top: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--accent);
+}
+
+.audit-meta {
+  grid-column: 9 / span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.audit-score-block {
+  border: 1px solid var(--rule);
+  padding: 2rem;
+  background: var(--bg-warm);
+}
+.audit-score-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+}
+.audit-score-number {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(4rem, 7vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+.audit-score-number .denom {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.4em;
+  color: var(--ink-faint);
+  margin-left: 0.2em;
+}
+.audit-score-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  margin-top: 1.5rem;
+  position: relative;
+}
+.audit-score-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.audit-findings-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.audit-findings-title {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-faint);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+.audit-finding {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule-faint);
+  align-items: baseline;
+}
+.audit-finding:last-child { border-bottom: none; }
+.audit-finding-num {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.audit-finding-text {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--ink-mid);
+  line-height: 1.5;
+}
+.audit-finding-text .severity {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid currentColor;
+  vertical-align: middle;
+}
+.audit-finding-text .severity.warn { color: var(--warn); }
+.audit-finding-text .severity.bad { color: var(--bad); }
+
+.audit-closing {
+  grid-column: 1 / span 12;
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--rule);
+}
+.audit-closing .pull-quote { max-width: 26em; }
+
+/* ============================================================
+   III. THE PROBLEM
+   ============================================================ */
+.problem-spread {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap) var(--col-gap);
+  row-gap: 4rem;
+}
+.problem-headline {
+  grid-column: 1 / span 12;
+  margin-bottom: 2rem;
+}
+.problem-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+
+.problem-entry {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid var(--rule-faint);
+  align-items: start;
+}
+.problem-entry:last-of-type { border-bottom: none; }
+.problem-numeral {
+  grid-column: 1 / span 2;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  color: var(--accent);
+  line-height: 1;
+}
+.problem-numeral-label {
+  display: block;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-faint);
+  margin-top: 0.6rem;
+}
+.problem-statement {
+  grid-column: 3 / span 6;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.problem-aside {
+  grid-column: 10 / span 3;
+}
+.problem-context {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--ink-mid);
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+.problem-data {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--warn);
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+.problem-data-label {
+  display: block;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-faint);
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================================
+   IV. COMPETITOR LANDSCAPE
+   ============================================================ */
+.comp-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.comp-headline { grid-column: 1 / span 8; margin-bottom: 3rem; }
+.comp-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+.comp-aside {
+  grid-column: 10 / span 3;
+  align-self: end;
+  margin-bottom: 3rem;
+}
+
+.comp-table-wrap {
+  grid-column: 1 / span 12;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4rem;
+}
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+}
+.comp-table thead th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  padding: 1.25rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+.comp-table thead th.col-prospect { color: var(--accent); }
+.comp-table tbody td {
+  padding: 1.4rem 1rem;
+  border-bottom: 1px solid var(--rule-faint);
+  font-size: 0.95rem;
+  color: var(--ink-mid);
+  vertical-align: middle;
+}
+.comp-table tbody tr:last-child td { border-bottom: none; }
+.comp-table tbody td.feature-name {
+  font-family: var(--sans);
+  font-weight: 400;
+  color: var(--ink);
+  width: 36%;
+}
+.comp-table .col-prospect { background: rgba(192, 105, 221, 0.025); }
+.comp-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.comp-mark.yes { color: var(--good); }
+.comp-mark.no { color: var(--ink-deep); }
+
+.comp-gaps {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--col-gap);
+  margin-bottom: 3rem;
+}
+.comp-gap {
+  border-top: 1px solid var(--accent);
+  padding-top: 1.5rem;
+  position: relative;
+}
+.comp-gap-num {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+.comp-gap-title {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+.comp-gap-desc {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--ink-mid);
+  font-weight: 300;
+}
+
+.comp-closing {
+  grid-column: 3 / span 8;
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--rule-faint);
+}
+.comp-closing .pull-quote {
+  max-width: 28em;
+  margin: 0 auto;
+  border-left: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+/* ============================================================
+   V. ROADMAP
+   ============================================================ */
+.road-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.road-headline { grid-column: 1 / span 8; margin-bottom: 3rem; }
+.road-headline .deck { margin-top: 1.5rem; max-width: 32em; }
+
+.road-meta {
+  grid-column: 10 / span 3;
+  align-self: end;
+  margin-bottom: 3rem;
+}
+
+.road-grid {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--ink);
+  position: relative;
+}
+.road-week {
+  padding: 2rem 1.5rem 2.5rem;
+  border-right: 1px solid var(--rule-faint);
+  position: relative;
+}
+.road-week:last-child { border-right: none; }
+.road-week::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.road-week-num {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.road-week-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.005em;
+}
+.road-week-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 2rem;
+}
+.road-week-items li {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink-mid);
+  display: grid;
+  grid-template-columns: 1.2rem 1fr;
+  gap: 0.4rem;
+  font-weight: 300;
+}
+.road-week-items li::before {
+  content: '–';
+  color: var(--accent);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.road-week-count {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+  border-top: 1px solid var(--rule-faint);
+  padding-top: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.road-week-count em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.road-total {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+.road-total-num {
+  grid-column: 1 / span 5;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+.road-total-num em {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 400;
+}
+.road-total-desc {
+  grid-column: 7 / span 5;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+  color: var(--ink-mid);
+  line-height: 1.4;
+}
+
+/* ============================================================
+   VI. STRATEGY
+   ============================================================ */
+.strat-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.strat-headline { grid-column: 1 / span 8; margin-bottom: 4rem; }
+.strat-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+
+.strat-stack {
+  grid-column: 1 / span 12;
+  display: flex;
+  flex-direction: column;
+}
+.strat-entry {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  padding: 4rem 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  align-items: start;
+}
+.strat-entry:first-child { border-top: 1px solid var(--ink); }
+.strat-numeral {
+  grid-column: 1 / span 2;
+  font-family: var(--display);
+  font-weight: 200;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  line-height: 0.9;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+  font-feature-settings: "lnum";
+}
+.strat-numeral-tag {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-faint);
+  margin-top: 0.75rem;
+}
+.strat-body {
+  grid-column: 3 / span 6;
+}
+.strat-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+.strat-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+}
+.strat-bullets li {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink-mid);
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.5rem;
+  font-weight: 300;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--rule-faint);
+}
+.strat-bullets li:last-child { border-bottom: none; }
+.strat-bullets li::before {
+  content: counter(bullets, decimal-leading-zero);
+  counter-increment: bullets;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  padding-top: 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+.strat-bullets { counter-reset: bullets; }
+.strat-aside {
+  grid-column: 10 / span 3;
+  border-top: 1px solid var(--accent);
+  padding-top: 1.25rem;
+}
+.strat-aside-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+}
+.strat-projected {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+
+/* ============================================================
+   VII. PROOF WALL
+   ============================================================ */
+.proof-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.proof-headline { grid-column: 1 / span 8; margin-bottom: 3rem; }
+.proof-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+
+.proof-meta {
+  grid-column: 10 / span 3;
+  align-self: end;
+  margin-bottom: 3rem;
+}
+
+.proof-table {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+.proof-cell {
+  padding: 2rem 1.25rem;
+  border-right: 1px solid var(--rule-faint);
+  border-bottom: 1px solid var(--rule-faint);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+  position: relative;
+}
+.proof-cell.span-3 { grid-column: span 3; }
+.proof-cell.span-4 { grid-column: span 4; }
+.proof-cell.span-6 { grid-column: span 6; }
+.proof-cell.span-12 { grid-column: span 12; }
+.proof-cell.feature {
+  background: var(--bg-warm);
+  min-height: 280px;
+}
+.proof-cell-num {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.proof-cell-value {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  font-feature-settings: "lnum";
+}
+.proof-cell.feature .proof-cell-value {
+  font-size: clamp(4rem, 9vw, 7rem);
+  color: var(--accent);
+}
+.proof-cell-label {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-mid);
+  line-height: 1.45;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+.proof-cell-source {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 1rem;
+}
+
+.proof-footer {
+  grid-column: 1 / span 12;
+  margin-top: 2rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule-faint);
+}
+
+/* ============================================================
+   VIII & IX. CASE STUDIES
+   ============================================================ */
+.case-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); align-items: start; }
+.case-aside {
+  grid-column: 1 / span 4;
+  position: sticky;
+  top: 8rem;
+}
+.case-aside.right {
+  grid-column: 9 / span 4;
+}
+.case-aside-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.case-aside-meta {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule-faint);
+}
+.case-aside-meta-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--rule-faint);
+}
+.case-aside-meta-row:last-child { border-bottom: none; }
+.case-aside-meta-row span:first-child { color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.6rem; }
+.case-aside-meta-row span:last-child { color: var(--ink-mid); font-variant-numeric: tabular-nums; }
+
+.case-figure {
+  grid-column: 5 / span 4;
+}
+.case-figure.left { grid-column: 1 / span 4; }
+.case-phone-frame {
+  background: var(--bg-warm);
+  border: 1px solid var(--rule);
+  padding: 0.5rem;
+  border-radius: 28px;
+  position: relative;
+  max-width: 280px;
+  margin: 0 auto;
+}
+.case-phone-screen {
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--bg);
+  aspect-ratio: 9 / 18;
+  position: relative;
+}
+.case-phone-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.case-phone-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, var(--bg-warm), var(--bg-cool));
+}
+.case-figure-caption {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+  margin-top: 1rem;
+  text-align: center;
+  padding: 0 1rem;
+  line-height: 1.5;
+}
+
+.case-body {
+  grid-column: 5 / span 8;
+  align-self: start;
+}
+.case-body.narrow { grid-column: 5 / span 4; }
+.case-body.right { grid-column: 5 / span 4; }
+.case-hero-metric {
+  font-family: var(--display);
+  font-weight: 200;
+  font-size: clamp(4rem, 10vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  font-feature-settings: "lnum";
+}
+.case-hero-metric em {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 400;
+}
+.case-hero-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-mid);
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+.case-sub-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--rule);
+}
+.case-sub-metric {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-mid);
+  padding: 1rem 1.25rem;
+  border-right: 1px solid var(--rule-faint);
+  flex: 1;
+  text-align: center;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.case-sub-metric:last-child { border-right: none; }
+
+.case-story {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--ink-mid);
+  font-weight: 300;
+  margin-bottom: 2.5rem;
+  max-width: 36em;
+}
+.case-story p { position: relative; }
+.case-story p:first-child::first-letter {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 3.5em;
+  line-height: 0.85;
+  float: left;
+  padding: 0.05em 0.12em 0 0;
+  color: var(--accent);
+}
+
+.case-ba {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--rule);
+  margin-top: 1rem;
+}
+.case-ba-cell { padding: 1.25rem; border-right: 1px solid var(--rule-faint); }
+.case-ba-cell:last-child { border-right: none; }
+.case-ba-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-faint);
+  margin-bottom: 0.75rem;
+}
+.case-ba-tag.before { color: var(--bad); }
+.case-ba-tag.after { color: var(--good); }
+.case-ba-text {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-mid);
+  font-weight: 300;
+}
+
+.case-media-strip {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+.case-media-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.25rem;
+}
+.case-media-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border: 1px solid var(--rule);
+}
+.case-media-cell {
+  padding: 1rem 1.25rem;
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid var(--rule-faint);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-mid);
+  letter-spacing: -0.005em;
+  min-width: 100px;
+}
+.case-media-cell:last-child { border-right: none; }
+
+/* ============================================================
+   X. LIVE DASHBOARDS
+   ============================================================ */
+.dash-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.dash-headline { grid-column: 1 / span 8; margin-bottom: 3rem; }
+.dash-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+.dash-meta {
+  grid-column: 10 / span 3;
+  align-self: end;
+  margin-bottom: 3rem;
+}
+
+.dash-stack {
+  grid-column: 1 / span 12;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+.dash-figure {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  align-items: start;
+}
+.dash-figure.right { direction: rtl; }
+.dash-figure.right > * { direction: ltr; }
+.dash-figure-image {
+  grid-column: 1 / span 8;
+}
+.dash-figure.right .dash-figure-image {
+  grid-column: 5 / span 8;
+}
+.dash-browser {
+  background: var(--bg-warm);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.dash-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-cool);
+  border-bottom: 1px solid var(--rule-faint);
+}
+.dash-browser-dots {
+  display: flex; gap: 0.4rem;
+}
+.dash-browser-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ink-deep);
+}
+.dash-browser-url {
+  margin-left: 1rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+.dash-browser-canvas {
+  height: 320px;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(245, 239, 230, 0.02) 100%),
+    repeating-linear-gradient(0deg, transparent 0, transparent 36px, var(--rule-faint) 36px, var(--rule-faint) 37px);
+  position: relative;
+  overflow: hidden;
+}
+.dash-browser-img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+}
+
+.dash-figure-aside {
+  grid-column: 10 / span 3;
+}
+.dash-figure.right .dash-figure-aside {
+  grid-column: 1 / span 4;
+  text-align: right;
+}
+.dash-figure-num {
+  font-family: var(--display);
+  font-weight: 200;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+.dash-figure-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule-faint);
+}
+.dash-figure-caption {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink-mid);
+  letter-spacing: -0.005em;
+}
+
+/* ============================================================
+   XI. THE SYSTEM
+   ============================================================ */
+.sys-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.sys-headline { grid-column: 1 / span 8; margin-bottom: 3rem; }
+.sys-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+
+.sys-layout {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: 4fr 8fr;
+  gap: var(--col-gap);
+  border-top: 1px solid var(--ink);
+  padding-top: 2rem;
+}
+.sys-tabs {
+  display: flex;
+  flex-direction: column;
+}
+.sys-tab {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--rule-faint);
+  cursor: pointer;
+  text-align: left;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  color: var(--ink-mid);
+  transition: color 0.3s ease;
+}
+.sys-tab:last-child { border-bottom: none; }
+.sys-tab-num {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+.sys-tab-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: inherit;
+  text-align: left;
+}
+.sys-tab.active { color: var(--ink); }
+.sys-tab.active .sys-tab-num { color: var(--accent); }
+.sys-tab:hover { color: var(--ink); }
+
+.sys-panel {
+  border-left: 1px solid var(--rule-faint);
+  padding-left: var(--col-gap);
+  min-height: 360px;
+}
+.sys-panel-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.sys-panel-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+  color: var(--ink);
+}
+.sys-panel-desc {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink-mid);
+  margin-bottom: 2rem;
+  max-width: 28em;
+}
+.sys-panel-figure {
+  margin-top: 2rem;
+  border: 1px solid var(--rule);
+  background: var(--bg-warm);
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.sys-panel-figure img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top;
+}
+.sys-panel-figure-empty {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.auto-stack {
+  grid-column: 1 / span 12;
+  margin-top: 5rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--rule);
+}
+.auto-stack-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 2rem;
+}
+.auto-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.auto-cell {
+  border-right: 1px solid var(--rule-faint);
+  padding: 1.5rem 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+.auto-cell:last-child { border-right: none; }
+.auto-cell-num {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.auto-cell-title {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+.auto-cell-desc {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-mid);
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+.auto-cell-stat {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--good);
+  letter-spacing: 0.05em;
+  border-top: 1px solid var(--rule-faint);
+  padding-top: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   XII. CAMPAIGN ARCHITECTURE
+   ============================================================ */
+.arch-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.arch-headline { grid-column: 1 / span 8; margin-bottom: 3rem; }
+.arch-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+
+.funnel {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--rule);
+  margin-bottom: 4rem;
+}
+.funnel-stage {
+  padding: 2.5rem 1.75rem;
+  border-right: 1px solid var(--rule-faint);
+  position: relative;
+}
+.funnel-stage:last-child { border-right: none; }
+.funnel-stage-num {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+.funnel-stage-name {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule-faint);
+}
+.funnel-stage-desc {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--ink-mid);
+  font-weight: 300;
+}
+
+.channel-section-tag {
+  grid-column: 1 / span 12;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.channel-grid {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+.channel-cell {
+  padding: 1.5rem;
+  border-right: 1px solid var(--rule-faint);
+  border-bottom: 1px solid var(--rule-faint);
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.channel-cell:nth-child(3n) { border-right: none; }
+.channel-cell.selected { background: rgba(192, 105, 221, 0.04); }
+.channel-icon {
+  width: 32px; height: 32px;
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-mid);
+}
+.channel-cell.selected .channel-icon {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.channel-icon i {
+  width: 14px; height: 14px;
+}
+.channel-name {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+.channel-cell.selected .channel-name { color: var(--ink); }
+.channel-role {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-mid);
+  font-weight: 300;
+}
+.channel-selected-tag {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 0.4rem;
+  display: inline-block;
+}
+
+/* ============================================================
+   XIII. MOCK DELIVERABLES
+   ============================================================ */
+.mock-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.mock-headline { grid-column: 1 / span 8; margin-bottom: 3rem; }
+.mock-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+
+.mock-grid {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+.mock-cell {
+  padding: 2rem 1.5rem;
+  border-right: 1px solid var(--rule-faint);
+  border-bottom: 1px solid var(--rule-faint);
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+.mock-cell:nth-child(3n) { border-right: none; }
+.mock-cell-num {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.mock-cell-platform {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--rule-faint);
+}
+.mock-cell-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  line-height: 1.25;
+}
+.mock-cell-desc {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink-mid);
+  margin-top: auto;
+}
+
+.mock-closing {
+  grid-column: 3 / span 8;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  text-align: center;
+}
+.mock-closing .pull-quote {
+  border-left: none;
+  padding-left: 0;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   XIV. FEATURE LIST
+   ============================================================ */
+.feat-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.feat-headline { grid-column: 1 / span 8; margin-bottom: 3rem; }
+.feat-headline .deck { margin-top: 1.5rem; max-width: 30em; }
+.feat-meta {
+  grid-column: 10 / span 3;
+  align-self: end;
+  margin-bottom: 3rem;
+  text-align: right;
+}
+.feat-meta-num {
+  font-family: var(--display);
+  font-weight: 200;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.feat-meta-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.feat-cols {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+.feat-col {
+  padding: 2rem 1.25rem;
+  border-right: 1px solid var(--rule-faint);
+}
+.feat-col:last-child { border-right: none; }
+.feat-col-roman {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+.feat-col-title {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule-faint);
+}
+.feat-list {
+  list-style: none;
+}
+.feat-list li {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--ink-mid);
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--rule-faint);
+  font-weight: 300;
+  display: grid;
+  grid-template-columns: 1.4rem 1fr;
+  gap: 0.4rem;
+}
+.feat-list li:last-child { border-bottom: none; }
+.feat-list li::before {
+  content: counter(features, decimal-leading-zero);
+  counter-increment: features;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+}
+.feat-list { counter-reset: features; }
+
+/* ============================================================
+   XV. INVESTMENT
+   ============================================================ */
+.price-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.price-headline { grid-column: 1 / span 8; margin-bottom: 4rem; }
+.price-headline .deck { margin-top: 1.5rem; max-width: 32em; }
+
+.price-grid {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+.price-card {
+  padding: 3rem 2rem;
+  border-right: 1px solid var(--rule-faint);
+  position: relative;
+}
+.price-card:last-child { border-right: none; }
+.price-card.recommended {
+  background: rgba(192, 105, 221, 0.025);
+}
+.price-card-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.price-card.recommended .price-card-tag .recommend {
+  color: var(--accent);
+}
+.price-card-name {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+.price-card-price {
+  font-family: var(--display);
+  font-weight: 200;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  font-feature-settings: "lnum";
+}
+.price-card-period {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-mid);
+  margin-bottom: 2rem;
+}
+.price-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2.5rem;
+}
+.price-features li {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink-mid);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--rule-faint);
+  font-weight: 300;
+  display: grid;
+  grid-template-columns: 1.4rem 1fr;
+  gap: 0.5rem;
+}
+.price-features li:last-child { border-bottom: none; }
+.price-features li::before {
+  content: '–';
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.roi-strip {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--rule);
+  align-items: start;
+}
+.roi-quote {
+  grid-column: 1 / span 4;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: var(--ink-mid);
+  letter-spacing: -0.005em;
+  border-left: 1px solid var(--accent);
+  padding-left: 1.25rem;
+}
+.roi-stats {
+  grid-column: 6 / span 7;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.roi-cell {
+  padding: 1.5rem 1rem;
+  border-right: 1px solid var(--rule-faint);
+}
+.roi-cell:last-child { border-right: none; }
+.roi-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+}
+.roi-value {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  font-feature-settings: "lnum";
+}
+.roi-value.accent { color: var(--accent); }
+.roi-value.good { color: var(--good); }
+
+/* ============================================================
+   XVI. THE CLOSE
+   ============================================================ */
+#close-section {
+  border-top: 1px solid var(--rule);
+  padding: clamp(8rem, 14vw, 12rem) 0;
+}
+.close-spread { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--col-gap); }
+.close-headline-wrap {
+  grid-column: 1 / span 12;
+  text-align: left;
+  margin-bottom: 4rem;
+}
+.close-headline {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 5.5vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  margin-bottom: 2rem;
+  max-width: 18em;
+}
+.close-headline em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+.close-deck {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  color: var(--ink-mid);
+  max-width: 32em;
+  line-height: 1.4;
+  margin-bottom: 3rem;
+}
+.close-cta-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.close-contact {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule);
+  margin-top: 5rem;
+}
+.close-contact-cell {
+  padding: 1.75rem 1rem;
+  border-right: 1px solid var(--rule-faint);
+}
+.close-contact-cell:last-child { border-right: none; }
+.close-contact-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.5rem;
+}
+.close-contact-value {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  font-variant-numeric: tabular-nums;
+}
+
+.colophon {
+  grid-column: 1 / span 12;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule-faint);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  align-items: center;
+}
+.colophon-l { grid-column: 1 / span 6; }
+.colophon-r { grid-column: 7 / span 6; text-align: right; }
+.colophon .status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.colophon .status::before {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--good);
+  box-shadow: 0 0 6px var(--good);
+}
+.colophon-bottom {
+  grid-column: 1 / span 12;
+  margin-top: 1.5rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+.reveal { opacity: 0; transform: translateY(24px); }
+.reveal-line { opacity: 0; transform: translateY(8px); display: block; }
+
+/* ============================================================
+   RESPONSIVE — single-column collapse below 640px
+   ============================================================ */
+@media (max-width: 1024px) {
+  :root { --col-gap: 1.5rem; }
+  .grid-12 { padding: 0 1.5rem; }
+  .audit-spread, .audit-screenshot-wrap, .audit-meta { grid-column: 1 / span 12 !important; }
+  .case-aside, .case-aside.right, .case-figure, .case-figure.left, .case-body, .case-body.right, .case-body.narrow {
+    grid-column: 1 / span 12 !important;
+    position: static !important;
+  }
+  .strat-numeral, .strat-body, .strat-aside { grid-column: 1 / span 12 !important; }
+  .problem-numeral, .problem-statement, .problem-aside { grid-column: 1 / span 12 !important; }
+  .road-grid { grid-template-columns: repeat(2, 1fr); }
+  .feat-cols { grid-template-columns: repeat(2, 1fr); }
+  .auto-grid { grid-template-columns: repeat(2, 1fr); }
+  .sys-layout { grid-template-columns: 1fr; }
+  .sys-panel { border-left: none; padding-left: 0; padding-top: 2rem; border-top: 1px solid var(--rule); }
+  .channel-grid { grid-template-columns: repeat(2, 1fr); }
+  .mock-grid { grid-template-columns: repeat(2, 1fr); }
+  .funnel { grid-template-columns: 1fr; }
+  .funnel-stage { border-right: none; border-bottom: 1px solid var(--rule-faint); }
+  .funnel-stage:last-child { border-bottom: none; }
+  .roi-stats { grid-template-columns: 1fr; }
+  .roi-cell { border-right: none; border-bottom: 1px solid var(--rule-faint); }
+  .roi-cell:last-child { border-bottom: none; }
+  .roi-quote, .roi-stats { grid-column: 1 / span 12; }
+  .comp-aside { grid-column: 1 / span 12; }
+  .road-meta, .dash-meta, .proof-meta, .feat-meta { grid-column: 1 / span 12; text-align: left; }
+  .road-total-num, .road-total-desc { grid-column: 1 / span 12; }
+  .section-numeral { grid-column: 1 / span 4; }
+  .section-kicker { grid-column: 5 / span 7; }
+  .section-folio-meta { display: none; }
+  .hero-toc { grid-column: 1 / span 12; margin-top: 2rem; }
+  .hero-volume { display: none; }
+  .hero-deck, .hero-cta-row { grid-column: 1 / span 12; }
+}
+@media (max-width: 640px) {
+  :root { --margin: 1.25rem; --col-gap: 1rem; }
+  body { font-size: 0.95rem; }
+  .masthead { display: none; }
+  .grid-12 { padding: 0 var(--margin); }
+  .section { padding: 5rem 0; }
+  .road-grid, .feat-cols, .auto-grid, .channel-grid, .mock-grid, .price-grid, .close-contact { grid-template-columns: 1fr; }
+  .road-week, .feat-col, .auto-cell, .channel-cell, .mock-cell, .price-card, .close-contact-cell {
+    border-right: none;
+    border-bottom: 1px solid var(--rule-faint);
+  }
+  .road-week:last-child, .feat-col:last-child, .auto-cell:last-child, .channel-cell:last-child, .mock-cell:last-child, .price-card:last-child, .close-contact-cell:last-child { border-bottom: none; }
+  .hero-grid { padding: 6rem 1.25rem 3rem; }
+  .hero-tag, .hero-volume { grid-column: 1 / span 12; text-align: left; }
+  .case-ba, .case-sub-metrics { grid-template-columns: 1fr; }
+  .case-ba-cell, .case-sub-metric { border-right: none; border-bottom: 1px solid var(--rule-faint); }
+  .case-ba-cell:last-child, .case-sub-metric:last-child { border-bottom: none; }
+  .comp-table thead { display: none; }
+  .comp-table, .comp-table tbody, .comp-table tr, .comp-table td { display: block; width: 100%; }
+  .comp-table tbody tr { padding: 1rem 0; border-bottom: 1px solid var(--rule); }
+  .comp-table tbody td { padding: 0.4rem 0; border: none; display: flex; justify-content: space-between; }
+  .comp-table tbody td.feature-name { font-weight: 500; margin-bottom: 0.4rem; }
+  .comp-table tbody td:not(.feature-name)::before {
+    content: attr(data-label);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+  }
+  .proof-table { grid-template-columns: 1fr 1fr; }
+  .proof-cell.span-3, .proof-cell.span-4 { grid-column: span 1; }
+  .proof-cell.span-6, .proof-cell.span-12 { grid-column: span 2; }
+  .strat-bullets li { grid-template-columns: 1.6rem 1fr; }
+  .comp-gaps { grid-template-columns: 1fr; }
+  .roi-quote { grid-column: 1 / span 12; }
+}
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<svg id="grain" xmlns="http://www.w3.org/2000/svg">
+  <filter id="n">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+
+<header class="masthead" id="masthead">
+  <div class="masthead-left">The Growth Engine <span style="opacity:0.5">·</span> Delhi</div>
+  <div class="masthead-center" id="masthead-center">A Strategy For Acme SaaS</div>
+  <div class="masthead-right">
+    <span class="folio" id="masthead-folio">No. 01 / XVI</span>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<script>
+// __CONFIG_START__
+const CONFIG = {
+  meta: { generated_date: "March 11, 2026", style_variation: "editorial-authority" },
+  prospect: {
+    company_name: "Acme SaaS",
+    contact_name: "John Smith",
+    industry: "SaaS / B2B",
+    website: "acmesaas.com",
+    hero_subline: "You're building best-in-class project management software. We'll build the pipeline to fill it with paying customers.",
+    website_audit: {
+      score: 38,
+      findings: [
+        { text: "No clear CTA above the fold", severity: "warning", x: 45, y: 25 },
+        { text: "Zero social proof on homepage", severity: "danger", x: 70, y: 45 },
+        { text: "No lead capture or demo booking", severity: "danger", x: 30, y: 65 },
+        { text: "Blog exists but no SEO strategy", severity: "warning", x: 80, y: 15 },
+        { text: "Mobile nav hides key pages", severity: "warning", x: 15, y: 35 }
+      ]
+    },
+    problems: [
+      { statement: "Your product is category-defining, but your pipeline depends on referrals and hope.", context: "80% of SaaS companies plateau when inbound can't keep up with growth targets.", data_point: "Average cost of a lost SaaS lead: $247" },
+      { statement: "You've hired freelancers before. The campaigns ran, the reports looked fine, but the pipeline didn't grow.", context: "Freelancers optimize for platform metrics. Agencies should optimize for revenue.", data_point: "73% of SaaS founders say agency ROI is unclear" },
+      { statement: "Your sales team is closing at 20%, but only getting 15 qualified leads a month.", context: "The bottleneck isn't closing. It's feeding the machine with the right leads at scale.", data_point: "You need 75+ leads/month to hit targets" }
+    ],
+    competitors: {
+      names: ["CompetitorPM", "TaskFlow Pro"],
+      comparison: [
+        { feature: "Paid Ads (Meta + Google)", prospect: false, comp_a: true, comp_b: true },
+        { feature: "Content Strategy", prospect: false, comp_a: false, comp_b: true },
+        { feature: "Lead Capture System", prospect: false, comp_a: true, comp_b: false },
+        { feature: "Email Automation", prospect: false, comp_a: false, comp_b: false },
+        { feature: "Voice AI / Chatbot", prospect: false, comp_a: false, comp_b: false },
+        { feature: "CRM Integration", prospect: false, comp_a: true, comp_b: false },
+        { feature: "Retargeting Campaigns", prospect: false, comp_a: false, comp_b: true }
+      ],
+      gaps: [
+        { title: "Spray-and-Pray Paid Ads", description: "Your competitors run broad targeting with generic copy. No intent signals, no retargeting funnels." },
+        { title: "No Nurture System", description: "Leads land on a form, get one email, then silence. No 30-day nurture, no SMS follow-up." },
+        { title: "Content Without Strategy", description: "Blog posts exist but aren't SEO-optimized, aren't distributed, and don't convert." }
+      ]
+    },
+    roadmap: {
+      week1: { title: "Foundation", items: ["Full brand + competitor audit", "Meta + Google ad account setup", "CRM + automation infrastructure", "Content calendar for Month 1", "Landing page wireframes", "Voice AI agent configuration", "Email nurture sequence drafting", "Tracking + analytics setup"], count: 8 },
+      week2: { title: "Launch", items: ["First 5 ad creatives go live", "2 landing pages launched", "Email nurture activated", "Voice AI agent live", "First 10 content pieces scheduled", "SMS + WhatsApp flows configured", "Retargeting pixel confirmed", "A/B test variants created"], count: 12 },
+      week3: { title: "Optimize", items: ["First data review + optimization", "Top creatives doubled down", "Underperformers replaced", "Retargeting campaigns launched", "Blog posts published", "Lead scoring refined", "CRM pipeline review", "Content engagement analysis"], count: 10 },
+      week4: { title: "Scale", items: ["Full performance report", "Strategy adjustments", "Winning campaigns scaled 2-3x", "Month 2 roadmap presented", "New creative batch in production", "ROI analysis delivered"], count: 6 }
+    },
+    strategies: [
+      { number: "01", title: "Intent-Based Paid Acquisition", bullets: ["Meta + Google targeting decision-makers actively searching", "Lookalike audiences from existing customer list for 3x conversion", "Retargeting funnels across platforms with escalating urgency", "Dynamic creative optimization testing 50+ variants"], projected_result: "3x qualified leads within 60 days" },
+      { number: "02", title: "Authority Content Engine", bullets: ["SEO-optimized posts targeting long-tail keywords", "LinkedIn thought leadership for founders", "Case study videos and comparison content", "Webinar + resource download funnels"], projected_result: "10K+ organic monthly visitors by Month 6" },
+      { number: "03", title: "Automated Lead Machine", bullets: ["Voice AI calls every lead within 5 minutes, 24/7", "30-day email nurture sequences", "SMS + WhatsApp triggered by behavior", "CRM with automated scoring, routing, follow-ups"], projected_result: "85% lead response rate" }
+    ],
+    platforms: ["meta", "google", "linkedin", "email"],
+    mock_deliverables: [
+      { type: "reel", title: "Instagram Reel Concept", description: "'Why 73% of project managers are switching from spreadsheets' — 30s hook-driven reel", platform: "Instagram" },
+      { type: "ad", title: "Meta Ad Creative", description: "Carousel: '5 Signs Your Team Needs Better PM Software' — pain point per slide", platform: "Facebook / Instagram" },
+      { type: "email", title: "Email Nurture Sequence", description: "Day 1: educational. Day 7: case study. Day 14: demo offer. No hard sell.", platform: "Email" },
+      { type: "landing", title: "Landing Page", description: "Dedicated LP: headline, 3 benefits, social proof, demo CTA, exit-intent popup", platform: "Web" },
+      { type: "whatsapp", title: "WhatsApp Automation", description: "Trigger: visited pricing page. Message: 'Want me to walk you through it?'", platform: "WhatsApp" },
+      { type: "calendar", title: "Content Calendar", description: "Mon=LinkedIn, Tue=Blog, Wed=Reel, Thu=Story, Fri=Case study, Sat=BTS", platform: "All Platforms" }
+    ],
+    pricing: {
+      recommended: "scale",
+      growth: { name: "Growth Plan", price: "$2,400", period: "per month", features: ["10 reels/month (scripted + edited)", "15 static ad creatives/month", "Meta Ads management", "Google Ads management", "Voice AI Agent (24/7)", "CRM setup + management", "Email nurture sequences", "SMS + WhatsApp automation", "Weekly reports", "Unlimited landing pages"] },
+      scale: { name: "Scale Plan", price: "$3,200", period: "per month", features: ["Everything in Growth Plan", "LinkedIn Ads management", "TikTok Ads management", "SEO + Blogging (3-5/week)", "Full website SEO audit", "Technical + Local SEO", "Advanced analytics dashboard", "Monthly strategy reviews", "Priority support"] }
+    },
+    roi_projection: { leads_per_month: 75, close_rate: "20%", projected_monthly_revenue: "$7,500", investment: "$2,400", roi_multiple: "3.1x" }
+  },
+  static: {
+    proof_metrics: [
+      { value: "20M+", label: "Impressions Generated" },
+      { value: "11.58x", label: "Average Client Growth" },
+      { value: "20x", label: "Follower to Customer" },
+      { value: "10.8K", label: "Followers in 6 Months" },
+      { value: "67%", label: "CTR on Marketing Assets" },
+      { value: "98%", label: "Email Open Rate" },
+      { value: "5 min", label: "Lead Response Time" },
+      { value: "24/7", label: "System Uptime" },
+      { value: "$0", label: "Cost Per Organic Lead" },
+      { value: "78%", label: "Funnel Conversion Rate" }
+    ],
+    case_studies: {
+      frenchify: {
+        name: "Frenchify with Vyom",
+        industry: "Education / Language Learning",
+        hero_metric: "20x", hero_metric_label: "Growth",
+        sub_metrics: ["+10,800 followers", "6 months", "10K to 31K+"],
+        story: ["Vyom had a small YouTube channel teaching French. Good content, but zero system for growth.", "TGE built a research-driven content engine: scripted reels based on trending search terms, strategic posting.", "Result: 616K views on a single reel, 20x follower growth, and a follower-to-student pipeline."],
+        before: "10K followers, sporadic posting, no conversion system",
+        after: "31K+ followers, 616K view reels, student conversions",
+        image: "/tge-proposals/assets/static/frenchify-instagram.jpeg"
+      },
+      drsw: {
+        name: "Dr. SW Clinics",
+        industry: "Healthcare / Aesthetic Medicine",
+        hero_metric: "20M+", hero_metric_label: "Impressions",
+        sub_metrics: ["11.58x growth", "981K followers", "Harley Street, London"],
+        story: ["Dr. Sherif Wakil is one of Europe's leading cosmetic practitioners. Strong reputation, limited digital growth.", "TGE's approach: 'Less Is More.' Premium content matching brand positioning. Quality over quantity.", "Result: 20M+ impressions, verified, packed booking calendar. As seen in Daily Mail, Sky, The Sun."],
+        before: "Strong reputation, limited digital presence",
+        after: "20M+ impressions, verified, packed bookings",
+        image: "/tge-proposals/assets/static/drswclinics-instagram.jpeg",
+        calendar_image: "/tge-proposals/assets/static/booking-calendar.png",
+        media: ["Daily Mail", "Sky", "The Sun", "Tatler", "Fabulous", "Daily Express"]
+      }
+    },
+    dashboard_images: ["/tge-proposals/assets/static/meta-dashboard-1.png", "/tge-proposals/assets/static/meta-dashboard-2.png", "/tge-proposals/assets/static/meta-dashboard-3.png"],
+    system_pillars: [
+      { title: "Content Generation", description: "AI-assisted scripting and human direction. You scale without burnout.", image: "/tge-proposals/assets/static/ai-avatar-tool.png" },
+      { title: "Social Media Management", description: "Every platform handled. Posting, engagement, community management." },
+      { title: "Paid Advertising", description: "Meta, Google, TikTok, LinkedIn. Built to scale qualified leads.", image: "/tge-proposals/assets/static/meta-dashboard-1.png" },
+      { title: "CRM Optimization", description: "Full pipeline infrastructure. Lead tracking, scoring, automation.", image: "/tge-proposals/assets/static/booking-calendar.png" },
+      { title: "Sales Optimization", description: "Voice AI agents and automated qualification. Operating 24/7." },
+      { title: "Reporting and Audit", description: "Weekly reports, monthly reviews. Complete operational transparency." }
+    ],
+    automation_stack: [
+      { title: "Voice AI Agent", description: "Calls every lead in 5 minutes. 24/7. No human required.", stat: "5 min response" },
+      { title: "Email Nurture", description: "30-day sequences that build trust from first click to contract.", stat: "98% open rate" },
+      { title: "SMS", description: "Booking reminders and high-intent moments. 98% open rate.", stat: "3x vs email" },
+      { title: "WhatsApp", description: "Behavior-triggered, conversational. Reads like a human.", stat: "89% read rate" }
+    ],
+    funnel_stages: [
+      { stage: "Awareness", description: "Organic content, industry insights, discovery advertising." },
+      { stage: "Consideration", description: "Retargeting, testimonials, case studies, education flows." },
+      { stage: "Decision", description: "Urgency, limited offers, direct conversion calls to action." }
+    ],
+    channels: [
+      { name: "Meta Ads", role: "Primary acquisition", icon: "target" },
+      { name: "Google Ads", role: "Intent capture", icon: "search" },
+      { name: "LinkedIn", role: "B2B outreach", icon: "briefcase" },
+      { name: "Email", role: "Nurture and convert", icon: "mail" },
+      { name: "SMS", role: "High-intent moments", icon: "smartphone" },
+      { name: "WhatsApp", role: "Behavior-triggered", icon: "message-circle" },
+      { name: "SEO", role: "Organic compounding", icon: "trending-up" },
+      { name: "YouTube", role: "Authority content", icon: "play-circle" },
+      { name: "TikTok", role: "Discovery and reach", icon: "zap" }
+    ],
+    features_list: {
+      content_creative: ["10 reels per month, scripted, edited, posted", "15 static creatives per month", "Strategic posting calendar", "AI-assisted ideation and trend research", "Professional copywriting on every asset", "Hashtag research and discovery SEO"],
+      paid_advertising: ["Meta Ads management", "Google Ads management", "TikTok Ads management", "LinkedIn Ads management", "A/B testing on every campaign", "Retargeting and lookalike audiences", "Weekly optimization cycles", "Monthly spend recommendations"],
+      automation_sales: ["Voice AI Agent operating 24/7", "Email nurture sequences", "SMS campaign infrastructure", "WhatsApp behavioral automation", "CRM setup and management", "Lead scoring and routing logic", "Appointment booking automation", "Pipeline tracking and reporting"],
+      strategy_reporting: ["Weekly performance reports", "Monthly strategy reviews", "Continuous competitor monitoring", "SEO audits and recommendations", "Conversion tracking implementation", "Custom analytics dashboard"]
+    },
+    contact: { email: "info@thegrowthengine.net", phone: "+91 6397016179", website: "thegrowthengine.net" }
+  }
+};
+// __CONFIG_END__
+
+/* ====================================================================
+   RENDER ENGINE — vanilla JS, single pass.
+   ==================================================================== */
+const cn = CONFIG.prospect.company_name;
+const ico = (n) => `<i data-lucide="${n}"></i>`;
+const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI'];
+const SECTION_TITLES = [
+  '', 'The Opening', 'A Reading of the Site', 'A Diagnosis', 'A Survey of Rivals', 'The First Thirty Days',
+  'A Prescription', 'A Body of Evidence', 'Case Study, the First', 'Case Study, the Second', 'Behind the Curtain',
+  'The Apparatus', 'The Architecture', 'A Sample of the Work', 'The Index of Inclusions', 'The Investment', 'In Closing'
+];
+
+function folio(n, kicker) {
+  return `
+  <div class="section-folio">
+    <div class="section-numeral"><span class="section-numeral-rule"></span>${ROMAN[n]}</div>
+    <div class="section-kicker">${kicker}</div>
+    <div class="section-folio-meta">Folio ${String(n).padStart(2,'0')} / ${ROMAN[16]} · ${SECTION_TITLES[n]}</div>
+  </div>`;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   I. THE OPENING
+   ============================================================ */
+function renderHero() {
+  const p = CONFIG.prospect;
+  const tocItems = [
+    ['I', 'The Opening'], ['II', 'A Reading of the Site'], ['III', 'A Diagnosis'],
+    ['IV', 'A Survey of Rivals'], ['V', 'The First Thirty Days'], ['VI', 'A Prescription'],
+    ['VII', 'A Body of Evidence'], ['VIII', 'Case Study'], ['IX', 'Case Study'],
+    ['X', 'Behind the Curtain'], ['XI', 'The Apparatus'], ['XII', 'The Architecture'],
+    ['XIII', 'A Sample'], ['XIV', 'Inclusions'], ['XV', 'The Investment'], ['XVI', 'In Closing']
+  ];
+  return `
+  <section id="hero">
+    <div id="hero-bg">
+      <div class="hero-rule-grid"></div>
+      <div class="hero-glow"></div>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-tag">
+        <span class="rule-accent"></span>
+        <span>The Growth Engine · Volume MMXXVI</span>
+      </div>
+      <div class="hero-volume">
+        Folio 01 of XVI<br>
+        <em>${escapeHtml(CONFIG.meta.generated_date)}</em>
+      </div>
+      <div class="hero-eyebrow">A growth strategy, prepared exclusively for</div>
+      <h1 class="hero-company">${escapeHtml(p.company_name)}</h1>
+      <p class="hero-deck">${escapeHtml(p.hero_subline)}</p>
+      <div class="hero-cta-row">
+        <a href="#audit" class="btn">Begin Reading <i data-lucide="arrow-right" class="btn-arrow"></i></a>
+        <a href="https://cal.com/grawoth/consultation-call-with-allen" class="btn btn-ghost">Book the Call</a>
+      </div>
+      <aside class="hero-toc">
+        <div class="hero-toc-row" style="border-bottom:1px solid var(--rule);padding-bottom:0.6rem;margin-bottom:0.4rem;">
+          <span style="color:var(--ink-mid);">Table of Contents</span>
+          <span>16 Folios</span>
+        </div>
+        ${tocItems.slice(0, 8).map(([r, t]) => `<div class="hero-toc-row"><span>${t}</span><span>${r}</span></div>`).join('')}
+      </aside>
+    </div>
+    <footer class="hero-foot">
+      <div class="hero-foot-l">Prepared for ${escapeHtml(p.company_name)} · ${escapeHtml(p.industry)}</div>
+      <div class="hero-foot-c">Scroll to enter the document</div>
+      <div class="hero-foot-r">${escapeHtml(p.website)}</div>
+    </footer>
+  </section>`;
+}
+
+/* ============================================================
+   II. AUDIT
+   ============================================================ */
+function renderAudit() {
+  const p = CONFIG.prospect;
+  const a = p.website_audit;
+  const findings = a.findings || [];
+  return `
+  <section id="audit" class="section">
+    <div class="grid-12">
+      ${folio(2, 'A Reading of the Site')}
+      <div class="audit-spread">
+        <header class="audit-headline">
+          <h2 class="headline-feature">We read your site <em>line by line.</em></h2>
+          <p class="deck">A page is a promise. A homepage is the first sentence of that promise. Below, the marginalia we made while reading ${escapeHtml(p.website)} for the first time.</p>
+        </header>
+
+        <div class="audit-screenshot-wrap">
+          <figure class="figure">
+            <span class="figure-tag">Figure 2.1 · Annotated reading</span>
+            <div class="audit-browser">
+              <div class="audit-browser-bar">
+                <span class="audit-browser-dot"></span>
+                <span class="audit-browser-dot"></span>
+                <span class="audit-browser-dot"></span>
+                <span class="audit-browser-url">${escapeHtml(p.website)}</span>
+              </div>
+              <div class="audit-screenshot-canvas">
+                ${findings.map((f, i) => `
+                  <button class="audit-marker ${f.severity === 'danger' ? 'bad' : 'warn'}" style="left:${f.x}%;top:${f.y}%;" aria-label="${escapeHtml(f.text)}">${i + 1}</button>
+                `).join('')}
+              </div>
+            </div>
+            <figcaption class="audit-figure-caption">Five readings, all corrigible. None terminal.</figcaption>
+          </figure>
+        </div>
+
+        <aside class="audit-meta">
+          <div class="audit-score-block">
+            <div class="audit-score-label">Audit Score</div>
+            <div class="audit-score-number tabular"><span class="counter" data-target="${a.score}">0</span><span class="denom">/100</span></div>
+            <div class="audit-score-bar"><div class="audit-score-bar-fill" data-fill="${a.score}"></div></div>
+          </div>
+
+          <div class="audit-findings-list">
+            <div class="audit-findings-title">The Findings</div>
+            ${findings.map((f, i) => `
+              <div class="audit-finding">
+                <span class="audit-finding-num">${String(i + 1).padStart(2, '0')}</span>
+                <span class="audit-finding-text">${escapeHtml(f.text)} <span class="severity ${f.severity === 'danger' ? 'bad' : 'warn'}">${f.severity === 'danger' ? 'Severe' : 'Notable'}</span></span>
+              </div>
+            `).join('')}
+          </div>
+        </aside>
+
+        <div class="audit-closing">
+          <blockquote class="pull-quote">
+            None of this is fatal. All of it is fixable. Most of it we will fix in week one.
+            <span class="pull-quote-attr">— A note from the editor</span>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   III. PROBLEM
+   ============================================================ */
+function renderProblem() {
+  const p = CONFIG.prospect;
+  return `
+  <section id="problem" class="section">
+    <div class="grid-12">
+      ${folio(3, 'A Diagnosis')}
+      <div class="problem-spread">
+        <header class="problem-headline">
+          <h2 class="headline-feature">Three things that are <em>quietly costing you</em> growth.</h2>
+          <p class="deck">Not opinions. Patterns we have watched recur across every client at your stage and in your shape.</p>
+        </header>
+        ${p.problems.map((pr, i) => `
+          <article class="problem-entry">
+            <div class="problem-numeral">
+              ${ROMAN[i + 1].toLowerCase()}.
+              <span class="problem-numeral-label">Issue ${String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <h3 class="problem-statement">${escapeHtml(pr.statement)}</h3>
+            <aside class="problem-aside margin-note">
+              <p class="problem-context">${escapeHtml(pr.context)}</p>
+              <span class="problem-data">
+                <span class="problem-data-label">Data Point</span>
+                ${escapeHtml(pr.data_point)}
+              </span>
+            </aside>
+          </article>
+        `).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   IV. COMPETITORS
+   ============================================================ */
+function renderCompetitors() {
+  const p = CONFIG.prospect;
+  const c = p.competitors;
+  const mark = (v) => v ? `<span class="comp-mark yes">✓</span>` : `<span class="comp-mark no">·</span>`;
+  return `
+  <section id="competitors" class="section">
+    <div class="grid-12">
+      ${folio(4, 'A Survey of Rivals')}
+      <div class="comp-spread">
+        <header class="comp-headline">
+          <h2 class="headline-feature">Where ${escapeHtml(p.company_name)} stands <em>against the room.</em></h2>
+          <p class="deck">A clean comparison, drawn from public-facing material on each competitor's site, ad library, and inbound flow.</p>
+        </header>
+
+        <aside class="comp-aside margin-note">
+          <span class="num">Footnote 4.a</span>
+          <em>The room is, on the whole, asleep.</em> No one is running serious retargeting. No one is running an automated nurture stack. The bar is shockingly low.
+        </aside>
+
+        <div class="comp-table-wrap">
+          <table class="comp-table">
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th class="col-prospect">${escapeHtml(p.company_name)}</th>
+                ${c.names.map(n => `<th>${escapeHtml(n)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${c.comparison.map(row => `
+                <tr>
+                  <td class="feature-name">${escapeHtml(row.feature)}</td>
+                  <td class="col-prospect" data-label="${escapeHtml(p.company_name)}">${mark(row.prospect)}</td>
+                  <td data-label="${escapeHtml(c.names[0] || 'Competitor A')}">${mark(row.comp_a)}</td>
+                  <td data-label="${escapeHtml(c.names[1] || 'Competitor B')}">${mark(row.comp_b)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="comp-gaps">
+          ${c.gaps.map((g, i) => `
+            <div class="comp-gap">
+              <div class="comp-gap-num">Gap ${String(i + 1).padStart(2, '0')}</div>
+              <h4 class="comp-gap-title">${escapeHtml(g.title)}</h4>
+              <p class="comp-gap-desc">${escapeHtml(g.description)}</p>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="comp-closing">
+          <blockquote class="pull-quote">
+            ${escapeHtml(p.company_name)} can own this category. The window is wider than you think.
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   V. ROADMAP
+   ============================================================ */
+function renderRoadmap() {
+  const r = CONFIG.prospect.roadmap;
+  const weeks = [r.week1, r.week2, r.week3, r.week4];
+  const total = weeks.reduce((a, w) => a + (w.count || 0), 0);
+  return `
+  <section id="roadmap" class="section">
+    <div class="grid-12">
+      ${folio(5, 'The First Thirty Days')}
+      <div class="road-spread">
+        <header class="road-headline">
+          <h2 class="headline-feature">A schedule, <em>kept publicly,</em> for the first month.</h2>
+          <p class="deck">Not aspirational. Operational. The list below is what is in motion by the end of each week.</p>
+        </header>
+        <aside class="road-meta margin-note">
+          <span class="num">Note on cadence</span>
+          We publish the list. We hit the list. We do not move the list.
+        </aside>
+
+        <div class="road-grid">
+          ${weeks.map((w, i) => `
+            <div class="road-week">
+              <div class="road-week-num">Week ${String(i + 1).padStart(2, '0')}</div>
+              <h3 class="road-week-title">${escapeHtml(w.title)}</h3>
+              <ul class="road-week-items">
+                ${w.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+              </ul>
+              <div class="road-week-count tabular"><em>${String(w.count).padStart(2, '0')}</em> deliverables</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="road-total">
+          <div class="road-total-num tabular"><em><span class="counter" data-target="${total}">0</span>+</em></div>
+          <p class="road-total-desc">Discrete deliverables in the first thirty days. Each one logged, time-stamped, and visible to ${escapeHtml(CONFIG.prospect.contact_name || CONFIG.prospect.company_name)}.</p>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   VI. STRATEGY
+   ============================================================ */
+function renderStrategy() {
+  const p = CONFIG.prospect;
+  return `
+  <section id="strategy" class="section">
+    <div class="grid-12">
+      ${folio(6, 'A Prescription')}
+      <div class="strat-spread">
+        <header class="strat-headline">
+          <h2 class="headline-feature">Three pillars, <em>built for ${escapeHtml(p.company_name)}.</em></h2>
+          <p class="deck">Not a generic stack. The combination below is what we would run, in this order, given what we know about your business.</p>
+        </header>
+
+        <div class="strat-stack">
+          ${p.strategies.map((s, i) => `
+            <article class="strat-entry">
+              <div class="strat-numeral">
+                ${s.number}.
+                <span class="strat-numeral-tag">Pillar ${ROMAN[i + 1]}</span>
+              </div>
+              <div class="strat-body">
+                <h3 class="strat-title">${escapeHtml(s.title)}</h3>
+                <ul class="strat-bullets">
+                  ${s.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}
+                </ul>
+              </div>
+              <aside class="strat-aside">
+                <div class="strat-aside-tag">Projected Result</div>
+                <p class="strat-projected">${escapeHtml(s.projected_result)}</p>
+              </aside>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   VII. PROOF WALL
+   ============================================================ */
+function renderProof() {
+  const m = CONFIG.static.proof_metrics;
+  // Editorial tabular layout with two feature cells
+  const layout = [
+    { ...m[0], span: 6, feature: true, source: 'Dr. SW Clinics, 2025' },
+    { ...m[1], span: 3 }, { ...m[2], span: 3 },
+    { ...m[3], span: 4 }, { ...m[4], span: 4 }, { ...m[5], span: 4 },
+    { ...m[6], span: 6, feature: true, source: 'Voice AI, mean across clients' },
+    { ...m[7], span: 3 }, { ...m[8], span: 3 },
+    { ...m[9], span: 12 }
+  ];
+  return `
+  <section id="proof" class="section">
+    <div class="grid-12">
+      ${folio(7, 'A Body of Evidence')}
+      <div class="proof-spread">
+        <header class="proof-headline">
+          <h2 class="headline-feature">The work, <em>quantified.</em></h2>
+          <p class="deck">Each figure below is reproducible. Each was measured against a baseline we can show you on request. None is a vanity metric.</p>
+        </header>
+        <aside class="proof-meta margin-note">
+          <span class="num">Note on method</span>
+          All figures rounded to the nearest meaningful unit. Raw data available under NDA.
+        </aside>
+
+        <div class="proof-table">
+          ${layout.map((c, i) => {
+            const isNumeric = /^[\d.+x%$]+$/.test(c.value) || c.value.includes('M+') || c.value.includes('K');
+            return `
+              <div class="proof-cell span-${c.span}${c.feature ? ' feature' : ''}">
+                <div>
+                  <div class="proof-cell-num">No. ${String(i + 1).padStart(2, '0')}</div>
+                  <div class="proof-cell-value tabular">${escapeHtml(c.value)}</div>
+                  <div class="proof-cell-label">${escapeHtml(c.label)}</div>
+                </div>
+                ${c.source ? `<div class="proof-cell-source">Source: ${escapeHtml(c.source)}</div>` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="proof-footer">
+          <span>Ten figures · One operating standard</span>
+          <span>Period: 2024 – Present</span>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   VIII. CASE STUDY — FRENCHIFY
+   ============================================================ */
+function renderCaseFrenchify() {
+  const c = CONFIG.static.case_studies.frenchify;
+  return `
+  <section id="case-frenchify" class="section">
+    <div class="grid-12">
+      ${folio(8, 'Case Study, the First')}
+      <div class="case-spread">
+        <aside class="case-aside">
+          <div class="case-aside-tag">Profile</div>
+          <h3 class="headline-feature" style="font-size:clamp(1.4rem,2vw,1.7rem);margin-bottom:1rem;">${escapeHtml(c.name)}</h3>
+          <p class="body-copy" style="font-size:0.9rem;">${escapeHtml(c.industry)}</p>
+          <div class="case-aside-meta">
+            <div class="case-aside-meta-row"><span>Engagement</span><span>6 months</span></div>
+            <div class="case-aside-meta-row"><span>Channel</span><span>Instagram + YouTube</span></div>
+            <div class="case-aside-meta-row"><span>Status</span><span>Active</span></div>
+            <div class="case-aside-meta-row"><span>Reading time</span><span>2 min</span></div>
+          </div>
+        </aside>
+
+        <div class="case-figure">
+          <div class="case-phone-frame">
+            <div class="case-phone-screen">
+              <img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.name)} Instagram profile" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;case-phone-placeholder&quot;>Profile · Instagram</div>';">
+            </div>
+          </div>
+          <p class="case-figure-caption">Plate 8.1 — ${escapeHtml(c.name)}, Instagram profile after six months of engagement.</p>
+        </div>
+
+        <div class="case-body narrow">
+          <div class="case-hero-metric tabular"><em>${escapeHtml(c.hero_metric)}</em></div>
+          <div class="case-hero-label">${escapeHtml(c.hero_metric_label)} over six months</div>
+          <div class="case-sub-metrics">
+            ${c.sub_metrics.map(s => `<div class="case-sub-metric">${escapeHtml(s)}</div>`).join('')}
+          </div>
+          <div class="case-story">
+            ${c.story.map(s => `<p>${escapeHtml(s)}</p>`).join('')}
+          </div>
+          <div class="case-ba">
+            <div class="case-ba-cell">
+              <div class="case-ba-tag before">Before</div>
+              <p class="case-ba-text">${escapeHtml(c.before)}</p>
+            </div>
+            <div class="case-ba-cell">
+              <div class="case-ba-tag after">After</div>
+              <p class="case-ba-text">${escapeHtml(c.after)}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   IX. CASE STUDY — DR SW
+   ============================================================ */
+function renderCaseDrSW() {
+  const c = CONFIG.static.case_studies.drsw;
+  return `
+  <section id="case-drsw" class="section">
+    <div class="grid-12">
+      ${folio(9, 'Case Study, the Second')}
+      <div class="case-spread">
+        <div class="case-body" style="grid-column: 1 / span 7;">
+          <div class="case-hero-metric tabular"><em>${escapeHtml(c.hero_metric)}</em></div>
+          <div class="case-hero-label">${escapeHtml(c.hero_metric_label)}</div>
+          <div class="case-sub-metrics">
+            ${c.sub_metrics.map(s => `<div class="case-sub-metric">${escapeHtml(s)}</div>`).join('')}
+          </div>
+          <div class="case-story">
+            ${c.story.map(s => `<p>${escapeHtml(s)}</p>`).join('')}
+          </div>
+          <div class="case-ba">
+            <div class="case-ba-cell">
+              <div class="case-ba-tag before">Before</div>
+              <p class="case-ba-text">${escapeHtml(c.before)}</p>
+            </div>
+            <div class="case-ba-cell">
+              <div class="case-ba-tag after">After</div>
+              <p class="case-ba-text">${escapeHtml(c.after)}</p>
+            </div>
+          </div>
+
+          ${(c.media && c.media.length) ? `
+            <div class="case-media-strip">
+              <div class="case-media-tag">As Read In</div>
+              <div class="case-media-row">
+                ${c.media.map(m => `<div class="case-media-cell">${escapeHtml(m)}</div>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+
+        <aside class="case-aside right">
+          <div class="case-aside-tag">Profile</div>
+          <h3 class="headline-feature" style="font-size:clamp(1.4rem,2vw,1.7rem);margin-bottom:1rem;">${escapeHtml(c.name)}</h3>
+          <p class="body-copy" style="font-size:0.9rem;">${escapeHtml(c.industry)}</p>
+          <div class="case-aside-meta">
+            <div class="case-aside-meta-row"><span>Location</span><span>Harley Street</span></div>
+            <div class="case-aside-meta-row"><span>Followers</span><span>981K</span></div>
+            <div class="case-aside-meta-row"><span>Status</span><span>Verified</span></div>
+            <div class="case-aside-meta-row"><span>Engagement</span><span>Active</span></div>
+          </div>
+
+          <div class="case-figure" style="margin-top:2rem;">
+            <div class="case-phone-frame" style="max-width:220px;">
+              <div class="case-phone-screen">
+                <img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.name)} Instagram" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;case-phone-placeholder&quot;>Verified · 981K</div>';">
+              </div>
+            </div>
+            <p class="case-figure-caption">Plate 9.1 — Verified profile, Harley Street.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   X. LIVE DASHBOARDS
+   ============================================================ */
+function renderDashboards() {
+  const imgs = CONFIG.static.dashboard_images;
+  const figures = [
+    { tag: 'Plate 10.1', img: imgs[0], num: '01', caption: 'A live campaign view, captured Tuesday morning. Sensitive identifiers redacted. The numbers are not.' },
+    { tag: 'Plate 10.2', img: imgs[1], num: '02', caption: 'Cost per result, plotted against impressions. Note the inflection at week three — that is when retargeting was switched on.' },
+    { tag: 'Plate 10.3', img: imgs[2], num: '03', caption: 'Content production dashboard. The pipeline runs ahead of the calendar by two weeks, by design.' }
+  ];
+  return `
+  <section id="dashboards" class="section">
+    <div class="grid-12">
+      ${folio(10, 'Behind the Curtain')}
+      <div class="dash-spread">
+        <header class="dash-headline">
+          <h2 class="headline-feature">What your dashboard <em>actually looks like.</em></h2>
+          <p class="deck">No reports. No theatre. The same screens our team sits in front of every morning, the day after the campaigns ran.</p>
+        </header>
+        <aside class="dash-meta margin-note">
+          <span class="num">Disclosure</span>
+          Client identifiers redacted. Spend, impressions, and results shown unmodified.
+        </aside>
+
+        <div class="dash-stack">
+          ${figures.map((f, i) => `
+            <figure class="dash-figure ${i % 2 === 1 ? 'right' : ''}">
+              <div class="dash-figure-image">
+                <div class="dash-browser">
+                  <div class="dash-browser-bar">
+                    <div class="dash-browser-dots">
+                      <span class="dash-browser-dot"></span>
+                      <span class="dash-browser-dot"></span>
+                      <span class="dash-browser-dot"></span>
+                    </div>
+                    <span class="dash-browser-url">business.facebook.com / adsmanager</span>
+                  </div>
+                  <div class="dash-browser-canvas">
+                    <img src="${escapeHtml(f.img || '')}" alt="" class="dash-browser-img" onerror="this.style.display='none';">
+                  </div>
+                </div>
+              </div>
+              <aside class="dash-figure-aside">
+                <div class="dash-figure-num tabular">${f.num}</div>
+                <div class="dash-figure-tag">${f.tag}</div>
+                <p class="dash-figure-caption">${escapeHtml(f.caption)}</p>
+              </aside>
+            </figure>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   XI. THE SYSTEM (TABS) + AUTOMATION
+   ============================================================ */
+function renderSystem() {
+  const pillars = CONFIG.static.system_pillars;
+  const auto = CONFIG.static.automation_stack;
+  return `
+  <section id="system" class="section">
+    <div class="grid-12">
+      ${folio(11, 'The Apparatus')}
+      <div class="sys-spread">
+        <header class="sys-headline">
+          <h2 class="headline-feature">Six disciplines, <em>one operating system.</em></h2>
+          <p class="deck">Each pillar is a department in our shop. Each runs on its own cadence. Together they make the engine.</p>
+        </header>
+
+        <div class="sys-layout">
+          <nav class="sys-tabs" id="sys-tabs">
+            ${pillars.map((p, i) => `
+              <button class="sys-tab ${i === 0 ? 'active' : ''}" data-tab="${i}">
+                <span class="sys-tab-num">${ROMAN[i + 1]}.</span>
+                <span class="sys-tab-title">${escapeHtml(p.title)}</span>
+              </button>
+            `).join('')}
+          </nav>
+
+          <div class="sys-panel" id="sys-panel">
+            ${pillars.map((p, i) => `
+              <div class="sys-panel-content" data-panel="${i}" style="display:${i === 0 ? 'block' : 'none'};">
+                <div class="sys-panel-tag">Pillar ${ROMAN[i + 1]} of VI</div>
+                <h3 class="sys-panel-title">${escapeHtml(p.title)}</h3>
+                <p class="sys-panel-desc">${escapeHtml(p.description)}</p>
+                <div class="sys-panel-figure">
+                  ${p.image ? `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)}" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;sys-panel-figure-empty&quot;>Figure ${ROMAN[i + 1]}</span>';">` : `<span class="sys-panel-figure-empty">Figure ${ROMAN[i + 1]}</span>`}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="auto-stack">
+          <div class="auto-stack-tag">The Automation Stack · Appendix A</div>
+          <div class="auto-grid">
+            ${auto.map((a, i) => `
+              <div class="auto-cell">
+                <div class="auto-cell-num">No. ${String(i + 1).padStart(2, '0')}</div>
+                <h4 class="auto-cell-title">${escapeHtml(a.title)}</h4>
+                <p class="auto-cell-desc">${escapeHtml(a.description)}</p>
+                <div class="auto-cell-stat tabular">${escapeHtml(a.stat)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   XII. CAMPAIGN ARCHITECTURE
+   ============================================================ */
+function renderArchitecture() {
+  const f = CONFIG.static.funnel_stages;
+  const ch = CONFIG.static.channels;
+  const sel = new Set((CONFIG.prospect.platforms || []).map(s => s.toLowerCase()));
+  const isSel = (name) => {
+    const n = name.toLowerCase();
+    return [...sel].some(s => n.includes(s));
+  };
+  return `
+  <section id="architecture" class="section">
+    <div class="grid-12">
+      ${folio(12, 'The Architecture')}
+      <div class="arch-spread">
+        <header class="arch-headline">
+          <h2 class="headline-feature">The shape of a <em>working funnel.</em></h2>
+          <p class="deck">A funnel without a stage is a leak. A stage without a channel is a guess. The diagram below names both.</p>
+        </header>
+
+        <div class="funnel">
+          ${f.map((s, i) => `
+            <div class="funnel-stage">
+              <div class="funnel-stage-num">Stage ${ROMAN[i + 1]}</div>
+              <h3 class="funnel-stage-name">${escapeHtml(s.stage)}</h3>
+              <p class="funnel-stage-desc">${escapeHtml(s.description)}</p>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="channel-section-tag">Selected Channels for ${escapeHtml(CONFIG.prospect.company_name)} · Appendix B</div>
+        <div class="channel-grid">
+          ${ch.map(c => `
+            <div class="channel-cell ${isSel(c.name) ? 'selected' : ''}">
+              <div class="channel-icon">${ico(c.icon)}</div>
+              <div>
+                <div class="channel-name">${escapeHtml(c.name)}</div>
+                <div class="channel-role">${escapeHtml(c.role)}</div>
+                ${isSel(c.name) ? '<span class="channel-selected-tag">In Plan</span>' : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   XIII. MOCK DELIVERABLES
+   ============================================================ */
+function renderMocks() {
+  const m = CONFIG.prospect.mock_deliverables || [];
+  return `
+  <section id="mocks" class="section">
+    <div class="grid-12">
+      ${folio(13, 'A Sample of the Work')}
+      <div class="mock-spread">
+        <header class="mock-headline">
+          <h2 class="headline-feature">A preview of the <em>first week.</em></h2>
+          <p class="deck">Six artifacts, sketched in the rough, drawn from the brief on your Upwork post and what we read on your site. None is final. All are directional.</p>
+        </header>
+
+        <div class="mock-grid">
+          ${m.map((d, i) => `
+            <article class="mock-cell">
+              <div class="mock-cell-num">No. ${String(i + 1).padStart(2, '0')}</div>
+              <div class="mock-cell-platform">${escapeHtml(d.platform)}</div>
+              <h3 class="mock-cell-title">${escapeHtml(d.title)}</h3>
+              <p class="mock-cell-desc">${escapeHtml(d.description)}</p>
+            </article>
+          `).join('')}
+        </div>
+
+        <div class="mock-closing">
+          <blockquote class="pull-quote">
+            This is week one. Imagine month three.
+            <span class="pull-quote-attr">— Editor's note</span>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   XIV. FEATURE LIST
+   ============================================================ */
+function renderFeatures() {
+  const f = CONFIG.static.features_list;
+  const cols = [
+    { roman: 'I', title: 'Content & Creative', items: f.content_creative },
+    { roman: 'II', title: 'Paid Advertising', items: f.paid_advertising },
+    { roman: 'III', title: 'Automation & Sales', items: f.automation_sales },
+    { roman: 'IV', title: 'Strategy & Reporting', items: f.strategy_reporting }
+  ];
+  const total = cols.reduce((a, c) => a + c.items.length, 0);
+  return `
+  <section id="features" class="section">
+    <div class="grid-12">
+      ${folio(14, 'The Index of Inclusions')}
+      <div class="feat-spread">
+        <header class="feat-headline">
+          <h2 class="headline-feature">Everything that moves <em>under the engine.</em></h2>
+          <p class="deck">The full register, listed by department. No fine print. No asterisks.</p>
+        </header>
+        <aside class="feat-meta">
+          <div class="feat-meta-num tabular"><span class="counter" data-target="${total}">0</span></div>
+          <div class="feat-meta-label">Items in the index</div>
+        </aside>
+
+        <div class="feat-cols">
+          ${cols.map(c => `
+            <div class="feat-col">
+              <div class="feat-col-roman">${c.roman}.</div>
+              <h3 class="feat-col-title">${escapeHtml(c.title)}</h3>
+              <ul class="feat-list">
+                ${c.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+              </ul>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   XV. INVESTMENT
+   ============================================================ */
+function renderPricing() {
+  const p = CONFIG.prospect.pricing;
+  const r = CONFIG.prospect.roi_projection;
+  const cards = ['growth', 'scale'].map(k => ({ key: k, ...p[k], recommended: p.recommended === k }));
+  return `
+  <section id="pricing" class="section">
+    <div class="grid-12">
+      ${folio(15, 'The Investment')}
+      <div class="price-spread">
+        <header class="price-headline">
+          <h2 class="headline-feature">Two ways to begin. <em>Both end with growth.</em></h2>
+          <p class="deck">Priced in plain figures. The first plan is the floor. The second plan is the recommendation. Either is in motion within a week of contract.</p>
+        </header>
+
+        <div class="price-grid">
+          ${cards.map((c, i) => `
+            <article class="price-card ${c.recommended ? 'recommended' : ''}">
+              <div class="price-card-tag">
+                <span>Plan ${ROMAN[i + 1]}</span>
+                ${c.recommended ? '<span class="recommend">— Recommended</span>' : '<span>—</span>'}
+              </div>
+              <h3 class="price-card-name">${escapeHtml(c.name)}</h3>
+              <div class="price-card-price tabular">${escapeHtml(c.price)}</div>
+              <div class="price-card-period">${escapeHtml(c.period)}</div>
+              <ul class="price-features">
+                ${c.features.map(ft => `<li>${escapeHtml(ft)}</li>`).join('')}
+              </ul>
+              <a href="https://cal.com/grawoth/consultation-call-with-allen" class="btn ${c.recommended ? '' : 'btn-ghost'}" style="width:100%;justify-content:center;">Begin <i data-lucide="arrow-right" class="btn-arrow"></i></a>
+            </article>
+          `).join('')}
+        </div>
+
+        <div class="roi-strip">
+          <div class="roi-quote">
+            If we generate ${escapeHtml(String(r.leads_per_month))} qualified leads a month, at your stated close rate, the math reads as follows.
+          </div>
+          <div class="roi-stats">
+            <div class="roi-cell">
+              <div class="roi-label">Projected Monthly Revenue</div>
+              <div class="roi-value good tabular">${escapeHtml(r.projected_monthly_revenue)}</div>
+            </div>
+            <div class="roi-cell">
+              <div class="roi-label">Investment</div>
+              <div class="roi-value tabular">${escapeHtml(r.investment)}</div>
+            </div>
+            <div class="roi-cell">
+              <div class="roi-label">Multiple</div>
+              <div class="roi-value accent tabular">${escapeHtml(r.roi_multiple)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   XVI. CLOSE
+   ============================================================ */
+function renderClose() {
+  const c = CONFIG.static.contact;
+  const company = CONFIG.prospect.company_name;
+  return `
+  <section id="close-section" class="section">
+    <div class="grid-12">
+      ${folio(16, 'In Closing')}
+      <div class="close-spread">
+        <div class="close-headline-wrap">
+          <h2 class="close-headline">Ready to build this <em>for ${escapeHtml(company)}?</em></h2>
+          <p class="close-deck">Everything in the preceding fifteen folios is operational within thirty days of contract. The fastest way to begin is a fifteen-minute call.</p>
+          <div class="close-cta-row">
+            <a href="https://cal.com/grawoth/consultation-call-with-allen" class="btn">Book the Call <i data-lucide="arrow-right" class="btn-arrow"></i></a>
+            <a href="mailto:${escapeHtml(c.email)}" class="btn btn-ghost">Reply by Email</a>
+          </div>
+        </div>
+
+        <div class="close-contact">
+          <div class="close-contact-cell">
+            <div class="close-contact-label">Correspondence</div>
+            <div class="close-contact-value">${escapeHtml(c.email)}</div>
+          </div>
+          <div class="close-contact-cell">
+            <div class="close-contact-label">Telephone</div>
+            <div class="close-contact-value tabular">${escapeHtml(c.phone)}</div>
+          </div>
+          <div class="close-contact-cell">
+            <div class="close-contact-label">Bureau</div>
+            <div class="close-contact-value">${escapeHtml(c.website)}</div>
+          </div>
+        </div>
+
+        <div class="colophon">
+          <div class="colophon-l"><span class="status">System Operational</span></div>
+          <div class="colophon-r">The Growth Engine · Delhi · Volume MMXXVI</div>
+          <div class="colophon-bottom">
+            This document was set in Outfit, Hanken Grotesk, JetBrains Mono, and Instrument Serif. Prepared exclusively for ${escapeHtml(company)}, ${escapeHtml(CONFIG.meta.generated_date)}.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ============================================================
+   MOUNT
+   ============================================================ */
+function mount() {
+  const app = document.getElementById('app');
+  app.innerHTML =
+    renderHero() +
+    renderAudit() +
+    renderProblem() +
+    renderCompetitors() +
+    renderRoadmap() +
+    renderStrategy() +
+    renderProof() +
+    renderCaseFrenchify() +
+    renderCaseDrSW() +
+    renderDashboards() +
+    renderSystem() +
+    renderArchitecture() +
+    renderMocks() +
+    renderFeatures() +
+    renderPricing() +
+    renderClose();
+
+  // Masthead
+  document.getElementById('masthead-center').textContent = `A Strategy For ${CONFIG.prospect.company_name}`;
+  document.title = `A Growth Strategy for ${CONFIG.prospect.company_name} | The Growth Engine`;
+
+  // Lucide
+  if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+}
+
+mount();
+
+/* ============================================================
+   INTERACTIONS
+   ============================================================ */
+// Scroll progress
+const sp = document.getElementById('scroll-progress');
+const onScroll = () => {
+  const h = document.documentElement;
+  const max = h.scrollHeight - h.clientHeight;
+  const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+  sp.style.width = pct + '%';
+
+  // Masthead folio
+  const sections = ['hero','audit','problem','competitors','roadmap','strategy','proof','case-frenchify','case-drsw','dashboards','system','architecture','mocks','features','pricing','close-section'];
+  let active = 0;
+  for (let i = 0; i < sections.length; i++) {
+    const el = document.getElementById(sections[i]);
+    if (!el) continue;
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.4) active = i;
+  }
+  const folioEl = document.getElementById('masthead-folio');
+  if (folioEl) folioEl.textContent = `No. ${String(active + 1).padStart(2, '0')} / XVI`;
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// System tabs
+document.querySelectorAll('.sys-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const id = tab.getAttribute('data-tab');
+    document.querySelectorAll('.sys-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.sys-panel-content').forEach(p => {
+      p.style.display = p.getAttribute('data-panel') === id ? 'block' : 'none';
+    });
+  });
+});
+
+// GSAP — restrained reveals only
+if (window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero reveal
+  gsap.from('.hero-tag, .hero-volume', { opacity: 0, y: 12, duration: 0.8, stagger: 0.12, ease: 'power2.out', delay: 0.1 });
+  gsap.from('.hero-eyebrow', { opacity: 0, y: 16, duration: 0.9, ease: 'power2.out', delay: 0.25 });
+  gsap.from('.hero-company', { opacity: 0, y: 24, duration: 1.1, ease: 'power3.out', delay: 0.35 });
+  gsap.from('.hero-deck', { opacity: 0, y: 16, duration: 0.9, ease: 'power2.out', delay: 0.55 });
+  gsap.from('.hero-cta-row', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', delay: 0.7 });
+  gsap.from('.hero-toc', { opacity: 0, duration: 1.0, ease: 'power2.out', delay: 0.8 });
+
+  // Section folio reveals
+  gsap.utils.toArray('.section-folio').forEach(el => {
+    gsap.from(el, {
+      opacity: 0, y: 16, duration: 0.9, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+    });
+  });
+
+  // Headline reveals
+  gsap.utils.toArray('.headline-feature, .pull-quote').forEach(el => {
+    gsap.from(el, {
+      opacity: 0, y: 20, duration: 1.0, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+    });
+  });
+
+  // Deck reveals
+  gsap.utils.toArray('.deck').forEach(el => {
+    gsap.from(el, {
+      opacity: 0, y: 12, duration: 0.9, ease: 'power2.out', delay: 0.1,
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+    });
+  });
+
+  // Audit markers cascade
+  gsap.utils.toArray('.audit-marker').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, scale: 0.6, duration: 0.6, ease: 'back.out(1.7)', delay: 0.1 + i * 0.12,
+      scrollTrigger: { trigger: '#audit', start: 'top 60%', once: true }
+    });
+  });
+
+  // Audit score bar
+  ScrollTrigger.create({
+    trigger: '.audit-score-block',
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      const bar = document.querySelector('.audit-score-bar-fill');
+      if (bar) {
+        const v = parseInt(bar.getAttribute('data-fill'), 10);
+        bar.style.width = v + '%';
+      }
+    }
+  });
+
+  // Counter animations
+  gsap.utils.toArray('.counter').forEach(el => {
+    const target = parseFloat(el.getAttribute('data-target'));
+    if (isNaN(target)) return;
+    const obj = { v: 0 };
+    gsap.to(obj, {
+      v: target, duration: 1.6, ease: 'power2.out',
+      onUpdate: () => { el.textContent = Math.round(obj.v); },
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+    });
+  });
+
+  // Problem entries cascade
+  gsap.utils.toArray('.problem-entry').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 24, duration: 1.0, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+    });
+  });
+
+  // Strategy entries
+  gsap.utils.toArray('.strat-entry').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 28, duration: 1.0, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+    });
+  });
+
+  // Proof cells stagger
+  gsap.utils.toArray('.proof-cell').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 14, duration: 0.7, ease: 'power2.out', delay: i * 0.04,
+      scrollTrigger: { trigger: '.proof-table', start: 'top 75%', once: true }
+    });
+  });
+
+  // Roadmap weeks
+  gsap.utils.toArray('.road-week').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 20, duration: 0.9, ease: 'power2.out', delay: i * 0.1,
+      scrollTrigger: { trigger: '.road-grid', start: 'top 80%', once: true }
+    });
+  });
+
+  // Funnel stages
+  gsap.utils.toArray('.funnel-stage').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 18, duration: 0.9, ease: 'power2.out', delay: i * 0.12,
+      scrollTrigger: { trigger: '.funnel', start: 'top 80%', once: true }
+    });
+  });
+
+  // Channel cells
+  gsap.utils.toArray('.channel-cell').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, duration: 0.5, ease: 'power2.out', delay: i * 0.04,
+      scrollTrigger: { trigger: '.channel-grid', start: 'top 80%', once: true }
+    });
+  });
+
+  // Mock cells
+  gsap.utils.toArray('.mock-cell').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 16, duration: 0.7, ease: 'power2.out', delay: i * 0.06,
+      scrollTrigger: { trigger: '.mock-grid', start: 'top 80%', once: true }
+    });
+  });
+
+  // Feature columns
+  gsap.utils.toArray('.feat-col').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 14, duration: 0.8, ease: 'power2.out', delay: i * 0.08,
+      scrollTrigger: { trigger: '.feat-cols', start: 'top 80%', once: true }
+    });
+  });
+
+  // Price cards
+  gsap.utils.toArray('.price-card').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 18, duration: 0.9, ease: 'power3.out', delay: i * 0.12,
+      scrollTrigger: { trigger: '.price-grid', start: 'top 80%', once: true }
+    });
+  });
+
+  // Audit findings cascade
+  gsap.utils.toArray('.audit-finding').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, x: 8, duration: 0.6, ease: 'power2.out', delay: i * 0.08,
+      scrollTrigger: { trigger: '.audit-findings-list', start: 'top 80%', once: true }
+    });
+  });
+
+  // Dashboard figures
+  gsap.utils.toArray('.dash-figure').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 24, duration: 1.0, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', once: true }
+    });
+  });
+
+  // Comp gaps
+  gsap.utils.toArray('.comp-gap').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 16, duration: 0.8, ease: 'power2.out', delay: i * 0.1,
+      scrollTrigger: { trigger: '.comp-gaps', start: 'top 80%', once: true }
+    });
+  });
+
+  // Case study figures slide in
+  gsap.utils.toArray('.case-figure').forEach((el) => {
+    gsap.from(el, {
+      opacity: 0, y: 20, duration: 1.0, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', once: true }
+    });
+  });
+
+  // Case story drop cap reveal
+  gsap.utils.toArray('.case-story p').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', delay: i * 0.15,
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+    });
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Growth Engine — Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ============================================================
+   Refined Minimal — TGE Proposal Template
+   Inspired by Stripe / Linear / Vercel
+   ============================================================ */
+
+:root {
+  --bg: #0A0A0A;
+  --bg-elevated: #0E0E0E;
+  --surface: #111111;
+  --surface-2: #161616;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --highlight: rgba(255, 255, 255, 0.04);
+  --text: #EDEDED;
+  --text-secondary: #B4B4B4;
+  --muted: #8A8A8A;
+  --subtle: #555555;
+  --accent: #C069DD;
+  --accent-soft: rgba(192, 105, 221, 0.10);
+  --accent-line: rgba(192, 105, 221, 0.35);
+  --success: #4ADE80;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --shadow-1: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  --shadow-card: 0 1px 0 rgba(255,255,255,0.04) inset, 0 1px 2px rgba(0,0,0,0.4);
+  --radius: 12px;
+  --radius-lg: 16px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  letter-spacing: -0.005em;
+  overflow-x: hidden;
+}
+
+/* Subtle ambient grid (very faint) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 1px;
+  background: var(--accent);
+  width: 0%;
+  z-index: 100;
+  transition: width 80ms linear;
+}
+
+/* Top nav */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  z-index: 90;
+  font-size: 13px;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.nav-brand-mark {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #1A1A1A, #0A0A0A);
+  border: 1px solid var(--border-strong);
+  display: grid; place-items: center;
+  position: relative;
+}
+.nav-brand-mark::after {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.nav-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-feature-settings: 'tnum';
+}
+.nav-meta .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+  margin-right: 6px;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+  position: relative;
+  z-index: 1;
+}
+.section {
+  padding: 120px 0;
+  position: relative;
+  z-index: 1;
+}
+.section-tight { padding: 80px 0; }
+
+/* Section header pattern */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.section-label::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.section-heading {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.section-sub {
+  color: var(--muted);
+  font-size: 16px;
+  max-width: 640px;
+  line-height: 1.6;
+  margin-bottom: 56px;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 56px 28px 80px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.hero-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 900px;
+  background: radial-gradient(circle at center, rgba(192, 105, 221, 0.06) 0%, transparent 60%);
+  filter: blur(40px);
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+.hero-headline {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(52px, 9vw, 124px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+  margin-bottom: 32px;
+  color: var(--text);
+}
+.hero-headline .accent-dot {
+  color: var(--accent);
+}
+.hero-subline {
+  font-size: clamp(18px, 1.6vw, 22px);
+  color: var(--text-secondary);
+  max-width: 720px;
+  line-height: 1.5;
+  font-weight: 400;
+  margin-bottom: 48px;
+  letter-spacing: -0.01em;
+}
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  font-feature-settings: 'tnum';
+  margin-bottom: 48px;
+}
+.hero-stats span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-stats span::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+.hero-cta-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 180ms var(--ease), border-color 180ms var(--ease), transform 180ms var(--ease);
+  box-shadow: var(--shadow-1);
+  font-family: inherit;
+}
+.btn:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+  background: var(--accent);
+  color: #0A0A0A;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: #CB7FE2;
+  border-color: #CB7FE2;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border);
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--border-strong); }
+.btn i { width: 14px; height: 14px; }
+
+.hero-credit {
+  position: absolute;
+  bottom: 32px; right: 28px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--subtle);
+  text-align: right;
+  z-index: 2;
+}
+
+/* Generic Card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+  transition: transform 220ms var(--ease-out), border-color 220ms var(--ease), background 220ms var(--ease);
+}
+.card:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+  background: var(--surface-2);
+}
+.card-quiet { background: transparent; }
+
+/* Browser frame (refined) */
+.browser-frame {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 32px -12px rgba(0,0,0,0.6);
+}
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.browser-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+}
+.browser-url {
+  margin-left: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  flex: 1;
+  text-align: center;
+  padding-right: 56px;
+}
+.browser-content {
+  padding: 32px;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-elevated) 100%);
+  min-height: 280px;
+  position: relative;
+}
+
+/* === SECTION 2: Audit === */
+.audit-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.audit-screenshot-wrap { position: relative; }
+.audit-mock-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.audit-mock-page .mock-block {
+  height: 14px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 4px;
+}
+.audit-mock-page .mock-block.tall { height: 60px; }
+.audit-mock-page .mock-block.wide { width: 80%; }
+.audit-mock-page .mock-block.sm { width: 40%; }
+.audit-callout {
+  position: absolute;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0A0A0A;
+  z-index: 4;
+  box-shadow: 0 0 0 4px var(--bg);
+  cursor: pointer;
+  transition: transform 220ms var(--ease-out);
+}
+.audit-callout.warning { background: var(--warning); }
+.audit-callout.danger { background: var(--danger); color: #fff; }
+.audit-callout:hover { transform: scale(1.15); }
+.audit-findings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.audit-finding {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  transition: border-color 200ms var(--ease), background 200ms var(--ease);
+}
+.audit-finding:hover { border-color: var(--border-strong); background: var(--surface-2); }
+.audit-finding-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0A0A0A;
+}
+.audit-finding-num.warning { background: var(--warning); }
+.audit-finding-num.danger { background: var(--danger); color: #fff; }
+.audit-score {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.audit-score-ring {
+  position: relative;
+  width: 84px; height: 84px;
+  flex-shrink: 0;
+}
+.audit-score-ring svg { transform: rotate(-90deg); }
+.audit-score-ring .bg-ring { stroke: var(--border); }
+.audit-score-ring .fg-ring { stroke: var(--warning); transition: stroke-dashoffset 1.6s var(--ease-out); }
+.audit-score-num {
+  position: absolute;
+  inset: 0;
+  display: grid; place-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  font-feature-settings: 'tnum';
+}
+.audit-score-meta { color: var(--muted); font-size: 13px; line-height: 1.5; }
+.audit-score-meta strong { color: var(--text); display: block; font-size: 14px; margin-bottom: 4px; font-weight: 600; }
+.audit-fix-line {
+  margin-top: 24px;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-style: italic;
+  padding-left: 14px;
+  border-left: 1px solid var(--accent-line);
+}
+
+/* === SECTION 3: Problems === */
+.problem-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.problem-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 28px;
+  padding: 32px;
+  background: var(--bg);
+  align-items: center;
+  transition: background 200ms var(--ease);
+}
+.problem-row:hover { background: var(--surface); }
+.problem-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  font-feature-settings: 'tnum';
+}
+.problem-text { display: flex; flex-direction: column; gap: 8px; }
+.problem-statement {
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.3;
+}
+.problem-context { color: var(--muted); font-size: 14px; line-height: 1.55; max-width: 560px; }
+.problem-data {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--warning);
+  font-feature-settings: 'tnum';
+  white-space: nowrap;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.18);
+  background: rgba(245, 158, 11, 0.04);
+}
+
+/* === SECTION 4: Competitors === */
+.compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  font-size: 14px;
+}
+.compare-table th, .compare-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.compare-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  background: var(--surface-2);
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table th.prospect-col { color: var(--accent); }
+.compare-table .check { color: var(--success); }
+.compare-table .x { color: var(--danger); }
+.compare-table .label { color: var(--text); }
+.gaps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+.gap-card { padding: 24px; }
+.gap-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.gap-card p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+.gap-card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+.compete-closer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.compete-closer span { color: var(--accent); }
+
+/* === SECTION 5: Roadmap === */
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 5%; right: 5%;
+  height: 1px;
+  background: var(--border);
+  z-index: 0;
+}
+.timeline-card {
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: border-color 220ms var(--ease), transform 220ms var(--ease-out), background 220ms var(--ease);
+}
+.timeline-card:hover { transform: translateY(-2px); border-color: var(--border-strong); background: var(--surface-2); }
+.timeline-dot {
+  position: absolute;
+  top: -6px; left: 24px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  z-index: 2;
+}
+.timeline-week {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  margin-top: 8px;
+}
+.timeline-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.timeline-items { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.timeline-items li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding-left: 18px;
+  position: relative;
+  line-height: 1.5;
+}
+.timeline-items li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px;
+  width: 8px; height: 1px;
+  background: var(--border-strong);
+}
+.timeline-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-feature-settings: 'tnum';
+}
+.timeline-total {
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.timeline-total .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--accent);
+  font-feature-settings: 'tnum';
+}
+.timeline-total .lbl { color: var(--muted); font-size: 14px; }
+
+/* === SECTION 6: Strategy === */
+.strategy-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.strategy-card {
+  display: grid;
+  grid-template-columns: 80px 1fr 280px;
+  gap: 32px;
+  padding: 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  align-items: start;
+  transition: border-color 220ms var(--ease), background 220ms var(--ease);
+}
+.strategy-card:hover { border-color: var(--border-strong); background: var(--surface-2); }
+.strategy-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.strategy-content h3 {
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.strategy-content ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.strategy-content li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  padding-left: 20px;
+  position: relative;
+}
+.strategy-content li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 9px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+}
+.strategy-result {
+  background: rgba(74, 222, 128, 0.04);
+  border: 1px solid rgba(74, 222, 128, 0.16);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.strategy-result-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--success);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.strategy-result-value {
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* === SECTION 7: Proof Wall === */
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.proof-cell {
+  background: var(--bg);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: background 220ms var(--ease);
+}
+.proof-cell:hover { background: var(--surface); }
+.proof-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  font-feature-settings: 'tnum';
+  line-height: 1;
+}
+.proof-label {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+}
+
+/* === SECTION 8/9: Case Studies === */
+.case-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.case-grid.flipped { direction: rtl; }
+.case-grid.flipped > * { direction: ltr; }
+.case-image {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  aspect-ratio: 9/16;
+  max-width: 360px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.case-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.case-image .ph {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--subtle);
+  letter-spacing: 0.06em;
+  padding: 24px;
+  text-align: center;
+}
+.case-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+.case-name {
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+  color: var(--text);
+}
+.case-hero-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.case-hero-metric .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(48px, 5vw, 72px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+  font-feature-settings: 'tnum';
+  line-height: 1;
+}
+.case-hero-metric .lbl { color: var(--muted); font-size: 16px; }
+.case-submetrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.case-submetrics span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+.case-story {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  max-width: 520px;
+}
+.case-ba {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.case-ba-cell {
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.case-ba-cell .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.case-ba-cell .val { font-size: 13px; color: var(--text); line-height: 1.4; }
+.media-strip {
+  margin-top: 32px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.media-strip .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.media-strip .logos {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-family: 'Inter', serif;
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+}
+
+/* === SECTION 10: Live Dashboards === */
+.dash-stack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.dash-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  aspect-ratio: 16/10;
+  position: relative;
+  transition: transform 240ms var(--ease-out), border-color 240ms var(--ease);
+}
+.dash-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+.dash-card img { width: 100%; height: 100%; object-fit: cover; }
+.dash-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--subtle);
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--bg-elevated) 100%);
+}
+.dash-callouts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+.dash-callout {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.dash-callout .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  color: var(--text);
+  font-feature-settings: 'tnum';
+  margin-bottom: 4px;
+}
+.dash-callout .lbl { font-size: 12px; color: var(--muted); }
+
+/* === SECTION 11: System (Pillars + Stack) === */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+  min-height: 380px;
+}
+.pillars-tabs {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+.pillar-tab {
+  padding: 16px 20px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 180ms var(--ease), color 180ms var(--ease);
+  letter-spacing: -0.005em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pillar-tab:last-child { border-bottom: none; }
+.pillar-tab:hover { color: var(--text); background: var(--surface); }
+.pillar-tab.active {
+  color: var(--text);
+  background: var(--surface);
+  border-left: 1px solid var(--accent);
+  padding-left: 19px;
+}
+.pillar-tab .pillar-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--subtle);
+  font-feature-settings: 'tnum';
+}
+.pillar-content {
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+.pillar-content h3 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.pillar-content p { color: var(--text-secondary); font-size: 15px; line-height: 1.55; max-width: 480px; }
+.pillar-content .pillar-image {
+  margin-top: 8px;
+  width: 100%; max-width: 480px;
+  aspect-ratio: 16/9;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.pillar-content .pillar-image img { width: 100%; height: 100%; object-fit: cover; }
+
+.automation-stack {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.auto-card { padding: 22px; }
+.auto-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  display: grid; place-items: center;
+  margin-bottom: 16px;
+}
+.auto-icon i { width: 16px; height: 16px; color: var(--accent); }
+.auto-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.auto-card p { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+.auto-stat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  font-feature-settings: 'tnum';
+  letter-spacing: 0.02em;
+}
+
+/* === SECTION 12: Funnel + Channels === */
+.funnel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+.funnel-stage {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  gap: 24px;
+  align-items: center;
+  transition: border-color 220ms var(--ease), background 220ms var(--ease);
+}
+.funnel-stage:hover { border-color: var(--border-strong); background: var(--surface-2); }
+.funnel-stage:nth-child(1) { width: 100%; }
+.funnel-stage:nth-child(2) { width: 84%; margin: 0 auto; }
+.funnel-stage:nth-child(3) { width: 64%; margin: 0 auto; }
+.funnel-stage h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.funnel-stage p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+.funnel-stage .arrow { color: var(--subtle); }
+.funnel-stage .arrow i { width: 14px; height: 14px; }
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.channel-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color 220ms var(--ease), background 220ms var(--ease);
+}
+.channel-card.selected {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+.channel-card:hover { border-color: var(--border-strong); }
+.channel-card.selected:hover { border-color: var(--accent); }
+.channel-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.channel-icon i { width: 14px; height: 14px; color: var(--text-secondary); }
+.channel-card.selected .channel-icon { border-color: var(--accent-line); }
+.channel-card.selected .channel-icon i { color: var(--accent); }
+.channel-info { display: flex; flex-direction: column; min-width: 0; }
+.channel-info .name { font-size: 13px; font-weight: 500; color: var(--text); letter-spacing: -0.005em; }
+.channel-info .role { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* === SECTION 13: Mock Deliverables === */
+.deliverables-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.deliverable-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: transform 220ms var(--ease-out), border-color 220ms var(--ease);
+}
+.deliverable-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+.deliverable-platform {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.deliverable-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.deliverable-card p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+.deliverable-mock {
+  margin-top: 8px;
+  height: 120px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+}
+.deliverable-mock i { width: 24px; height: 24px; color: var(--subtle); }
+.deliverables-closer {
+  margin-top: 32px;
+  text-align: center;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 17px;
+}
+.deliverables-closer span { color: var(--accent); }
+
+/* === SECTION 14: Features === */
+.features-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+.features-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  font-feature-settings: 'tnum';
+  padding: 8px 14px;
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  background: var(--accent-soft);
+}
+.feature-cats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.feature-cat {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.feature-cat-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.feature-cat-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.feature-cat-icon i { width: 14px; height: 14px; color: var(--accent); }
+.feature-cat h3 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+.feature-cat ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.feature-cat li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+.feature-cat li i {
+  width: 12px; height: 12px;
+  color: var(--accent);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+/* === SECTION 15: Pricing === */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.pricing-card {
+  padding: 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 240ms var(--ease), transform 240ms var(--ease-out);
+}
+.pricing-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+.pricing-card.recommended {
+  border-color: var(--accent-line);
+  background: linear-gradient(180deg, var(--accent-soft) 0%, var(--surface) 30%);
+}
+.pricing-card.recommended:hover { border-color: var(--accent); }
+.pricing-badge {
+  position: absolute;
+  top: 24px; right: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  padding: 5px 10px;
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  background: var(--bg);
+  text-transform: uppercase;
+}
+.pricing-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.pricing-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.pricing-price .amt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  font-feature-settings: 'tnum';
+}
+.pricing-price .per { font-size: 13px; color: var(--muted); }
+.pricing-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-bottom: 28px;
+  flex: 1;
+}
+.pricing-features li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+.pricing-features li i {
+  width: 12px; height: 12px;
+  color: var(--accent);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.roi-strip {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: 1fr repeat(3, auto);
+  gap: 32px;
+  align-items: center;
+}
+.roi-headline {
+  font-size: 14px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+  max-width: 320px;
+}
+.roi-cell { display: flex; flex-direction: column; gap: 4px; }
+.roi-cell .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.roi-cell .val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum';
+}
+.roi-cell.success .val { color: var(--success); }
+.roi-cell.accent .val { color: var(--accent); }
+
+/* === SECTION 16: Close === */
+.close-section {
+  text-align: center;
+  padding: 140px 28px;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.close-headline {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--text);
+  margin-bottom: 20px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.close-sub {
+  font-size: 18px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+.close-cta {
+  font-size: 15px;
+  padding: 14px 24px;
+  border-radius: 12px;
+}
+.close-contact {
+  margin-top: 56px;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+.close-contact a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 180ms var(--ease);
+}
+.close-contact a:hover { color: var(--text); }
+.close-status {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--subtle);
+  letter-spacing: 0.04em;
+}
+.close-status .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse 2s ease-in-out infinite;
+}
+.close-footer {
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+/* GSAP entrance helpers */
+.fx-fade { opacity: 0; transform: translateY(12px); }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .audit-grid, .case-grid, .strategy-card, .roi-strip, .pillars-grid, .pricing-grid, .feature-cats {
+    grid-template-columns: 1fr !important;
+  }
+  .timeline { grid-template-columns: repeat(2, 1fr); }
+  .timeline::before { display: none; }
+  .proof-grid { grid-template-columns: repeat(2, 1fr); }
+  .gaps-grid { grid-template-columns: 1fr; }
+  .deliverables-grid { grid-template-columns: 1fr; }
+  .dash-stack { grid-template-columns: 1fr; }
+  .automation-stack { grid-template-columns: repeat(2, 1fr); }
+  .compete-closer { font-size: 16px; }
+  .case-grid.flipped { direction: ltr; }
+  .pillars-grid { min-height: 0; }
+  .pillars-tabs { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .pillar-tab { white-space: nowrap; border-bottom: none; border-right: 1px solid var(--border); }
+  .pillar-tab.active { border-left: none; padding-left: 20px; border-bottom: 1px solid var(--accent); }
+}
+
+@media (max-width: 640px) {
+  .container, .hero { padding-left: 20px; padding-right: 20px; }
+  .section { padding: 80px 0; }
+  .compare-table th, .compare-table td { padding: 10px 12px; font-size: 12px; }
+  .nav-meta span:nth-child(2) { display: none; }
+  .problem-row { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
+  .problem-data { justify-self: start; }
+  .strategy-card { padding: 24px; }
+  .pricing-card { padding: 28px; }
+  .roi-strip { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
+  .funnel-stage { grid-template-columns: 1fr; }
+  .funnel-stage:nth-child(2), .funnel-stage:nth-child(3) { width: 100%; }
+  .features-header { flex-direction: column; align-items: flex-start; }
+  body { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="nav-brand-mark"></span>
+    <span>The Growth Engine</span>
+  </div>
+  <div class="nav-meta">
+    <span><span class="dot"></span>System Operational</span>
+    <span id="navProspect">Acme SaaS</span>
+    <span id="navDate">March 11, 2026</span>
+  </div>
+</nav>
+
+<div id="app"></div>
+
+<script>
+// __CONFIG_START__
+const CONFIG = {
+  meta: { generated_date: "March 11, 2026", style_variation: "dark-standard" },
+  prospect: {
+    company_name: "Acme SaaS",
+    contact_name: "John Smith",
+    industry: "SaaS / B2B",
+    website: "acmesaas.com",
+    hero_subline: "You're building best-in-class project management software. We'll build the pipeline to fill it with paying customers.",
+    website_audit: {
+      score: 38,
+      findings: [
+        { text: "No clear CTA above the fold", severity: "warning", x: 45, y: 25 },
+        { text: "Zero social proof on homepage", severity: "danger", x: 70, y: 45 },
+        { text: "No lead capture or demo booking", severity: "danger", x: 30, y: 65 },
+        { text: "Blog exists but no SEO strategy", severity: "warning", x: 80, y: 15 },
+        { text: "Mobile nav hides key pages", severity: "warning", x: 15, y: 35 }
+      ]
+    },
+    problems: [
+      { statement: "Your product is category-defining, but your pipeline depends on referrals and hope.", context: "80% of SaaS companies plateau when inbound can't keep up with growth targets.", data_point: "Avg cost of a lost SaaS lead: $247" },
+      { statement: "You've hired freelancers before. The campaigns ran, the reports looked fine, the pipeline didn't grow.", context: "Freelancers optimize for platform metrics. Agencies should optimize for revenue.", data_point: "73% of SaaS founders say agency ROI is unclear" },
+      { statement: "Your sales team closes at 20%, but only sees 15 qualified leads a month.", context: "The bottleneck isn't closing. It's feeding the machine with the right leads at scale.", data_point: "You need 75+ leads/month to hit targets" }
+    ],
+    competitors: {
+      names: ["CompetitorPM", "TaskFlow Pro"],
+      comparison: [
+        { feature: "Paid Ads (Meta + Google)", prospect: false, comp_a: true, comp_b: true },
+        { feature: "Content Strategy", prospect: false, comp_a: false, comp_b: true },
+        { feature: "Lead Capture System", prospect: false, comp_a: true, comp_b: false },
+        { feature: "Email Automation", prospect: false, comp_a: false, comp_b: false },
+        { feature: "Voice AI / Chatbot", prospect: false, comp_a: false, comp_b: false },
+        { feature: "CRM Integration", prospect: false, comp_a: true, comp_b: false },
+        { feature: "Retargeting Campaigns", prospect: false, comp_a: false, comp_b: true }
+      ],
+      gaps: [
+        { title: "Spray-and-Pray Paid Ads", description: "Your competitors run broad targeting with generic copy. No intent signals, no retargeting funnels." },
+        { title: "No Nurture System", description: "Leads land on a form, get one email, then silence. No 30-day nurture, no SMS follow-up." },
+        { title: "Content Without Strategy", description: "Blog posts exist but aren't SEO-optimized, distributed, or built to convert." }
+      ]
+    },
+    roadmap: {
+      week1: { title: "Foundation", items: ["Brand + competitor audit", "Meta + Google ad account setup", "CRM + automation infrastructure", "Content calendar for Month 1", "Voice AI agent configuration", "Tracking + analytics setup"], count: 8 },
+      week2: { title: "Launch", items: ["First 5 ad creatives go live", "2 landing pages launched", "Email nurture activated", "Voice AI agent live", "SMS + WhatsApp flows configured", "Retargeting pixel confirmed"], count: 12 },
+      week3: { title: "Optimize", items: ["First data review + optimization", "Top creatives doubled down", "Retargeting campaigns launched", "Blog posts published", "Lead scoring refined", "CRM pipeline review"], count: 10 },
+      week4: { title: "Scale", items: ["Full performance report", "Strategy adjustments", "Winning campaigns scaled 2-3x", "Month 2 roadmap presented", "ROI analysis delivered"], count: 6 }
+    },
+    strategies: [
+      { number: "01", title: "Intent-Based Paid Acquisition", bullets: ["Meta + Google targeting decision-makers actively searching", "Lookalike audiences from existing customer list for 3x conversion", "Retargeting funnels across platforms with escalating urgency", "Dynamic creative optimization testing 50+ variants"], projected_result: "3x qualified leads within 60 days" },
+      { number: "02", title: "Authority Content Engine", bullets: ["SEO-optimized posts targeting long-tail keywords", "LinkedIn thought leadership for founders", "Case study videos and comparison content", "Webinar + resource download funnels"], projected_result: "10K+ organic monthly visitors by Month 6" },
+      { number: "03", title: "Automated Lead Machine", bullets: ["Voice AI calls every lead within 5 minutes, 24/7", "30-day email nurture sequences", "SMS + WhatsApp triggered by behavior", "CRM with automated scoring, routing, follow-ups"], projected_result: "85% lead response rate" }
+    ],
+    platforms: ["meta", "google", "linkedin", "email"],
+    mock_deliverables: [
+      { type: "reel", title: "Instagram Reel Concept", description: "'Why 73% of project managers are switching from spreadsheets' - 30s hook-driven reel.", platform: "Instagram", icon: "play" },
+      { type: "ad", title: "Meta Ad Creative", description: "Carousel: '5 Signs Your Team Needs Better PM Software' - one pain point per slide.", platform: "Facebook / Instagram", icon: "image" },
+      { type: "email", title: "Email Nurture Sequence", description: "Day 1 educational. Day 7 case study. Day 14 demo offer. No hard sell.", platform: "Email", icon: "mail" },
+      { type: "landing", title: "Landing Page", description: "Headline, 3 benefits, social proof, demo CTA, exit-intent popup.", platform: "Web", icon: "layout" },
+      { type: "whatsapp", title: "WhatsApp Automation", description: "Trigger: visited pricing page. Message: 'Want me to walk you through it?'", platform: "WhatsApp", icon: "message-circle" },
+      { type: "calendar", title: "Content Calendar", description: "Mon LinkedIn, Tue blog, Wed reel, Thu story, Fri case study, Sat BTS.", platform: "All Platforms", icon: "calendar" }
+    ],
+    pricing: {
+      recommended: "scale",
+      growth: { name: "Growth Plan", price: "$2,400", period: "per month", features: ["10 reels/month (scripted + edited)", "15 static ad creatives/month", "Meta Ads management", "Google Ads management", "Voice AI Agent (24/7)", "CRM setup + management", "Email nurture sequences", "SMS + WhatsApp automation", "Weekly reports", "Unlimited landing pages"] },
+      scale: { name: "Scale Plan", price: "$3,200", period: "per month", features: ["Everything in Growth Plan", "LinkedIn Ads management", "TikTok Ads management", "SEO + Blogging (3-5/week)", "Full website SEO audit", "Technical + Local SEO", "Advanced analytics dashboard", "Monthly strategy reviews", "Priority support"] }
+    },
+    roi_projection: { leads_per_month: 75, close_rate: "20%", projected_monthly_revenue: "$7,500", investment: "$2,400", roi_multiple: "3.1x" }
+  },
+  static: {
+    proof_metrics: [
+      { value: "20M+", label: "Impressions Generated" },
+      { value: "11.58x", label: "Average Client Growth" },
+      { value: "20x", label: "Follower to Customer" },
+      { value: "10.8K", label: "Followers in 6 Months" },
+      { value: "67%", label: "CTR on Marketing Assets" },
+      { value: "98%", label: "Email Open Rate" },
+      { value: "5 min", label: "Lead Response Time" },
+      { value: "24/7", label: "System Uptime" },
+      { value: "$0", label: "Cost Per Organic Lead" },
+      { value: "78%", label: "Funnel Conversion Rate" }
+    ],
+    case_studies: {
+      frenchify: {
+        name: "Frenchify with Vyom",
+        industry: "Education / Language Learning",
+        hero_metric: "20x", hero_metric_label: "Growth",
+        sub_metrics: ["+10,800 followers", "6 months", "10K to 31K+"],
+        story: ["Vyom had a small YouTube channel teaching French. Good content, but zero system for growth.", "TGE built a research-driven content engine: scripted reels based on trending search terms, strategic posting.", "Result: 616K views on a single reel, 20x follower growth, and a follower-to-student pipeline."],
+        before: "10K followers, sporadic posting, no conversion system",
+        after: "31K+ followers, 616K view reels, student conversions",
+        image: "/tge-proposals/assets/static/frenchify-instagram.jpeg"
+      },
+      drsw: {
+        name: "Dr. SW Clinics",
+        industry: "Healthcare / Aesthetic Medicine",
+        hero_metric: "20M+", hero_metric_label: "Impressions",
+        sub_metrics: ["11.58x growth", "981K followers", "Harley Street, London"],
+        story: ["Dr. Sherif Wakil is one of Europe's leading cosmetic practitioners. Strong reputation, limited digital growth.", "TGE's approach: 'Less Is More.' Premium content matching brand positioning. Quality over quantity.", "Result: 20M+ impressions, verified, packed booking calendar. As seen in Daily Mail, Sky, The Sun."],
+        before: "Strong reputation, limited digital presence",
+        after: "20M+ impressions, verified, packed bookings",
+        image: "/tge-proposals/assets/static/drswclinics-instagram.jpeg",
+        calendar_image: "/tge-proposals/assets/static/booking-calendar.png",
+        media: ["Daily Mail", "Sky", "The Sun", "Tatler", "Fabulous", "Daily Express"]
+      }
+    },
+    dashboard_images: ["/tge-proposals/assets/static/meta-dashboard-1.png", "/tge-proposals/assets/static/meta-dashboard-2.png", "/tge-proposals/assets/static/meta-dashboard-3.png"],
+    system_pillars: [
+      { title: "Content Generation", description: "AI-assisted plus human scripting so you can scale without frustration.", image: "/tge-proposals/assets/static/ai-avatar-tool.png", icon: "pen-tool" },
+      { title: "Social Media Management", description: "All platforms handled. Posting, engagement, community management.", icon: "share-2" },
+      { title: "Paid Advertising", description: "Meta, Google, TikTok, LinkedIn. Scale and generate qualified leads.", image: "/tge-proposals/assets/static/meta-dashboard-1.png", icon: "target" },
+      { title: "CRM Optimization", description: "Full infrastructure. Lead tracking, pipeline, automation.", image: "/tge-proposals/assets/static/booking-calendar.png", icon: "database" },
+      { title: "Sales Optimization", description: "Voice AI agents and automation for 24/7 qualification.", icon: "phone-call" },
+      { title: "Reporting and Audit", description: "Weekly reports. Monthly reviews. Complete transparency.", icon: "bar-chart-3" }
+    ],
+    automation_stack: [
+      { title: "Voice AI Agent", description: "Calls every lead in 5 minutes. 24/7. No human needed.", stat: "5 min response", icon: "phone" },
+      { title: "Email Nurture", description: "30-day sequences that build trust from first click to contract.", stat: "98% open rate", icon: "mail" },
+      { title: "SMS", description: "98% open rate. Booking reminders, high-intent moments.", stat: "3x vs email", icon: "smartphone" },
+      { title: "WhatsApp", description: "3x higher response. Behavior-triggered, feels human.", stat: "89% read rate", icon: "message-circle" }
+    ],
+    funnel_stages: [
+      { stage: "Awareness", description: "Organic content, industry insights, discovery ads" },
+      { stage: "Consideration", description: "Retargeting, testimonials, case studies, education" },
+      { stage: "Decision", description: "Urgency, limited offers, direct conversion CTAs" }
+    ],
+    channels: [
+      { name: "Meta Ads", role: "Primary acquisition", icon: "target" },
+      { name: "Google Ads", role: "Intent capture", icon: "search" },
+      { name: "LinkedIn", role: "B2B outreach", icon: "briefcase" },
+      { name: "Email", role: "Nurture + convert", icon: "mail" },
+      { name: "SMS", role: "High-intent moments", icon: "smartphone" },
+      { name: "WhatsApp", role: "Behavior-triggered", icon: "message-circle" },
+      { name: "SEO", role: "Organic compounding", icon: "trending-up" },
+      { name: "YouTube", role: "Authority content", icon: "play-circle" },
+      { name: "TikTok", role: "Discovery + reach", icon: "zap" }
+    ],
+    features_list: {
+      content_creative: ["10 reels/month (scripted, edited, posted)", "15 static creatives/month", "Content calendar with strategic posting", "AI-powered ideas + trend tracking", "Professional copywriting", "Hashtag research + SEO"],
+      paid_advertising: ["Meta Ads management", "Google Ads management", "TikTok Ads management", "LinkedIn Ads management", "A/B testing on all campaigns", "Retargeting + lookalike audiences", "Weekly optimization cycles", "Monthly spend recommendations"],
+      automation_sales: ["Voice AI Agent (24/7)", "Email nurture sequences", "SMS campaigns", "WhatsApp automation", "CRM setup + management", "Lead scoring + routing", "Appointment booking automation", "Pipeline tracking + reporting"],
+      strategy_reporting: ["Weekly performance reports", "Monthly strategy reviews", "Competitor monitoring", "SEO audits + recommendations", "Conversion tracking setup", "Custom analytics dashboard"]
+    },
+    contact: { email: "info@thegrowthengine.net", phone: "+91 6397016179", website: "thegrowthengine.net" }
+  }
+};
+// __CONFIG_END__
+
+/* ========== Render helpers ========== */
+const cn = CONFIG.prospect.company_name;
+const ico = (name) => `<i data-lucide="${name}"></i>`;
+const checkIcon = `<i data-lucide="check"></i>`;
+const xIcon = `<i data-lucide="x"></i>`;
+
+function browserFrame(url, content) {
+  return `<div class="browser-frame">
+    <div class="browser-bar">
+      <span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span>
+      <span class="browser-url">${url}</span>
+    </div>
+    <div class="browser-content">${content}</div>
+  </div>`;
+}
+
+/* ========== Section 1: Hero ========== */
+function renderHero() {
+  const stats = ["16 sections", "3 case studies", "30-day roadmap", "Custom pricing"];
+  const headlineFinal = cn.replace(/[.!]+$/, '') + '.';
+  return `
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow fx-fade">A growth strategy prepared for</div>
+      <h1 class="hero-headline fx-fade">${headlineFinal.slice(0, -1)}<span class="accent-dot">.</span></h1>
+      <p class="hero-subline fx-fade">${CONFIG.prospect.hero_subline}</p>
+      <div class="hero-stats fx-fade">${stats.map(s => `<span>${s}</span>`).join('')}</div>
+      <div class="hero-cta-row fx-fade">
+        <a href="#close" class="btn btn-primary">See the strategy ${ico('arrow-down')}</a>
+        <a href="#audit" class="btn btn-ghost">Skip to audit ${ico('arrow-right')}</a>
+      </div>
+    </div>
+    <div class="hero-credit">
+      Prepared by The Growth Engine<br>
+      <span style="opacity: 0.6;">${CONFIG.meta.generated_date}</span>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 2: Audit ========== */
+function renderAudit() {
+  const a = CONFIG.prospect.website_audit;
+  const callouts = a.findings.map((f, i) => `
+    <div class="audit-callout ${f.severity}" style="left: ${f.x}%; top: ${f.y}%;">${i + 1}</div>
+  `).join('');
+  const findingsList = a.findings.map((f, i) => `
+    <div class="audit-finding">
+      <div class="audit-finding-num ${f.severity}">${i + 1}</div>
+      <div>${f.text}</div>
+    </div>
+  `).join('');
+  const score = a.score;
+  const scoreLabel = score < 50 ? 'Significant gaps detected' : score < 75 ? 'Room to improve' : 'Strong foundation';
+  const c = 2 * Math.PI * 36;
+  const offset = c * (1 - score / 100);
+
+  const screenshot = browserFrame(CONFIG.prospect.website, `
+    <div class="audit-mock-page">
+      <div class="mock-block tall"></div>
+      <div class="mock-block wide"></div>
+      <div class="mock-block sm"></div>
+      <div class="mock-block tall" style="height: 100px;"></div>
+      <div class="mock-block wide"></div>
+      <div class="mock-block sm"></div>
+    </div>
+    ${callouts}
+  `);
+
+  return `
+  <section class="section" id="audit">
+    <div class="container">
+      <div class="section-label fx-fade">We looked at your website</div>
+      <h2 class="section-heading fx-fade">Here's what we found.</h2>
+      <p class="section-sub fx-fade">A 12-point audit. Five issues are working against your conversions right now.</p>
+      <div class="audit-grid fx-fade">
+        <div class="audit-screenshot-wrap">${screenshot}</div>
+        <div>
+          <div class="audit-findings">${findingsList}</div>
+          <div class="audit-score">
+            <div class="audit-score-ring">
+              <svg width="84" height="84" viewBox="0 0 84 84">
+                <circle class="bg-ring" cx="42" cy="42" r="36" fill="none" stroke-width="3"/>
+                <circle class="fg-ring" cx="42" cy="42" r="36" fill="none" stroke-width="3"
+                  stroke-dasharray="${c}" stroke-dashoffset="${c}" data-score-offset="${offset}" stroke-linecap="round"/>
+              </svg>
+              <div class="audit-score-num"><span data-counter="${score}">0</span>/100</div>
+            </div>
+            <div class="audit-score-meta">
+              <strong>Audit score</strong>
+              ${scoreLabel}. We fix all of this in week one.
+            </div>
+          </div>
+          <div class="audit-fix-line">"Don't worry. We rebuild this above the fold first, before anything else ships."</div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 3: Problems ========== */
+function renderProblems() {
+  const rows = CONFIG.prospect.problems.map((p, i) => `
+    <div class="problem-row">
+      <div class="problem-num">P/0${i + 1}</div>
+      <div class="problem-text">
+        <div class="problem-statement">${p.statement}</div>
+        <div class="problem-context">${p.context}</div>
+      </div>
+      <div class="problem-data">${p.data_point}</div>
+    </div>
+  `).join('');
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">The challenge</div>
+      <h2 class="section-heading fx-fade">Three things slowing growth.</h2>
+      <p class="section-sub fx-fade">No generic playbook. These are pulled from how ${cn} is positioned in ${CONFIG.prospect.industry}.</p>
+      <div class="problem-list fx-fade">${rows}</div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 4: Competitors ========== */
+function renderCompetitors() {
+  const c = CONFIG.prospect.competitors;
+  const cell = (val) => val === true ? `<span class="check">${checkIcon}</span>`
+    : val === false ? `<span class="x">${xIcon}</span>`
+    : `<span class="label">${val}</span>`;
+  const rows = c.comparison.map(r => `
+    <tr>
+      <td class="label">${r.feature}</td>
+      <td>${cell(r.prospect)}</td>
+      <td>${cell(r.comp_a)}</td>
+      <td>${cell(r.comp_b)}</td>
+    </tr>
+  `).join('');
+  const gaps = c.gaps.map((g, i) => `
+    <div class="card gap-card">
+      <div class="gap-card-num">GAP / 0${i + 1}</div>
+      <h4>${g.title}</h4>
+      <p>${g.description}</p>
+    </div>
+  `).join('');
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">The competitive landscape</div>
+      <h2 class="section-heading fx-fade">Where ${cn} stands.</h2>
+      <p class="section-sub fx-fade">We pulled apart ${c.names[0]} and ${c.names[1]}. Here's the snapshot.</p>
+      <div class="fx-fade" style="overflow-x:auto;">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th class="prospect-col">${cn}</th>
+              <th>${c.names[0]}</th>
+              <th>${c.names[1]}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="gaps-grid fx-fade">${gaps}</div>
+      <p class="compete-closer fx-fade">${cn} can <span>own this space</span>. The bar is low.</p>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 5: Roadmap ========== */
+function renderRoadmap() {
+  const r = CONFIG.prospect.roadmap;
+  const total = r.week1.count + r.week2.count + r.week3.count + r.week4.count;
+  const card = (key, idx) => {
+    const w = r[key];
+    return `
+    <div class="timeline-card">
+      <div class="timeline-dot"></div>
+      <div class="timeline-week">Week ${idx + 1}</div>
+      <h3 class="timeline-title">${w.title}</h3>
+      <ul class="timeline-items">${w.items.map(i => `<li>${i}</li>`).join('')}</ul>
+      <div class="timeline-count" data-counter="${w.count}">0 deliverables</div>
+    </div>`;
+  };
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">Your first 30 days</div>
+      <h2 class="section-heading fx-fade">Here's exactly what happens.</h2>
+      <p class="section-sub fx-fade">Day-one execution map. Each week stacks on the previous.</p>
+      <div class="timeline fx-fade">
+        ${['week1','week2','week3','week4'].map((k,i) => card(k,i)).join('')}
+      </div>
+      <div class="timeline-total fx-fade">
+        <div>
+          <div class="num"><span data-counter="${total}">0</span>+</div>
+          <div class="lbl" style="margin-top: 4px;">Deliverables in your first month</div>
+        </div>
+        <div class="lbl">All shipped, tracked, and reported.</div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 6: Strategy ========== */
+function renderStrategy() {
+  const cards = CONFIG.prospect.strategies.map(s => `
+    <div class="strategy-card">
+      <div class="strategy-num">${s.number}</div>
+      <div class="strategy-content">
+        <h3>${s.title}</h3>
+        <ul>${s.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      </div>
+      <div class="strategy-result">
+        <div class="strategy-result-label">Projected result</div>
+        <div class="strategy-result-value">${s.projected_result}</div>
+      </div>
+    </div>
+  `).join('');
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">The strategy we'd build for ${cn}</div>
+      <h2 class="section-heading fx-fade">Three plays. Each measurable.</h2>
+      <p class="section-sub fx-fade">Each play has a defined tactic stack and a number we hold ourselves to.</p>
+      <div class="strategy-grid fx-fade">${cards}</div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 7: Proof Wall ========== */
+function renderProof() {
+  const cells = CONFIG.static.proof_metrics.map(m => `
+    <div class="proof-cell">
+      <div class="proof-value">${m.value}</div>
+      <div class="proof-label">${m.label}</div>
+    </div>
+  `).join('');
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">Proof, in numbers</div>
+      <h2 class="section-heading fx-fade">Built for clients who needed scale.</h2>
+      <p class="section-sub fx-fade">Aggregate results across active accounts. Real budgets, real outcomes.</p>
+      <div class="proof-grid fx-fade">${cells}</div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 8: Frenchify ========== */
+function renderFrenchify() {
+  const cs = CONFIG.static.case_studies.frenchify;
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">Case study 01</div>
+      <div class="case-grid fx-fade">
+        <div class="case-image">
+          <img src="${cs.image}" alt="${cs.name} Instagram"
+            onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=ph>${cs.name}<br>Instagram screenshot</div>'">
+        </div>
+        <div>
+          <span class="case-tag">${cs.industry}</span>
+          <h3 class="case-name">${cs.name}</h3>
+          <div class="case-hero-metric">
+            <span class="num">${cs.hero_metric}</span>
+            <span class="lbl">${cs.hero_metric_label}</span>
+          </div>
+          <div class="case-submetrics">${cs.sub_metrics.map(m => `<span>${m}</span>`).join('')}</div>
+          <div class="case-story">${cs.story.map(p => `<p>${p}</p>`).join('')}</div>
+          <div class="case-ba">
+            <div class="case-ba-cell"><div class="lbl">Before</div><div class="val">${cs.before}</div></div>
+            <div class="case-ba-cell"><div class="lbl">After</div><div class="val">${cs.after}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 9: Dr. SW ========== */
+function renderDrSW() {
+  const cs = CONFIG.static.case_studies.drsw;
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">Case study 02</div>
+      <div class="case-grid flipped fx-fade">
+        <div class="case-image">
+          <img src="${cs.image}" alt="${cs.name} Instagram"
+            onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=ph>${cs.name}<br>Instagram screenshot</div>'">
+        </div>
+        <div>
+          <span class="case-tag">${cs.industry}</span>
+          <h3 class="case-name">${cs.name}</h3>
+          <div class="case-hero-metric">
+            <span class="num">${cs.hero_metric}</span>
+            <span class="lbl">${cs.hero_metric_label}</span>
+          </div>
+          <div class="case-submetrics">${cs.sub_metrics.map(m => `<span>${m}</span>`).join('')}</div>
+          <div class="case-story">${cs.story.map(p => `<p>${p}</p>`).join('')}</div>
+          <div class="case-ba">
+            <div class="case-ba-cell"><div class="lbl">Before</div><div class="val">${cs.before}</div></div>
+            <div class="case-ba-cell"><div class="lbl">After</div><div class="val">${cs.after}</div></div>
+          </div>
+          <div class="media-strip">
+            <span class="lbl">As seen in</span>
+            <div class="logos">${cs.media.map(m => `<span>${m}</span>`).join('')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 10: Dashboards ========== */
+function renderDashboards() {
+  const imgs = CONFIG.static.dashboard_images.map((src, i) => `
+    <div class="dash-card">
+      <img src="${src}" alt="Dashboard ${i + 1}"
+        onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=dash-placeholder>Dashboard ${i + 1}</div>'">
+    </div>
+  `).join('');
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">What your dashboard looks like</div>
+      <h2 class="section-heading fx-fade">Real campaigns. Real spend. Real results.</h2>
+      <p class="section-sub fx-fade">No reports cooked after the fact. You watch the numbers move in real time.</p>
+      <div class="dash-stack fx-fade">${imgs}</div>
+      <div class="dash-callouts fx-fade">
+        <div class="dash-callout"><div class="num">£42,180</div><div class="lbl">Total spend (90 days)</div></div>
+        <div class="dash-callout"><div class="num">2,847</div><div class="lbl">Conversions tracked</div></div>
+        <div class="dash-callout"><div class="num">£14.81</div><div class="lbl">Cost per result</div></div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 11: System ========== */
+function renderSystem() {
+  const pillars = CONFIG.static.system_pillars;
+  const tabs = pillars.map((p, i) => `
+    <button class="pillar-tab ${i === 0 ? 'active' : ''}" data-pillar="${i}">
+      <span class="pillar-num">${String(i + 1).padStart(2, '0')}</span>
+      <span>${p.title}</span>
+    </button>
+  `).join('');
+  const panels = pillars.map((p, i) => `
+    <div class="pillar-panel" data-pillar-panel="${i}" style="display: ${i === 0 ? 'flex' : 'none'};">
+      <h3>${p.title}</h3>
+      <p>${p.description}</p>
+      ${p.image ? `<div class="pillar-image"><img src="${p.image}" alt="${p.title}" onerror="this.parentElement.style.display='none'"></div>` : ''}
+    </div>
+  `).join('');
+  const auto = CONFIG.static.automation_stack.map(a => `
+    <div class="card auto-card">
+      <div class="auto-icon">${ico(a.icon || 'zap')}</div>
+      <h4>${a.title}</h4>
+      <p>${a.description}</p>
+      <div class="auto-stat">${a.stat}</div>
+    </div>
+  `).join('');
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">The full stack</div>
+      <h2 class="section-heading fx-fade">Six pillars. One operating system.</h2>
+      <p class="section-sub fx-fade">Tap through the system that runs on every account.</p>
+      <div class="pillars-grid fx-fade">
+        <div class="pillars-tabs">${tabs}</div>
+        <div class="pillar-content" id="pillarContent">
+          ${panels}
+        </div>
+      </div>
+      <div class="automation-stack fx-fade">${auto}</div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 12: Funnel + Channels ========== */
+function renderFunnel() {
+  const stages = CONFIG.static.funnel_stages.map(s => `
+    <div class="funnel-stage">
+      <h4>${s.stage}</h4>
+      <p>${s.description}</p>
+      <div class="arrow">${ico('arrow-down')}</div>
+    </div>
+  `).join('');
+  const platformMap = { meta: "Meta Ads", google: "Google Ads", linkedin: "LinkedIn", email: "Email", sms: "SMS", whatsapp: "WhatsApp", seo: "SEO", youtube: "YouTube", tiktok: "TikTok" };
+  const selected = new Set(CONFIG.prospect.platforms.map(p => platformMap[p] || p));
+  const channels = CONFIG.static.channels.map(c => `
+    <div class="channel-card ${selected.has(c.name) ? 'selected' : ''}">
+      <div class="channel-icon">${ico(c.icon)}</div>
+      <div class="channel-info">
+        <span class="name">${c.name}</span>
+        <span class="role">${c.role}</span>
+      </div>
+    </div>
+  `).join('');
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">The campaign architecture</div>
+      <h2 class="section-heading fx-fade">Funnel + channels.</h2>
+      <p class="section-sub fx-fade">Every stage has owned tactics. Selected channels lit in accent.</p>
+      <div class="funnel fx-fade">${stages}</div>
+      <div class="channels-grid fx-fade">${channels}</div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 13: Mock Deliverables ========== */
+function renderDeliverables() {
+  const cards = CONFIG.prospect.mock_deliverables.map(d => `
+    <div class="deliverable-card">
+      <div class="deliverable-platform">${d.platform}</div>
+      <h4>${d.title}</h4>
+      <p>${d.description}</p>
+      <div class="deliverable-mock">${ico(d.icon || 'square')}</div>
+    </div>
+  `).join('');
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">What your content could look like</div>
+      <h2 class="section-heading fx-fade">We don't just plan. We build.</h2>
+      <p class="section-sub fx-fade">Six concrete week-one deliverables, scoped to ${cn}'s stack.</p>
+      <div class="deliverables-grid fx-fade">${cards}</div>
+      <p class="deliverables-closer fx-fade">This is week one. Imagine <span>month three</span>.</p>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 14: Features ========== */
+function renderFeatures() {
+  const f = CONFIG.static.features_list;
+  const total = f.content_creative.length + f.paid_advertising.length + f.automation_sales.length + f.strategy_reporting.length;
+  const cat = (icon, title, items) => `
+    <div class="feature-cat">
+      <div class="feature-cat-head">
+        <div class="feature-cat-icon">${ico(icon)}</div>
+        <h3>${title}</h3>
+      </div>
+      <ul>${items.map(i => `<li>${ico('check')}${i}</li>`).join('')}</ul>
+    </div>
+  `;
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="features-header">
+        <div>
+          <div class="section-label">The full package</div>
+          <h2 class="section-heading">What you get.</h2>
+        </div>
+        <div class="features-count"><span data-counter="${total}">0</span>+ features included</div>
+      </div>
+      <div class="feature-cats fx-fade">
+        ${cat('pen-tool', 'Content & Creative', f.content_creative)}
+        ${cat('target', 'Paid Advertising', f.paid_advertising)}
+        ${cat('zap', 'Automation & Sales', f.automation_sales)}
+        ${cat('bar-chart-3', 'Strategy & Reporting', f.strategy_reporting)}
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 15: Pricing ========== */
+function renderPricing() {
+  const p = CONFIG.prospect.pricing;
+  const card = (key, plan) => {
+    const recommended = p.recommended === key;
+    return `
+    <div class="pricing-card ${recommended ? 'recommended' : ''}">
+      ${recommended ? `<div class="pricing-badge">Recommended</div>` : ''}
+      <h3>${plan.name}</h3>
+      <div class="pricing-price">
+        <span class="amt">${plan.price}</span>
+        <span class="per">${plan.period}</span>
+      </div>
+      <ul class="pricing-features">${plan.features.map(f => `<li>${ico('check')}${f}</li>`).join('')}</ul>
+      <a href="https://cal.com/grawoth/consultation-call-with-allen" class="btn ${recommended ? 'btn-primary' : ''}">Get started ${ico('arrow-right')}</a>
+    </div>`;
+  };
+  const r = CONFIG.prospect.roi_projection;
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-label fx-fade">Investment</div>
+      <h2 class="section-heading fx-fade">Your plan.</h2>
+      <p class="section-sub fx-fade">Two tiers. Built around how aggressive you want to scale.</p>
+      <div class="pricing-grid fx-fade">
+        ${card('growth', p.growth)}
+        ${card('scale', p.scale)}
+      </div>
+      <div class="roi-strip fx-fade">
+        <div class="roi-headline">Just ${r.leads_per_month} qualified leads per month, closing at ${r.close_rate}, returns:</div>
+        <div class="roi-cell success">
+          <div class="lbl">Monthly revenue</div>
+          <div class="val">${r.projected_monthly_revenue}</div>
+        </div>
+        <div class="roi-cell">
+          <div class="lbl">Investment</div>
+          <div class="val">${r.investment}</div>
+        </div>
+        <div class="roi-cell accent">
+          <div class="lbl">ROI multiple</div>
+          <div class="val">${r.roi_multiple}</div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ========== Section 16: Close ========== */
+function renderClose() {
+  const c = CONFIG.static.contact;
+  return `
+  <section class="close-section" id="close">
+    <div class="container">
+      <h2 class="close-headline fx-fade">Ready to build this for ${cn}?</h2>
+      <p class="close-sub fx-fade">Everything you just saw can be running in 30 days.</p>
+      <a href="https://cal.com/grawoth/consultation-call-with-allen" class="btn btn-primary close-cta fx-fade">
+        Book a 15-minute strategy call ${ico('arrow-right')}
+      </a>
+      <div class="close-contact fx-fade">
+        <a href="mailto:${c.email}">${ico('mail')}${c.email}</a>
+        <a href="tel:${c.phone}">${ico('phone')}${c.phone}</a>
+        <a href="https://${c.website}">${ico('globe')}${c.website}</a>
+      </div>
+      <div class="close-status">
+        <span class="dot"></span>
+        System operational
+      </div>
+      <div class="close-footer">
+        Prepared exclusively for ${cn} by The Growth Engine on ${CONFIG.meta.generated_date}.
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ========== Mount ========== */
+function mount() {
+  document.getElementById('navProspect').textContent = cn;
+  document.getElementById('navDate').textContent = CONFIG.meta.generated_date;
+
+  const html = [
+    renderHero(),
+    renderAudit(),
+    renderProblems(),
+    renderCompetitors(),
+    renderRoadmap(),
+    renderStrategy(),
+    renderProof(),
+    renderFrenchify(),
+    renderDrSW(),
+    renderDashboards(),
+    renderSystem(),
+    renderFunnel(),
+    renderDeliverables(),
+    renderFeatures(),
+    renderPricing(),
+    renderClose()
+  ].join('');
+
+  document.getElementById('app').innerHTML = html;
+
+  if (window.lucide) lucide.createIcons();
+
+  bindPillarTabs();
+  bindCounters();
+  bindScrollProgress();
+  bindEntrances();
+  bindAuditScore();
+}
+
+function bindPillarTabs() {
+  const tabs = document.querySelectorAll('.pillar-tab');
+  const panels = document.querySelectorAll('[data-pillar-panel]');
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      const id = t.dataset.pillar;
+      tabs.forEach(x => x.classList.toggle('active', x === t));
+      panels.forEach(p => p.style.display = (p.dataset.pillarPanel === id) ? 'flex' : 'none');
+    });
+  });
+}
+
+function bindCounters() {
+  const els = document.querySelectorAll('[data-counter]');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.getAttribute('data-counter'));
+      if (isNaN(target)) return;
+      const dur = 1400;
+      const start = performance.now();
+      const from = 0;
+      function tick(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = from + (target - from) * eased;
+        el.textContent = (target % 1 === 0) ? Math.floor(v).toLocaleString() : v.toFixed(2);
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = (target % 1 === 0) ? target.toLocaleString() : target.toFixed(2);
+      }
+      requestAnimationFrame(tick);
+      obs.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  els.forEach(el => obs.observe(el));
+}
+
+function bindAuditScore() {
+  const ring = document.querySelector('.fg-ring');
+  if (!ring) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const off = ring.getAttribute('data-score-offset');
+      requestAnimationFrame(() => { ring.setAttribute('stroke-dashoffset', off); });
+      obs.unobserve(ring);
+    });
+  }, { threshold: 0.4 });
+  obs.observe(ring);
+}
+
+function bindScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  function update() {
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    bar.style.width = (Math.max(0, Math.min(1, pct)) * 100) + '%';
+  }
+  document.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+function bindEntrances() {
+  if (!window.gsap) return;
+  if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+  // Hero on load
+  gsap.to('.hero .fx-fade', {
+    opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08, delay: 0.1
+  });
+
+  // Section entrances
+  document.querySelectorAll('.section .fx-fade, .close-section .fx-fade').forEach(el => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', mount);
+</script>
+
+</body>
+</html>
