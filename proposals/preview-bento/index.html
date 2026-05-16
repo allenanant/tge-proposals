@@ -136,8 +136,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .hero-stat{display:flex;flex-direction:column;gap:0.4rem}
 .hero-stat .num{font-family:var(--font-heading);font-size:1.85rem;font-weight:700;color:#fff;line-height:1;letter-spacing:-0.02em}
 .hero-stat .lbl{font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--muted)}
-.hero-cta-row-clean{display:flex;flex-wrap:wrap;align-items:center;gap:2rem}
-.hero-cta-row-clean .tagged{font-family:var(--font-body);font-weight:400;font-size:0.92rem;color:var(--muted)}
+.hero-cta-row-clean{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem}
+.hero-cta-row-clean .tagged{font-family:var(--font-mono);font-weight:400;font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.2em;padding-left:1.5rem;border-left:1px solid rgba(255,255,255,0.12)}
 .hero-colophon{position:absolute;bottom:2.5rem;right:3rem;font-family:var(--font-body);font-size:0.85rem;color:rgba(255,255,255,0.78);text-align:right;line-height:1.5;z-index:3}
 .hero-colophon .label{font-family:var(--font-mono);font-size:0.55rem;text-transform:uppercase;letter-spacing:0.25em;color:var(--subtle);display:block;margin-bottom:0.4rem}
 .hero-colophon strong{font-family:var(--font-heading);font-weight:600;color:#fff}
@@ -199,14 +199,14 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .audit-finding-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;font-family:var(--font-mono);margin-top:1px}
 .audit-finding-num.danger{background:var(--danger);color:#fff}
 .audit-finding-num.warning{background:var(--warning);color:#000}
-.audit-finding-sev{margin-left:auto;font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.15em}
+.audit-finding-sev{margin-left:auto;font-family:var(--font-mono);font-size:0.55rem;text-transform:uppercase;letter-spacing:0.18em;opacity:0.85;padding:0.25rem 0.6rem;border-radius:100px;border:1px solid currentColor}
 .audit-finding-sev.danger{color:var(--danger)}
 .audit-finding-sev.warning{color:var(--warning)}
 
 /* ===== PROBLEMS BENTO ===== */
 .problems-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
 .problem-cell{padding:1.6rem;display:flex;flex-direction:column;justify-content:space-between;min-height:240px;position:relative;overflow:hidden}
-.problem-cell .pcell-num{position:absolute;top:1rem;right:1.25rem;font-family:var(--font-mono);font-size:5rem;font-weight:800;line-height:1;color:rgba(255,255,255,0.04);letter-spacing:-0.03em;pointer-events:none}
+.problem-cell .pcell-num{position:absolute;top:1rem;right:1.25rem;font-family:var(--font-mono);font-size:5rem;font-weight:800;line-height:1;color:rgba(255,255,255,0.09);letter-spacing:-0.03em;pointer-events:none}
 .problem-cell .pcell-statement{font-family:var(--font-heading);font-size:1.1rem;font-weight:600;line-height:1.35;letter-spacing:-0.01em;margin-bottom:0.5rem;position:relative;z-index:1}
 .problem-cell .pcell-context{font-size:0.85rem;color:var(--muted);line-height:1.55;margin-bottom:1rem;position:relative;z-index:1}
 .problem-cell .pcell-data{font-family:var(--font-mono);font-size:0.78rem;color:var(--warning);background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);padding:0.45rem 0.85rem;border-radius:100px;display:inline-flex;align-items:center;gap:0.5rem;align-self:flex-start;position:relative;z-index:1}
@@ -243,13 +243,13 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .roadmap-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
 .timeline-cell{grid-column:span 12;padding:1.5rem 1.25rem 1rem;background:linear-gradient(180deg,rgba(192,105,221,0.06),transparent);border:1px solid var(--border-glow)}
 .timeline-bar{position:relative;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 1rem 0.5rem}
-.timeline-bar::before{content:'';position:absolute;top:calc(1.5rem + 8px);left:1rem;right:1rem;height:2px;background:linear-gradient(90deg,var(--accent),var(--success),var(--warning),#8B5CF6);opacity:0.35;z-index:0}
+.timeline-bar::before{content:'';position:absolute;top:calc(1.5rem + 8px);left:1rem;right:1rem;height:2px;background:linear-gradient(90deg,rgba(192,105,221,0.4),var(--accent),var(--accent-bright));opacity:0.6;z-index:0}
 .tl-step{position:relative;z-index:1;text-align:center;flex:1}
 .tl-dot{width:18px;height:18px;border-radius:50%;margin:0 auto 0.5rem;border:3px solid var(--bg);box-shadow:0 0 0 1px var(--border)}
-.tl-dot.w1{background:var(--accent)}
-.tl-dot.w2{background:var(--success)}
-.tl-dot.w3{background:var(--warning)}
-.tl-dot.w4{background:#8B5CF6}
+.tl-dot.w1{background:var(--accent);opacity:0.55}
+.tl-dot.w2{background:var(--accent);opacity:0.75}
+.tl-dot.w3{background:var(--accent);opacity:0.9}
+.tl-dot.w4{background:var(--accent-bright)}
 .tl-week{font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.18em}
 .tl-title{font-family:var(--font-heading);font-weight:600;font-size:0.9rem;margin-top:0.2rem}
 .week-cell{grid-column:span 3;padding:1.4rem;display:flex;flex-direction:column}
@@ -259,12 +259,12 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .week-items{list-style:none;display:flex;flex-direction:column;gap:0.4rem;font-size:0.78rem;color:var(--muted);margin-bottom:1rem}
 .week-items li{padding-left:0.9rem;position:relative;line-height:1.4}
 .week-items li::before{content:'+';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-weight:600}
-.week-count{font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);background:rgba(192,105,221,0.08);padding:0.3rem 0.75rem;border-radius:100px;align-self:flex-start;margin-top:auto}
+.week-count{font-family:var(--font-mono);font-size:0.78rem;color:var(--accent);background:rgba(192,105,221,0.08);padding:0.4rem 0.85rem;border-radius:100px;align-self:flex-start;margin-top:auto}
 .roadmap-total-cell{grid-column:span 12;text-align:center;padding:2.5rem 1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;background:radial-gradient(circle at 50% 50%,rgba(192,105,221,0.08),transparent 70%);border:1px solid var(--border-glow)}
 
 /* ===== STRATEGY CARDS ===== */
 .strategy-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
-.strategy-cell{grid-column:span 12;padding:2.4rem;display:grid;grid-template-columns:auto 1fr 240px;gap:2rem;align-items:center;position:relative;overflow:hidden}
+.strategy-cell{grid-column:span 12;padding:2.4rem;display:grid;grid-template-columns:auto 1.4fr 260px;gap:2.5rem;align-items:center;position:relative;overflow:hidden}
 .strategy-bg-num{position:absolute;top:-30px;right:1rem;font-family:var(--font-heading);font-size:11rem;font-weight:900;color:rgba(255,255,255,0.025);line-height:1;pointer-events:none;letter-spacing:-0.04em}
 .strategy-num-block{font-family:var(--font-mono);font-size:1rem;color:var(--accent);font-weight:600}
 .strategy-num-block .lg{font-family:var(--font-heading);font-size:3rem;font-weight:800;color:var(--text);display:block;line-height:1;margin-top:0.25rem;letter-spacing:-0.03em}
@@ -299,12 +299,14 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .case-story-cell{padding:1.6rem}
 .case-story-cell p{color:var(--muted);font-size:0.85rem;line-height:1.65;margin-bottom:0.7rem}
 .case-story-cell p:last-child{margin-bottom:0}
+.case-story-cell .beat-num{display:inline-block;font-family:var(--font-mono);font-size:0.55rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;background:rgba(192,105,221,0.08);padding:0.15rem 0.5rem;border-radius:100px;margin-right:0.55rem;vertical-align:middle}
 
 .case-ba-cell{padding:1.4rem;display:flex;flex-direction:column;gap:0.85rem;justify-content:center}
 .case-ba-row{padding:0.85rem 1rem;border-radius:0.85rem;font-size:0.78rem;line-height:1.5}
 .case-ba-row.before{background:var(--danger-soft);border:1px solid rgba(239,68,68,0.15);color:rgba(239,68,68,0.9)}
 .case-ba-row.after{background:var(--success-soft);border:1px solid rgba(34,197,94,0.15);color:rgba(34,197,94,0.95)}
 .case-ba-row .ba-label{font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.18em;opacity:0.7;margin-bottom:0.25rem;display:block}
+.case-ba-arrow{display:flex;justify-content:center;align-items:center;color:var(--accent);margin:-0.25rem 0;opacity:0.6}
 
 .case-media-cell{padding:1.4rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-content:flex-start}
 .case-media-cell .label{font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.18em;width:100%;margin-bottom:0.5rem}
@@ -313,8 +315,9 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .dash-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
 .dash-img-cell{padding:0;overflow:hidden;background:#0A0A09;display:flex;align-items:center;justify-content:center;color:var(--subtle);font-family:var(--font-mono);font-size:0.7rem;min-height:240px;position:relative}
 .dash-img-cell .placeholder-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:30px 30px}
-.dash-img-cell img{width:100%;height:100%;object-fit:cover}
-.dash-callout-cell{display:flex;flex-direction:column;justify-content:center}
+.dash-img-cell img{width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(1.04) saturate(0.92)}
+.dash-img-cell::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(13,13,12,0.55) 100%);z-index:3}
+.dash-callout-cell{display:flex;flex-direction:column;justify-content:center;min-height:155px;padding:1.4rem}
 
 /* ===== SYSTEM PILLARS BENTO ===== */
 .system-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem}
@@ -325,7 +328,9 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .pillar-cell .pillar-stat{display:flex;align-items:baseline;gap:0.5rem;font-family:var(--font-mono);margin-top:auto}
 .pillar-cell .pillar-stat .num{font-size:1.5rem;font-weight:700;color:var(--text)}
 .pillar-cell .pillar-stat .lbl{font-size:0.7rem;color:var(--muted)}
-.pillar-cell .pillar-bar{height:5px;border-radius:100px;background:rgba(255,255,255,0.05);overflow:hidden;margin-top:0.5rem}
+.pillar-cell .pillar-bar-wrap{margin-top:0.5rem;display:flex;flex-direction:column;gap:0.35rem}
+.pillar-cell .pillar-bar-lbl{font-family:var(--font-mono);font-size:0.55rem;color:var(--subtle);letter-spacing:0.2em;text-transform:uppercase}
+.pillar-cell .pillar-bar{height:5px;border-radius:100px;background:rgba(255,255,255,0.05);overflow:hidden}
 .pillar-cell .pillar-bar > span{display:block;height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent),var(--accent-bright));width:0;transition:width 1.4s cubic-bezier(0.16,1,0.3,1)}
 
 /* automation grid */
@@ -344,7 +349,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .funnel-row .stage-num{font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);width:32px}
 .funnel-row .stage-name{font-family:var(--font-heading);font-weight:700;font-size:1.1rem;min-width:140px}
 .funnel-row .stage-desc{color:var(--muted);font-size:0.85rem;flex:1}
-.funnel-row .stage-pct{font-family:var(--font-mono);font-size:0.85rem;color:var(--accent)}
+.funnel-row .stage-pct{font-family:var(--font-mono);font-size:0.95rem;font-weight:600;color:var(--accent)}
+.funnel-row.s3 .stage-pct{font-size:1.3rem;font-weight:700;color:var(--success);text-shadow:0 0 12px rgba(34,197,94,0.35)}
 .funnel-row.s1{background:linear-gradient(90deg,rgba(192,105,221,0.10),transparent);border-color:rgba(192,105,221,0.18)}
 .funnel-row.s2{background:linear-gradient(90deg,rgba(245,158,11,0.10),transparent);border-color:rgba(245,158,11,0.18);width:88%;margin-left:auto;margin-right:auto;align-self:center}
 .funnel-row.s3{background:linear-gradient(90deg,rgba(34,197,94,0.10),transparent);border-color:rgba(34,197,94,0.18);width:74%;margin-left:auto;margin-right:auto;align-self:center}
@@ -365,12 +371,12 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .deliverable-cell{grid-column:span 4;padding:1.6rem;min-height:200px;display:flex;flex-direction:column;gap:0.7rem;position:relative;overflow:hidden}
 .del-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
 .del-icon i{width:18px;height:18px}
-.del-icon.reel{background:rgba(224,64,251,0.08);color:#E040FB;border-color:rgba(224,64,251,0.18)}
-.del-icon.ad{background:rgba(255,109,0,0.08);color:#FF6D00;border-color:rgba(255,109,0,0.18)}
-.del-icon.email{background:rgba(0,188,212,0.08);color:#00BCD4;border-color:rgba(0,188,212,0.18)}
+.del-icon.reel{background:rgba(192,105,221,0.08);color:var(--accent);border-color:var(--border-glow)}
+.del-icon.ad{background:rgba(192,105,221,0.08);color:var(--accent);border-color:var(--border-glow)}
+.del-icon.email{background:rgba(192,105,221,0.08);color:var(--accent);border-color:var(--border-glow)}
 .del-icon.landing{background:rgba(192,105,221,0.08);color:var(--accent);border-color:var(--border-glow)}
-.del-icon.whatsapp{background:var(--success-soft);color:var(--success);border-color:rgba(34,197,94,0.18)}
-.del-icon.calendar{background:var(--warning-soft);color:var(--warning);border-color:rgba(245,158,11,0.18)}
+.del-icon.whatsapp{background:rgba(192,105,221,0.08);color:var(--accent);border-color:var(--border-glow)}
+.del-icon.calendar{background:rgba(192,105,221,0.08);color:var(--accent);border-color:var(--border-glow)}
 .del-platform{font-family:var(--font-mono);font-size:0.6rem;color:var(--subtle);text-transform:uppercase;letter-spacing:0.18em}
 .del-title{font-family:var(--font-heading);font-weight:600;font-size:1rem}
 .del-desc{font-size:0.85rem;color:var(--muted);line-height:1.55;flex:1}
@@ -396,7 +402,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .price-cell{grid-column:span 6;padding:2.2rem;position:relative;overflow:hidden;display:flex;flex-direction:column}
 .price-cell.recommended{border-color:var(--border-glow);box-shadow:0 0 50px rgba(192,105,221,0.08)}
 .price-cell.recommended::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-bright))}
-.price-badge{position:absolute;top:1.25rem;right:1.25rem;font-family:var(--font-mono);font-size:0.6rem;background:linear-gradient(135deg,var(--accent),var(--accent-glow));color:#fff;padding:0.3rem 0.7rem;border-radius:100px;letter-spacing:0.1em;text-transform:uppercase}
+.price-badge{position:absolute;top:1.25rem;right:1.25rem;font-family:var(--font-mono);font-size:0.6rem;background:rgba(192,105,221,0.10);color:var(--accent-bright);padding:0.3rem 0.7rem;border-radius:100px;letter-spacing:0.12em;text-transform:uppercase;border:1px solid rgba(192,105,221,0.35)}
 .price-name{font-family:var(--font-heading);font-size:0.9rem;font-weight:600;color:var(--muted);margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.15em}
 .price-amount{font-family:var(--font-heading);font-size:clamp(2.4rem,4.5vw,3.2rem);font-weight:800;letter-spacing:-0.03em;line-height:1}
 .price-period{font-size:0.85rem;color:var(--subtle);margin:0.4rem 0 1.5rem}
@@ -420,6 +426,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .close-headline .accent{color:var(--accent)}
 .close-subline{color:var(--muted);font-size:1.1rem;margin-bottom:3rem;max-width:620px;margin-left:auto;margin-right:auto}
 .close-cta-row{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-bottom:3rem}
+.close-cta-row .btn-primary{background:linear-gradient(135deg,var(--accent-bright),var(--accent),var(--accent-glow));background-size:200% 200%;animation:closeCtaShine 6s ease-in-out infinite;box-shadow:0 6px 36px rgba(192,105,221,0.45),inset 0 1px 0 rgba(255,255,255,0.18);padding:1.15rem 2.4rem;font-size:1.05rem}
+@keyframes closeCtaShine{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .close-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:0.85rem;max-width:900px;margin:0 auto 2rem}
 .close-contact{grid-column:span 4;padding:1.4rem;display:flex;flex-direction:column;gap:0.4rem;text-align:left}
 .close-contact .lbl{font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.18em}
@@ -523,7 +531,7 @@ const CONFIG = {
     contact_name: "John Smith",
     industry: "SaaS / B2B",
     website: "acmesaas.com",
-    hero_subline: "You're building best-in-class project management software. We'll build the pipeline to fill it with paying customers.",
+    hero_subline: "You're building project management software founders actually want to use. We'll build the pipeline to fill it with paying customers.",
     website_audit: {
       score: 38,
       findings: [
@@ -543,12 +551,12 @@ const CONFIG = {
       names: ["CompetitorPM", "TaskFlow Pro"],
       comparison: [
         { feature: "Paid Ads (Meta + Google)", prospect: false, comp_a: true, comp_b: true },
-        { feature: "Content Strategy", prospect: false, comp_a: false, comp_b: true },
         { feature: "Lead Capture System", prospect: false, comp_a: true, comp_b: false },
-        { feature: "Email Automation", prospect: false, comp_a: false, comp_b: false },
-        { feature: "Voice AI / Chatbot", prospect: false, comp_a: false, comp_b: false },
         { feature: "CRM Integration", prospect: false, comp_a: true, comp_b: false },
-        { feature: "Retargeting Campaigns", prospect: false, comp_a: false, comp_b: true }
+        { feature: "Retargeting Campaigns", prospect: false, comp_a: false, comp_b: true },
+        { feature: "Content Strategy", prospect: false, comp_a: false, comp_b: true },
+        { feature: "Email Automation", prospect: false, comp_a: false, comp_b: false },
+        { feature: "Voice AI / Chatbot", prospect: false, comp_a: false, comp_b: false }
       ],
       gaps: [
         { title: "Spray-and-Pray Paid Ads", description: "Your competitors run broad targeting with generic copy. No intent signals, no retargeting funnels." },
@@ -567,14 +575,14 @@ const CONFIG = {
       { number: "02", title: "Authority Content Engine", bullets: ["SEO-optimized posts targeting long-tail keywords", "LinkedIn thought leadership for founders", "Case study videos and comparison content", "Webinar + resource download funnels"], projected_result: "10K+ organic monthly visitors by Month 6" },
       { number: "03", title: "Automated Lead Machine", bullets: ["Voice AI calls every lead within 5 minutes, 24/7", "30-day email nurture sequences", "SMS + WhatsApp triggered by behavior", "CRM with automated scoring, routing, follow-ups"], projected_result: "85% lead response rate" }
     ],
-    platforms: ["meta", "google", "linkedin", "email"],
+    platforms: ["meta", "google", "linkedin", "email", "sms", "whatsapp"],
     mock_deliverables: [
       { type: "reel", title: "Instagram Reel Concept", description: "'Why 73% of project managers are switching from spreadsheets' - 30s hook-driven reel", platform: "Instagram" },
       { type: "ad", title: "Meta Ad Creative", description: "Carousel: '5 Signs Your Team Needs Better PM Software' - pain point per slide", platform: "Facebook / Instagram" },
       { type: "email", title: "Email Nurture Sequence", description: "Day 1: educational. Day 7: case study. Day 14: demo offer. No hard sell.", platform: "Email" },
       { type: "landing", title: "Landing Page", description: "Dedicated LP: headline, 3 benefits, social proof, demo CTA, exit-intent popup", platform: "Web" },
       { type: "whatsapp", title: "WhatsApp Automation", description: "Trigger: visited pricing page. Message: 'Want me to walk you through it?'", platform: "WhatsApp" },
-      { type: "calendar", title: "Content Calendar", description: "Mon=LinkedIn, Tue=Blog, Wed=Reel, Thu=Story, Fri=Case study, Sat=BTS", platform: "All Platforms" }
+      { type: "calendar", title: "Content Calendar", description: "Mon=LinkedIn, Tue=Blog, Wed=Reel, Thu=Story, Fri=Case study, Sat=BTS", platform: "Multi-channel" }
     ],
     pricing: {
       recommended: "scale",
@@ -593,7 +601,7 @@ const CONFIG = {
       { value: "98%", label: "Email Open Rate" },
       { value: "5 min", label: "Lead Response Time" },
       { value: "24/7", label: "System Uptime" },
-      { value: "$0", label: "Cost Per Organic Lead" },
+      { value: "Free", label: "Cost Per Organic Lead" },
       { value: "78%", label: "Funnel Conversion Rate" }
     ],
     case_studies: {
@@ -617,7 +625,7 @@ const CONFIG = {
         after: "20M+ impressions, verified, packed bookings",
         image: "/tge-proposals/assets/static/drswclinics-instagram.jpeg",
         calendar_image: "/tge-proposals/assets/static/booking-calendar.png",
-        media: ["Daily Mail", "Sky", "The Sun", "Tatler", "Fabulous", "Daily Express"]
+        media: ["Tatler", "Sky", "Daily Mail", "The Sun", "Daily Express", "Fabulous"]
       }
     },
     dashboard_images: ["/tge-proposals/assets/static/meta-dashboard-1.png", "/tge-proposals/assets/static/meta-dashboard-2.png", "/tge-proposals/assets/static/meta-dashboard-3.png"],
@@ -644,12 +652,12 @@ const CONFIG = {
       { name: "Meta Ads", role: "Primary acquisition", icon: "target" },
       { name: "Google Ads", role: "Intent capture", icon: "search" },
       { name: "LinkedIn", role: "B2B outreach", icon: "briefcase" },
-      { name: "Email", role: "Nurture + convert", icon: "mail" },
-      { name: "SMS", role: "High-intent moments", icon: "smartphone" },
-      { name: "WhatsApp", role: "Behavior-triggered", icon: "message-circle" },
       { name: "SEO", role: "Organic compounding", icon: "trending-up" },
       { name: "YouTube", role: "Authority content", icon: "play-circle" },
-      { name: "TikTok", role: "Discovery + reach", icon: "zap" }
+      { name: "TikTok", role: "Discovery + reach", icon: "zap" },
+      { name: "Email", role: "Nurture + convert", icon: "mail" },
+      { name: "WhatsApp", role: "Behavior-triggered", icon: "message-circle" },
+      { name: "SMS", role: "High-intent moments", icon: "smartphone" }
     ],
     features_list: {
       content_creative: ["10 reels/month (scripted, edited, posted)", "15 static creatives/month", "Content calendar with strategic posting", "AI-powered ideas + trend tracking", "Professional copywriting", "Hashtag research + SEO"],
@@ -657,7 +665,7 @@ const CONFIG = {
       automation_sales: ["Voice AI Agent (24/7)", "Email nurture sequences", "SMS campaigns", "WhatsApp automation", "CRM setup + management", "Lead scoring + routing", "Appointment booking automation", "Pipeline tracking + reporting"],
       strategy_reporting: ["Weekly performance reports", "Monthly strategy reviews", "Competitor monitoring", "SEO audits + recommendations", "Conversion tracking setup", "Custom analytics dashboard"]
     },
-    contact: { email: "info@thegrowthengine.net", phone: "+91 6397016179", website: "thegrowthengine.net" }
+    contact: { email: "info@thegrowthengine.net", phone: "+91 63970 16179", website: "thegrowthengine.net" }
   }
 };
 // __CONFIG_END__
@@ -707,18 +715,18 @@ function tpl_hero() {
   <section id="hero">
     <div class="hero-rule"></div>
     <div class="hero-mark">The Growth Engine<sup>est. 2022</sup></div>
-    <div class="hero-folio">No. 01 &middot; ${escapeHTML(CONFIG.meta.generated_date)}</div>
+    <div class="hero-folio">No. 01 // ${escapeHTML(CONFIG.meta.generated_date)}</div>
 
     <div class="hero-content">
       <div class="hero-eyebrow-clean">A growth strategy prepared exclusively for</div>
-      <h1 class="hero-display"><em>${escapeHTML(p.company_name)}</em>.</h1>
+      <h1 class="hero-display"><em>${escapeHTML(p.company_name)}</em></h1>
       <p class="hero-subline-clean">${escapeHTML(p.hero_subline)}</p>
 
       <div class="hero-stats-row">
         <div class="hero-stat"><span class="num">16</span><span class="lbl">Sections</span></div>
         <div class="hero-stat"><span class="num">03</span><span class="lbl">Case studies</span></div>
         <div class="hero-stat"><span class="num">30</span><span class="lbl">Day roadmap</span></div>
-        <div class="hero-stat"><span class="num">7&prime;</span><span class="lbl">Read time</span></div>
+        <div class="hero-stat"><span class="num">7</span><span class="lbl">Min read</span></div>
       </div>
 
       <div class="hero-cta-row-clean">
@@ -744,11 +752,12 @@ function tpl_audit() {
     <div class="audit-dot ${escapeHTML(f.severity)}" style="left:${f.x}%;top:${f.y}%">${i+1}
       <span class="audit-tooltip">${escapeHTML(f.text)}</span>
     </div>`).join('');
+  const sevLabel = (s) => s === 'danger' ? 'CRITICAL' : 'WARNING';
   const findingsRows = a.findings.map((f, i) => `
     <div class="audit-finding-row">
       <span class="audit-finding-num ${escapeHTML(f.severity)}">${i+1}</span>
       <span>${escapeHTML(f.text)}</span>
-      <span class="audit-finding-sev ${escapeHTML(f.severity)}">${f.severity.toUpperCase()}</span>
+      <span class="audit-finding-sev ${escapeHTML(f.severity)}">${sevLabel(f.severity)}</span>
     </div>`).join('');
 
   // counts by severity
@@ -762,7 +771,7 @@ function tpl_audit() {
   return `
   <section id="audit" class="section">
     <div class="container">
-      <div class="section-label">WE LOOKED AT YOUR WEBSITE</div>
+      <div class="section-label">WEBSITE AUDIT</div>
       <h2 class="section-headline">Here's What We Found On <span class="accent">${escapeHTML(p.website)}</span></h2>
       <p class="section-sub">Manual audit. Five issues identified. Score below. We fix all of this.</p>
 
@@ -808,7 +817,7 @@ function tpl_audit() {
               <circle class="ring-fg" cx="70" cy="70" r="${r}" data-stroke-target="${scoreStrokeTarget.toFixed(1)}" stroke-dasharray="0 ${c}" />
             </svg>
             <div class="ring-center">
-              <div class="ring-num" data-counter="${a.score}">0</div>
+              <div class="ring-num" data-counter="${a.score}">${a.score}</div>
               <div class="ring-label">/ 100 SCORE</div>
             </div>
           </div>
@@ -820,7 +829,7 @@ function tpl_audit() {
         </div>
 
         <div class="cell c-12" style="padding:1.4rem 1.6rem">
-          <div class="cell-eyebrow"><span>FINDINGS LOG</span><span class="right">${a.findings.length} ITEMS</span></div>
+          <div class="cell-eyebrow"><span>FINDINGS LOG</span><span class="right">${a.findings.length} ITEMS · NUMBERS MATCH SCREENSHOT</span></div>
           <div>${findingsRows}</div>
         </div>
       </div>
@@ -834,7 +843,7 @@ function tpl_problems() {
   const cards = p.problems.map((pr, i) => {
     const tone = order[i] || 'warning';
     return `
-    <div class="cell problem-cell ${tone} c-${i===0?'12':i===1?'7':'5'}">
+    <div class="cell problem-cell ${tone} c-4">
       <div class="pcell-num">0${i+1}</div>
       <div>
         <div class="cell-eyebrow"><span>SIGNAL ${i+1}</span><span class="right ${tone==='danger'?'text-danger':'text-warning'}">${tone.toUpperCase()}</span></div>
@@ -850,7 +859,7 @@ function tpl_problems() {
     <div class="container">
       <div class="section-label">THE CHALLENGE</div>
       <h2 class="section-headline">3 Signals We Picked Up</h2>
-      <p class="section-sub">Listening for the unsaid stuff. Here's the read on what's quietly bleeding revenue.</p>
+      <p class="section-sub">We listened to what your data isn't saying. Here's what's quietly bleeding revenue.</p>
       <div class="problems-bento">${cards}</div>
     </div>
   </section>`;
@@ -863,7 +872,7 @@ function tpl_competitors() {
   const head = `
     <div class="head">
       <div>FEATURE</div>
-      <div class="you">${escapeHTML(cn).toUpperCase()}</div>
+      <div class="you">${escapeHTML(cn).toUpperCase()} // TODAY</div>
       <div>${escapeHTML(c.names[0]).toUpperCase()}</div>
       <div>${escapeHTML(c.names[1]).toUpperCase()}</div>
     </div>`;
@@ -913,46 +922,46 @@ function tpl_competitors() {
         </div>
 
         <div class="cell c-4 comp-coverage-cell" style="padding:1.4rem">
-          <div class="cell-eyebrow"><span>COVERAGE</span><span class="right">% OF ${total}</span></div>
+          <div class="cell-eyebrow"><span>OPPORTUNITY // BASELINE</span><span class="right">% OF ${total}</span></div>
           <div class="donut">
             <svg viewBox="0 0 140 140">
               <circle class="seg" cx="70" cy="70" r="60" stroke="rgba(255,255,255,0.04)" stroke-width="14"/>
-              <circle class="seg" cx="70" cy="70" r="60" stroke="#EF4444" data-target-dasharray="${(youPct*3.77).toFixed(1)} 1000" stroke-dasharray="0 1000"/>
+              <circle class="seg" cx="70" cy="70" r="60" stroke="#C069DD" data-target-dasharray="${((100-youPct)*3.77).toFixed(1)} 1000" stroke-dasharray="0 1000"/>
             </svg>
             <div class="center">
-              <div class="metric metric-md" style="color:var(--danger)" data-counter="${youPct}" data-suffix="%">0%</div>
-              <div class="metric-label">You</div>
+              <div class="metric metric-md" style="color:var(--accent)" data-counter="${100-youPct}" data-suffix="%">${100-youPct}%</div>
+              <div class="metric-label">Gap TGE closes</div>
             </div>
           </div>
           <div class="coverage-legend">
-            <div class="lg-row"><span class="swatch" style="background:#EF4444"></span>${escapeHTML(cn)} <span style="margin-left:auto" class="text-danger">${youPct}%</span></div>
+            <div class="lg-row"><span class="swatch" style="background:#C069DD"></span>${escapeHTML(cn)} today <span style="margin-left:auto" class="text-accent">${youPct}%</span></div>
             <div class="lg-row"><span class="swatch" style="background:#F59E0B"></span>${escapeHTML(c.names[0])} <span style="margin-left:auto" class="text-warning">${aPct}%</span></div>
             <div class="lg-row"><span class="swatch" style="background:#38BDF8"></span>${escapeHTML(c.names[1])} <span style="margin-left:auto" style="color:#38BDF8">${bPct}%</span></div>
           </div>
         </div>
 
         <div class="cell c-4">
-          <div class="cell-eyebrow"><span>${escapeHTML(cn).toUpperCase()}</span><span class="right text-danger">FLAT</span></div>
-          <div class="metric metric-lg text-muted">${youPct}%</div>
-          <div class="metric-label">Capability Coverage</div>
+          <div class="cell-eyebrow"><span>${escapeHTML(cn).toUpperCase()} // TODAY</span><span class="right text-accent">BASELINE</span></div>
+          <div class="metric metric-lg" style="color:var(--accent)">${youPct}%</div>
+          <div class="metric-label">Of stack built. TGE closes the rest.</div>
           ${youTrend}
         </div>
         <div class="cell c-4">
           <div class="cell-eyebrow"><span>${escapeHTML(c.names[0]).toUpperCase()}</span><span class="right text-warning">+${aPct - youPct}%</span></div>
           <div class="metric metric-lg" style="color:var(--warning)">${aPct}%</div>
-          <div class="metric-label">Capability Coverage</div>
+          <div class="metric-label">Of stack built</div>
           ${aTrend}
         </div>
         <div class="cell c-4">
           <div class="cell-eyebrow"><span>${escapeHTML(c.names[1]).toUpperCase()}</span><span class="right" style="color:#38BDF8">+${bPct - youPct}%</span></div>
           <div class="metric metric-lg" style="color:#38BDF8">${bPct}%</div>
-          <div class="metric-label">Capability Coverage</div>
+          <div class="metric-label">Of stack built</div>
           ${bTrend}
         </div>
       </div>
 
       <div class="gap-bento">${gaps}</div>
-      <div class="drama">${escapeHTML(cn)} can own this space.</div>
+      <div class="drama" style="font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700">${escapeHTML(cn)} can own this space.</div>
     </div>
   </section>`;
 }
@@ -978,7 +987,7 @@ function tpl_roadmap() {
       <span class="week-pill"><span class="dot ${dotColors[i]==='w1'?'accent':dotColors[i]==='w2'?'live':dotColors[i]==='w3'?'warn':'accent'}"></span>WEEK ${i+1} // ${escapeHTML(wk.title.toUpperCase())}</span>
       <div class="week-title">${escapeHTML(wk.title)}</div>
       <ul class="week-items">${wk.items.map(it => `<li>${escapeHTML(it)}</li>`).join('')}</ul>
-      <span class="week-count" data-counter="${wk.count}" data-suffix=" deliverables">0 deliverables</span>
+      <span class="week-count" data-counter="${wk.count}" data-suffix=" deliverables">${wk.count} deliverables</span>
     </div>`;
   }).join('');
 
@@ -991,13 +1000,13 @@ function tpl_roadmap() {
 
       <div class="roadmap-bento">
         <div class="cell timeline-cell">
-          <div class="cell-eyebrow"><span>TIMELINE // 30 DAYS</span><span class="right text-success">ON TRACK</span></div>
+          <div class="cell-eyebrow"><span>TIMELINE // 30 DAYS</span><span class="right text-success">READY TO BEGIN</span></div>
           <div class="timeline-bar">${tlSteps}</div>
         </div>
         ${weekCells}
         <div class="cell roadmap-total-cell">
-          <div class="metric metric-xl" style="color:var(--accent)" data-counter="${total}">0</div>
-          <p class="text-muted">deliverables in your first month</p>
+          <div class="metric metric-xl" style="color:var(--accent);font-size:clamp(4.5rem,9vw,7rem)" data-counter="${total}">${total}</div>
+          <p class="text-muted" style="font-size:1.1rem;letter-spacing:0.02em">deliverables in your first month</p>
         </div>
       </div>
     </div>
@@ -1005,6 +1014,12 @@ function tpl_roadmap() {
 }
 
 function tpl_strategy() {
+  // give each strategy a different visual: steep climb / S-curve / volatile growth
+  const strategyTrends = [
+    genTrend(12, 0.12, 0.05, 2),
+    genTrend(12, 0.04, 0.18, 5),
+    genTrend(12, 0.09, 0.04, 9)
+  ];
   const cards = CONFIG.prospect.strategies.map((s, i) => `
     <div class="cell strategy-cell">
       <div class="strategy-bg-num">${escapeHTML(s.number)}</div>
@@ -1021,7 +1036,7 @@ function tpl_strategy() {
       <div class="strategy-result">
         <span class="label">PROJECTED RESULT</span>
         <span class="val">${escapeHTML(s.projected_result)}</span>
-        ${sparkline(genTrend(12, 0.07, 0.08, i+2), { color:'#22C55E', grad:'spark-grad-success', w:200, h:48 })}
+        ${sparkline(strategyTrends[i] || strategyTrends[0], { color:'#22C55E', grad:'spark-grad-success', w:200, h:48 })}
       </div>
     </div>`).join('');
 
@@ -1063,7 +1078,7 @@ function tpl_proof() {
     { c:'c-4', r:'',    kind:'progress' }
   ];
 
-  const tones = ['accent','','','success','warning','accent','','success','','warning'];
+  const tones = ['accent','','','success','warning','accent','','success','accent','warning'];
 
   const cells = m.map((it, i) => {
     const sz = sizes[i] || { c:'c-3', r:'', kind:'simple' };
@@ -1077,10 +1092,10 @@ function tpl_proof() {
       body = `
         <div class="cell-eyebrow"><span>METRIC // 01</span><span class="right text-accent">VERIFIED</span></div>
         <div>
-          <div class="metric metric-xl" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric metric-xl" data-counter-text="${escapeHTML(valueRaw)}">${escapeHTML(valueRaw)}</div>
           <div class="metric-label">${escapeHTML(it.label)}</div>
         </div>
-        ${sparkline(genTrend(20, 0.04, 0.1, i+11), { color:'#C069DD', grad:'spark-grad', w:280, h:80 })}
+        ${sparkline(genTrend(20, 0.18, 0.06, i+11), { color:'#C069DD', grad:'spark-grad', w:280, h:80 })}
         <div class="row" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:0.4rem;justify-content:space-between">
           <span class="row"><span class="dot live"></span>LIVE</span>
           <span>30D ROLLING</span>
@@ -1089,7 +1104,7 @@ function tpl_proof() {
       body = `
         <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right text-success">+TRENDING</span></div>
         <div>
-          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${escapeHTML(valueRaw)}</div>
           <div class="metric-label">${escapeHTML(it.label)}</div>
         </div>
         ${sparkline(genTrend(16, 0.05, 0.12, i+5), { color:'#22C55E', grad:'spark-grad-success', w:240, h:64 })}`;
@@ -1097,7 +1112,7 @@ function tpl_proof() {
       body = `
         <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right text-warning">RATE</span></div>
         <div>
-          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${escapeHTML(valueRaw)}</div>
           <div class="metric-label">${escapeHTML(it.label)}</div>
         </div>
         <div class="progress ${tone||''}"><span data-bar-target="${counterTarget}"></span></div>`;
@@ -1112,7 +1127,7 @@ function tpl_proof() {
               <circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="11"/>
               <circle cx="60" cy="60" r="${r}" fill="none" stroke="url(#ring-grad-success)" stroke-width="11" stroke-linecap="round" data-stroke-target="${target.toFixed(1)}" stroke-dasharray="0 ${c}"/>
             </svg>
-            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.9rem;font-weight:700;color:var(--success)" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.9rem;font-weight:700;color:var(--success)" data-counter-text="${escapeHTML(valueRaw)}">${escapeHTML(valueRaw)}</div>
           </div>
           <div class="metric-label" style="margin:0">${escapeHTML(it.label)}</div>
         </div>`;
@@ -1121,7 +1136,7 @@ function tpl_proof() {
       body = `
         <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right text-success">${ico(iconName,12)}</span></div>
         <div>
-          <div class="metric metric-lg" style="color:var(--success)" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric && !valueRaw.includes('/') ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric metric-lg" style="color:var(--success)" data-counter-text="${escapeHTML(valueRaw)}">${escapeHTML(valueRaw)}</div>
           <div class="metric-label">${escapeHTML(it.label)}</div>
         </div>
         <div class="row" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:auto;justify-content:space-between">
@@ -1131,7 +1146,7 @@ function tpl_proof() {
       body = `
         <div class="cell-eyebrow"><span>METRIC // 0${i+1}</span><span class="right">VERIFIED</span></div>
         <div>
-          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${isNumeric ? '0' : escapeHTML(valueRaw)}</div>
+          <div class="metric metric-lg" data-counter-text="${escapeHTML(valueRaw)}">${escapeHTML(valueRaw)}</div>
           <div class="metric-label">${escapeHTML(it.label)}</div>
         </div>`;
     }
@@ -1153,7 +1168,7 @@ function tpl_proof() {
 function tpl_caseStudy(key, reverse=false) {
   const cs = CONFIG.static.case_studies[key];
   const num = key === 'frenchify' ? '01' : '02';
-  const heroTrend = sparkline(genTrend(14, 0.08, 0.08, key==='frenchify'?2:5), { color:'#C069DD', grad:'spark-grad', w:240, h:60 });
+  const heroTrend = sparkline(genTrend(14, 0.16, 0.05, key==='frenchify'?2:5), { color:'#C069DD', grad:'spark-grad', w:240, h:60 });
 
   const subMetricsRow = `
     <div class="cell c-7" style="padding:1.1rem 1.25rem;display:grid;grid-template-columns:repeat(${cs.sub_metrics.length},1fr);gap:0.75rem;align-items:center">
@@ -1179,7 +1194,7 @@ function tpl_caseStudy(key, reverse=false) {
     <div class="container">
       <div class="section-label">CASE STUDY ${num}</div>
       <h2 class="section-headline">${escapeHTML(cs.name)}</h2>
-      <p class="section-sub"><span class="status-pill accent"><span class="dot accent"></span>${escapeHTML(cs.industry)}</span></p>
+      <p class="section-sub"><span class="status-pill accent">${escapeHTML(cs.industry)}</span></p>
 
       <div class="case-bento">
         <div class="cell case-hero-cell">
@@ -1195,7 +1210,7 @@ function tpl_caseStudy(key, reverse=false) {
         <div class="cell c-7 case-metric-cell" style="grid-row:span 2">
           <div>
             <div class="industry">HERO METRIC</div>
-            <div class="case-hero-num" data-counter-text="${escapeHTML(cs.hero_metric)}">0</div>
+            <div class="case-hero-num" data-counter-text="${escapeHTML(cs.hero_metric)}">${escapeHTML(cs.hero_metric)}</div>
             <div class="case-hero-num-label">${escapeHTML(cs.hero_metric_label)}</div>
             ${heroTrend}
           </div>
@@ -1209,12 +1224,13 @@ function tpl_caseStudy(key, reverse=false) {
 
         <div class="cell c-7 case-story-cell">
           <div class="cell-eyebrow"><span>STORY LOG</span><span class="right">${cs.story.length} BEATS</span></div>
-          ${cs.story.map(s => `<p>${escapeHTML(s)}</p>`).join('')}
+          ${cs.story.map((s, idx) => `<p><span class="beat-num">BEAT 0${idx+1}</span>${escapeHTML(s)}</p>`).join('')}
         </div>
 
         <div class="cell c-5 case-ba-cell">
           <div class="cell-eyebrow"><span>BEFORE / AFTER</span><span class="right text-success">DELTA</span></div>
           <div class="case-ba-row before"><span class="ba-label">Before</span>${escapeHTML(cs.before)}</div>
+          <div class="case-ba-arrow">${ico('arrow-down', 18)}</div>
           <div class="case-ba-row after"><span class="ba-label">After</span>${escapeHTML(cs.after)}</div>
         </div>
 
@@ -1235,8 +1251,8 @@ function tpl_dashboards() {
   <section id="dashboards" class="section">
     <div class="container">
       <div class="section-label">WHAT YOUR DASHBOARD LOOKS LIKE</div>
-      <h2 class="section-headline">Real Campaigns. Real Spend. Real Results.</h2>
-      <p class="section-sub">Live ad manager. Real numbers. The dashboards your team will see weekly.</p>
+      <h2 class="section-headline">Real Campaigns. Real Results.</h2>
+      <p class="section-sub">Live ad manager. Actual numbers. The dashboards your team will see weekly.</p>
 
       <div class="dash-bento">
         <div class="cell dash-img-cell c-8" style="grid-row:span 2">
@@ -1274,7 +1290,7 @@ function tpl_system() {
     { num: '4', label: 'ad networks', bar: 80 },
     { num: '24/7', label: 'auto-route', bar: 100 },
     { num: '5 min', label: 'response SLA', bar: 96 },
-    { num: 'Weekly', label: 'reports + reviews', bar: 100 }
+    { num: '52', label: 'reports / year', bar: 100 }
   ];
   const tones = ['accent','','accent','success','warning','accent'];
 
@@ -1290,7 +1306,10 @@ function tpl_system() {
         <span class="num">${escapeHTML(st.num)}</span>
         <span class="lbl">${escapeHTML(st.label)}</span>
       </div>
-      <div class="pillar-bar"><span data-bar-target="${st.bar}"></span></div>
+      <div class="pillar-bar-wrap">
+        <span class="pillar-bar-lbl">BUILD COVERAGE</span>
+        <div class="pillar-bar"><span data-bar-target="${st.bar}"></span></div>
+      </div>
     </div>`;
   }).join('');
 
@@ -1337,7 +1356,7 @@ function tpl_campaign() {
       <div class="stage-pct">${stagePcts[i]}</div>
     </div>`).join('');
 
-  const platformMap = { meta:'Meta Ads', google:'Google Ads', linkedin:'LinkedIn', email:'Email' };
+  const platformMap = { meta:'Meta Ads', google:'Google Ads', linkedin:'LinkedIn', email:'Email', sms:'SMS', whatsapp:'WhatsApp' };
   const isActive = (n) => Object.keys(platformMap).some(k => platforms.includes(k) && platformMap[k].toLowerCase() === n.toLowerCase());
 
   const chs = channels.map(c => {
@@ -1349,7 +1368,7 @@ function tpl_campaign() {
         <div class="ch-name">${escapeHTML(c.name)}</div>
         <div class="ch-role">${escapeHTML(c.role)}</div>
       </div>
-      <div class="ch-status">${active?'SELECTED':''}</div>
+      <div class="ch-status">${active?'ACTIVE':''}</div>
     </div>`;
   }).join('');
 
@@ -1368,8 +1387,8 @@ function tpl_campaign() {
       </div>
 
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2.5rem;margin-bottom:1rem">
-        <div class="section-label" style="margin-bottom:0">CHANNELS // 9 TRACKED</div>
-        <span class="status-pill accent"><span class="dot accent"></span>${platforms.length} SELECTED FOR ${escapeHTML(cn).toUpperCase()}</span>
+        <div class="section-label" style="margin-bottom:0">CHANNELS // ${channels.length} TRACKED</div>
+        <span class="status-pill accent"><span class="dot accent"></span>${platforms.length} ACTIVE FOR ${escapeHTML(cn).toUpperCase()}</span>
       </div>
       <div class="channel-bento">${chs}</div>
     </div>
@@ -1386,7 +1405,7 @@ function tpl_deliverables() {
       <div class="del-title">${escapeHTML(d.title)}</div>
       <div class="del-desc">${escapeHTML(d.description)}</div>
       <div class="row" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--subtle);margin-top:auto;justify-content:space-between;letter-spacing:0.15em">
-        <span class="row"><span class="dot live"></span>READY</span>
+        <span class="row"><span class="dot accent"></span>DRAFT</span>
         <span>SAMPLE // 0${i+1}</span>
       </div>
     </div>`).join('');
@@ -1435,7 +1454,7 @@ function tpl_features() {
 
       <div class="features-bento">
         <div class="cell feat-counter-cell">
-          <div class="big" data-counter="${total}" data-suffix="+">0+</div>
+          <div class="big" data-counter="${total}" data-suffix="+">${total}+</div>
           <div>
             <div style="font-family:var(--font-heading);font-weight:700;font-size:1.2rem;letter-spacing:-0.01em;margin-bottom:0.4rem">Features included</div>
             <p>Across content, paid, automation, and reporting. Activated by week 2 of your engagement.</p>
@@ -1470,7 +1489,7 @@ function tpl_pricing() {
     <div class="container" style="text-align:center">
       <div class="section-label" style="display:inline-flex">YOUR PLAN</div>
       <h2 class="section-headline">Investment</h2>
-      <p class="section-sub" style="margin-left:auto;margin-right:auto">Two tiers. One recommended for ${escapeHTML(cn)} based on your stage.</p>
+      <p class="section-sub" style="margin-left:auto;margin-right:auto">Two tiers. One recommended for ${escapeHTML(cn)} based on your current scale.</p>
 
       <div class="pricing-bento" style="text-align:left">
         ${card('growth', p.growth, p.recommended==='growth')}
@@ -1479,7 +1498,7 @@ function tpl_pricing() {
         <div class="cell roi-cell">
           <div class="roi-block">
             <span class="roi-label">Leads / month</span>
-            <span class="roi-val accent" data-counter="${r.leads_per_month}">0</span>
+            <span class="roi-val accent" data-counter="${r.leads_per_month}">${r.leads_per_month}</span>
           </div>
           <div class="roi-block">
             <span class="roi-label">Close rate</span>
@@ -1530,7 +1549,7 @@ function tpl_close() {
       </div>
 
       <div class="close-footer">
-        <span class="dot"></span>SYSTEM OPERATIONAL // PREPARED EXCLUSIVELY FOR ${escapeHTML(cn).toUpperCase()}
+        <span class="dot"></span>PREPARED EXCLUSIVELY FOR ${escapeHTML(cn).toUpperCase()}
       </div>
     </div>
   </section>`;
@@ -1606,22 +1625,25 @@ function animateCounter(el) {
   });
 }
 
-// text counters (data-counter-text -> e.g. "20M+", "11.58x", "$2,400") - count the leading number
+// text counters (data-counter-text -> e.g. "20M+", "11.58x", "$2,400", "$24,840") - count the leading number
 function animateCounterText(el) {
   const target = el.dataset.counterText;
-  const m = target.match(/^(-?[\$]?)(-?\d+\.?\d*)([^\d].*)?$/);
+  // strip commas inside the leading number before regex so "$2,400" -> prefix=$, num=2400
+  const stripped = String(target).replace(/(\d),(?=\d)/g, '$1');
+  const m = stripped.match(/^(-?[\$]?)(-?\d+\.?\d*)([^\d].*)?$/);
   if (!m) { el.textContent = target; return; }
   const prefix = m[1] || '';
   const num = parseFloat(m[2]);
   const suffix = m[3] || '';
-  const isFloat = m[2].indexOf('.') !== -1;
-  const decimals = isFloat ? 2 : 0;
+  const dotIdx = m[2].indexOf('.');
+  const isFloat = dotIdx !== -1;
+  // preserve the source's decimal precision (3.1x stays "3.1x", 11.58x stays "11.58x")
+  const decimals = isFloat ? (m[2].length - dotIdx - 1) : 0;
   const obj = { v: 0 };
   gsap.to(obj, {
     v: num, duration: 1.8, ease: 'power2.out',
     onUpdate: () => {
-      const v = obj.v.toFixed(decimals);
-      const display = isFloat ? v : Math.round(obj.v).toLocaleString();
+      const display = isFloat ? obj.v.toFixed(decimals) : Math.round(obj.v).toLocaleString();
       el.textContent = prefix + display + suffix;
     }
   });
@@ -1631,9 +1653,9 @@ document.querySelectorAll('[data-counter]').forEach(el => {
   ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => animateCounter(el) });
 });
 document.querySelectorAll('[data-counter-text]').forEach(el => {
-  // skip non-numeric (e.g., "24/7", "5 min")
+  // skip non-numeric or compound-ratio values (e.g., "24/7", "5 min", "Free")
   const t = el.dataset.counterText || '';
-  if (!/^[-\$]?\d/.test(t)) { el.textContent = t; return; }
+  if (!/^[-\$]?\d/.test(t) || t.includes('/') || / [a-zA-Z]/.test(t)) { el.textContent = t; return; }
   ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => animateCounterText(el) });
 });
 
