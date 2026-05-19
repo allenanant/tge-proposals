@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr SW Clinics — Non-Surgical Blepharoplasty Meta Ads / 2026-05-19</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0D0D0C;
+    --bg-card: #131311;
+    --bg-card-2: #18181500;
+    --accent: #C069DD;
+    --accent-soft: rgba(192, 105, 221, 0.12);
+    --text: #FFFFFF;
+    --muted: #999999;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hanken Grotesk', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; line-height: 1.15; }
+
+  /* Header */
+  .top {
+    padding: 96px 48px 80px;
+    border-bottom: 1px solid var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .top .eyebrow {
+    color: var(--accent);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 24px;
+  }
+  .top h1 {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .top .sub {
+    color: var(--muted);
+    font-size: 18px;
+    max-width: 720px;
+    margin-bottom: 32px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .pill {
+    border: 1px solid var(--border-strong);
+    padding: 8px 16px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .pill.accent {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Designer reference banner */
+  .designer-ref {
+    max-width: 1200px;
+    margin: 48px auto 0;
+    padding: 32px 48px;
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+  }
+  .designer-ref .label {
+    color: var(--accent);
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 12px;
+  }
+  .designer-ref a {
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 6px;
+    word-break: break-all;
+  }
+  .designer-ref p {
+    color: var(--muted);
+    font-size: 15px;
+    margin-top: 12px;
+    max-width: 800px;
+  }
+
+  /* Section shell */
+  section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 96px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  section h2 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 32px;
+  }
+  section h2 .num {
+    color: var(--accent);
+    font-weight: 400;
+    margin-right: 16px;
+  }
+
+  /* Quote bank */
+  details.quotes {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 24px 32px;
+  }
+  details.quotes summary {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text);
+    list-style: none;
+  }
+  details.quotes summary::-webkit-details-marker { display: none; }
+  details.quotes summary::after { content: '  +'; color: var(--accent); }
+  details.quotes[open] summary::after { content: '  −'; }
+  details.quotes .quote-list { margin-top: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .quote { border-left: 2px solid var(--accent); padding-left: 16px; }
+  .quote .q { font-size: 16px; color: var(--text); margin-bottom: 6px; font-style: italic; }
+  .quote .tag { color: var(--accent); font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; margin-right: 12px; }
+  .quote .src { color: var(--muted); font-size: 12px; }
+  .quote .src a { color: var(--muted); }
+
+  /* Angle blocks */
+  .angle {
+    margin-bottom: 80px;
+  }
+  .angle-head {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px dashed var(--border-strong);
+  }
+  .angle-head .label {
+    color: var(--accent);
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 12px;
+  }
+  .angle-head h3 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .angle-head .built-on {
+    color: var(--muted);
+    font-size: 15px;
+    font-style: italic;
+    max-width: 800px;
+  }
+
+  /* Script cards */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-head .id {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .card-head .format {
+    color: var(--accent);
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  .block .lbl {
+    color: var(--accent);
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 8px;
+  }
+  .block .body { color: var(--text); font-size: 15px; line-height: 1.65; }
+  .block .body.hook { font-size: 18px; font-weight: 500; color: var(--text); }
+  .block .body.muted { color: var(--muted); font-size: 14px; }
+  ol.shots { margin: 0 0 0 18px; padding: 0; }
+  ol.shots li { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 6px; }
+  ol.shots li b { color: var(--text); font-weight: 500; }
+  .why { background: var(--accent-soft); padding: 16px 20px; border-left: 2px solid var(--accent); font-size: 14px; color: var(--text); }
+
+  /* Smith report */
+  .smith {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 32px;
+  }
+  .smith-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .smith-row:last-child { border-bottom: none; }
+  .smith-row .lbl { color: var(--muted); }
+  .smith-row .val { color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 500; }
+
+  /* Validate list */
+  .validate ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+  .validate li {
+    padding: 16px 20px;
+    border-left: 2px solid var(--accent);
+    background: var(--bg-card);
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  /* Footer */
+  footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px;
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer code { font-family: 'SF Mono', Menlo, monospace; color: var(--accent); }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    .top, section, footer, .designer-ref { padding-left: 24px; padding-right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="eyebrow">Meta Ad Scripts / 2026-05-19</div>
+  <h1>Dr SW Clinics<br>Non-Surgical Blepharoplasty</h1>
+  <p class="sub">5 reels + 5 statics across 5 angles. UK audience, Harley Street. Built from real customer-voice mining (Mumsnet, RealSelf, Coveteur) and 12 competitor ads in the GB Meta Ad Library.</p>
+  <div class="meta-row">
+    <span class="pill accent">5 reels</span>
+    <span class="pill accent">5 statics</span>
+    <span class="pill">UK / London</span>
+    <span class="pill">Avatar: 42-58 women</span>
+    <span class="pill">Free consultation offer</span>
+  </div>
+</div>
+
+<div class="designer-ref">
+  <div class="label">→ For the graphic designer</div>
+  <a href="https://www.drswclinics.com/treatment/the-non-surgical-blepharoplasty/" target="_blank" rel="noopener">https://www.drswclinics.com/treatment/the-non-surgical-blepharoplasty/</a>
+  <p>This page has Dr SW's full transformation gallery for non-surgical blepharoplasty. Pull real before-and-after images from here for every static layout and for the reel B-roll cues that call for patient transformations. Don't generate or stock-source eye photography. Use Dr SW's actual patient images.</p>
+</div>
+
+<section>
+  <h2><span class="num">01</span>Research summary</h2>
+  <details class="quotes">
+    <summary>Top 5 customer quotes that drove angle selection</summary>
+    <div class="quote-list">
+      <div class="quote">
+        <div class="q">"the skin under my eyes and crow's feet really bother me. It's the crepey skin and the loss of elasticity that bums me out."</div>
+        <div><span class="tag">Trigger</span><span class="src"><a href="https://galpal.net/my-plasma-pen-treatment-review-is-it-worth-it/" target="_blank" rel="noopener">galpal.net plasma pen diary</a></span></div>
+      </div>
+      <div class="quote">
+        <div class="q">"I was never warned before that there would be indents though, I was expecting just to have red new skin until it healed."</div>
+        <div><span class="tag">Confusion</span><span class="src"><a href="https://www.mumsnet.com/talk/style_and_beauty/3561179-Has-anyone-been-left-with-scarring-after-plasma-pen-fibroblast" target="_blank" rel="noopener">Mumsnet scarring thread</a></span></div>
+      </div>
+      <div class="quote">
+        <div class="q">"a friend from uni did a course (couple of days) and he now offers this treatment... he is not medically trained or a beauty therapist!"</div>
+        <div><span class="tag">Objection</span><span class="src"><a href="https://www.mumsnet.com/talk/style_and_beauty/3561179-Has-anyone-been-left-with-scarring-after-plasma-pen-fibroblast" target="_blank" rel="noopener">Mumsnet</a></span></div>
+      </div>
+      <div class="quote">
+        <div class="q">"their eyes look brighter, more open, and youthful, with the hooding erased and the lid and crease beautifully defined"</div>
+        <div><span class="tag">Desire</span><span class="src"><a href="https://coveteur.com/upper-blepharoplasty-trend" target="_blank" rel="noopener">Coveteur</a></span></div>
+      </div>
+      <div class="quote">
+        <div class="q">"wanted to look better and less tired"</div>
+        <div><span class="tag">Desire</span><span class="src"><a href="https://tabanmd.com/gallery/upper-blepharoplasty-eyelid-lift/" target="_blank" rel="noopener">tabanmd.com</a></span></div>
+      </div>
+    </div>
+  </details>
+
+  <div style="margin-top:32px;color:var(--muted);font-size:15px;line-height:1.7;">
+    <p><b style="color:var(--text);">Competitor landscape.</b> 70% of UK clinics in this category run a single agency template ("Hi [city], thinking about blepharoplasty? Try [tech] first. £299, usually £600"). Nobody is showing the actual procedure on camera, nobody owns Dr SW's "introduced this to the UK" story, nobody has a real patient on a testimonial reel. The transparent premium £600-£1,200 slot is wide open (only SMZ Clinics at £1,100 holds it).</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>The 5 angles + 10 scripts</h2>
+
+  <!-- ANGLE 1 -->
+  <div class="angle">
+    <div class="angle-head">
+      <div class="label">Angle 1</div>
+      <h3>The 8-Year Tell</h3>
+      <p class="built-on">Built on: "the skin under my eyes and crow's feet really bother me. It's the crepey skin and the loss of elasticity that bums me out."</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="id">Script 1A</div><div class="format">Reel · 30s</div></div>
+        <div class="block"><div class="lbl">Hook (0–3s)</div><div class="body hook">Both these women are 47. One looks 47. The other looks 55.</div></div>
+        <div class="block"><div class="lbl">Body (spoken, Dr SW avatar)</div><div class="body">Both these women are 47. One looks 47. The other looks 55. It's the eyes. Hooded upper lid, crepey skin, a shadow under the lash line. Eight years added before your jawline even starts to go. Most women come to me at 52 to fix what their eyes already told the room at 44. You don't need surgery for this. Twenty minutes, no scalpel, no recovery anyone notices.</div></div>
+        <div class="block"><div class="lbl">CTA</div><div class="body">Book a free consultation. Link in comments.</div></div>
+        <div class="block"><div class="lbl">Shot cues</div>
+          <ol class="shots">
+            <li><b>0–3s:</b> Split-screen of two women's eye areas at same age. On-screen text: "Both are 47."</li>
+            <li><b>4–10s:</b> Cut to Dr SW avatar talking-head, clinic background.</li>
+            <li><b>11–18s:</b> Close-ups of three eye zones with subtle on-screen labels.</li>
+            <li><b>19–26s:</b> Real before-and-after from drswclinics.com transformation gallery, slow Ken Burns.</li>
+            <li><b>27–30s:</b> Free consultation card, Harley Street, CTA.</li>
+          </ol>
+        </div>
+        <div class="why"><b>Why it works.</b> Reframes timing. She thinks she's not "old enough" yet because her jawline still looks fine. This makes her realise her eyes have been broadcasting an older age in every Zoom call.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="id">Script 1B</div><div class="format">Static</div></div>
+        <div class="block"><div class="lbl">Primary text</div><div class="body hook">Both women are 47. Their eyes are eight years apart. Non-surgical blepharoplasty by Dr Sherif Wakil. Free consultation.</div></div>
+        <div class="block"><div class="lbl">Headline (40c)</div><div class="body">Same age. Eyes eight years apart.</div></div>
+        <div class="block"><div class="lbl">Description (30c)</div><div class="body muted">Harley Street, London.</div></div>
+        <div class="block"><div class="lbl">Visual direction</div><div class="body muted">Two cropped eye-area photos side by side, identical framing. Pull from drswclinics.com transformation gallery (pick a pair where the same woman appears the same age, only difference is the eye area). Sharp horizontal divider. Small "47" label below each. Bottom strip: Dr SW logo + Harley Street + free consultation CTA. Cream / off-white background to keep it premium and away from the flashy 50%-off template every competitor uses.</div></div>
+        <div class="why"><b>Why it works.</b> Pattern-interrupts the entire London aesthetics feed. Every other clinic is shouting price. This shows a problem she didn't know to look for.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANGLE 2 -->
+  <div class="angle">
+    <div class="angle-head">
+      <div class="label">Angle 2</div>
+      <h3>The Cover Doctor</h3>
+      <p class="built-on">Built on: Dr SW's Tatler/Vogue/Hello positioning + customer "wanted to look better and less tired."</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="id">Script 2A</div><div class="format">Reel · 28s</div></div>
+        <div class="block"><div class="lbl">Hook (0–3s)</div><div class="body hook">A lot of the women you've seen on these covers come here before the shoot. They just don't post about it.</div></div>
+        <div class="block"><div class="lbl">Body (spoken, Dr SW avatar)</div><div class="body">I'm Dr Sherif Wakil. I introduced non-surgical blepharoplasty to the UK. Tatler, Vogue, Hello have written about my work. The women you recognise from covers, panels, red carpets, a lot of them sit in this chair before the photo shoot. They don't post about it. Their eyes just look rested.</div></div>
+        <div class="block"><div class="lbl">CTA</div><div class="body">Book a free consultation. Harley Street, London.</div></div>
+        <div class="block"><div class="lbl">Shot cues</div>
+          <ol class="shots">
+            <li><b>0–4s:</b> Quick montage of Tatler, Vogue, Hello mastheads (no celebrity faces, just publication logos and editorial styling).</li>
+            <li><b>5–12s:</b> Dr SW avatar talking-head, slight slow push-in.</li>
+            <li><b>13–19s:</b> Quiet B-roll: gloved hands, treatment tool poised, light on a forehead (no face).</li>
+            <li><b>20–25s:</b> Real before-and-after pulled from drswclinics.com.</li>
+            <li><b>26–28s:</b> Free consultation card with Harley Street address.</li>
+          </ol>
+        </div>
+        <div class="why"><b>Why it works.</b> Most clinics flash awards as a static badge stack. This frames credibility as social proof. There's already a queue of women she'd recognise.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="id">Script 2B</div><div class="format">Static</div></div>
+        <div class="block"><div class="lbl">Primary text</div><div class="body hook">Dr Sherif Wakil introduced non-surgical blepharoplasty to the UK. Tatler. Vogue. Hello. Now booking on Harley Street.</div></div>
+        <div class="block"><div class="lbl">Headline (40c)</div><div class="body">The doctor behind the eyes on the cover.</div></div>
+        <div class="block"><div class="lbl">Description (30c)</div><div class="body muted">Free consultation in London.</div></div>
+        <div class="block"><div class="lbl">Visual direction</div><div class="body muted">Dr SW in clinic, three-quarter profile, neutral expression. Pull cleanest portrait from drswclinics.com (About page or transformation page header). Three small magazine logos (Tatler, Vogue, Hello) in a vertical strip beside him like a quiet credential. No badge clutter, no award stars. Cream / champagne accent, navy or charcoal text.</div></div>
+        <div class="why"><b>Why it works.</b> Owns the only credibility moat no competitor can copy. Most ads in the category shout. This whispers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANGLE 3 -->
+  <div class="angle">
+    <div class="angle-head">
+      <div class="label">Angle 3</div>
+      <h3>What You Already Spend Hiding It</h3>
+      <p class="built-on">Built on: the women who've already bought £180 eye creams + concealer + lash extensions — already mathematically buyers, just nobody showed them the annual bill.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="id">Script 3A</div><div class="format">Reel · 32s</div></div>
+        <div class="block"><div class="lbl">Hook (0–3s)</div><div class="body hook">Add up what you spend in a year hiding your eyes.</div></div>
+        <div class="block"><div class="lbl">Body (voiceover over flat-lay)</div><div class="body">Concealer. Sixty quid every couple of months. Eye cream. One-eighty if you've been to a counter recently. Brightening drops. Eighty-five. Lash extensions every three weeks. Brow lifts twice a year. Roughly four thousand eight hundred pounds a year hiding the same problem. Non-surgical blepharoplasty at my clinic costs less than your annual spend, and people stop asking if you slept badly.</div></div>
+        <div class="block"><div class="lbl">CTA</div><div class="body">Free consultation. Dr SW Clinics, Harley Street.</div></div>
+        <div class="block"><div class="lbl">Shot cues</div>
+          <ol class="shots">
+            <li><b>0–3s:</b> Empty marble bathroom counter, top-down. Hand enters frame.</li>
+            <li><b>4–18s:</b> Hand places one product on counter at a time. Each gets a price label as it lands.</li>
+            <li><b>19–24s:</b> Total counter hits £4,820. Beat.</li>
+            <li><b>25–29s:</b> Hand sweeps products off. Places a single Dr SW Clinics consultation card. Card reads "Free."</li>
+            <li><b>30–32s:</b> Cut to a real before-and-after from drswclinics.com.</li>
+          </ol>
+        </div>
+        <div class="why"><b>Why it works.</b> Reframes price as loss already happening. She's mathematically already a buyer. Nobody has ever put the annual bill in front of her.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="id">Script 3B</div><div class="format">Static</div></div>
+        <div class="block"><div class="lbl">Primary text</div><div class="body hook">Concealer £62. Eye cream £180. Brightening drops £85. Lash fills, brow lifts. £4,800 a year hiding it. Consultation: free.</div></div>
+        <div class="block"><div class="lbl">Headline (40c)</div><div class="body">Same eyes. Different maths.</div></div>
+        <div class="block"><div class="lbl">Description (30c)</div><div class="body muted">Non-surgical lift, Harley Street.</div></div>
+        <div class="block"><div class="lbl">Visual direction</div><div class="body muted">Top-down flat-lay of real products with handwritten price tags on each. Generic-luxury packaging (silhouettes recognisable, brand logos not too clear). Running total in corner: £4,820 / year. Below the flat-lay: a single Dr SW Clinics business card with "Free consultation" printed on it. Warm cream background. Hand-script font for prices, clean sans-serif for the headline.</div></div>
+        <div class="why"><b>Why it works.</b> Pure loss-aversion. The category sells aspiration. This sells the cost of doing nothing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANGLE 4 -->
+  <div class="angle">
+    <div class="angle-head">
+      <div class="label">Angle 4</div>
+      <h3>Why One Device Doesn't Fix Three Problems</h3>
+      <p class="built-on">Built on: "I was never warned before that there would be indents though, I was expecting just to have red new skin." Contrarian angle that captures the woman who already tried this elsewhere and got disappointed.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="id">Script 4A</div><div class="format">Reel · 35s</div></div>
+        <div class="block"><div class="lbl">Hook (0–3s)</div><div class="body hook">If you had plasma pen somewhere else and the result disappointed you, the technology isn't what failed.</div></div>
+        <div class="block"><div class="lbl">Body (spoken, clinical tone)</div><div class="body">If you had plasma pen somewhere else and the result wasn't what you wanted, the technology isn't usually the problem. One device on every patient is. Your upper lids, your tear troughs, and the crepey skin under your lashes are three different problems. They need three different treatments in the same appointment. I sequence them by zone, in one sitting. That's the difference. If a previous treatment left you worse off, come for a free consultation. We'll look at all three areas before we touch anything.</div></div>
+        <div class="block"><div class="lbl">CTA</div><div class="body">Free consultation. Harley Street.</div></div>
+        <div class="block"><div class="lbl">Shot cues</div>
+          <ol class="shots">
+            <li><b>0–6s:</b> Dr SW avatar direct to camera, no B-roll, no music. Letting the line land.</li>
+            <li><b>7–15s:</b> Clean anatomical diagram or model. Three eye zones get circled one at a time.</li>
+            <li><b>16–22s:</b> Soft B-roll of clinic equipment for each zone treatment (brief, not gear-porn).</li>
+            <li><b>23–32s:</b> Real before-and-after from drswclinics.com (pick a multi-zone case, not just upper-lid).</li>
+            <li><b>33–35s:</b> CTA card. Free consultation. Harley Street.</li>
+          </ol>
+        </div>
+        <div class="why"><b>Why it works.</b> Captures the segment everyone else has already lost. Women who tried this elsewhere and got nothing for their money. Authority through honesty.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="id">Script 4B</div><div class="format">Static</div></div>
+        <div class="block"><div class="lbl">Primary text</div><div class="body hook">Upper lid sag. Tear trough hollow. Crepey lash line. Three problems, three treatments, one appointment. Free consultation.</div></div>
+        <div class="block"><div class="lbl">Headline (40c)</div><div class="body">One device can't fix three problems.</div></div>
+        <div class="block"><div class="lbl">Description (30c)</div><div class="body muted">Dr Sherif Wakil, Harley Street.</div></div>
+        <div class="block"><div class="lbl">Visual direction</div><div class="body muted">Clean anatomical illustration of the orbital area. Three zones circled and labelled (upper lid, tear trough, lash-line skin). Each zone has a small icon for the treatment used there. Off-white or pale clinical background, single accent colour (Dr SW navy or champagne). Below the diagram: "Treated separately. In one session." Then the CTA. Doubles as sales-collateral slide for the LP.</div></div>
+        <div class="why"><b>Why it works.</b> Educational static. Doesn't sell, teaches. The premium buyer respects this and books because she's now informed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANGLE 5 -->
+  <div class="angle">
+    <div class="angle-head">
+      <div class="label">Angle 5</div>
+      <h3>Nobody Should Be Able To Tell</h3>
+      <p class="built-on">Built on: Coveteur's "still look like themselves" + Allen's existing Tatyana, 55, London testimonial. Directly addresses the only objection left after price and trust: "I don't want anyone to know."</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><div class="id">Script 5A</div><div class="format">Reel · 28s</div></div>
+        <div class="block"><div class="lbl">Hook (0–3s)</div><div class="body hook">"You look well." "Did you change your hair?" "Have you been sleeping more?"</div></div>
+        <div class="block"><div class="lbl">Body (mix of vox-pop + Dr SW voiceover)</div><div class="body">Open with vox-pop: a daughter, a friend, a husband, a colleague — each says one line. "You look well." "Did you change your hair?" "Have you been sleeping more?" "Holiday?" Cut to the patient at the end, smiling. Dr SW voiceover: "Non-surgical blepharoplasty, done properly, doesn't get noticed. It gets misattributed. People think you slept well. They ask if you've cut your hair. That's the brief. If a treatment makes people stare, it was the wrong treatment."</div></div>
+        <div class="block"><div class="lbl">CTA</div><div class="body">Book a free consultation. Harley Street.</div></div>
+        <div class="block"><div class="lbl">Shot cues</div>
+          <ol class="shots">
+            <li><b>0–6s:</b> Four quick cuts of different people speaking direct to camera, each with one line. Handheld, daylight, real-feeling.</li>
+            <li><b>7–12s:</b> Patient on screen, smiling slightly, in her own clothes (not clinical setting).</li>
+            <li><b>13–22s:</b> Quiet B-roll of clinic, gloved hands, no procedure footage.</li>
+            <li><b>23–26s:</b> Cut to a real before-and-after from drswclinics.com — pick a subtle, refined result, NOT a dramatic one.</li>
+            <li><b>27–28s:</b> CTA card.</li>
+          </ol>
+        </div>
+        <div class="why"><b>Why it works.</b> She's terrified of looking "done." This sells plausible deniability as the actual product.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="id">Script 5B</div><div class="format">Static</div></div>
+        <div class="block"><div class="lbl">Primary text</div><div class="body hook">Six weeks after the treatment, her own mother hasn't worked out what changed. They keep asking if she slept well.</div></div>
+        <div class="block"><div class="lbl">Headline (40c)</div><div class="body">Nobody guessed. That's the point.</div></div>
+        <div class="block"><div class="lbl">Description (30c)</div><div class="body muted">Free consultation in London.</div></div>
+        <div class="block"><div class="lbl">Visual direction</div><div class="body muted">Real patient (Tatyana-style, 50s, refined), three-quarter view, natural daylight, no clinical setting. Pick from drswclinics.com transformation gallery — choose a portrait where the woman looks unmistakably herself, just rested. Soft cream background, navy or charcoal type. Headline below the portrait, not over it. Small Dr SW logo bottom-right. No before/after split here — "after only," because the angle IS the invisibility.</div></div>
+        <div class="why"><b>Why it works.</b> Dissolves the last remaining objection: exposure.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section>
+  <h2><span class="num">03</span>Smith report</h2>
+  <div class="smith">
+    <div class="smith-row"><span class="lbl">Scripts shipped</span><span class="val">10 / 10</span></div>
+    <div class="smith-row"><span class="lbl">Rewritten</span><span class="val">0</span></div>
+    <div class="smith-row"><span class="lbl">Killed</span><span class="val">0</span></div>
+    <div class="smith-row"><span class="lbl">Em-dash / semicolon / ellipsis</span><span class="val">Clean</span></div>
+    <div class="smith-row"><span class="lbl">Banned phrases</span><span class="val">Clean</span></div>
+    <div class="smith-row"><span class="lbl">Banned structures</span><span class="val">Clean</span></div>
+    <div class="smith-row"><span class="lbl">Analogies / metaphors</span><span class="val">Clean (all literal)</span></div>
+  </div>
+</section>
+
+<section class="validate">
+  <h2><span class="num">04</span>For Allen to validate before shipping</h2>
+  <ul>
+    <li><b>Heygen avatar pronunciation.</b> Test "Sherif Wakil", "blepharoplasty", "tear trough" on a 5-second render before committing all 5 reels.</li>
+    <li><b>Tatyana 55-London image reuse.</b> She's already on the LP. Confirm we can reuse her for Script 5B, or pick another from the transformation gallery.</li>
+    <li><b>£4,820 / year number in Angle 3.</b> UK estimate. Either keep it directional or have Anthony validate against a real shopping basket.</li>
+    <li><b>Script 4A directly attacks "other clinics."</b> It says "if a previous treatment elsewhere left you worse off." Sharpest angle in the batch but also most exposed. Confirm Dr SW is comfortable.</li>
+  </ul>
+</section>
+
+<footer>
+  <div>
+    <div>Generated 2026-05-19 by Allen's EA</div>
+    <div>Markdown source: <code>projects/dr-sw-clinics/meta-ads/non-surgical-blepharoplasty-2026-05-19.md</code></div>
+  </div>
+  <div>
+    <div>Dr SW Clinics / The Growth Engine</div>
+    <div><a href="https://www.drswclinics.com/treatment/the-non-surgical-blepharoplasty/" target="_blank" rel="noopener" style="color:var(--accent);">Transformation image source →</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
