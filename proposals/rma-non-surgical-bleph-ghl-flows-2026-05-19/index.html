@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restart Medical · Non-Surgical Blepharoplasty GHL Flows · 2026-05-19</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f172a;
+    --primary-light: #1e293b;
+    --accent: #0ea5e9;
+    --accent-hover: #0284c7;
+    --accent-soft: #e0f2fe;
+    --text-dark: #334155;
+    --text-light: #64748b;
+    --text-muted: #94a3b8;
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+    --bg-stripe: #f1f5f9;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --whatsapp-bg: #075E54;
+    --whatsapp-bubble: #DCF8C6;
+    --whatsapp-page: #ECE5DD;
+    --whatsapp-button-bg: #ffffff;
+    --whatsapp-link: #027eb5;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 4px 18px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 18px 50px rgba(15, 23, 42, 0.14);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    color: var(--text-dark);
+    background: var(--bg);
+    line-height: 1.55;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  /* TOP BAR */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+  .brand .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
+  }
+  .topnav { display: flex; gap: 18px; font-size: 13.5px; font-weight: 500; }
+  .topnav a { color: var(--text-light); }
+  .topnav a:hover { color: var(--primary); }
+  @media (max-width: 720px) { .topnav { display: none; } }
+
+  /* HERO */
+  .hero {
+    background:
+      radial-gradient(1200px 600px at 80% -20%, rgba(14,165,233,0.18), transparent 60%),
+      linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: #fff;
+    padding: 80px 24px 96px;
+  }
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.04);
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+  }
+  .eyebrow .pulse {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25);
+  }
+  h1.title {
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 18px;
+  }
+  .lede {
+    font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+    color: #cbd5e1;
+    max-width: 780px;
+    font-weight: 300;
+  }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 28px;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    font-size: 13.5px;
+    color: #94a3b8;
+  }
+  .meta b { color: #fff; display: block; font-weight: 600; font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* SUMMARY STRIP */
+  .summary {
+    max-width: 1100px;
+    margin: -56px auto 0;
+    position: relative;
+    padding: 0 24px;
+  }
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+  .summary-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 22px;
+    box-shadow: var(--shadow-md);
+  }
+  .summary-card .num {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .summary-card .label { font-size: 13.5px; color: var(--text-light); font-weight: 500; }
+
+  /* SECTIONS */
+  section.flow {
+    max-width: 1100px;
+    margin: 90px auto 0;
+    padding: 0 24px;
+    scroll-margin-top: 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--primary);
+  }
+  .section-head .left h2 {
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .section-head .left p {
+    color: var(--text-light);
+    max-width: 640px;
+    font-size: 15.5px;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-soft);
+    color: var(--accent-hover);
+    border: 1px solid #bae6fd;
+    border-radius: 999px;
+    padding: 5px 11px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .pill.dark { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+  /* STEP CARDS */
+  .step {
+    margin-bottom: 36px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .step-head {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    padding: 18px 22px;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+  }
+  .step-head .left {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .step-num {
+    width: 38px; height: 38px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .step-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+  .step-title small {
+    color: var(--text-light);
+    font-weight: 400;
+    font-size: 13.5px;
+    margin-left: 8px;
+  }
+  .channels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 880px) { .channels { grid-template-columns: 1fr; } }
+
+  /* WHATSAPP COLUMN */
+  .ch-whatsapp {
+    background: var(--whatsapp-page);
+    padding: 22px;
+    border-right: 1px solid var(--border);
+  }
+  @media (max-width: 880px) { .ch-whatsapp { border-right: 0; border-bottom: 1px solid var(--border); } }
+  .ch-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #4b5563;
+    margin-bottom: 14px;
+  }
+  .ch-label .badge {
+    background: var(--whatsapp-bg);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .ch-label .cat {
+    background: #fff;
+    color: var(--primary);
+    border: 1px solid #cbd5e1;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .wa-bubble {
+    background: var(--whatsapp-bubble);
+    border-radius: 12px 12px 12px 4px;
+    padding: 14px 16px 10px;
+    max-width: 92%;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #1f2937;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+    font-family: 'Outfit', -apple-system, sans-serif;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .wa-bubble .wa-meta {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #6b7280;
+    text-align: right;
+  }
+  .wa-bubble strong { font-weight: 600; }
+  .wa-button {
+    margin-top: 4px;
+    background: var(--whatsapp-button-bg);
+    border-radius: 0 0 12px 12px;
+    border-top: 1px solid #d1d5db;
+    padding: 11px;
+    max-width: 92%;
+    text-align: center;
+    color: var(--whatsapp-link);
+    font-weight: 600;
+    font-size: 14.5px;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+    cursor: pointer;
+  }
+  .wa-template {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: var(--text-light);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .wa-template .key { color: var(--text-muted); }
+
+  /* EMAIL COLUMN */
+  .ch-email {
+    background: #fff;
+    padding: 22px;
+  }
+  .email-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .email-head {
+    background: var(--bg-soft);
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .email-head .from { color: var(--text-light); }
+  .email-head .from b { color: var(--primary); }
+  .email-head .subject {
+    margin-top: 6px;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .email-head .preheader {
+    margin-top: 4px;
+    color: var(--text-light);
+    font-size: 13px;
+    font-style: italic;
+  }
+  .email-body {
+    padding: 18px 18px 8px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--text-dark);
+  }
+  .email-body p { margin-bottom: 12px; }
+  .email-body ul { margin: 0 0 12px 20px; }
+  .email-body li { margin-bottom: 6px; }
+  .email-body strong { color: var(--primary); }
+  .email-button {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff !important;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14.5px;
+    margin: 8px 0 14px;
+    text-decoration: none;
+  }
+  .email-button:hover { background: var(--primary-light); color: #fff !important; }
+  .email-foot {
+    padding: 12px 18px 16px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+  .email-template {
+    margin-top: 12px;
+    font-size: 11.5px;
+    color: var(--text-light);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .email-empty {
+    padding: 22px;
+    background: var(--bg-soft);
+    border: 1px dashed var(--border-strong);
+    border-radius: 10px;
+    color: var(--text-light);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  /* INFO BLOCKS */
+  .info-block {
+    max-width: 1100px;
+    margin: 90px auto 0;
+    padding: 0 24px;
+  }
+  .info-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 32px;
+  }
+  .info-card h3 {
+    color: var(--primary);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .info-card p { margin-bottom: 12px; color: var(--text-dark); font-size: 15px; }
+  .info-card ul { margin: 4px 0 14px 22px; }
+  .info-card li { margin-bottom: 6px; font-size: 14.5px; color: var(--text-dark); }
+  .info-card code {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: var(--primary);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 110px;
+    padding: 40px 24px;
+    background: var(--primary);
+    color: #94a3b8;
+    font-size: 13.5px;
+    text-align: center;
+  }
+  footer b { color: #fff; }
+
+  /* UTIL */
+  .sr { font-variant: tabular-nums; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="dot"></span> Restart Medical · GHL Flows</div>
+    <nav class="topnav">
+      <a href="#flow-a">Flow A · Nurture</a>
+      <a href="#flow-b">Flow B · Booked</a>
+      <a href="#setup">Setup notes</a>
+    </nav>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow"><span class="pulse"></span> WhatsApp + Email · GoHighLevel</span>
+    <h1 class="title">Non-Surgical Blepharoplasty:<br>Two GHL Flows, Ready to Wire In</h1>
+    <p class="lede">Lead nurture and post-booking reminders for Restart Medical's non-surgical eyelid leads. Calm, medically led copy, written for WhatsApp + Email side by side, with template names, categories, and merge fields ready for GHL.</p>
+    <div class="meta">
+      <div><b>Clinic</b>Restart Medical · UK</div>
+      <div><b>Clinical lead</b>Alan Apolakiatis RN</div>
+      <div><b>Channels</b>WhatsApp Business + Email</div>
+      <div><b>Prepared</b>19 May 2026</div>
+      <div><b>Owner</b>The Growth Engine</div>
+    </div>
+  </div>
+</section>
+
+<div class="summary">
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="num sr">5 + 5</div>
+      <div class="label">Flow A nurture touches across 7 days, WhatsApp + Email at each step</div>
+    </div>
+    <div class="summary-card">
+      <div class="num sr">5 + 4</div>
+      <div class="label">Flow B confirmation and reminders (T-48h, T-24h, T-10min, T-5min)</div>
+    </div>
+    <div class="summary-card">
+      <div class="num sr">19</div>
+      <div class="label">Ready-to-paste templates with names, categories, and CTAs</div>
+    </div>
+    <div class="summary-card">
+      <div class="num sr">100%</div>
+      <div class="label">STOP / unsubscribe coverage. ASA and WhatsApp policy reviewed.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= FLOW A ============================= -->
+<section class="flow" id="flow-a">
+  <div class="section-head">
+    <div class="left">
+      <h2>Flow A · Form Lead Nurture</h2>
+      <p>Triggers when a Meta lead form is submitted and no consultation is booked yet. Five WhatsApp + email touches across seven days. WhatsApp category: <b>MARKETING</b>. Sender voice: Alan, personal where it makes sense.</p>
+    </div>
+    <span class="pill dark">5 steps · 7 days</span>
+  </div>
+
+  <!-- A.1 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">A1</div><div class="step-title">Immediate (T + 5 min) <small>First reply after form submission</small></div></div>
+      <span class="pill">MARKETING</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, thanks for your enquiry with Restart Medical about non-surgical eyelid treatment.
+
+The next step is a private 15-minute consultation with Alan, at no cost. He'll talk you through how the treatment works, whether you're a suitable candidate, and what's realistic for you.
+
+Tap below to pick a time that works.
+
+Reply STOP to opt out.<div class="wa-meta">10:24 ✓✓</div></div>
+        <div class="wa-button">📅 Book Free Consult</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_lead_day_0</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">{{first_name}}, your 15 minutes with Alan</div>
+            <div class="preheader">A short call so you can get straight answers before deciding anything.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>Thanks for reaching out about non-surgical eyelid treatment.</p>
+            <p>Quickest way to find out if it's right for you is 15 minutes with Alan, our clinical lead. He's a registered nurse with years in aesthetics. He'll give it to you straight.</p>
+            <p>There's no pressure to go ahead. The call is so you can:</p>
+            <ul>
+              <li>See if you're a suitable candidate</li>
+              <li>Ask anything you want, privately</li>
+              <li>Understand the procedure, recovery and cost</li>
+            </ul>
+            <a class="email-button" href="#">Book Free Consult →</a>
+            <p>Speak soon,<br>Alan and the Restart Medical team</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_email_day_0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A.2 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">A2</div><div class="step-title">Day 1 <small>Following up</small></div></div>
+      <span class="pill">MARKETING</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, Alan here from Restart Medical.
+
+Still thinking about your eyes? My calendar is open this week. 15 minutes, real answers, no pressure.
+
+Tap below to pick a slot.
+
+Reply STOP to opt out.<div class="wa-meta">11:02 ✓✓</div></div>
+        <div class="wa-button">📅 Book Free Consult</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_lead_day_1</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">Following up on your enquiry, {{first_name}}</div>
+            <div class="preheader">15 minutes is usually all it takes to know.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>Following up on the enquiry you sent yesterday.</p>
+            <p>A consultation is genuinely just a conversation. Many people don't go ahead with treatment afterwards, and that's fine. The point is you leave with a clear answer instead of guessing.</p>
+            <p>On the call I'll:</p>
+            <ul>
+              <li>Look at the area you're considering</li>
+              <li>Tell you honestly whether you're a candidate</li>
+              <li>Explain what to expect, start to finish</li>
+              <li>Give you a realistic idea of results and cost</li>
+            </ul>
+            <a class="email-button" href="#">Book Free Consult →</a>
+            <p>If now isn't the right time, reply to this email any time with questions.</p>
+            <p>Alan<br>Restart Medical</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_email_day_1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A.3 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">A3</div><div class="step-title">Day 3 <small>How the treatment works</small></div></div>
+      <span class="pill">MARKETING</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, Restart Medical here.
+
+The treatment is in-clinic, no scalpel, no general anaesthetic. Most clients are back to normal the next day. Whether it's right for you depends on your eyes, which is what the consultation is for.
+
+Tap below to book.
+
+Reply STOP to opt out.<div class="wa-meta">10:14 ✓✓</div></div>
+        <div class="wa-button">📅 Book Free Consult</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_lead_day_3</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">Honest: how the treatment actually works</div>
+            <div class="preheader">A short explanation. No sales pitch.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>A few straight facts in case it helps:</p>
+            <ul>
+              <li>Non-surgical, in-clinic procedure</li>
+              <li>Performed by Alan, a registered nurse with experience in aesthetic and medical practice</li>
+              <li>Most clients return to normal activities within a day or two</li>
+              <li>Where the treatment is suitable, any change typically develops gradually over a few weeks</li>
+              <li>It's not right for everyone, which is exactly why the consultation exists</li>
+            </ul>
+            <p>The consultation is 15 minutes, at no cost. Your only job is to ask whatever you want.</p>
+            <a class="email-button" href="#">Book Free Consult →</a>
+            <p>Alan<br>Restart Medical</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_email_day_3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A.4 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">A4</div><div class="step-title">Day 5 <small>5 things people ask</small></div></div>
+      <span class="pill">MARKETING</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, Restart Medical.
+
+If you keep being told you look tired when you aren't, this is the kind of thing the treatment is built for. Alan can tell you in 15 minutes whether you're a candidate.
+
+Pick a slot below.
+
+Reply STOP to opt out.<div class="wa-meta">10:18 ✓✓</div></div>
+        <div class="wa-button">📅 Book Free Consult</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_lead_day_5</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">5 things people ask Alan (that nobody else)</div>
+            <div class="preheader">The questions most people have but don't quite want to ask first.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>These are the questions Alan hears most on the consultation. If any of them are on your mind, the call is worth booking.</p>
+            <ol style="margin:0 0 12px 22px">
+              <li>Will I look like I've "had something done"?</li>
+              <li>How long does it actually last?</li>
+              <li>What's the recovery really like, honestly?</li>
+              <li>Am I too young, or too late?</li>
+              <li>What does it cost, all in?</li>
+            </ol>
+            <p>Alan will work through these with you on the call. 15 minutes.</p>
+            <a class="email-button" href="#">Book Free Consult →</a>
+            <p>Alan<br>Restart Medical</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_email_day_5</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A.5 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">A5</div><div class="step-title">Day 7 <small>Last one in this sequence</small></div></div>
+      <span class="pill">MARKETING</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, last one from me.
+
+If the eye treatment is still on your mind, my calendar's here. If not, no hard feelings. We won't message again.
+
+Tap below to book.
+
+Reply STOP to opt out.<div class="wa-meta">10:09 ✓✓</div></div>
+        <div class="wa-button">📅 Book Free Consult</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_lead_day_7</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">Last one from me, {{first_name}}</div>
+            <div class="preheader">Closing your enquiry, unless you'd like to keep it open.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>This is the last email in this sequence.</p>
+            <p>If the timing isn't right, that's understandable. Your enquiry stays on file, so come back whenever you're ready. No need to start over.</p>
+            <p>If now is the right time, the button is below. One call, one honest answer.</p>
+            <a class="email-button" href="#">Book Free Consult →</a>
+            <p>Wishing you well,<br>Alan<br>Restart Medical</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_email_day_7</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= FLOW B ============================= -->
+<section class="flow" id="flow-b">
+  <div class="section-head">
+    <div class="left">
+      <h2>Flow B · Booked Call Sequence</h2>
+      <p>Triggers the moment a consultation is booked on the calendar. Confirmation plus four reminders (T-48h, T-24h, T-10min, T-5min) to keep show-up rate high. WhatsApp category: <b>UTILITY</b>, because these are transactional reminders for a confirmed booking.</p>
+    </div>
+    <span class="pill dark">5 steps · transactional</span>
+  </div>
+
+  <!-- B.1 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">B1</div><div class="step-title">Confirmation <small>Sent immediately after booking</small></div></div>
+      <span class="pill">UTILITY</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, your consultation with Restart Medical is confirmed.
+
+📅 {{call_date}} at {{call_time}}
+With Alan Apolakiatis RN
+
+A few notes:
+
+• The call takes about 15 minutes
+• Be somewhere private if you can, easier to speak openly
+• Bring any photos or questions you'd like to discuss
+
+Tap below if you need to reschedule.
+
+Reply STOP to opt out.<div class="wa-meta">10:42 ✓✓</div></div>
+        <div class="wa-button">📞 Reschedule / Join Call</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_confirm</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">Booked. {{call_date}}, {{call_time}}, with Alan</div>
+            <div class="preheader">Everything you need before the call.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>You're booked in.</p>
+            <p>
+              <strong>When:</strong> {{call_date}} at {{call_time}}<br>
+              <strong>With:</strong> Alan Apolakiatis RN, clinical lead, Restart Medical<br>
+              <strong>How long:</strong> 15 minutes<br>
+              <strong>Where:</strong> {{call_link}}
+            </p>
+            <p>Before the call, it helps to:</p>
+            <ul>
+              <li>Be somewhere private and quiet</li>
+              <li>Have good lighting (Alan may want to look at the area)</li>
+              <li>Write down anything you'd like to ask, even just 2 or 3 things</li>
+            </ul>
+            <p>It's a call, not a sales pitch. Ask anything.</p>
+            <a class="email-button" href="#">Join / Reschedule Call →</a>
+            <p>See you soon,<br>Alan<br>Restart Medical</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_confirm_email</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B.2 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">B2</div><div class="step-title">T-48 hours <small>2 days before the call</small></div></div>
+      <span class="pill">UTILITY</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, your call with Alan is in 2 days.
+
+📅 {{call_date}} at {{call_time}}
+
+Many people find it helpful to jot down a couple of questions in advance. That way the 15 minutes goes further.
+
+Tap below if you need to reschedule.
+
+Reply STOP to opt out.<div class="wa-meta">10:00 ✓✓</div></div>
+        <div class="wa-button">📞 Reschedule / Join Call</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_reminder_48h</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">2 days to your call with Alan</div>
+            <div class="preheader">A short note, plus how to get more out of the call.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>Your consultation with Alan is on <strong>{{call_date}} at {{call_time}}</strong>, about 2 days from now.</p>
+            <p>To make the 15 minutes really count, it helps to have one thing in mind:</p>
+            <ul>
+              <li>What would you want to be different when you look in the mirror?</li>
+            </ul>
+            <p>You don't need to prepare anything formally. Just useful to know going in.</p>
+            <a class="email-button" href="#">Join / Reschedule Call →</a>
+            <p>Alan<br>Restart Medical</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_reminder_48h_email</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B.3 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">B3</div><div class="step-title">T-24 hours <small>Tomorrow</small></div></div>
+      <span class="pill">UTILITY</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, your consultation with Alan is tomorrow.
+
+📅 {{call_date}} at {{call_time}}
+
+A few things that help:
+
+• Somewhere quiet to take the call
+• Decent signal or wi-fi
+• Any questions you'd like to ask
+
+Need to reschedule? Tap below.
+
+Reply STOP to opt out.<div class="wa-meta">10:00 ✓✓</div></div>
+        <div class="wa-button">📞 Reschedule / Join Call</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_reminder_24h</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">Tomorrow, {{call_time}}, bring a pen</div>
+            <div class="preheader">A quick note so tomorrow goes smoothly.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>Looking forward to speaking tomorrow.</p>
+            <p>
+              <strong>When:</strong> {{call_date}} at {{call_time}}<br>
+              <strong>Length:</strong> about 15 minutes<br>
+              <strong>Link:</strong> {{call_link}}
+            </p>
+            <p>A few things that help:</p>
+            <ul>
+              <li>Somewhere quiet you can speak openly</li>
+              <li>Decent signal or wi-fi</li>
+              <li>Good lighting (helps Alan see the area you're asking about)</li>
+              <li>Your questions written down, even just 2 or 3</li>
+            </ul>
+            <p>If something has come up and you need to move the time, the button below lets you reschedule in one tap.</p>
+            <a class="email-button" href="#">Join / Reschedule Call →</a>
+            <p>Alan<br>Restart Medical</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_reminder_24h_email</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B.4 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">B4</div><div class="step-title">T-10 minutes <small>Pre-call prep</small></div></div>
+      <span class="pill">UTILITY</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, your consultation with Alan starts in <strong>10 minutes</strong>.
+
+Quick prep:
+
+• Find a quiet spot
+• Open the call link below
+• Have your questions ready
+
+Tap below to join when you're ready.
+
+Reply STOP to opt out.<div class="wa-meta">14:50 ✓✓</div></div>
+        <div class="wa-button">📞 Join Call</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_reminder_10min</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-card">
+          <div class="email-head">
+            <div class="from"><b>Alan @ Restart Medical</b> &lt;hello@restartmedical.org&gt;</div>
+            <div class="subject">Starting in 10 minutes, {{first_name}}</div>
+            <div class="preheader">Tap to join. We're getting set up on this end.</div>
+          </div>
+          <div class="email-body">
+            <p>Hi {{first_name}},</p>
+            <p>Alan will be with you in about 10 minutes.</p>
+            <p>
+              <strong>Time:</strong> {{call_time}}<br>
+              <strong>Link:</strong> {{call_link}}
+            </p>
+            <p>Get settled somewhere quiet now if you can, and have any questions handy.</p>
+            <a class="email-button" href="#">Join Call →</a>
+            <p>See you very soon,<br>Alan<br>Restart Medical</p>
+          </div>
+          <div class="email-foot">Restart Medical · UK · Reply to this email or <u>unsubscribe</u>.</div>
+        </div>
+        <div class="email-template"><span style="color:var(--text-muted)">template:</span> rma_nsb_reminder_10min_email</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B.5 -->
+  <div class="step">
+    <div class="step-head">
+      <div class="left"><div class="step-num">B5</div><div class="step-title">T-5 minutes <small>WhatsApp only</small></div></div>
+      <span class="pill">UTILITY</span>
+    </div>
+    <div class="channels">
+      <div class="ch-whatsapp">
+        <div class="ch-label"><span class="badge">WHATSAPP</span></div>
+        <div class="wa-bubble">Hi {{1}}, Alan is ready for your consultation in <strong>5 minutes</strong>.
+
+Tap below to join the call.
+
+Reply STOP to opt out.<div class="wa-meta">14:55 ✓✓</div></div>
+        <div class="wa-button">📞 Join Call</div>
+        <div class="wa-template"><span class="key">template:</span> rma_nsb_reminder_5min</div>
+      </div>
+      <div class="ch-email">
+        <div class="ch-label"><span class="cat">EMAIL</span></div>
+        <div class="email-empty">
+          <strong style="color:var(--primary)">No email at T-5 min by design.</strong><br>
+          By the time an email arrives most clients are already on the call. WhatsApp is the right channel for this beat.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= SETUP ============================= -->
+<section class="info-block" id="setup">
+  <div class="info-card">
+    <h3>Setup notes for GHL</h3>
+    <ul>
+      <li>WhatsApp variable <code>{{1}}</code> = first name. If first name is missing, use a fallback template that drops the <code>Hi {{1}},</code> line.</li>
+      <li>Email merge fields used: <code>{{first_name}}</code>, <code>{{call_date}}</code>, <code>{{call_time}}</code>, <code>{{call_link}}</code>.</li>
+      <li>One CTA URL button per WhatsApp message. Calendar link goes in once Allen provides it.</li>
+      <li>Footer text on WhatsApp templates: <code>Restart Medical</code>.</li>
+      <li>Test with one internal phone + one internal email before activating live.</li>
+      <li>Flow A and Flow B are mutually exclusive. Booking triggers exit from A and entry into B.</li>
+      <li>External reschedule or cancellation should trigger a separate (future) flow.</li>
+      <li>Exit conditions for both flows: contact replies (human handover), STOP / unsubscribe, marked unsuitable / duplicate / invalid.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="info-block">
+  <div class="info-card">
+    <h3>Compliance and voice guardrails</h3>
+    <ul>
+      <li>Flow A submits as <strong>MARKETING</strong> templates. Flow B submits as <strong>UTILITY</strong> templates (transactional reminders for a confirmed booking).</li>
+      <li>STOP / unsubscribe path on every WhatsApp and every email.</li>
+      <li>No before / after claims. No "guaranteed" anything. Outcome references qualified with "where suitable" or "what's realistic for you".</li>
+      <li>No pathologising the customer's appearance. Treatment framed as an option, not a fix.</li>
+      <li>Alan's RN status referenced accurately. No "doctor" or "surgeon" framing.</li>
+      <li>Calm, short sentences, no jargon. No "do you suffer from", no "are you struggling".</li>
+      <li>No em-dashes anywhere in body copy or subject lines.</li>
+      <li>Flow A is signed personally from Alan where it fits, which lifts trust and reply rate in clinical contexts.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="info-block">
+  <div class="info-card">
+    <h3>Template names (paste-ready)</h3>
+    <p><strong>Flow A · MARKETING</strong></p>
+    <ul>
+      <li><code>rma_nsb_lead_day_0</code>, <code>rma_nsb_lead_day_1</code>, <code>rma_nsb_lead_day_3</code>, <code>rma_nsb_lead_day_5</code>, <code>rma_nsb_lead_day_7</code></li>
+      <li><code>rma_nsb_email_day_0</code>, <code>rma_nsb_email_day_1</code>, <code>rma_nsb_email_day_3</code>, <code>rma_nsb_email_day_5</code>, <code>rma_nsb_email_day_7</code></li>
+    </ul>
+    <p><strong>Flow B · UTILITY</strong></p>
+    <ul>
+      <li><code>rma_nsb_confirm</code>, <code>rma_nsb_reminder_48h</code>, <code>rma_nsb_reminder_24h</code>, <code>rma_nsb_reminder_10min</code>, <code>rma_nsb_reminder_5min</code></li>
+      <li><code>rma_nsb_confirm_email</code>, <code>rma_nsb_reminder_48h_email</code>, <code>rma_nsb_reminder_24h_email</code>, <code>rma_nsb_reminder_10min_email</code></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p><b>Restart Medical · Non-Surgical Blepharoplasty GHL Flows · 2026-05-19</b></p>
+  <p style="margin-top:6px">Prepared by The Growth Engine · WhatsApp + Email copy for GoHighLevel</p>
+</footer>
+
+</body>
+</html>
