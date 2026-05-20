@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Frenchify · Webinar ROI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --border: #ececec;
+    --border-strong: #d4d4d4;
+    --text: #0a0a0a;
+    --text-2: #525252;
+    --text-3: #a3a3a3;
+    --blue: #2563eb;
+    --green: #15803d;
+    --red: #dc2626;
+    --amber: #d97706;
+    --green-bg: #f0fdf4;
+    --red-bg: #fef2f2;
+    --amber-bg: #fffbeb;
+    --gray-bg: #f5f5f4;
+    --tint: #fafaf9;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 40px 28px 80px; }
+
+  header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; gap: 20px; flex-wrap: wrap; }
+  .title-block .eyebrow { font-size: 11px; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; margin-bottom: 10px; }
+  h1 { font-size: 30px; font-weight: 600; letter-spacing: -0.025em; margin: 0; line-height: 1.1; }
+  .meta-row { color: var(--text-2); font-size: 13px; margin-top: 8px; }
+  .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .control {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 8px 12px; border-radius: 8px; font-size: 13px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+  .control label { color: var(--text-2); font-size: 12px; }
+  .control input {
+    background: transparent; border: 0; color: var(--text);
+    width: 48px; padding: 2px 4px; font-size: 13px; font-weight: 600;
+    font-family: inherit; font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .control input:focus { outline: 1px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+  .control .pill-sm { font-size: 10px; color: var(--text-3); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500; }
+
+  .seg {
+    display: inline-flex; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 3px; gap: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+  .seg button {
+    background: transparent; border: 0; padding: 6px 12px; cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 500; color: var(--text-2);
+    border-radius: 6px;
+  }
+  .seg button.active { background: var(--text); color: white; }
+  .seg button:hover:not(.active) { background: var(--gray-bg); color: var(--text); }
+
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin-bottom: 8px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { padding: 22px 24px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .kpi:nth-child(4n) { border-right: 0; }
+  .kpi:nth-child(n+5) { border-bottom: 0; }
+  @media (max-width: 900px) {
+    .kpi { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .kpi:nth-child(2n) { border-right: 0; }
+    .kpi:nth-last-child(-n+2) { border-bottom: 0; }
+  }
+  .kpi .label { color: var(--text-2); font-size: 11px; font-weight: 500; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .kpi .val { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; display: flex; align-items: baseline; gap: 8px; }
+  .kpi .val.green { color: var(--green); }
+  .kpi .sub { color: var(--text-3); font-size: 12px; margin-top: 6px; }
+  .kpi .trend { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+  .kpi .trend.up { color: var(--green); background: var(--green-bg); }
+  .kpi .trend.down { color: var(--red); background: var(--red-bg); }
+
+  .year-strip {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0 36px;
+  }
+  @media (max-width: 700px) { .year-strip { grid-template-columns: 1fr; } }
+  .year-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+  .year-card .l { font-size: 11px; color: var(--text-3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+  .year-card .v { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-top: 4px; }
+  .year-card .right { text-align: right; }
+  .year-card .right .v { color: var(--green); }
+
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 40px 0 16px; gap: 12px; flex-wrap: wrap; }
+  .section-head h2 { font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .section-head .hint { font-size: 12px; color: var(--text-3); }
+
+  .panels { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+  @media (max-width: 980px) { .panels { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+  .panel-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 22px; border-bottom: 1px solid var(--border);
+  }
+  .panel-head h3 { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+  .panel-head .legend { display: flex; gap: 14px; font-size: 12px; color: var(--text-2); }
+  .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .panel-body { padding: 22px; }
+  .chart-wrap { position: relative; height: 320px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align: left; padding: 11px 12px; color: var(--text-2);
+    font-weight: 500; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
+    border-bottom: 1px solid var(--border); background: #fbfbfa;
+    position: sticky; top: 0; z-index: 1;
+  }
+  thead th:first-child { padding-left: 22px; }
+  thead th:last-child { padding-right: 22px; }
+  tbody td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+  tbody td:first-child { padding-left: 22px; font-weight: 500; }
+  tbody td:last-child { padding-right: 22px; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: #fafaf9; }
+  .num-cell { text-align: right; font-variant-numeric: tabular-nums; }
+  .pending { color: var(--text-3); font-style: italic; font-size: 12px; }
+  .src-tag {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    padding: 1px 6px; border-radius: 4px; margin-left: 6px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    background: var(--gray-bg); color: var(--text-3);
+  }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 8px; border-radius: 6px;
+    font-size: 11px; font-weight: 500; line-height: 1.4;
+  }
+  .pill .dot { width: 5px; height: 5px; border-radius: 50%; }
+  .pill.green  { background: var(--green-bg); color: var(--green); }
+  .pill.green .dot { background: var(--green); }
+  .pill.amber  { background: var(--amber-bg); color: var(--amber); }
+  .pill.amber .dot { background: var(--amber); }
+  .pill.red    { background: var(--red-bg);   color: var(--red); }
+  .pill.red .dot { background: var(--red); }
+  .pill.gray   { background: var(--gray-bg);  color: var(--text-2); }
+  .pill.gray .dot { background: var(--text-3); }
+
+  tfoot td {
+    padding: 14px 12px; font-weight: 600; font-size: 13px;
+    border-top: 2px solid var(--border-strong); background: #fbfbfa;
+  }
+  tfoot td:first-child { padding-left: 22px; }
+  tfoot td:last-child { padding-right: 22px; }
+
+  .btn-primary {
+    background: var(--text); color: white; border: 0; cursor: pointer;
+    padding: 9px 14px; border-radius: 8px;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: background 0.15s ease;
+  }
+  .btn-primary:hover { background: #262626; }
+  .btn-secondary {
+    background: var(--surface); color: var(--text-2); border: 1px solid var(--border);
+    padding: 9px 14px; border-radius: 8px; cursor: pointer;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+  }
+  .btn-secondary:hover { background: var(--gray-bg); color: var(--text); }
+  .btn-danger {
+    background: transparent; color: var(--red); border: 0; cursor: pointer;
+    padding: 4px 6px; border-radius: 6px;
+    font-family: inherit; font-size: 12px; font-weight: 500;
+  }
+  .btn-danger:hover { background: var(--red-bg); }
+
+  /* row actions: hidden by default, visible on hover */
+  .row-actions { display: inline-flex; gap: 4px; opacity: 0; transition: opacity 0.15s ease; }
+  tbody tr:hover .row-actions { opacity: 1; }
+  .icon-btn {
+    background: transparent; border: 0; cursor: pointer;
+    width: 26px; height: 26px; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-3); font-size: 13px;
+    font-family: inherit;
+  }
+  .icon-btn:hover { background: var(--gray-bg); color: var(--text); }
+  .icon-btn.danger:hover { background: var(--red-bg); color: var(--red); }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(10,10,10,0.45);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 20px;
+    backdrop-filter: blur(2px);
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: 14px;
+    width: 100%; max-width: 460px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+  .modal-head {
+    padding: 22px 24px 0; display: flex; align-items: flex-start; justify-content: space-between;
+  }
+  .modal-head h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .modal-head p { margin: 4px 0 0; font-size: 12px; color: var(--text-2); }
+  .modal-head .close {
+    background: transparent; border: 0; cursor: pointer; padding: 6px;
+    color: var(--text-3); font-size: 20px; line-height: 1; border-radius: 6px;
+    font-family: inherit;
+  }
+  .modal-head .close:hover { background: var(--gray-bg); color: var(--text); }
+  .modal-body { padding: 20px 24px 4px; }
+  .form-row { margin-bottom: 14px; }
+  .form-row label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--text-2); margin-bottom: 6px;
+  }
+  .form-row label .hint { color: var(--text-3); font-weight: 400; margin-left: 6px; }
+  .form-row input {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: 8px; font-family: inherit; font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text); background: var(--surface);
+  }
+  .form-row input:focus { outline: 0; border-color: var(--text); box-shadow: 0 0 0 3px rgba(10,10,10,0.06); }
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-foot {
+    padding: 14px 24px 22px; display: flex; gap: 8px; justify-content: flex-end; align-items: center;
+  }
+  .modal-foot .err { color: var(--red); font-size: 12px; margin-right: auto; }
+
+  .update-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 20px; margin-bottom: 24px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+  .update-card .icon {
+    width: 32px; height: 32px; border-radius: 8px; background: var(--text);
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+    flex-shrink: 0; color: white;
+  }
+  .update-card .body { flex: 1; }
+  .update-card .body strong { font-size: 13px; font-weight: 600; }
+  .update-card .body p { margin: 2px 0 0; font-size: 12px; color: var(--text-2); }
+  .update-card code {
+    background: var(--gray-bg); padding: 1px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  }
+
+  .top-perf {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 14px 0 0;
+  }
+  @media (max-width: 760px) { .top-perf { grid-template-columns: 1fr; } }
+  .top-perf .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .top-perf .card .lbl { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; margin-bottom: 8px; }
+  .top-perf .card .date { font-size: 13px; font-weight: 600; }
+  .top-perf .card .stat { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--green); margin-top: 6px; }
+  .top-perf .card .stat.red { color: var(--red); }
+  .top-perf .card .meta { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+
+  .footer-note { color: var(--text-3); font-size: 11px; margin-top: 32px; text-align: center; }
+  .spark { width: 90px; height: 28px; display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <div class="eyebrow">Frenchify with Vyom</div>
+      <h1>Webinar ROI Dashboard</h1>
+      <div class="meta-row" id="meta-row">Loading…</div>
+    </div>
+    <div class="controls">
+      <div class="seg" id="filter">
+        <button data-yr="all" class="active">All</button>
+        <button data-yr="2026">2026</button>
+        <button data-yr="2025">2025</button>
+      </div>
+      <div class="control" id="rate-display" title="Live CAD→INR rate, refreshed on page load">
+        <span class="pill-sm" style="text-transform:none;letter-spacing:0">1 CAD =</span>
+        <span class="num" style="font-weight:600">₹<span id="rate-val">…</span></span>
+        <span class="pill-sm" id="rate-meta">fetching…</span>
+      </div>
+      <button class="btn-primary" id="add-btn">
+        <span style="font-size:14px;line-height:1">+</span> Add webinar
+      </button>
+    </div>
+  </header>
+
+  <div class="update-card">
+    <div class="icon">📅</div>
+    <div class="body">
+      <strong>Weekly update — every Monday</strong>
+      <p>Click <strong>+ Add webinar</strong> at the top right to log Sunday's results. Saved to this browser. Hover a 2026 row to edit or delete it.</p>
+    </div>
+  </div>
+
+  <div class="kpi-grid" id="kpis"></div>
+
+  <div class="section-head">
+    <h2>Performance Over Time</h2>
+    <span class="hint">Sorted oldest → newest</span>
+  </div>
+  <div class="panels">
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Spend vs Revenue</h3>
+        <div class="legend">
+          <span><span class="legend-dot" style="background:#0a0a0a"></span>Spend</span>
+          <span><span class="legend-dot" style="background:#15803d"></span>Revenue</span>
+        </div>
+      </div>
+      <div class="panel-body"><div class="chart-wrap"><canvas id="barChart"></canvas></div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <h3>ROI Multiplier (X Return)</h3>
+        <div class="legend"><span><span class="legend-dot" style="background:#2563eb"></span>× return</span></div>
+      </div>
+      <div class="panel-body"><div class="chart-wrap"><canvas id="roiChart"></canvas></div></div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Highlights</h2>
+  </div>
+  <div class="top-perf" id="highlights"></div>
+
+  <div class="section-head" style="margin-top: 40px">
+    <h2>Per-Webinar Breakdown</h2>
+    <span class="hint">Newest first</span>
+  </div>
+  <div class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th class="num-cell">Spend</th>
+          <th class="num-cell">Regs</th>
+          <th class="num-cell">CPR</th>
+          <th class="num-cell">Purch.</th>
+          <th class="num-cell">CPP</th>
+          <th class="num-cell">Sale CAD</th>
+          <th class="num-cell">Sale INR</th>
+          <th class="num-cell">ROI</th>
+          <th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+      <tfoot>
+        <tr>
+          <td>Total</td>
+          <td class="num-cell" id="t-spend"></td>
+          <td class="num-cell" id="t-regs"></td>
+          <td class="num-cell" id="t-cpr"></td>
+          <td class="num-cell" id="t-purch"></td>
+          <td class="num-cell" id="t-cpp"></td>
+          <td class="num-cell" id="t-cad"></td>
+          <td class="num-cell" id="t-inr"></td>
+          <td class="num-cell" id="t-roi"></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="footer-note">
+    CPR = Cost per Registration · CPP = Cost per Purchase · ROI = Revenue ÷ Spend (× multiplier) · 2025 data sourced from Google Sheet · <a href="#" id="reset-link" style="color:var(--text-2)">Reset to defaults</a>
+  </div>
+</div>
+
+<!-- Add/Edit Webinar Modal -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-head">
+      <div>
+        <h3 id="modal-title">Add webinar</h3>
+        <p id="modal-sub">Log Sunday's webinar — saved to this browser only</p>
+      </div>
+      <button class="close" id="modal-close" aria-label="Close">×</button>
+    </div>
+    <form id="webinar-form" class="modal-body">
+      <input type="hidden" id="f-id" />
+      <div class="form-row">
+        <label for="f-date">Webinar date</label>
+        <input id="f-date" type="date" required />
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label for="f-spend">Ad spend <span class="hint">INR · blank if pending</span></label>
+          <input id="f-spend" type="number" inputmode="numeric" min="0" step="1" placeholder="0" />
+        </div>
+        <div class="form-row">
+          <label for="f-regs">Registrations <span class="hint">blank if pending</span></label>
+          <input id="f-regs" type="number" inputmode="numeric" min="0" step="1" placeholder="0" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="f-cad">Sale amount <span class="hint">CAD · leave blank if pending</span></label>
+        <input id="f-cad" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" />
+      </div>
+      <div class="modal-foot">
+        <div class="err" id="form-err"></div>
+        <button type="button" class="btn-secondary" id="modal-cancel">Cancel</button>
+        <button type="submit" class="btn-primary" id="modal-save">Save webinar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+// DATA SOURCES
+// ════════════════════════════════════════════════════════════════════
+
+// 2025 data — ad spend + regs from FWV Google Sheet, CAD revenue now from transactions
+// (mapped per Allen's rule: D + D+1 in America/Toronto, courses only)
+// CAD/purchases recomputed from Frenchify-with-Vyom transactions CSV (May 20, 2026 export)
+// INR is computed at live rate in JS — no longer stored
+const sheet2025 = [
+  // Spend: Meta Graph API (act_760843489738347 INR) where available · Regs: GHL (5432 "webinar lead" contacts bucketed by dateAdded)
+  { date: "30 Nov 2025", spend: 10012, regs: 249, cad: 5439.00,  purch: 11, api: true },
+  { date: "26 Oct 2025", spend: 16949, regs: 353, cad: 11471.10, purch: 19, api: true },
+  { date: "12 Oct 2025", spend: 8475,  regs: 243, cad: 7136.00,  purch: 12, api: true },
+  { date: "5 Oct 2025",  spend: 17337, regs: 258, cad: 8686.10,  purch: 17, api: true },
+  { date: "21 Sep 2025", spend: 13589, regs: 209, cad: 6332.10,  purch: 11, api: true },
+  { date: "7 Sep 2025",  spend: 11447, regs: 276, cad: 6387.00,  purch: 11, api: true },
+  { date: "24 Aug 2025", spend: 18837, regs: 657, cad: 3891,     purch: 8,  api: true },
+  // ↓ Pre-Aug 10 2025: Meta API data unavailable. Allen's sheet figures retained for spend.
+  { date: "3 Aug 2025",  spend: 17000, regs: 276, cad: 3493,     purch: 4  },
+  { date: "20 Jul 2025", spend: 19130, regs: 694, cad: 3992,     purch: 5  },
+];
+
+// ════════════════════════════════════════════════════════════════════
+// ⚠️ EDIT THIS BLOCK EVERY MONDAY — add the new webinar at the TOP
+// 2026 data — manually entered. Sales are in CAD; INR = cad × rate.
+// ════════════════════════════════════════════════════════════════════
+// Seed data — also lives in localStorage once page first loads
+// Webinars with all-null spend/regs/cad are "awaiting data" placeholders
+const seed2026 = [
+  // Apr–May 2026: Allen's manual entries (transaction CSV doesn't cover this period)
+  { id: "m-2026-05-10", date: "10 May 2026", spend: 8500, regs: 79,  cad: 1498 },
+  { id: "m-2026-05-03", date: "3 May 2026",  spend: 2935, regs: 101, cad: 6818 },
+  { id: "m-2026-04-26", date: "26 Apr 2026", spend: 7355, regs: 25,  cad: null },
+  { id: "m-2026-04-24", date: "24 Apr 2026", spend: 8056, regs: 70,  cad: null },
+  { id: "m-2026-04-19", date: "19 Apr 2026", spend: 5770, regs: 36,  cad: null },
+  { id: "m-2026-04-17", date: "17 Apr 2026", spend: 5780, regs: 133, cad: 3743 },
+  { id: "m-2026-04-12", date: "12 Apr 2026", spend: 4791, regs: 50,  cad: 2924 },
+  { id: "m-2026-04-10", date: "10 Apr 2026", spend: 1567, regs: 111, cad: 1996 },
+  // Nov 2025 → Mar 2026: spend from Meta API; regs from GHL; CAD + purchases from transactions
+  { id: "m-2026-03-08", date: "8 Mar 2026",  spend: 0,     regs: 3,   cad: 5190.00,  purch: 9,  api: true }, // canceled/skipped
+  { id: "m-2026-03-01", date: "1 Mar 2026",  spend: 4565,  regs: 76,  cad: 9182.00,  purch: 15, api: true },
+  { id: "m-2026-02-22", date: "22 Feb 2026", spend: 5522,  regs: 100, cad: 8883.00,  purch: 13, api: true },
+  { id: "m-2026-02-15", date: "15 Feb 2026", spend: 7394,  regs: 117, cad: 10108.00, purch: 20, api: true },
+  { id: "m-2026-02-08", date: "8 Feb 2026",  spend: 0,     regs: 1,   cad: 4792.00,  purch: 8,  api: true },
+  { id: "m-2026-02-07", date: "7 Feb 2026",  spend: 6167,  regs: 100, cad: 7315.00,  purch: 13, api: true },
+  { id: "m-2026-02-01", date: "1 Feb 2026",  spend: 6378,  regs: 104, cad: 13313.00, purch: 23, api: true },
+  { id: "m-2026-01-25", date: "25 Jan 2026", spend: 8218,  regs: 121, cad: 8342.00,  purch: 14, api: true },
+  { id: "m-2026-01-18", date: "18 Jan 2026", spend: 8996,  regs: 124, cad: 10608.00, purch: 19, api: true },
+  { id: "m-2026-01-11", date: "11 Jan 2026", spend: 7459,  regs: 74,  cad: 6238.00,  purch: 9,  api: true },
+  { id: "m-2026-01-04", date: "4 Jan 2026",  spend: 9306,  regs: 127, cad: 15548.00, purch: 25, api: true },
+  { id: "m-2025-12-28", date: "28 Dec 2025", spend: 10278, regs: 84,  cad: 9860.00,  purch: 13, api: true },
+  { id: "m-2025-12-21", date: "21 Dec 2025", spend: 6589,  regs: 141, cad: 6587.00,  purch: 11, api: true },
+  { id: "m-2025-12-14", date: "14 Dec 2025", spend: 4237,  regs: 126, cad: 9410.00,  purch: 15, api: true },
+  { id: "m-2025-11-16", date: "16 Nov 2025", spend: 12055, regs: 175, cad: 15220.00, purch: 21, api: true },
+  { id: "m-2025-11-02", date: "2 Nov 2025",  spend: 0,     regs: 70,  cad: 10629.00, purch: 18, api: true },
+];
+
+const STORAGE_KEY = "fwv_dashboard_webinars_v8";
+
+function loadWebinars() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) return arr;
+    }
+  } catch (e) { /* corrupted, fall through */ }
+  // first load — persist seed
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(seed2026));
+  return [...seed2026];
+}
+function saveWebinars(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+let manual2026 = loadWebinars();
+// ════════════════════════════════════════════════════════════════════
+
+// helpers
+const fmtINR = n => n == null ? "—" : "₹" + Math.round(n).toLocaleString("en-IN");
+const fmtK   = n => n >= 100000 ? "₹" + (n/100000).toFixed(1) + "L" : "₹" + (n/1000).toFixed(1) + "k";
+const fmtNum = n => Math.round(n).toLocaleString("en-IN");
+const fmtCAD = n => n == null ? "—" : "$" + n.toLocaleString("en-IN");
+const fmtX   = n => n == null ? "—" : n.toFixed(1) + "×";
+
+let barChart, roiChart;
+let yearFilter = "all";
+let liveRate = 61; // fallback until fetch resolves
+
+async function fetchLiveRate() {
+  const sources = [
+    { url: "https://open.er-api.com/v6/latest/CAD", pick: j => j?.rates?.INR, ts: j => j?.time_last_update_utc },
+    { url: "https://api.exchangerate-api.com/v4/latest/CAD", pick: j => j?.rates?.INR, ts: j => j?.date },
+    { url: "https://api.frankfurter.app/latest?from=CAD&to=INR", pick: j => j?.rates?.INR, ts: j => j?.date },
+  ];
+  for (const s of sources) {
+    try {
+      const r = await fetch(s.url);
+      if (!r.ok) continue;
+      const j = await r.json();
+      const inr = s.pick(j);
+      if (inr && inr > 30 && inr < 100) {
+        liveRate = inr;
+        document.getElementById("rate-val").textContent = inr.toFixed(2);
+        const stamp = s.ts(j) || "";
+        const d = stamp ? new Date(stamp) : null;
+        document.getElementById("rate-meta").textContent = d && !isNaN(d) ? "live · " + d.toLocaleDateString("en-IN", {day:"numeric", month:"short"}) : "live";
+        return inr;
+      }
+    } catch (e) { /* try next */ }
+  }
+  document.getElementById("rate-val").textContent = liveRate.toFixed(2);
+  document.getElementById("rate-meta").textContent = "fallback";
+  return liveRate;
+}
+
+function verdict(roi) {
+  if (roi == null) return { label: "Pending", cls: "gray" };
+  if (roi >= 20) return { label: "Excellent", cls: "green" };
+  if (roi >= 5)  return { label: "Strong",    cls: "green" };
+  if (roi >= 1)  return { label: "Profitable", cls: "amber" };
+  return { label: "Loss", cls: "red" };
+}
+
+function rowVerdict(r) {
+  // Fully unreported
+  if (r.spend == null && r.cad == null && !r.regs) return { label: "Awaiting Data", cls: "gray" };
+  // Has CAD but no spend → tracked sale, need ad spend
+  if (r.spend == null && r.cad != null) return { label: "Add Ad Spend", cls: "amber" };
+  // Has spend but no CAD → sale pending
+  if (r.spend != null && r.cad == null) return { label: "Pending Sale", cls: "gray" };
+  return verdict(r.roi);
+}
+
+function getRows() {
+  const rate = liveRate;
+  // All rows: INR computed live from cad × rate. CPP computed from spend/purch.
+  const r25 = sheet2025.map(d => ({
+    date: d.date, year: 2025, spend: d.spend, regs: d.regs,
+    cad: d.cad, inr: d.cad == null ? null : d.cad * rate,
+    purch: d.purch, est: d.est === true, api: d.api === true,
+    source: "sheet"
+  }));
+  const sorted26 = [...manual2026].sort((a, b) => dateToEpoch(b.date) - dateToEpoch(a.date));
+  const r26 = sorted26.map(d => ({
+    id: d.id, date: d.date, year: 2026, spend: d.spend, regs: d.regs,
+    cad: d.cad, inr: d.cad == null ? null : d.cad * rate,
+    purch: d.purch != null ? d.purch : null,
+    est: d.est === true, api: d.api === true,
+    source: d.purch != null ? "tx" : "manual"
+  }));
+  let all = [...r26, ...r25];
+  if (yearFilter !== "all") all = all.filter(r => String(r.year) === yearFilter);
+  return all.map(r => ({
+    ...r,
+    cpr: r.regs ? r.spend / r.regs : null,
+    cpp: (r.spend != null && r.purch) ? r.spend / r.purch : null,
+    roas: r.inr != null && r.spend != null ? r.inr / r.spend : null,
+    roi:  r.inr != null && r.spend != null ? (r.inr - r.spend) / r.spend : null,
+  }));
+}
+
+function sum(arr, key) { return arr.reduce((a,b) => a + (b[key] || 0), 0); }
+function sumKnown(arr, key) { return arr.filter(r => r[key] != null).reduce((a,b) => a + b[key], 0); }
+
+function render() {
+  const rows = getRows();
+  const rate = liveRate;
+
+  // Totals (filtered view)
+  const reportedRows = rows.filter(r => r.spend != null || r.cad != null);
+  const awaitingCount = rows.length - reportedRows.length;
+  // ROI/ROAS only on rows with BOTH spend and revenue (fair comparison)
+  const fullRow    = reportedRows.filter(r => r.inr != null && r.spend != null);
+  const fullSpend  = fullRow.reduce((a,b) => a + b.spend, 0);
+  const fullINR    = fullRow.reduce((a,b) => a + b.inr, 0);
+  // Totals across all reported (for display only)
+  const totalSpend = sum(reportedRows, "spend");
+  const totalRegs  = sumKnown(reportedRows, "regs");
+  const totalINR   = reportedRows.filter(r => r.inr != null).reduce((a,b) => a + b.inr, 0);
+  const totalCAD   = reportedRows.filter(r => r.cad != null).reduce((a,b) => a + b.cad, 0);
+  const totalPurch = sumKnown(reportedRows, "purch");
+  const totalCPR   = totalRegs ? totalSpend / totalRegs : null;
+  const totalCPP   = totalPurch && fullSpend ? fullSpend / fullRow.reduce((a,b)=>a+(b.purch||0),0) : null;
+  const totalROAS  = fullSpend > 0 ? fullINR / fullSpend : null;
+  const totalROI   = fullSpend > 0 ? (fullINR - fullSpend) / fullSpend : null;
+  const fullRevCAD = fullRow.filter(r => r.cad != null).reduce((a,b) => a + b.cad, 0);
+
+  // KPIs
+  const awaitingNote = awaitingCount > 0 ? ` · <span style="color:var(--amber)">${awaitingCount} awaiting</span>` : "";
+  document.getElementById("kpis").innerHTML = `
+    <div class="kpi">
+      <div class="label">Total Ad Spend</div>
+      <div class="val">${fmtINR(totalSpend)}</div>
+      <div class="sub">${reportedRows.filter(r=>r.spend!=null).length} webinars tracked${awaitingNote}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total Registrations</div>
+      <div class="val">${fmtNum(totalRegs)}</div>
+      <div class="sub">avg ${reportedRows.filter(r=>r.regs).length ? (totalRegs / reportedRows.filter(r=>r.regs).length).toFixed(0) : 0}/webinar · CPR ${fmtINR(totalCPR)}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total Revenue</div>
+      <div class="val green">${fmtINR(totalINR)}</div>
+      <div class="sub">$${fmtNum(totalCAD)} CAD · ${reportedRows.filter(r=>r.cad!=null).length} webinars</div>
+    </div>
+    <div class="kpi">
+      <div class="label">ROI · matched only</div>
+      <div class="val green">${fmtX(totalROI)}</div>
+      <div class="sub">ROAS ${fmtX(totalROAS)} · across ${fullRow.length} webinars w/ spend + sales</div>
+    </div>
+  `;
+
+  // Header meta
+  const totalCount = manual2026.length + sheet2025.length;
+  const fullCount = sheet2025.filter(d => d.spend != null && d.cad != null).length
+                  + manual2026.filter(d => d.spend != null && d.cad != null).length;
+  const partialCount = manual2026.filter(d => (d.spend == null) !== (d.cad == null)).length;
+  document.getElementById("meta-row").innerHTML =
+    `${totalCount} webinars · ${fullCount} full${partialCount ? ` · <span style="color:var(--amber)">${partialCount} partial</span>` : ""} · CAD revenue mapped from transactions (D+D+1)`;
+
+  // Table (newest first - already ordered)
+  const tbody = document.getElementById("rows");
+  tbody.innerHTML = rows.map(r => {
+    const v = rowVerdict(r);
+    const srcTag = r.source === "sheet" ? '<span class="src-tag" title="Ad data from sheet · revenue from transactions">sheet+tx</span>'
+                 : r.source === "tx"    ? '<span class="src-tag" title="Revenue + purchases from transactions, ad data pending">tx</span>'
+                 : '';
+    return `<tr>
+      <td>
+        ${r.date} ${srcTag}
+        ${r.source === "manual" || r.source === "tx" ? `<span class="row-actions">
+          <button class="icon-btn" title="Edit" onclick="openEdit('${r.id}')">✎</button>
+          <button class="icon-btn danger" title="Delete" onclick="deleteWebinar('${r.id}')">🗑</button>
+        </span>` : ''}
+      </td>
+      <td class="num-cell">${fmtINR(r.spend)}${r.api ? ' <span class="src-tag" title="From Meta Ads API (act_760843489738347)">api</span>' : r.est ? ' <span class="src-tag" title="Estimated">est</span>' : ''}</td>
+      <td class="num-cell">${r.regs || '<span class="pending">—</span>'}</td>
+      <td class="num-cell">${r.cpr == null ? '<span class="pending">—</span>' : fmtINR(r.cpr)}</td>
+      <td class="num-cell">${r.purch == null ? '<span class="pending">—</span>' : r.purch}</td>
+      <td class="num-cell">${r.cpp == null ? '<span class="pending">—</span>' : fmtINR(r.cpp)}</td>
+      <td class="num-cell">${r.cad == null ? '<span class="pending">pending</span>' : fmtCAD(r.cad)}</td>
+      <td class="num-cell">${r.inr == null ? '<span class="pending">—</span>' : fmtINR(r.inr)}</td>
+      <td class="num-cell" style="font-weight:600;color:${r.roi != null && r.roi >= 5 ? 'var(--green)' : 'var(--text)'}">${fmtX(r.roi)}</td>
+      <td><span class="pill ${v.cls}"><span class="dot"></span>${v.label}</span></td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("t-spend").textContent = fmtINR(totalSpend);
+  document.getElementById("t-regs").textContent  = fmtNum(totalRegs);
+  document.getElementById("t-cpr").textContent   = fmtINR(totalCPR);
+  document.getElementById("t-purch").textContent = fmtNum(totalPurch);
+  document.getElementById("t-cpp").textContent   = fmtINR(totalCPP);
+  document.getElementById("t-cad").textContent   = "$" + fmtNum(totalCAD);
+  document.getElementById("t-inr").textContent   = fmtINR(totalINR);
+  document.getElementById("t-roi").textContent   = fmtX(totalROI);
+
+  // Highlights
+  const withROI = rows.filter(r => r.roi != null);
+  const bestROI = withROI.length ? withROI.reduce((a,b) => a.roi > b.roi ? a : b) : null;
+  const worstROI = withROI.length ? withROI.reduce((a,b) => a.roi < b.roi ? a : b) : null;
+  const lowestCPR = rows.filter(r => r.cpr != null).reduce((a,b) => !a || b.cpr < a.cpr ? b : a, null);
+
+  document.getElementById("highlights").innerHTML = `
+    <div class="card">
+      <div class="lbl">Best ROI</div>
+      <div class="date">${bestROI ? bestROI.date : "—"}</div>
+      <div class="stat">${bestROI ? fmtX(bestROI.roi) : "—"}</div>
+      <div class="meta">${bestROI ? fmtINR(bestROI.spend) + ' → ' + fmtINR(bestROI.inr) : ''}</div>
+    </div>
+    <div class="card">
+      <div class="lbl">Lowest Cost / Reg</div>
+      <div class="date">${lowestCPR ? lowestCPR.date : "—"}</div>
+      <div class="stat">${lowestCPR ? fmtINR(lowestCPR.cpr) : "—"}</div>
+      <div class="meta">${lowestCPR ? lowestCPR.regs + ' regs · ' + fmtINR(lowestCPR.spend) : ''}</div>
+    </div>
+    <div class="card">
+      <div class="lbl">Weakest ROI</div>
+      <div class="date">${worstROI ? worstROI.date : "—"}</div>
+      <div class="stat ${worstROI && worstROI.roi < 5 ? 'red' : ''}">${worstROI ? fmtX(worstROI.roi) : "—"}</div>
+      <div class="meta">${worstROI ? fmtINR(worstROI.spend) + ' → ' + fmtINR(worstROI.inr) : ''}</div>
+    </div>
+  `;
+
+  // Charts: chronological order (oldest first), excluding fully-awaiting rows
+  const chrono = [...reportedRows].reverse();
+  const labels    = chrono.map(r => r.date.replace(/ 20(25|26)/, ""));
+  const spendData = chrono.map(r => r.spend);
+  const revData   = chrono.map(r => r.inr || 0);
+  const roiData   = chrono.map(r => r.roi);
+
+  if (barChart) barChart.destroy();
+  barChart = new Chart(document.getElementById("barChart"), {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        { label: "Spend",   data: spendData, backgroundColor: "#0a0a0a", borderRadius: 4, barPercentage: 0.78, categoryPercentage: 0.7 },
+        { label: "Revenue", data: revData,   backgroundColor: "#15803d", borderRadius: 4, barPercentage: 0.78, categoryPercentage: 0.7 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#0a0a0a", padding: 10, titleFont: { size: 12, weight: '600' }, bodyFont: { size: 12 },
+          callbacks: {
+            title: items => chrono[items[0].dataIndex].date,
+            label: ctx => `${ctx.dataset.label}: ${fmtINR(ctx.raw)}`
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: "#525252", font: { size: 11 } }, grid: { display: false }, border: { color: "#ececec" } },
+        y: { ticks: { color: "#a3a3a3", font: { size: 11 }, callback: v => fmtK(v) }, grid: { color: "#f5f5f4" }, border: { display: false } }
+      }
+    }
+  });
+
+  if (roiChart) roiChart.destroy();
+  roiChart = new Chart(document.getElementById("roiChart"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "ROI",
+        data: roiData,
+        borderColor: "#2563eb",
+        backgroundColor: "rgba(37, 99, 235, 0.08)",
+        fill: true, tension: 0.35,
+        pointBackgroundColor: "#fff",
+        pointBorderColor: "#2563eb",
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        borderWidth: 2,
+        spanGaps: true,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#0a0a0a", padding: 10, titleFont: { size: 12, weight: '600' }, bodyFont: { size: 12 },
+          callbacks: {
+            title: items => chrono[items[0].dataIndex].date,
+            label: ctx => `${ctx.raw == null ? "Pending" : ctx.raw.toFixed(1) + "× return"}`
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: "#525252", font: { size: 11 } }, grid: { display: false }, border: { color: "#ececec" } },
+        y: { ticks: { color: "#a3a3a3", font: { size: 11 }, callback: v => v + "×" }, grid: { color: "#f5f5f4" }, border: { display: false } }
+      }
+    }
+  });
+}
+
+// Filter buttons
+document.querySelectorAll("#filter button").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("#filter button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    yearFilter = b.dataset.yr;
+    render();
+  });
+});
+
+// ════════════════════════════════════════════════════════════════════
+// Date helpers — convert between "10 May 2026" and "2026-05-10"
+// ════════════════════════════════════════════════════════════════════
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONTHS_FULL = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+function dateToEpoch(label) {
+  // "10 May 2026" → ms
+  const m = label.match(/(\d+)\s+(\w+)\s+(\d{4})/);
+  if (!m) return 0;
+  let mi = MONTHS.indexOf(m[2].slice(0,3));
+  if (mi < 0) mi = MONTHS_FULL.indexOf(m[2]);
+  return new Date(parseInt(m[3]), mi, parseInt(m[1])).getTime();
+}
+function isoToLabel(iso) {
+  // "2026-05-10" → "10 May 2026"
+  const [y, mo, d] = iso.split("-").map(Number);
+  return `${d} ${MONTHS[mo-1]} ${y}`;
+}
+function labelToIso(label) {
+  const m = label.match(/(\d+)\s+(\w+)\s+(\d{4})/);
+  if (!m) return "";
+  let mi = MONTHS.indexOf(m[2].slice(0,3));
+  if (mi < 0) mi = MONTHS_FULL.indexOf(m[2]);
+  return `${m[3]}-${String(mi+1).padStart(2,"0")}-${String(parseInt(m[1])).padStart(2,"0")}`;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Modal CRUD
+// ════════════════════════════════════════════════════════════════════
+const backdrop = document.getElementById("modal-backdrop");
+const modalTitle = document.getElementById("modal-title");
+const modalSub = document.getElementById("modal-sub");
+const fId = document.getElementById("f-id");
+const fDate = document.getElementById("f-date");
+const fSpend = document.getElementById("f-spend");
+const fRegs = document.getElementById("f-regs");
+const fCad = document.getElementById("f-cad");
+const formErr = document.getElementById("form-err");
+
+function openModal({ id = "", date = "", spend = "", regs = "", cad = "" } = {}) {
+  fId.value = id;
+  fDate.value = date;
+  fSpend.value = spend;
+  fRegs.value = regs;
+  fCad.value = cad === null ? "" : cad;
+  formErr.textContent = "";
+  modalTitle.textContent = id ? "Edit webinar" : "Add webinar";
+  modalSub.textContent = id ? "Update this webinar's numbers" : "Log Sunday's webinar — saved to this browser only";
+  backdrop.classList.add("open");
+  setTimeout(() => fDate.focus(), 50);
+}
+function closeModal() { backdrop.classList.remove("open"); }
+
+function openAdd() {
+  // Default date to last Sunday
+  const today = new Date();
+  const lastSun = new Date(today);
+  lastSun.setDate(today.getDate() - today.getDay());
+  const iso = lastSun.toISOString().slice(0,10);
+  openModal({ date: iso });
+}
+
+window.openEdit = function (id) {
+  const w = manual2026.find(x => x.id === id);
+  if (!w) return;
+  openModal({
+    id: w.id,
+    date: labelToIso(w.date),
+    spend: w.spend,
+    regs: w.regs,
+    cad: w.cad,
+  });
+};
+
+window.deleteWebinar = function (id) {
+  const w = manual2026.find(x => x.id === id);
+  if (!w) return;
+  if (!confirm(`Delete the ${w.date} webinar?`)) return;
+  manual2026 = manual2026.filter(x => x.id !== id);
+  saveWebinars(manual2026);
+  render();
+};
+
+document.getElementById("add-btn").addEventListener("click", openAdd);
+document.getElementById("modal-close").addEventListener("click", closeModal);
+document.getElementById("modal-cancel").addEventListener("click", closeModal);
+backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+document.getElementById("webinar-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  formErr.textContent = "";
+  const iso = fDate.value;
+  const spendRaw = fSpend.value.trim();
+  const regsRaw = fRegs.value.trim();
+  const cadRaw = fCad.value.trim();
+  const spend = spendRaw === "" ? null : parseFloat(spendRaw);
+  const regs  = regsRaw === ""  ? null : parseInt(regsRaw, 10);
+  const cad   = cadRaw === ""   ? null : parseFloat(cadRaw);
+  if (!iso) { formErr.textContent = "Pick a date"; return; }
+  if (spend !== null && !(spend >= 0)) { formErr.textContent = "Spend must be a number or blank"; return; }
+  if (regs !== null && !(regs >= 0))   { formErr.textContent = "Registrations must be a number or blank"; return; }
+  if (cad !== null && !(cad >= 0))     { formErr.textContent = "CAD must be a number or blank"; return; }
+
+  const id = fId.value || ("m-" + iso);
+  const dateLabel = isoToLabel(iso);
+  const entry = { id, date: dateLabel, spend, regs, cad };
+
+  const idx = manual2026.findIndex(x => x.id === id);
+  if (idx >= 0) manual2026[idx] = entry;
+  else manual2026.unshift(entry);
+
+  saveWebinars(manual2026);
+  closeModal();
+  render();
+});
+
+// Reset link
+document.getElementById("reset-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  if (!confirm("Reset 2026 data to the original 8 webinars? This clears anything you added in this browser.")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  manual2026 = loadWebinars();
+  render();
+});
+
+// Initial render with fallback rate, then re-render once live rate resolves
+render();
+fetchLiveRate().then(() => render());
+</script>
+</body>
+</html>
