@@ -356,11 +356,6 @@
     </div>
   </div>
 
-  <div class="section-head">
-    <h2>Highlights</h2>
-  </div>
-  <div class="top-perf" id="highlights"></div>
-
   <div class="section-head" style="margin-top: 40px">
     <h2>Per-Webinar Breakdown</h2>
     <span class="hint">Newest first</span>
@@ -700,33 +695,6 @@ function render() {
   document.getElementById("t-cad").textContent   = "$" + fmtNum(totalCAD);
   document.getElementById("t-inr").textContent   = fmtINR(totalINR);
   document.getElementById("t-roi").textContent   = fmtX(totalROI);
-
-  // Highlights
-  const withROI = rows.filter(r => r.roi != null);
-  const bestROI = withROI.length ? withROI.reduce((a,b) => a.roi > b.roi ? a : b) : null;
-  const worstROI = withROI.length ? withROI.reduce((a,b) => a.roi < b.roi ? a : b) : null;
-  const lowestCPR = rows.filter(r => r.cpr != null).reduce((a,b) => !a || b.cpr < a.cpr ? b : a, null);
-
-  document.getElementById("highlights").innerHTML = `
-    <div class="card">
-      <div class="lbl">Best ROI</div>
-      <div class="date">${bestROI ? bestROI.date : "—"}</div>
-      <div class="stat">${bestROI ? fmtX(bestROI.roi) : "—"}</div>
-      <div class="meta">${bestROI ? fmtINR(bestROI.spend) + ' → ' + fmtINR(bestROI.inr) : ''}</div>
-    </div>
-    <div class="card">
-      <div class="lbl">Lowest Cost / Reg</div>
-      <div class="date">${lowestCPR ? lowestCPR.date : "—"}</div>
-      <div class="stat">${lowestCPR ? fmtINR(lowestCPR.cpr) : "—"}</div>
-      <div class="meta">${lowestCPR ? lowestCPR.regs + ' regs · ' + fmtINR(lowestCPR.spend) : ''}</div>
-    </div>
-    <div class="card">
-      <div class="lbl">Weakest ROI</div>
-      <div class="date">${worstROI ? worstROI.date : "—"}</div>
-      <div class="stat ${worstROI && worstROI.roi < 5 ? 'red' : ''}">${worstROI ? fmtX(worstROI.roi) : "—"}</div>
-      <div class="meta">${worstROI ? fmtINR(worstROI.spend) + ' → ' + fmtINR(worstROI.inr) : ''}</div>
-    </div>
-  `;
 
   // Charts: chronological order (oldest first), excluding fully-awaiting rows
   const chrono = [...reportedRows].reverse();
