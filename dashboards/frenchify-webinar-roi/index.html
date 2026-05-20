@@ -134,7 +134,14 @@
   .panel-body { padding: 22px; }
   .chart-wrap { position: relative; height: 320px; }
 
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .table-scroll::-webkit-scrollbar { height: 6px; }
+  .table-scroll::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 920px; }
   thead th {
     text-align: left; padding: 11px 12px; color: var(--text-2);
     font-weight: 500; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
@@ -294,6 +301,29 @@
 
   .footer-note { color: var(--text-3); font-size: 11px; margin-top: 32px; text-align: center; }
   .spark { width: 90px; height: 28px; display: block; }
+
+  /* ─── Mobile optimizations ─── */
+  @media (max-width: 640px) {
+    .wrap { padding: 24px 14px 60px; }
+    h1 { font-size: 22px; }
+    header { gap: 12px; }
+    .controls { width: 100%; }
+    .seg button { padding: 6px 10px; font-size: 11px; }
+    .btn-primary { padding: 8px 12px; font-size: 12px; }
+    .control { padding: 6px 10px; font-size: 12px; }
+    .meta-row { font-size: 12px; }
+    .update-card { padding: 12px 14px; }
+    .update-card .body p { font-size: 11px; }
+    .kpi { padding: 16px 18px; }
+    .kpi .val { font-size: 20px; }
+    .chart-wrap { height: 240px; }
+    .panel-head { padding: 14px 16px; }
+    .panel-body { padding: 14px; }
+    .section-head h2 { font-size: 14px; }
+    .modal { max-width: 95vw; }
+    .modal-head { padding: 18px 18px 0; }
+    .modal-body { padding: 16px 18px 4px; }
+  }
 </style>
 </head>
 <body>
@@ -361,6 +391,7 @@
     <span class="hint">Newest first</span>
   </div>
   <div class="panel">
+    <div class="table-scroll">
     <table>
       <thead>
         <tr>
@@ -392,6 +423,7 @@
         </tr>
       </tfoot>
     </table>
+    </div>
   </div>
 
   <div class="footer-note">
