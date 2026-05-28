@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>RMA P-Shot — Barnsley Conversion Push</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a2540;
+    --navy-700: #133a5e;
+    --sky: #4e8bca;
+    --sky-50: #eaf3fb;
+    --ink: #1a2533;
+    --muted: #5a6b7e;
+    --line: #e3e8ef;
+    --card: #ffffff;
+    --bg: #f5f7fa;
+    --warn-bg: #fff8e1;
+    --warn-bd: #f1d479;
+    --warn-tx: #6b4f00;
+    --green: #1f8a4c;
+    --green-bg: #e7f6ec;
+    --red: #b3261e;
+    --red-bg: #fde7e6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: 'Outfit', system-ui, -apple-system, sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px 80px; }
+  header.hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-700) 100%); color: white; padding: 32px 20px; margin-bottom: 24px; }
+  header.hero .inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin: 0 0 8px; font-weight: 600; }
+  h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin: 0 0 8px; letter-spacing: -0.02em; line-height: 1.15; }
+  .sub { font-size: 15px; opacity: 0.85; margin: 0; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; font-size: 12px; }
+  .pill { background: rgba(255,255,255,0.12); padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); font-weight: 500; }
+  .banner { background: var(--warn-bg); border: 1px solid var(--warn-bd); color: var(--warn-tx); padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 24px; }
+  h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin: 36px 0 14px; letter-spacing: -0.01em; }
+  h2 .num { display: inline-block; background: var(--navy); color: white; width: 28px; height: 28px; border-radius: 8px; text-align: center; line-height: 28px; font-size: 14px; margin-right: 10px; font-weight: 700; vertical-align: middle; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 22px 0 10px; }
+  p { margin: 0 0 12px; color: var(--ink); }
+  ul, ol { padding-left: 22px; margin: 0 0 16px; }
+  li { margin-bottom: 8px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 1px 2px rgba(10, 37, 64, 0.04); margin-bottom: 14px; }
+  .card-good { border-left: 4px solid var(--green); }
+  .card-warn { border-left: 4px solid #d39b00; }
+  .card-bad  { border-left: 4px solid var(--red); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 10px 0 18px; background: white; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--sky-50); color: var(--navy); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  tr:last-child td { border-bottom: 0; }
+  td.label { font-weight: 600; color: var(--navy); width: 32%; }
+  code, pre { font-family: 'SF Mono', Menlo, Consolas, monospace; }
+  code { background: #f0f3f7; padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--navy); }
+  pre { background: #0a2540; color: #e3edf7; padding: 16px 18px; border-radius: 10px; overflow-x: auto; font-size: 13px; line-height: 1.55; }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  .key { background: linear-gradient(180deg, transparent 60%, #ffe57f 60%); padding: 0 2px; font-weight: 600; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .stat { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .stat .v { font-size: 28px; font-weight: 800; color: var(--navy); line-height: 1; margin-bottom: 6px; }
+  .stat .l { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+  .checklist { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 22px 22px 22px 22px; }
+  .checklist ol { padding-left: 0; counter-reset: step; list-style: none; }
+  .checklist li { padding-left: 44px; position: relative; min-height: 30px; padding-top: 2px; margin-bottom: 14px; }
+  .checklist li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--navy); color: white; text-align: center; line-height: 30px; font-weight: 700; font-size: 13px; }
+  .footer-links { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  .footer-links a { color: var(--sky); text-decoration: none; word-break: break-all; }
+  .footer-links a:hover { text-decoration: underline; }
+  .tag { display: inline-block; background: var(--sky-50); color: var(--navy); font-size: 11px; padding: 3px 8px; border-radius: 5px; font-weight: 600; margin-right: 4px; }
+  .green-tag { background: var(--green-bg); color: var(--green); }
+  .red-tag { background: var(--red-bg); color: var(--red); }
+  @media (max-width: 600px) {
+    header.hero { padding: 24px 20px; }
+    h1 { font-size: 24px; }
+    .card { padding: 18px; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 10px; }
+    td.label { width: 38%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <p class="eyebrow">Restart Medical · P-Shot · Meta Ads</p>
+    <h1>Barnsley Conversion Push</h1>
+    <p class="sub">Campaign plan to drive fast bookings, built from 53 won leads (Feb–May 2026).</p>
+    <div class="meta-row">
+      <span class="pill">Generated 2026-05-28</span>
+      <span class="pill">Source: GHL won-pipeline</span>
+      <span class="pill">Confidential</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="banner">
+    <strong>Confidential.</strong> Internal campaign plan. Don't share this URL publicly.
+  </div>
+
+  <!-- Top stats -->
+  <div class="grid-3">
+    <div class="stat"><div class="v">53</div><div class="l">Total wins (lifetime)</div></div>
+    <div class="stat"><div class="v">14</div><div class="l">May 2026 wins (all LP)</div></div>
+    <div class="stat"><div class="v">11/14</div><div class="l">May wins from Barnsley audience</div></div>
+  </div>
+
+  <!-- Section 1 -->
+  <h2><span class="num">1</span>What the data says</h2>
+  <div class="card card-good">
+    <ul>
+      <li><span class="key">The LP funnel is now the only thing converting.</span> 14 wins in May, all from the landing page. Meta Lead Form had <strong>1</strong> win in May (down from 13 in March, 5 in April). The lead form is dying. Stop scaling it.</li>
+      <li><span class="key">The audience set already includes Barnsley.</span> 11 of the 14 May wins came from <code>PSHOT- barsnley/liverpool/manchester</code>. One more from <code>PSHOT- barsnley/liverpool</code>. The Barnsley pull is already proven.</li>
+      <li><span class="key">One video is doing 79% of the recent work.</span> <code>Winner Video_11</code> won 8 of 14 May leads. <code>New Video - 24-3</code> won 3. Everything else is dead weight in May.</li>
+      <li><span class="key">Mobile Facebook is the channel.</span> 62% of LP wins came via <code>m.facebook.com</code>. Optimise creative and LP for mobile portrait.</li>
+    </ul>
+  </div>
+
+  <!-- Section 2 -->
+  <h2><span class="num">2</span>The 3 campaigns to run RIGHT NOW</h2>
+  <p>All three are LP-funnel (Sales/Conversions, optimising for the Lead pixel event on the landing page). Run them in parallel. Budget split <strong>60 / 30 / 10</strong>.</p>
+
+  <h3><span class="tag green-tag">60%</span> Campaign A — Barnsley Core (the workhorse)</h3>
+  <table>
+    <tr><td class="label">Campaign name</td><td><code>PSHOT - LP - Barnsley Core - 28-5-26</code></td></tr>
+    <tr><td class="label">Objective</td><td>Sales / Leads, optimised for LP Lead pixel event</td></tr>
+    <tr><td class="label">Funnel</td><td>Landing Page (same one used in <code>NFB PSHOT -LP -28-3-26</code>)</td></tr>
+    <tr><td class="label">Geo</td><td>Barnsley + 25 km radius. Includes Wakefield, Rotherham, Doncaster, Sheffield, Huddersfield, Leeds.</td></tr>
+    <tr><td class="label">Audience</td><td>Broad. Men 35-65. No detailed targeting. Let the pixel learn.</td></tr>
+    <tr><td class="label">Placements</td><td>Advantage+ placements, exclude Audience Network</td></tr>
+    <tr><td class="label">Bid</td><td>Lowest cost, no cap for first 5 days</td></tr>
+    <tr><td class="label">Creative #1</td><td><strong>Winner Video_11</strong> (8 May wins, the breakout)</td></tr>
+    <tr><td class="label">Creative #2</td><td><strong>New Video - 24-3</strong> (3 May wins)</td></tr>
+    <tr><td class="label">Creative #3</td><td>One static from <code>Image Ad2 – Copy</code> line (2 winter wins)</td></tr>
+    <tr><td class="label">Daily budget</td><td>£40-60/day to start. Push to £100/day on Day 4 if CPL holds.</td></tr>
+  </table>
+
+  <h3><span class="tag green-tag">30%</span> Campaign B — Barnsley Expansion (the safety net)</h3>
+  <p>Same structure as A, but wider geo: the exact ad-set that won 11 May leads.</p>
+  <table>
+    <tr><td class="label">Campaign name</td><td><code>PSHOT - LP - Barnsley+Liverpool+Manchester - 28-5-26</code></td></tr>
+    <tr><td class="label">Geo</td><td>Barnsley + Liverpool + Manchester metros</td></tr>
+    <tr><td class="label">Creative</td><td>Same three as Campaign A</td></tr>
+    <tr><td class="label">Daily budget</td><td>£25-40/day</td></tr>
+  </table>
+
+  <h3><span class="tag">10%</span> Campaign C — Barnsley Aggressive Test (the upside swing)</h3>
+  <table>
+    <tr><td class="label">Campaign name</td><td><code>PSHOT - LP - Barnsley Aggressive - 28-5-26</code></td></tr>
+    <tr><td class="label">Geo</td><td>Barnsley town centre + 15 km radius</td></tr>
+    <tr><td class="label">Audience</td><td>Same broad demo</td></tr>
+    <tr><td class="label">Creative</td><td>New hook variant of Winner Video_11 (re-cut the first 3 seconds with a new opener) + static testimonial card</td></tr>
+    <tr><td class="label">Daily budget</td><td>£10-15/day. Treat as research.</td></tr>
+  </table>
+
+  <!-- Section 3 -->
+  <h2><span class="num">3</span>The Meta Lead Form play</h2>
+  <div class="card card-warn">
+    <p>The Lead Form funnel collapsed in May. Don't kill it, but cap budget at <strong>£10/day</strong>.</p>
+    <ul>
+      <li><strong>Form to use:</strong> <code>Restart P-SHOT-GE- 16 Feb</code> (16 of 19 lifetime wins came from this form)</li>
+      <li><strong>Video:</strong> <code>Pshot lead form</code> (17 of 19 wins)</li>
+      <li><strong>Campaign to duplicate:</strong> <code>PSHOT- Meta Lead Form</code> (the original, 9 wins). The newer dupes are weaker.</li>
+      <li><strong>Audience:</strong> <code>LONDON/Barnsley/Liverpool</code> (9 wins) — keep Barnsley in the geo set</li>
+      <li><strong>Why low budget:</strong> the May drop-off suggests creative fatigue or a Meta delivery issue. Don't pour money into a leak.</li>
+    </ul>
+  </div>
+
+  <!-- Section 4 -->
+  <h2><span class="num">4</span>The landing page itself</h2>
+  <div class="card">
+    <ul>
+      <li>All May wins came through the <code>NFB PSHOT -LP</code> family of campaigns. Use the same LP. Don't redesign before launch.</li>
+      <li>62% of wins arrive via mobile Facebook in-app browser. Test the page on iPhone Safari + Android Chrome in real FB / Instagram in-app browser <strong>before</strong> you scale.</li>
+      <li>Ensure the GHL Lead event fires on form submit. That pixel data is what makes the campaign find more converters.</li>
+    </ul>
+  </div>
+
+  <!-- Section 5 -->
+  <h2><span class="num">5</span>Naming convention</h2>
+  <p>Use this exact pattern in Meta. The GHL conversion tracker reads UTMs from the LP URL.</p>
+<pre><code>utm_source     = PSHOT - LP - &lt;campaign short name&gt;
+utm_campaign   = &lt;creative name, e.g. Winner Video_11&gt;
+utm_medium     = PSHOT - &lt;geo, spelled correctly&gt;
+utm_content    = &lt;ad variant ID&gt;
+utm_term       = barnsley</code></pre>
+  <p>Fix the <code>barsnley</code> typo from older ad sets in the new campaigns. The data is salvageable but annoying.</p>
+
+  <!-- Section 6 -->
+  <h2><span class="num">6</span>What success looks like in 7 days</h2>
+  <div class="grid-3">
+    <div class="stat"><div class="v">0.5/day</div><div class="l">30-day baseline (LP only)</div></div>
+    <div class="stat"><div class="v">2/day</div><div class="l">Target by Day 7 (Barnsley)</div></div>
+    <div class="stat"><div class="v">14</div><div class="l">Target week 1 wins</div></div>
+  </div>
+  <div class="card card-warn">
+    <strong>Watchpoints</strong>
+    <ul style="margin-bottom: 0;">
+      <li>If CPL on Campaign A &gt; 2× current LP CPL by Day 3, pause and refresh creative (use Campaign C learnings).</li>
+      <li>If frequency on Winner Video_11 exceeds 3.5 in the Barnsley-only set within 7 days, swap to <code>New Video - 24-3</code> as primary.</li>
+      <li>If LP form-submit rate drops below historical baseline, suspect the LP itself, not the ads.</li>
+    </ul>
+  </div>
+
+  <!-- Section 7 -->
+  <h2><span class="num">7</span>Launch checklist</h2>
+  <div class="checklist">
+    <ol>
+      <li>Confirm the GHL Lead pixel event fires on the LP form submit. Test with a fake submit.</li>
+      <li>Duplicate the <code>NFB PSHOT -LP -28-3-26</code> campaign in Meta. Rename to <code>PSHOT - LP - Barnsley Core - 28-5-26</code>.</li>
+      <li>Tighten the geo to Barnsley + 25 km.</li>
+      <li>Plug in <code>Winner Video_11</code> + <code>New Video - 24-3</code> + 1 static.</li>
+      <li>Set daily budget £50.</li>
+      <li>Set UTMs using the convention in section 5.</li>
+      <li>Duplicate to make Campaign B (Barnsley/Liverpool/Manchester) and Campaign C (Barnsley + 15 km, new creative variant).</li>
+      <li>Launch all three. Don't touch for 72 hours unless something is on fire.</li>
+      <li>Pull a refresh of the conversion tracker on Day 4 and Day 7.</li>
+    </ol>
+  </div>
+
+  <div class="footer-links">
+    <p><strong>Source data:</strong></p>
+    <p>Landing Page report: <a href="https://allenanant.github.io/tge-proposals/proposals/rma-pshot-conv-d844784ea1d7b434/landing-page.html">allenanant.github.io/.../landing-page.html</a></p>
+    <p>Meta Lead Form report: <a href="https://allenanant.github.io/tge-proposals/proposals/rma-pshot-conv-d844784ea1d7b434/meta-lead-form.html">allenanant.github.io/.../meta-lead-form.html</a></p>
+  </div>
+
+</div>
+</body>
+</html>
