@@ -1029,9 +1029,9 @@ function boot() {
   const stat = cfg.static || {};
   const meta = cfg.meta || {};
 
-  // set accent hue from prospect
-  const hue = (p.visual && has(p.visual.accent_hue)) ? p.visual.accent_hue : '#7C3AED';
-  document.documentElement.style.setProperty('--accent', hue);
+  // Accent is ALWAYS TGE purple (this is TGE's document). The prospect's
+  // accent_hue is intentionally ignored so every deck stays on-brand.
+  document.documentElement.style.setProperty('--accent', '#7C3AED');
 
   const html = [
     renderCover(p, meta),
