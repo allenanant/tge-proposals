@@ -262,6 +262,162 @@
   .pillar h3 { font-size: var(--t-h3); margin-bottom: 10px; letter-spacing: -.02em; }
   .pillar p { font-size: 15px; color: var(--ink-2); line-height: 1.6; }
 
+  /* =========================================================
+     SYSTEM DIAGRAM (the engine). A modular grid of 6 pillar
+     nodes locked together by shared hairlines, with a central
+     labeled hub band running through it. Reads as one machine.
+     ========================================================= */
+  .engine { margin-top: 36px; }
+  .engine-hub {
+    display: flex; align-items: center; gap: 16px;
+    border: 1px solid var(--line-2); border-radius: var(--r-md);
+    background: var(--purple-soft);
+    padding: 16px 22px; margin-bottom: 0;
+    position: relative; z-index: 2;
+  }
+  .engine-hub .hub-mark {
+    width: 34px; height: 34px; border-radius: 9px; flex: 0 0 auto;
+    background: linear-gradient(150deg, var(--purple), var(--purple-2));
+    display: grid; place-items: center; box-shadow: 0 6px 16px rgba(124,58,237,.26);
+  }
+  .engine-hub .hub-mark svg { width: 18px; height: 18px; color: #fff; }
+  .engine-hub .hub-txt .hub-eyebrow {
+    font-family: 'Outfit'; font-size: 10.5px; font-weight: 600; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--purple);
+  }
+  .engine-hub .hub-txt .hub-name {
+    font-family: 'Outfit'; font-weight: 600; font-size: 17px; letter-spacing: -.02em; color: var(--ink);
+  }
+  /* the connective stem: a short vertical hairline from hub into the grid */
+  .engine-stem { width: 1px; height: 26px; background: var(--line-2); margin: 0 auto; position: relative; z-index: 1; }
+  .engine-stem::after { content: ""; position: absolute; left: -2.5px; bottom: -1px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .engine-grid {
+    display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+    border: 1px solid var(--line-2); border-radius: var(--r-md); overflow: hidden;
+    background: var(--card);
+  }
+  .node {
+    position: relative; padding: 26px 26px 28px;
+    border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .engine-grid .node:nth-child(3n) { border-right: none; }
+  .engine-grid .node:nth-child(n+4) { border-bottom: none; }
+  .node-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .node-ic {
+    width: 38px; height: 38px; flex: 0 0 auto; border-radius: 9px;
+    border: 1px solid var(--line-2); background: var(--paper);
+    display: grid; place-items: center; color: var(--accent);
+  }
+  .node-ic .ic { width: 21px; height: 21px; }
+  .node-n { font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 22px; color: var(--ink-4); line-height: 1; margin-left: auto; }
+  .node h3 { font-size: 17px; letter-spacing: -.02em; margin-bottom: 7px; }
+  .node p { font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+
+  /* =========================================================
+     CONVERSION FUNNEL. Inline-SVG stacked trapezoids narrowing
+     top to bottom, 3 labeled stages, channels mapped beside each.
+     ========================================================= */
+  .funnel-wrap {
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 44px; align-items: stretch; margin-top: 36px;
+  }
+  .funnel-svg { width: 100%; height: auto; display: block; }
+  .funnel-svg .seg-fill-1 { fill: rgba(124,58,237,.10); }
+  .funnel-svg .seg-fill-2 { fill: rgba(124,58,237,.18); }
+  .funnel-svg .seg-fill-3 { fill: rgba(124,58,237,.30); }
+  .funnel-svg .seg-stroke { stroke: var(--accent); stroke-width: 1.2; fill: none; }
+  .funnel-svg .seg-label { font-family: 'Outfit', sans-serif; font-weight: 600; letter-spacing: -.01em; }
+  .funnel-svg .seg-label.t1 { fill: #5B23B6; }
+  .funnel-svg .seg-label.t2 { fill: #5B23B6; }
+  .funnel-svg .seg-label.t3 { fill: #fff; }
+  .funnel-svg .seg-sub { font-family: 'Hanken Grotesk', sans-serif; font-weight: 500; fill: var(--ink-3); }
+  .funnel-svg .seg-sub.on { fill: rgba(255,255,255,.92); }
+  .funnel-stages { display: flex; flex-direction: column; gap: 0; }
+  .fstage {
+    display: grid; grid-template-columns: 22px minmax(0,1fr); gap: 16px; align-items: start;
+    padding: 18px 0; border-bottom: 1px solid var(--line); flex: 1; align-content: center;
+  }
+  .fstage:first-child { padding-top: 0; }
+  .fstage:last-child { border-bottom: none; padding-bottom: 0; }
+  .fstage .fn { font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: 17px; color: var(--accent); line-height: 1.2; }
+  .fstage .fs-name { font-family: 'Outfit'; font-weight: 600; font-size: 16px; letter-spacing: -.01em; margin-bottom: 4px; }
+  .fstage .fs-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin-bottom: 10px; }
+  .fchips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fchip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Outfit'; font-size: 11.5px; font-weight: 500; color: var(--ink-2);
+    background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px;
+  }
+  .fchip .ic { width: 13px; height: 13px; color: var(--accent); }
+
+  /* =========================================================
+     EVERYTHING INCLUDED. 4 labeled categories, hairline columns,
+     each a scannable checklist. Optional tailored intro row.
+     ========================================================= */
+  .incl-intro { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 30px; }
+  .incl-intro .it {
+    font-family: 'Outfit'; font-size: 12.5px; font-weight: 500; color: var(--ink);
+    background: var(--purple-soft); border: 1px solid rgba(124,58,237,.18);
+    border-radius: 999px; padding: 6px 13px; display: inline-flex; align-items: center; gap: 7px;
+  }
+  .incl-intro .it .ic { width: 13px; height: 13px; color: var(--purple); }
+  .incl-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--line-2); border-radius: var(--r-md); overflow: hidden; background: var(--card);
+  }
+  .incl-cat { padding: 26px 28px 28px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .incl-grid .incl-cat:nth-child(2n) { border-right: none; }
+  .incl-grid .incl-cat:nth-child(n+3) { border-bottom: none; }
+  .incl-cat-head { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .incl-cat-head .ch-ic {
+    width: 34px; height: 34px; flex: 0 0 auto; border-radius: 9px;
+    border: 1px solid var(--line-2); background: var(--paper); display: grid; place-items: center; color: var(--accent);
+  }
+  .incl-cat-head .ch-ic .ic { width: 19px; height: 19px; }
+  .incl-cat-head .ch-t { font-family: 'Outfit'; font-weight: 600; font-size: 16px; letter-spacing: -.01em; }
+  .incl-cat-head .ch-c { margin-left: auto; font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 20px; color: var(--ink-4); }
+  .incl-list { list-style: none; display: grid; gap: 11px; }
+  .incl-list li { display: flex; align-items: flex-start; gap: 11px; font-size: 14px; color: var(--ink); line-height: 1.45; }
+  .incl-list .ck {
+    width: 18px; height: 18px; flex: 0 0 auto; margin-top: 1px; border-radius: 50%;
+    background: var(--purple-soft); color: var(--purple); display: grid; place-items: center;
+  }
+  .incl-list .ck .ic { width: 12px; height: 12px; }
+
+  /* =========================================================
+     ALWAYS-ON FOLLOW UP. Lead node -> 4 channel nodes, each with
+     its stat as data. A labeled multi-channel row connected by a
+     shared rail. Communicates the 24/7 system visually.
+     ========================================================= */
+  .auto-wrap { margin-top: 36px; }
+  .auto-lead {
+    display: flex; align-items: center; gap: 14px; justify-content: center;
+    border: 1px dashed var(--line-2); border-radius: var(--r-md);
+    background: var(--paper-2); padding: 14px 22px; max-width: 360px; margin: 0 auto;
+  }
+  .auto-lead .al-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; box-shadow: 0 0 0 5px rgba(124,58,237,.12); }
+  .auto-lead .al-t { font-family: 'Outfit'; font-weight: 600; font-size: 14.5px; letter-spacing: -.01em; }
+  .auto-lead .al-s { font-size: 12.5px; color: var(--ink-3); }
+  .auto-rail { position: relative; height: 38px; }
+  .auto-rail .rail-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .auto-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; }
+  .auto-node {
+    border: 1px solid var(--line-2); border-radius: var(--r-md); background: var(--card);
+    padding: 22px 20px 22px; display: flex; flex-direction: column; gap: 0; position: relative;
+  }
+  .auto-node .an-top { display: flex; align-items: center; gap: 11px; margin-bottom: 14px; }
+  .auto-node .an-ic {
+    width: 36px; height: 36px; flex: 0 0 auto; border-radius: 9px;
+    border: 1px solid var(--line-2); background: var(--paper); display: grid; place-items: center; color: var(--accent);
+  }
+  .auto-node .an-ic .ic { width: 20px; height: 20px; }
+  .auto-node .an-name { font-family: 'Outfit'; font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+  .auto-node .an-stat {
+    font-family: 'Outfit'; font-weight: 700; font-size: clamp(22px, 2.6vw, 27px);
+    letter-spacing: -.03em; line-height: 1; color: var(--accent); margin-bottom: 9px;
+  }
+  .auto-node .an-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+
   /* ----- Proof: real screenshots kept as imagery, calm editorial frame ----- */
   .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
   .case {
@@ -396,6 +552,18 @@
     .deliver:nth-child(odd) { border-right: 1px solid var(--line) !important; padding-right: 24px !important; }
     .deliver:nth-child(even) { padding-left: 24px !important; }
     .close-inner { grid-template-columns: 1fr; gap: 30px; }
+    /* system diagram: 2-up, recompute borders */
+    .engine-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .engine-grid .node { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .engine-grid .node:nth-child(3n) { border-right: 1px solid var(--line); }
+    .engine-grid .node:nth-child(2n) { border-right: none; }
+    .engine-grid .node:nth-child(n+4) { border-bottom: 1px solid var(--line); }
+    .engine-grid .node:nth-child(n+5) { border-bottom: none; }
+    /* funnel: stack svg over stages */
+    .funnel-wrap { grid-template-columns: 1fr; gap: 28px; }
+    /* automation: 2-up */
+    .auto-grid { grid-template-columns: 1fr 1fr; }
+    .auto-rail { display: none; }
   }
   @media (max-width: 640px) {
     :root { --gutter: 22px; --marker-col: 64px; --marker-gap: 20px; --sp-sec: 60px; }
@@ -416,6 +584,17 @@
     .deliver-grid { grid-template-columns: 1fr; }
     .deliver, .deliver:nth-child(odd), .deliver:nth-child(even) { border-right: none !important; padding: 20px 0 !important; }
     .meta-chip { padding: 10px 16px 10px 0; margin-right: 16px; }
+    /* system diagram: single column, all hairlines become row dividers */
+    .engine-grid { grid-template-columns: 1fr; }
+    .engine-grid .node, .engine-grid .node:nth-child(3n), .engine-grid .node:nth-child(2n) { border-right: none !important; border-bottom: 1px solid var(--line) !important; }
+    .engine-grid .node:last-child { border-bottom: none !important; }
+    .node-n { font-size: 19px; }
+    /* deliverables breakdown: single column */
+    .incl-grid { grid-template-columns: 1fr; }
+    .incl-cat, .incl-grid .incl-cat:nth-child(2n) { border-right: none !important; border-bottom: 1px solid var(--line) !important; }
+    .incl-grid .incl-cat:last-child { border-bottom: none !important; }
+    /* automation: single column row */
+    .auto-grid { grid-template-columns: 1fr; gap: 14px; }
   }
   @media (max-width: 380px) {
     :root { --gutter: 16px; }
@@ -425,6 +604,8 @@
     .trust-chips { grid-template-columns: 1fr; }
     .press-logo { font-size: 15px; }
     .case-metric .v { font-size: 32px; }
+    .node-top { gap: 10px; }
+    .auto-node .an-stat { font-size: 24px; }
   }
 </style>
 </head>
@@ -444,57 +625,57 @@ const CONFIG = {
   "prospect": {
     "company_name": "PMTI",
     "contact_name": "Yad Senapathy",
-    "industry": "Project management certification training",
+    "industry": "Project management training",
     "website": "https://www.4pmti.com/",
-    "location": "",
+    "location": "United States",
     "promise": "Turn PMTI traffic into course enrollments",
-    "cover_sub": "SEO rewrites, WordPress funnels, GoHighLevel follow-up built end to end.",
+    "cover_sub": "WordPress pages, GoHighLevel nurture, and tracking built as one system.",
     "result_chips": [
       {
         "value": "20x",
         "label": "Frenchify growth"
       },
       {
-        "value": "616K",
-        "label": "Top reel"
-      },
-      {
         "value": "20M+",
         "label": "Dr SW impressions"
+      },
+      {
+        "value": "616K",
+        "label": "single reel"
       }
     ],
     "read": {
-      "summary": "PMTI already has authority, traffic, PMP demand, and a clear course catalog. The missing layer is a conversion system that captures visitors, follows up fast, and routes each lead toward enrollment.",
+      "summary": "PMTI already has authority, PMP proof, location pages, guides, and 15K monthly visitors. The gap is turning those paths into lead capture, nurture, and enrollment flow.",
       "signals": [
-        "15,000 monthly visitors under-monetized",
-        "WordPress must stay primary",
-        "GoHighLevel buildout required"
+        "PMP exam change banner creates urgency",
+        "Guides and eligibility checks exist already",
+        "Location pages need conversion templates"
       ]
     },
     "strategy": {
-      "headline": "Build the enrollment engine around existing demand",
+      "headline": "Build the enrollment engine around existing authority",
       "pillars": [
         {
           "icon": "search",
-          "title": "Rewrite Money Pages",
-          "line": "Match PMP search intent, sharpen proof, clarify next steps."
+          "title": "Rewrite money pages",
+          "line": "Match SEO intent with sharper proof and CTAs."
         },
         {
           "icon": "funnel",
-          "title": "Capture Every Path",
-          "line": "Quizzes, guides, VSLs, forms, and course CTAs."
+          "title": "Capture every path",
+          "line": "Quizzes, guides, VSL pages, forms, thank you flows."
         },
         {
           "icon": "repeat",
-          "title": "Automate Follow Up",
-          "line": "GoHighLevel workflows for leads, inquiries, urgency, and reactivation."
+          "title": "Nurture to enrollment",
+          "line": "GoHighLevel email, SMS, tags, pipelines, and booking follow up."
         }
       ]
     },
     "deliverables": [
       {
         "icon": "pen",
-        "label": "SEO CRO rewrites"
+        "label": "SEO page rewrites"
       },
       {
         "icon": "funnel",
@@ -502,15 +683,15 @@ const CONFIG = {
       },
       {
         "icon": "target",
-        "label": "Lead magnet flows"
+        "label": "Lead capture system"
       },
       {
         "icon": "mail",
-        "label": "Email nurture sequences"
+        "label": "Email nurture flows"
       },
       {
         "icon": "sms",
-        "label": "SMS follow ups"
+        "label": "SMS follow up"
       },
       {
         "icon": "chart",
@@ -520,29 +701,29 @@ const CONFIG = {
     "pricing": {
       "growth": {
         "bullets": [
-          "Core page rewrites",
-          "Primary funnel buildout",
-          "Essential GHL automations"
+          "Homepage plus money pages",
+          "Core GoHighLevel workflows",
+          "Tracking and launch QA"
         ],
         "name": "Growth",
         "price": "$3,000"
       },
       "scale": {
         "bullets": [
-          "More pages and variants",
-          "Quiz and VSL funnels",
-          "Optimization after launch"
+          "More course page volume",
+          "VSL and quiz funnels",
+          "Ongoing tests and iteration"
         ],
         "name": "Scale",
         "price": "$4,000"
       }
     },
-    "guarantee": "No strategy-only handoff. We build, connect, test, and launch.",
-    "roi_line": "A small lift on 15,000 visits can change enrollment economics.",
+    "guarantee": "If implementation is unclear, we revise before launch at no extra fee.",
+    "roi_line": "One extra enrollment can justify the funnel build.",
     "visual": {
-      "accent_hue": "#2563EB",
-      "motif": "connected enrollment pathways",
-      "hero_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 720 420\" role=\"img\" aria-hidden=\"true\"><defs><linearGradient id=\"g1\" x1=\"80\" y1=\"40\" x2=\"640\" y2=\"360\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#DBEAFE\"/><stop offset=\"0.55\" stop-color=\"#EFF6FF\"/><stop offset=\"1\" stop-color=\"#FFFFFF\"/></linearGradient><linearGradient id=\"g2\" x1=\"190\" y1=\"95\" x2=\"530\" y2=\"315\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#2563EB\" stop-opacity=\"0.26\"/><stop offset=\"1\" stop-color=\"#14B8A6\" stop-opacity=\"0.18\"/></linearGradient><filter id=\"soft\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\"><feGaussianBlur stdDeviation=\"10\"/></filter></defs><rect width=\"720\" height=\"420\" fill=\"#FFFFFF\"/><path d=\"M92 318C154 206 224 137 327 121C429 105 502 142 628 84\" fill=\"none\" stroke=\"url(#g1)\" stroke-width=\"84\" stroke-linecap=\"round\"/><path d=\"M124 304C207 226 281 193 360 196C442 199 506 165 604 98\" fill=\"none\" stroke=\"#2563EB\" stroke-opacity=\"0.18\" stroke-width=\"2\"/><path d=\"M130 338C222 263 294 235 373 244C458 254 532 218 624 146\" fill=\"none\" stroke=\"#14B8A6\" stroke-opacity=\"0.18\" stroke-width=\"2\"/><path d=\"M146 274C230 181 314 145 408 154C486 161 542 134 596 76\" fill=\"none\" stroke=\"#64748B\" stroke-opacity=\"0.16\" stroke-width=\"1.5\"/><g fill=\"url(#g2)\" filter=\"url(#soft)\"><circle cx=\"208\" cy=\"246\" r=\"34\"/><circle cx=\"360\" cy=\"196\" r=\"42\"/><circle cx=\"520\" cy=\"154\" r=\"38\"/></g><g fill=\"#FFFFFF\" stroke=\"#2563EB\" stroke-opacity=\"0.45\" stroke-width=\"2\"><circle cx=\"208\" cy=\"246\" r=\"18\"/><circle cx=\"360\" cy=\"196\" r=\"22\"/><circle cx=\"520\" cy=\"154\" r=\"18\"/></g><g stroke=\"#2563EB\" stroke-opacity=\"0.28\" stroke-width=\"1.5\" fill=\"none\"><rect x=\"170\" y=\"86\" width=\"96\" height=\"58\" rx=\"12\"/><rect x=\"455\" y=\"255\" width=\"112\" height=\"66\" rx=\"14\"/><path d=\"M266 115C315 118 337 147 354 176\"/><path d=\"M379 213C407 247 438 272 455 286\"/></g><g stroke=\"#94A3B8\" stroke-opacity=\"0.24\" stroke-width=\"1\"><path d=\"M94 86H154\"/><path d=\"M568 84H634\"/><path d=\"M104 358H178\"/><path d=\"M572 344H636\"/><path d=\"M70 132H112\"/><path d=\"M618 236H660\"/></g></svg>"
+      "accent_hue": "#1E73BE",
+      "motif": "PMP funnel pathway grid",
+      "hero_svg": ""
     }
   },
   "static": {
@@ -829,7 +1010,19 @@ const ICON_PATHS = {
   check: '<path d="M5 12l4 4 10-10"/>',
   calendar2: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',
   gift: '<path d="M3 11h18v9H3z"/><path d="M3 7h18v4H3z"/><path d="M12 7v13"/><path d="M12 7C9 7 7 6 7 4.5S9 3 12 7zM12 7c3 0 5-1 5-2.5S15 3 12 7z"/>',
-  arrow: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>'
+  arrow: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
+  /* channel + system glyphs (single-weight line) */
+  briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/>',
+  smartphone: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/>',
+  'message-circle': '<path d="M21 11.5a8 8 0 0 1-11.3 7.3L4 20l1.2-4A8 8 0 1 1 21 11.5z"/>',
+  'trending-up': '<path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/>',
+  'play-circle': '<circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/>',
+  zap: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  pen2: '<path d="M14 4l6 6L9 21l-5 1 1-5z"/><path d="M13 5l6 6"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L17 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 7a2 2 0 0 1 1-3z"/>',
+  database: '<ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path d="M4 11.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
+  layers: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>'
 };
 function icon(key, cls) {
   const p = ICON_PATHS[key] || ICON_PATHS.sparkles;
@@ -1101,6 +1294,261 @@ function renderStrategy(p) {
   );
 }
 
+/* ============================================================
+   SYSTEM DIAGRAM (/04). The 6 system_pillars rendered as one
+   connected machine: a labeled central hub band + connective
+   stem into a modular hairline grid of pillar nodes.
+   This is the 120% signature detail.
+   ============================================================ */
+const PILLAR_ICONS = ['pen', 'megaphone', 'target', 'database', 'phone', 'chart'];
+function renderEngine(stat, p) {
+  const pillars = arr(stat.system_pillars).filter(pl => has(pl.title));
+  if (!pillars.length) return '';
+  const company = (p && has(p.company_name)) ? p.company_name : 'Your business';
+
+  const nodes = pillars.map((pl, i) =>
+    '<div class="node">' +
+      '<div class="node-top">' +
+        '<div class="node-ic">' + icon(PILLAR_ICONS[i] || 'sparkles') + '</div>' +
+        '<div class="node-n">' + ('0' + (i + 1)) + '</div>' +
+      '</div>' +
+      '<h3>' + esc(pl.title) + '</h3>' +
+      (has(pl.description) ? '<p>' + esc(pl.description) + '</p>' : '') +
+    '</div>'
+  ).join('');
+
+  return (
+  '<section class="sec"><div class="wrap">' +
+    '<div class="sec-grid">' +
+      sectionMarker('04', 'The growth engine', 'Six parts, one machine. Built, run, and tuned by us.') +
+      '<div class="sec-content">' +
+        '<h2 class="sec-title reveal">One connected <span class="hl">growth engine.</span></h2>' +
+        '<p class="sec-intro reveal">Not six tools you stitch together. One system where every part feeds the next.</p>' +
+        '<div class="engine reveal">' +
+          '<div class="engine-hub">' +
+            '<div class="hub-mark">' + icon('trending') + '</div>' +
+            '<div class="hub-txt">' +
+              '<div class="hub-eyebrow">Your growth engine</div>' +
+              '<div class="hub-name">' + esc(company) + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="engine-stem" aria-hidden="true"></div>' +
+          '<div class="engine-grid">' + nodes + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div></section>'
+  );
+}
+
+/* ============================================================
+   CONVERSION FUNNEL (/05). Inline-SVG stacked trapezoids that
+   narrow top to bottom, the 3 funnel_stages labeled on the
+   funnel itself, with relevant channels mapped beside each.
+   ============================================================ */
+function findChannel(stat, name) {
+  return arr(stat.channels).find(c => (c.name || '').toLowerCase() === name.toLowerCase());
+}
+function renderFunnel(stat) {
+  const stages = arr(stat.funnel_stages).filter(s => has(s.stage));
+  if (stages.length < 1) return '';
+
+  // map stage -> relevant channel names (defensive: only keep channels that exist)
+  const stageChannelMap = [
+    ['Meta Ads', 'TikTok', 'YouTube', 'SEO'],          // Awareness  / discovery
+    ['Google Ads', 'Email', 'LinkedIn', 'SEO'],        // Consideration / retarget + intent
+    ['SMS', 'WhatsApp', 'Email']                        // Decision   / direct
+  ];
+
+  // build the SVG funnel: stacked trapezoids forming ONE continuous narrowing
+  // profile. Each segment's top width == the previous segment's bottom width,
+  // so the silhouette reads as a single funnel (thin gaps only for legibility).
+  const segFills = ['seg-fill-1', 'seg-fill-2', 'seg-fill-3'];
+  const labelCls = ['t1', 't2', 't3'];
+  const subOn = [false, false, true];
+  const subTxt = ['Strangers', 'Warm leads', 'Customers'];
+  const W = 560, topW = 520, botW = 168, segH = 108, gap = 6;
+  const drawn = stages.slice(0, 3);
+  const N = drawn.length;
+  function widthAt(t) { return topW + (botW - topW) * t; } // t in 0..1 down the funnel
+  const totalH = segH * N + gap * (N - 1);
+  let segs = '';
+  for (let i = 0; i < N; i++) {
+    const st = drawn[i];
+    const y = i * (segH + gap);
+    // continuous profile: parametrize by segment index, not pixel position,
+    // so the top of segment i meets the bottom of segment i-1 in width.
+    const wTop = widthAt(i / N);
+    const wBot = widthAt((i + 1) / N);
+    const xTopL = (W - wTop) / 2, xTopR = xTopL + wTop;
+    const xBotL = (W - wBot) / 2, xBotR = xBotL + wBot;
+    const cy = y + segH / 2;
+    segs +=
+      '<path class="' + segFills[i] + '" d="M' + xTopL + ' ' + y + ' L' + xTopR + ' ' + y +
+        ' L' + xBotR + ' ' + (y + segH) + ' L' + xBotL + ' ' + (y + segH) + ' Z"/>' +
+      '<path class="seg-stroke" d="M' + xTopL + ' ' + y + ' L' + xTopR + ' ' + y +
+        ' L' + xBotR + ' ' + (y + segH) + ' L' + xBotL + ' ' + (y + segH) + ' Z"/>' +
+      '<text class="seg-label ' + labelCls[i] + '" x="' + (W / 2) + '" y="' + (cy - 3) + '" text-anchor="middle" font-size="22">' + esc(st.stage) + '</text>' +
+      '<text class="seg-sub' + (subOn[i] ? ' on' : '') + '" x="' + (W / 2) + '" y="' + (cy + 19) + '" text-anchor="middle" font-size="12.5">' +
+        esc(subTxt[i] || '') + '</text>';
+  }
+  const funnelSvg =
+    '<svg class="funnel-svg" viewBox="0 0 ' + W + ' ' + totalH + '" role="img" aria-label="Conversion funnel from awareness to decision" xmlns="http://www.w3.org/2000/svg">' +
+      segs +
+    '</svg>';
+
+  // stage rows with mapped channel chips
+  const rows = stages.slice(0, 3).map((st, i) => {
+    const chans = (stageChannelMap[i] || [])
+      .map(nm => findChannel(stat, nm))
+      .filter(Boolean)
+      .slice(0, 4);
+    const chips = chans.map(c =>
+      '<span class="fchip">' + icon(c.icon) + esc(c.name) + '</span>'
+    ).join('');
+    return (
+      '<div class="fstage">' +
+        '<div class="fn">' + ('0' + (i + 1)) + '</div>' +
+        '<div>' +
+          '<div class="fs-name">' + esc(st.stage) + '</div>' +
+          (has(st.description) ? '<div class="fs-desc">' + esc(st.description) + '</div>' : '') +
+          (chips ? '<div class="fchips">' + chips + '</div>' : '') +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+
+  return (
+  '<section class="sec"><div class="wrap">' +
+    '<div class="sec-grid">' +
+      sectionMarker('05', 'Traffic to customers', 'How a stranger becomes a paying customer, stage by stage.') +
+      '<div class="sec-content">' +
+        '<h2 class="sec-title reveal">We turn traffic into <span class="hl">customers.</span></h2>' +
+        '<div class="funnel-wrap reveal">' +
+          '<div class="funnel-col">' + funnelSvg + '</div>' +
+          '<div class="funnel-stages">' + rows + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div></section>'
+  );
+}
+
+/* ============================================================
+   EVERYTHING INCLUDED (/06). Full deliverables breakdown from
+   features_list: 4 labeled categories, each a scannable
+   checklist. Prospect-tailored items fold in as a short intro.
+   ============================================================ */
+function renderIncluded(stat, p) {
+  const f = stat.features_list || {};
+  const cats = [
+    { key: 'content_creative',  title: 'Content & Creative',   icon: 'pen' },
+    { key: 'paid_advertising',  title: 'Paid Advertising',     icon: 'target' },
+    { key: 'automation_sales',  title: 'Automation & Sales',   icon: 'repeat' },
+    { key: 'strategy_reporting',title: 'Strategy & Reporting',  icon: 'chart' }
+  ].map(c => ({ ...c, items: arr(f[c.key]).filter(has) }))
+   .filter(c => c.items.length);
+  if (!cats.length) return '';
+
+  // tailored intro chips: fold the prospect's own deliverables in (short)
+  const tailored = arr(p && p.deliverables).filter(d => has(d.label)).slice(0, 6);
+  const introHTML = tailored.length
+    ? '<div class="incl-intro reveal">' +
+        '<span class="it" style="background:transparent;border:none;color:var(--ink-3);padding-left:0;">Tailored for you:</span>' +
+        tailored.map(d => '<span class="it">' + icon(d.icon) + esc(d.label) + '</span>').join('') +
+      '</div>'
+    : '';
+
+  const grid = cats.map(c =>
+    '<div class="incl-cat">' +
+      '<div class="incl-cat-head">' +
+        '<div class="ch-ic">' + icon(c.icon) + '</div>' +
+        '<div class="ch-t">' + esc(c.title) + '</div>' +
+        '<div class="ch-c">' + ('0' + c.items.length) + '</div>' +
+      '</div>' +
+      '<ul class="incl-list">' +
+        c.items.map(it =>
+          '<li><span class="ck">' + icon('check') + '</span>' + esc(it) + '</li>'
+        ).join('') +
+      '</ul>' +
+    '</div>'
+  ).join('');
+
+  return (
+  '<section class="sec"><div class="wrap">' +
+    '<div class="sec-grid">' +
+      sectionMarker('06', 'Everything included', 'The full scope. One retainer. Nothing for you to manage.') +
+      '<div class="sec-content">' +
+        '<h2 class="sec-title reveal">Everything included.</h2>' +
+        introHTML +
+        '<div class="incl-grid reveal">' + grid + '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div></section>'
+  );
+}
+
+/* ============================================================
+   ALWAYS-ON FOLLOW UP (/07). automation_stack as a labeled
+   multi-channel node row, fed by a single lead node, each
+   channel showing its stat as the headline data point.
+   ============================================================ */
+const AUTO_ICONS = ['phone', 'mail', 'sms', 'message-circle'];
+function renderAutomation(stat) {
+  const steps = arr(stat.automation_stack).filter(a => has(a.title));
+  if (!steps.length) return '';
+
+  // connective rail SVG: one trunk from a central origin branching to N nodes
+  const n = Math.min(steps.length, 4);
+  let rail = '';
+  if (n > 1) {
+    const cx = 50; // percent origin
+    const colPct = 100 / n;
+    let branches = '';
+    for (let i = 0; i < n; i++) {
+      const tx = colPct * (i + 0.5);
+      branches += '<path d="M' + cx + ' 0 C ' + cx + ' 20, ' + tx + ' 18, ' + tx + ' 38" />';
+    }
+    rail =
+      '<div class="auto-rail" aria-hidden="true">' +
+        '<svg class="rail-svg" viewBox="0 0 100 38" preserveAspectRatio="none">' +
+          '<g fill="none" stroke="var(--line-2)" stroke-width="0.6" vector-effect="non-scaling-stroke">' + branches + '</g>' +
+        '</svg>' +
+      '</div>';
+  }
+
+  const nodes = steps.slice(0, 4).map((a, i) =>
+    '<div class="auto-node">' +
+      '<div class="an-top">' +
+        '<div class="an-ic">' + icon(AUTO_ICONS[i] || 'sparkles') + '</div>' +
+        '<div class="an-name">' + esc(a.title) + '</div>' +
+      '</div>' +
+      (has(a.stat) ? '<div class="an-stat">' + esc(a.stat) + '</div>' : '') +
+      (has(a.description) ? '<div class="an-desc">' + esc(a.description) + '</div>' : '') +
+    '</div>'
+  ).join('');
+
+  return (
+  '<section class="sec"><div class="wrap">' +
+    '<div class="sec-grid">' +
+      sectionMarker('07', 'Always-on follow up', 'Every lead answered in minutes, around the clock, with no one on shift.') +
+      '<div class="sec-content">' +
+        '<h2 class="sec-title reveal">Follow up that never <span class="hl">clocks out.</span></h2>' +
+        '<div class="auto-wrap reveal">' +
+          '<div class="auto-lead">' +
+            '<span class="al-dot"></span>' +
+            '<span class="al-t">New lead</span>' +
+            '<span class="al-s">fans out instantly</span>' +
+          '</div>' +
+          rail +
+          '<div class="auto-grid">' + nodes + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div></section>'
+  );
+}
+
 function renderProof(stat) {
   const cs = stat.case_studies || {};
   const order = ['frenchify', 'drsw'];
@@ -1145,7 +1593,7 @@ function renderProof(stat) {
   return (
   '<section class="sec"><div class="wrap">' +
     '<div class="sec-grid">' +
-      sectionMarker('04', 'Proof, not promises', 'Two businesses we grew from the ground up. The screenshots are theirs.') +
+      sectionMarker('08', 'Proof, not promises', 'Two businesses we grew from the ground up. The screenshots are theirs.') +
       '<div class="sec-content">' +
         '<h2 class="sec-title reveal">Real clients. <span class="hl">Real numbers.</span></h2>' +
         '<div class="proof-grid">' + cards.map(caseCard).join('') + '</div>' +
@@ -1155,28 +1603,9 @@ function renderProof(stat) {
   );
 }
 
-function renderDeliverables(p) {
-  const items = arr(p.deliverables).slice(0, 6);
-  if (!items.length) return '';
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('05', 'What you get', 'A full team, one retainer. Nothing left for you to manage.') +
-      '<div class="sec-content">' +
-        '<h2 class="sec-title reveal">Everything, handled.</h2>' +
-        '<div class="deliver-grid reveal">' +
-          items.map(d =>
-            '<div class="deliver">' +
-              '<div class="dic">' + icon(d.icon) + '</div>' +
-              '<div class="dl">' + esc(d.label) + '</div>' +
-            '</div>'
-          ).join('') +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
-}
+/* renderDeliverables was the thin 6-item section. It is superseded by
+   renderIncluded (/06), which renders the full features_list breakdown and
+   folds the prospect's tailored deliverables in as the intro chips. */
 
 function renderPricing(p) {
   const pr = p.pricing || {};
@@ -1206,7 +1635,7 @@ function renderPricing(p) {
   return (
   '<section class="sec"><div class="wrap">' +
     '<div class="sec-grid">' +
-      sectionMarker('06', 'Simple pricing', 'One flat monthly retainer. Cancel anytime, no lock-in.') +
+      sectionMarker('09', 'Simple pricing', 'One flat monthly retainer. Cancel anytime, no lock-in.') +
       '<div class="sec-content">' +
         '<h2 class="sec-title reveal">Two ways to start.</h2>' +
         '<div class="price-grid reveal">' +
@@ -1284,8 +1713,11 @@ function boot() {
     renderTrust(p, stat),
     renderStudy(p),
     renderStrategy(p),
+    renderEngine(stat, p),
+    renderFunnel(stat),
+    renderIncluded(stat, p),
+    renderAutomation(stat),
     renderProof(stat),
-    renderDeliverables(p),
     renderPricing(p),
     renderClose(p, meta),
     renderFooter(stat)
