@@ -182,30 +182,33 @@
 
   /* ================= TRUST BAR ================= */
   .trust { padding: 8px 0 0; }
-  .trust-press { padding: 30px 0 28px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .platforms { padding: 30px 0 28px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .trust-press-head {
     display: grid; grid-template-columns: var(--marker-col) minmax(0,1fr); gap: var(--marker-gap);
     align-items: baseline; margin-bottom: 22px;
   }
-  .trust-press .lbl {
+  .platforms .lbl {
     font-family: 'Outfit'; font-size: var(--t-eyebrow); font-weight: 600; letter-spacing: .2em;
     text-transform: uppercase; color: var(--ink-3);
   }
-  .trust-press .lbl-note { font-size: 13px; color: var(--ink-3); }
-  .press-row {
-    display: grid; grid-template-columns: var(--marker-col) minmax(0,1fr); gap: var(--marker-gap);
+  .platforms .lbl-note { font-size: 13px; color: var(--ink-3); }
+  /* platforms-we-run marquee (real brand logos, scrolls; pauses on hover) */
+  .marquee {
+    position: relative; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
   }
-  .press-logos {
-    display: flex; flex-wrap: wrap; align-items: center;
-    gap: 16px 42px;
+  .marquee-track { display: flex; align-items: center; gap: 50px; width: max-content; animation: pf-scroll 40s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .pf { display: inline-flex; align-items: center; gap: 11px; flex: 0 0 auto; }
+  .pf-ic { width: 27px; height: 27px; display: inline-flex; flex: 0 0 auto; }
+  .pf-ic svg { width: 100%; height: 100%; display: block; }
+  .pf-name { font-family: 'Outfit'; font-weight: 500; font-size: 15.5px; color: var(--ink-2); white-space: nowrap; letter-spacing: -.01em; }
+  @keyframes pf-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; flex-wrap: wrap; justify-content: center; gap: 22px 40px; }
+    .marquee { -webkit-mask-image: none; mask-image: none; }
   }
-  .press-logo {
-    font-family: 'Outfit'; font-weight: 600; font-size: clamp(16px, 2.2vw, 22px);
-    color: var(--ink); letter-spacing: -.01em; opacity: .78;
-    white-space: nowrap;
-  }
-  .press-logo.serif { font-family: 'Fraunces', Georgia, serif; font-weight: 500; }
-  .press-logo.caps { text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
 
   .trust-chips {
     display: grid; grid-template-columns: var(--marker-col) repeat(3, minmax(0,1fr));
@@ -427,6 +430,7 @@
 </head>
 <body>
 <div id="app"></div>
+<script src="/tge-proposals/assets/platform-logos.js"></script>
 
 <script>
 // __CONFIG_START__
@@ -739,14 +743,11 @@ function cleanUrl(u) {
 
 function renderTrust(p, stat) {
   // press = from static drsw media; chips = prospect.result_chips (fallback to static proof_metrics)
-  const cs = stat.case_studies || {};
-  const press = arr(cs.drsw && cs.drsw.media);
   let chips = arr(p.result_chips).filter(c => has(c.value));
   if (chips.length < 2) {
     chips = arr(stat.proof_metrics).slice(0, 3);
   }
   chips = chips.slice(0, 3);
-  if (!press.length && !chips.length) return '';
 
   // split a value like "20M+" into a numeral + trailing unit so the unit can take accent
   function splitVal(v) {
@@ -756,20 +757,7 @@ function renderTrust(p, stat) {
     return esc(m[1]) + (m[2] ? '<span class="u">' + esc(m[2]) + '</span>' : '');
   }
 
-  const pressHTML = press.length ? (
-    '<div class="trust-press reveal">' +
-      '<div class="trust-press-head">' +
-        '<div class="lbl">As featured in</div>' +
-        '<div class="lbl-note">Client coverage earned through our work</div>' +
-      '</div>' +
-      '<div class="press-row">' +
-        '<div></div>' +
-        '<div class="press-logos">' +
-          press.map(m => '<span class="press-logo ' + pressClass(m) + '">' + esc(m) + '</span>').join('') +
-        '</div>' +
-      '</div>' +
-    '</div>'
-  ) : '';
+  const platformsHTML = buildPlatforms();
 
   const chipsHTML = chips.length ? (
     '<div class="trust-chips reveal">' +
@@ -783,10 +771,34 @@ function renderTrust(p, stat) {
     '</div>'
   ) : '';
 
+  if (!platformsHTML && !chipsHTML) return '';
   return (
   '<section class="trust"><div class="wrap">' +
-    pressHTML + chipsHTML +
+    platformsHTML + chipsHTML +
   '</div></section>'
+  );
+}
+
+// Platforms-we-run marquee. Logos load from /tge-proposals/assets/platform-logos.js
+// (window.__PLATFORM_LOGOS / __PLATFORM_ORDER). If that file is absent (e.g. local
+// file:// preview) this returns '' and the section just shows the numbers.
+function buildPlatforms() {
+  var logos = window.__PLATFORM_LOGOS, order = window.__PLATFORM_ORDER;
+  if (!logos || !order || !order.length) return '';
+  var items = order.map(function (k) {
+    var l = logos[k];
+    if (!l || !l.svg) return '';
+    return '<span class="pf"><span class="pf-ic">' + l.svg + '</span><span class="pf-name">' + esc(l.label) + '</span></span>';
+  }).join('');
+  if (!items) return '';
+  return (
+    '<div class="platforms reveal">' +
+      '<div class="trust-press-head">' +
+        '<div class="lbl">Platforms we run</div>' +
+        '<div class="lbl-note">Your growth, handled across every channel</div>' +
+      '</div>' +
+      '<div class="marquee"><div class="marquee-track">' + items + items + '</div></div>' +
+    '</div>'
   );
 }
 
