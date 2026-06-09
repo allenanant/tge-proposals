@@ -163,10 +163,14 @@
   .cover-for b { color: var(--accent); font-weight: 600; }
   h1.cover-title {
     font-size: var(--t-display); font-weight: 600; letter-spacing: -.04em;
-    line-height: 1.0; margin-bottom: 26px; max-width: 15ch;
+    line-height: 1.02; margin-bottom: 22px; max-width: 18ch;
     overflow-wrap: break-word; hyphens: auto;
   }
   h1.cover-title .hl { color: var(--accent); }
+  .cover-lead {
+    font-family: 'Outfit'; font-weight: 500; font-size: clamp(19px, 2.5vw, 25px);
+    color: var(--ink-2); max-width: 32ch; margin-bottom: 30px; line-height: 1.35; letter-spacing: -.01em;
+  }
   .cover-sub { font-size: clamp(17px, 2.1vw, 20px); color: var(--ink-2); max-width: 40ch; margin-bottom: 34px; line-height: 1.55; }
   .cover-meta { display: flex; flex-wrap: wrap; gap: 0; align-items: stretch; border-top: 1px solid var(--line); }
   .meta-chip {
@@ -718,9 +722,8 @@ function renderCover(p, meta) {
         '<div class="tag">Proposal</div>' +
       '</div>' +
       '<div class="reveal">' +
-        (has(p.company_name) ? '<div class="cover-for">A growth proposal for <b>' + esc(p.company_name) + '</b></div>' : '') +
-        '<h1 class="cover-title">' + titleHTML + '</h1>' +
-        (has(p.cover_sub) ? '<p class="cover-sub">' + esc(p.cover_sub) + '</p>' : '') +
+        '<h1 class="cover-title">A growth proposal for <span class="hl">' + esc(has(p.company_name) ? p.company_name : 'your business') + '</span></h1>' +
+        (has(p.promise) ? '<p class="cover-lead">' + esc(promise) + '</p>' : '') +
         (metaChips.length ? '<div class="cover-meta">' + metaChips.join('') + '</div>' : '') +
       '</div>' +
     '</div>' +
