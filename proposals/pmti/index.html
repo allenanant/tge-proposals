@@ -163,10 +163,14 @@
   .cover-for b { color: var(--accent); font-weight: 600; }
   h1.cover-title {
     font-size: var(--t-display); font-weight: 600; letter-spacing: -.04em;
-    line-height: 1.0; margin-bottom: 26px; max-width: 15ch;
+    line-height: 1.02; margin-bottom: 22px; max-width: 18ch;
     overflow-wrap: break-word; hyphens: auto;
   }
   h1.cover-title .hl { color: var(--accent); }
+  .cover-lead {
+    font-family: 'Outfit'; font-weight: 500; font-size: clamp(19px, 2.5vw, 25px);
+    color: var(--ink-2); max-width: 32ch; margin-bottom: 30px; line-height: 1.35; letter-spacing: -.01em;
+  }
   .cover-sub { font-size: clamp(17px, 2.1vw, 20px); color: var(--ink-2); max-width: 40ch; margin-bottom: 34px; line-height: 1.55; }
   .cover-meta { display: flex; flex-wrap: wrap; gap: 0; align-items: stretch; border-top: 1px solid var(--line); }
   .meta-chip {
@@ -438,9 +442,9 @@ const CONFIG = {
     "contact_name": "Yad Senapathy",
     "industry": "Project management certification training",
     "website": "https://www.4pmti.com/",
-    "location": "United States and Canada",
-    "promise": "Turn PMTI traffic into enrolled PMP students",
-    "cover_sub": "WordPress CRO, SEO rewrites, and GoHighLevel follow up built end to end.",
+    "location": "United States",
+    "promise": "Turn PMTI traffic into tracked enrollment journeys",
+    "cover_sub": "PMTI Full Funnel Implementation across WordPress pages, GoHighLevel, email, and SMS.",
     "result_chips": [
       {
         "value": "20x",
@@ -452,49 +456,53 @@ const CONFIG = {
       },
       {
         "value": "616K",
-        "label": "Reel views"
+        "label": "top reel views"
       }
     ],
     "read": {
-      "summary": "PMTI already has authority, traffic, reviews, PMI ATP trust, and strong PMP demand. The gap is turning informational visits into captured leads, nurtured inquiries, and completed enrollments.",
+      "summary": "PMTI already has authority, PMP demand, course depth, location pages, proof, and 15,000 monthly visitors. The gap is conversion infrastructure that turns informational traffic into leads, follow up, and enrollments.",
       "signals": [
-        "15K monthly visitors, weak conversion focus",
-        "WordPress must stay the source",
-        "GoHighLevel needs full funnel buildout"
+        "15,000 monthly visitors need clearer next steps",
+        "Eligibility check already exists as a lead magnet",
+        "July 2026 PMP change creates urgency"
       ]
     },
     "strategy": {
-      "headline": "Build the enrollment engine around PMTI authority",
+      "headline": "Authority is there, now build the enrollment machine",
       "pillars": [
         {
           "icon": "search",
-          "title": "Money Page CRO",
-          "line": "Rewrite PMP, schedule, location, and corporate pages for intent and action."
+          "title": "Rewrite money pages",
+          "line": "Align PMP intent, proof, objections, FAQs, and enrollment CTAs."
         },
         {
           "icon": "funnel",
-          "title": "Lead Capture Paths",
-          "line": "Quizzes, guides, VSL pages, and consultation routes across key traffic paths."
+          "title": "Capture every path",
+          "line": "Quiz, guide, consultation, VSL, and corporate inquiry flows."
         },
         {
           "icon": "repeat",
-          "title": "GHL Nurture",
-          "line": "Tags, workflows, email, SMS, and pipelines that move leads to enrollment."
+          "title": "Automate follow up",
+          "line": "GoHighLevel workflows move leads from interest to course registration."
         }
       ]
     },
     "deliverables": [
       {
         "icon": "pen",
-        "label": "SEO page rewrites"
+        "label": "SEO CRO rewrites"
       },
       {
         "icon": "funnel",
         "label": "WordPress funnel pages"
       },
       {
+        "icon": "target",
+        "label": "Lead capture map"
+      },
+      {
         "icon": "mail",
-        "label": "Email nurture flows"
+        "label": "Email nurture sequences"
       },
       {
         "icon": "sms",
@@ -502,19 +510,15 @@ const CONFIG = {
       },
       {
         "icon": "chart",
-        "label": "Conversion tracking"
-      },
-      {
-        "icon": "shield",
-        "label": "Launch QA"
+        "label": "Tracking and QA"
       }
     ],
     "pricing": {
       "growth": {
         "bullets": [
-          "Top pages rewritten",
-          "Core GHL funnels built",
-          "Tracking and QA included"
+          "Core pages rewritten",
+          "GHL funnel foundation",
+          "Launch tracking included"
         ],
         "name": "Growth",
         "price": "$3,000"
@@ -522,19 +526,19 @@ const CONFIG = {
       "scale": {
         "bullets": [
           "More page templates",
-          "Expanded nurture sequences",
-          "VSL and quiz buildout"
+          "More nurture journeys",
+          "VSL funnel buildout"
         ],
         "name": "Scale",
         "price": "$4,000"
       }
     },
-    "guarantee": "If the first build feels generic, we rewrite the direction free.",
-    "roi_line": "One extra enrollment can make the funnel pay back fast.",
+    "guarantee": "If launch QA finds broken flows, we fix before handoff.",
+    "roi_line": "One extra enrollment path can pay for the funnel build.",
     "visual": {
-      "accent_hue": "#0B73C8",
-      "motif": "certification funnel architecture",
-      "hero_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 360\"><rect width=\"640\" height=\"360\" fill=\"#F8FBFF\"/><circle cx=\"500\" cy=\"92\" r=\"86\" fill=\"#0B73C8\" opacity=\".10\"/><circle cx=\"176\" cy=\"258\" r=\"118\" fill=\"#F59E0B\" opacity=\".08\"/><path d=\"M96 252 C180 128 276 280 366 150 C438 48 520 122 572 74\" fill=\"none\" stroke=\"#0B73C8\" opacity=\".45\"/><path d=\"M124 116 L244 84 L354 136 L492 104\" fill=\"none\" stroke=\"#7CB7E8\" opacity=\".7\"/><path d=\"M144 270 L280 214 L398 240 L528 172\" fill=\"none\" stroke=\"#F59E0B\" opacity=\".55\"/><circle cx=\"124\" cy=\"116\" r=\"7\" fill=\"#0B73C8\"/><circle cx=\"244\" cy=\"84\" r=\"7\" fill=\"#FFFFFF\" stroke=\"#0B73C8\"/><circle cx=\"354\" cy=\"136\" r=\"7\" fill=\"#FFFFFF\" stroke=\"#0B73C8\"/><circle cx=\"492\" cy=\"104\" r=\"7\" fill=\"#0B73C8\"/><rect x=\"250\" y=\"176\" width=\"130\" height=\"66\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#B9DDF5\" opacity=\".95\"/><rect x=\"404\" y=\"196\" width=\"92\" height=\"46\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#F7C873\" opacity=\".95\"/><rect x=\"132\" y=\"184\" width=\"92\" height=\"46\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#B9DDF5\" opacity=\".95\"/></svg>"
+      "accent_hue": "#0B6FB3",
+      "motif": "layered enrollment funnel paths",
+      "hero_svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 520' role='img' aria-hidden='true'><defs><linearGradient id='g1' x1='120' y1='80' x2='820' y2='440' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='#EAF5FF'/><stop offset='0.55' stop-color='#FFFFFF'/><stop offset='1' stop-color='#D9ECFF'/></linearGradient><linearGradient id='g2' x1='220' y1='120' x2='720' y2='390' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='#0B6FB3' stop-opacity='0.82'/><stop offset='1' stop-color='#27A4E8' stop-opacity='0.28'/></linearGradient><filter id='soft' x='0' y='0' width='960' height='520' filterUnits='userSpaceOnUse'><feGaussianBlur stdDeviation='18'/></filter></defs><rect width='960' height='520' fill='#FFFFFF'/><path d='M154 116 C280 52 418 66 526 142 C634 218 748 211 840 160 C816 268 734 354 610 392 C486 430 326 404 214 326 C142 276 118 191 154 116 Z' fill='url(#g1)'/><path d='M190 152 C316 92 442 110 546 188 C650 266 748 268 828 224' fill='none' stroke='#0B6FB3' stroke-width='2' stroke-opacity='0.22'/><path d='M160 250 C278 198 402 218 512 282 C628 350 730 350 824 302' fill='none' stroke='#27A4E8' stroke-width='2' stroke-opacity='0.22'/><path d='M246 104 L734 104 C764 104 788 128 788 158 L788 362 C788 392 764 416 734 416 L246 416 C216 416 192 392 192 362 L192 158 C192 128 216 104 246 104 Z' fill='#FFFFFF' fill-opacity='0.72' stroke='#0B6FB3' stroke-opacity='0.16'/><path d='M272 166 H688 C706 166 720 180 720 198 C720 216 706 230 688 230 H272 C254 230 240 216 240 198 C240 180 254 166 272 166 Z' fill='url(#g2)' fill-opacity='0.16'/><path d='M320 274 H640 C660 274 676 290 676 310 C676 330 660 346 640 346 H320 C300 346 284 330 284 310 C284 290 300 274 320 274 Z' fill='#FFFFFF' stroke='#0B6FB3' stroke-opacity='0.18'/><circle cx='270' cy='198' r='8' fill='#0B6FB3' fill-opacity='0.55'/><circle cx='690' cy='198' r='8' fill='#27A4E8' fill-opacity='0.55'/><circle cx='322' cy='310' r='7' fill='#0B6FB3' fill-opacity='0.48'/><circle cx='638' cy='310' r='7' fill='#27A4E8' fill-opacity='0.48'/><path d='M304 198 C374 240 420 270 482 310 C538 346 592 362 654 350' fill='none' stroke='#0B6FB3' stroke-width='3' stroke-linecap='round' stroke-opacity='0.32'/><path d='M406 154 L446 154 M468 154 L554 154 M576 154 L616 154' stroke='#0B6FB3' stroke-width='2' stroke-linecap='round' stroke-opacity='0.22'/><path d='M358 384 L422 384 M444 384 L524 384 M546 384 L606 384' stroke='#27A4E8' stroke-width='2' stroke-linecap='round' stroke-opacity='0.24'/><circle cx='160' cy='370' r='44' fill='#0B6FB3' fill-opacity='0.08' filter='url(#soft)'/><circle cx='808' cy='118' r='50' fill='#27A4E8' fill-opacity='0.1' filter='url(#soft)'/></svg>"
     }
   },
   "static": {
@@ -949,9 +953,8 @@ function renderCover(p, meta) {
         '<div class="tag">Proposal</div>' +
       '</div>' +
       '<div class="reveal">' +
-        (has(p.company_name) ? '<div class="cover-for">A growth proposal for <b>' + esc(p.company_name) + '</b></div>' : '') +
-        '<h1 class="cover-title">' + titleHTML + '</h1>' +
-        (has(p.cover_sub) ? '<p class="cover-sub">' + esc(p.cover_sub) + '</p>' : '') +
+        '<h1 class="cover-title">A growth proposal for <span class="hl">' + esc(has(p.company_name) ? p.company_name : 'your business') + '</span></h1>' +
+        (has(p.promise) ? '<p class="cover-lead">' + esc(promise) + '</p>' : '') +
         (metaChips.length ? '<div class="cover-meta">' + metaChips.join('') + '</div>' : '') +
       '</div>' +
     '</div>' +
