@@ -1,730 +1,2248 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>The Growth Engine · Proposal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --paper: #FAF8F3;          /* warm paper base */
-    --paper-2: #F2EFE7;
-    --card: #FFFFFF;
-    --ink: #17151B;            /* near-black ink */
-    --ink-2: #45424D;
-    --ink-3: #76737F;
-    --ink-4: #A8A4AC;          /* faint, for big editorial numerals */
-    --line: #E7E3D9;           /* hairline */
-    --line-2: #D8D3C6;         /* slightly stronger hairline */
-    --purple: #7C3AED;
-    --purple-2: #C069DD;
-    --purple-soft: #F4EEFC;
-    --accent: #7C3AED;         /* overridden per-prospect via JS */
-    --shadow-sm: 0 1px 2px rgba(22,21,26,.04), 0 4px 14px rgba(22,21,26,.05);
-    --shadow-md: 0 2px 6px rgba(22,21,26,.05), 0 18px 50px rgba(22,21,26,.07);
-    --r-sm: 10px;
-    --r-md: 14px;
-    --r-lg: 18px;
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Growth Engine | Growth Proposal</title>
+  <meta name="description" content="A private growth proposal prepared by The Growth Engine.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #FAF9F5;
+      --paper-soft: #F2EFE8;
+      --ink: #16151A;
+      --muted: #6C6872;
+      --faint: #DAD4C8;
+      --line: rgba(22, 21, 26, 0.14);
+      --purple: #7C3AED;
+      --purple-soft: #C069DD;
+      --white: #FFFFFF;
+      --heading: "Outfit", system-ui, sans-serif;
+      --body: "Hanken Grotesk", system-ui, sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+      --max: 1180px;
+      --gutter: clamp(22px, 5vw, 72px);
+      --radius: 8px;
+    }
 
-    /* ---- ONE editorial measure + grid ---- */
-    --measure: 1100px;         /* the single content measure everything aligns to */
-    --gutter: 40px;            /* page margin */
-    --marker-col: 132px;       /* width of the left section-number column */
-    --marker-gap: 40px;        /* gap between marker column and content */
+    * {
+      box-sizing: border-box;
+    }
 
-    /* ---- type scale (modular, ~1.25) ---- */
-    --t-eyebrow: 11.5px;
-    --t-body: 16px;
-    --t-body-lg: 18px;
-    --t-h3: 21px;
-    --t-h2: clamp(30px, 4.4vw, 46px);
-    --t-display: clamp(42px, 6.4vw, 70px);
+    html {
+      scroll-behavior: smooth;
+      background: var(--paper);
+    }
 
-    /* ---- vertical rhythm scale ---- */
-    --sp-sec: clamp(72px, 9vw, 116px);   /* between major sections */
-  }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(22, 21, 26, 0.045) 1px, transparent 1px) center top / calc((min(100vw, var(--max)) - 32px) / 12) 100%,
+        radial-gradient(circle at 88% 8%, rgba(124, 58, 237, 0.055), transparent 28rem),
+        var(--paper);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-  body {
-    font-family: 'Hanken Grotesk', system-ui, sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    overflow-x: hidden;
-  }
-  body::before {
-    /* faint paper warmth, top-corner only. restrained. */
-    content: "";
-    position: fixed; inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(1100px 640px at 88% -12%, rgba(124,58,237,.045), transparent 62%);
-    z-index: 0;
-  }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-  h1,h2,h3,h4 { font-family: 'Outfit', sans-serif; font-weight: 600; line-height: 1.06; letter-spacing: -.025em; color: var(--ink); }
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
 
-  /* the single content measure. everything lives inside .wrap so left edges align. */
-  .wrap { max-width: var(--measure); margin: 0 auto; padding: 0 var(--gutter); position: relative; z-index: 1; }
-  section { position: relative; z-index: 1; }
+    .page {
+      width: min(100%, var(--max));
+      margin: 0 auto;
+      padding: 0 var(--gutter) 64px;
+    }
 
-  .eyebrow {
-    font-family: 'Outfit', sans-serif;
-    font-size: var(--t-eyebrow); font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
-    color: var(--ink-3);
-    display: inline-flex; align-items: center; gap: 10px;
-  }
-  .eyebrow .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
-  .accent-text { color: var(--accent); }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: clamp(22px, 4vw, 38px) 0 clamp(46px, 7vw, 78px);
+    }
 
-  /* ---------- icons ---------- */
-  .ic { display: inline-flex; flex: 0 0 auto; }
-  .ic svg { display: block; width: 100%; height: 100%; }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
 
-  /* ---------- reveal motion (reveal-safe: visible without JS) ---------- */
-  .reveal { opacity: 1; transform: none; }
-  body.js-on .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1); will-change: opacity, transform; }
-  body.js-on .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal, body.js-on .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-    html { scroll-behavior: auto; }
-  }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, var(--purple), var(--purple-soft));
+      display: grid;
+      place-items: center;
+    }
 
-  /* =========================================================
-     SIGNATURE DETAIL (120%): the numbered section marker.
-     A large light Fraunces numeral over a hairline rule + eyebrow.
-     Repeated on every section. Establishes the editorial grid:
-     a fixed marker column + content column, left edges locked.
-     ========================================================= */
-  .sec { padding: var(--sp-sec) 0; }
-  .sec-grid {
-    display: grid;
-    grid-template-columns: var(--marker-col) minmax(0, 1fr);
-    gap: var(--marker-gap);
-    align-items: start;
-  }
-  .marker { position: relative; }
-  .marker .num {
-    font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-style: normal;
-    font-size: 64px; line-height: .8; letter-spacing: -.02em;
-    color: var(--ink); font-variant-numeric: lining-nums;
-  }
-  .marker .num .slash { color: var(--accent); }
-  .marker .rule { height: 1px; background: var(--line-2); margin: 18px 0 14px; }
-  .marker .eyebrow { display: block; }
-  .marker-sub { font-size: 13px; color: var(--ink-3); margin-top: 12px; max-width: 18ch; line-height: 1.45; }
+    .brand-text {
+      display: grid;
+      gap: 1px;
+      font-family: var(--heading);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0;
+    }
 
-  /* content column shared heading rhythm */
-  .sec-content > .lead { max-width: 30ch; }
-  h2.sec-title { font-size: var(--t-h2); letter-spacing: -.03em; margin: 0 0 18px; max-width: 18ch; }
-  h2.sec-title .hl { color: var(--accent); }
-  .sec-intro { color: var(--ink-2); font-size: var(--t-body-lg); max-width: 52ch; margin-bottom: 4px; }
+    .brand-text span:first-child {
+      font-size: 15px;
+    }
 
-  /* ================= COVER ================= */
-  .cover { padding: 56px 0 8px; }
-  .cover-top {
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    padding-bottom: 30px; border-bottom: 1px solid var(--line);
-  }
-  .brandmark { display: flex; align-items: center; gap: 12px; }
-  .brandmark .logo {
-    width: 38px; height: 38px; border-radius: 10px;
-    background: linear-gradient(150deg, var(--purple), var(--purple-2));
-    display: grid; place-items: center; box-shadow: 0 6px 16px rgba(124,58,237,.26);
-  }
-  .brandmark .logo svg { width: 21px; height: 21px; }
-  .brandmark .name { font-family: 'Outfit'; font-weight: 600; font-size: 16px; letter-spacing: -.01em; }
-  .cover-prepared { text-align: right; font-size: 12px; color: var(--ink-3); line-height: 1.6; letter-spacing: .01em; }
-  .cover-prepared b { color: var(--ink); font-weight: 600; display: block; font-family: 'Outfit'; }
+    .brand-text span:last-child {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--body);
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
 
-  .cover-grid {
-    display: grid; grid-template-columns: var(--marker-col) minmax(0, 1fr);
-    gap: var(--marker-gap); align-items: start;
-    padding: clamp(48px, 7vw, 92px) 0 clamp(40px, 5vw, 64px);
-  }
-  /* left rail on cover = oversized index numeral, ties cover into the system */
-  .cover-rail .idx {
-    font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 64px; line-height: .8;
-    color: var(--ink);
-  }
-  .cover-rail .idx .slash { color: var(--accent); }
-  .cover-rail .rule { height: 1px; background: var(--line-2); margin: 18px 0 14px; }
-  .cover-rail .tag { font-family:'Outfit'; font-size: 11.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
+    .prepared {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      text-align: right;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
 
-  .cover-for {
-    font-family: 'Outfit'; font-size: 13px; font-weight: 500; color: var(--ink-3);
-    letter-spacing: .02em; margin-bottom: 20px;
-  }
-  .cover-for b { color: var(--accent); font-weight: 600; }
-  h1.cover-title {
-    font-size: var(--t-display); font-weight: 600; letter-spacing: -.04em;
-    line-height: 1.02; margin-bottom: 22px; max-width: 18ch;
-    overflow-wrap: break-word; hyphens: auto;
-  }
-  h1.cover-title .hl { color: var(--accent); }
-  .cover-lead {
-    font-family: 'Outfit'; font-weight: 500; font-size: clamp(19px, 2.5vw, 25px);
-    color: var(--ink-2); max-width: 32ch; margin-bottom: 30px; line-height: 1.35; letter-spacing: -.01em;
-  }
-  .cover-sub { font-size: clamp(17px, 2.1vw, 20px); color: var(--ink-2); max-width: 40ch; margin-bottom: 34px; line-height: 1.55; }
-  .cover-meta { display: flex; flex-wrap: wrap; gap: 0; align-items: stretch; border-top: 1px solid var(--line); }
-  .meta-chip {
-    display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--ink-2);
-    padding: 14px 22px 14px 0; margin-right: 22px; border-right: 1px solid var(--line);
-  }
-  .meta-chip:last-child { border-right: none; margin-right: 0; }
-  .meta-chip .ic { width: 15px; height: 15px; color: var(--accent); }
+    .section {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(92px, 180px) minmax(0, 1fr);
+      column-gap: clamp(22px, 5vw, 72px);
+      padding: clamp(46px, 8vw, 88px) 0;
+      border-top: 1px solid var(--line);
+    }
 
-  /* ================= TRUST BAR ================= */
-  .trust { padding: 8px 0 0; }
-  .platforms { padding: 30px 0 28px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .trust-press-head {
-    display: grid; grid-template-columns: var(--marker-col) minmax(0,1fr); gap: var(--marker-gap);
-    align-items: baseline; margin-bottom: 22px;
-  }
-  .platforms .lbl {
-    font-family: 'Outfit'; font-size: var(--t-eyebrow); font-weight: 600; letter-spacing: .2em;
-    text-transform: uppercase; color: var(--ink-3);
-  }
-  .platforms .lbl-note { font-size: 13px; color: var(--ink-3); }
-  /* platforms-we-run marquee (real brand logos, scrolls; pauses on hover) */
-  .marquee {
-    position: relative; overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  }
-  .marquee-track { display: flex; align-items: center; gap: 50px; width: max-content; animation: pf-scroll 40s linear infinite; }
-  .marquee:hover .marquee-track { animation-play-state: paused; }
-  .pf { display: inline-flex; align-items: center; gap: 11px; flex: 0 0 auto; }
-  .pf-ic { width: 27px; height: 27px; display: inline-flex; flex: 0 0 auto; }
-  .pf-ic svg { width: 100%; height: 100%; display: block; }
-  .pf-name { font-family: 'Outfit'; font-weight: 500; font-size: 15.5px; color: var(--ink-2); white-space: nowrap; letter-spacing: -.01em; }
-  @keyframes pf-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track { animation: none; flex-wrap: wrap; justify-content: center; gap: 22px 40px; }
-    .marquee { -webkit-mask-image: none; mask-image: none; }
-  }
+    .section:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
 
-  .trust-chips {
-    display: grid; grid-template-columns: var(--marker-col) repeat(3, minmax(0,1fr));
-    gap: var(--marker-gap); align-items: end;
-    padding: 40px 0 4px;
-  }
-  .trust-chips .chips-label {
-    font-family:'Outfit'; font-size: var(--t-eyebrow); font-weight:600; letter-spacing:.2em;
-    text-transform: uppercase; color: var(--ink-3); align-self: end; padding-bottom: 6px;
-  }
-  .trust-chip { padding-left: 0; }
-  .trust-chip .val {
-    font-family: 'Outfit'; font-weight: 700; font-size: clamp(34px, 4.6vw, 48px);
-    letter-spacing: -.035em; line-height: 1; color: var(--ink);
-  }
-  .trust-chip .val .u { color: var(--accent); }
-  .trust-chip .lbl { font-size: 13px; color: var(--ink-3); margin-top: 10px; max-width: 16ch; }
+    .section-number {
+      min-width: 0;
+    }
 
-  /* ----- What we see (text-only, was the screenshot section) ----- */
-  .seen-list { border-top: 1px solid var(--line); margin-top: 8px; }
-  .seen {
-    display: grid; grid-template-columns: 40px minmax(0,1fr); gap: 24px; align-items: baseline;
-    padding: 22px 0; border-bottom: 1px solid var(--line);
-  }
-  .seen .sn { font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: 19px; color: var(--accent); line-height: 1.2; }
-  .seen .st { font-family: 'Outfit'; font-weight: 500; font-size: clamp(16px, 1.9vw, 19px); color: var(--ink); letter-spacing: -.01em; }
-  .seen-summary {
-    font-family: 'Outfit'; font-weight: 400; font-size: clamp(20px, 2.6vw, 27px);
-    line-height: 1.4; letter-spacing: -.02em; color: var(--ink); max-width: 24ch;
-  }
-  .seen-summary .em { color: var(--accent); }
+    .section-number span {
+      display: block;
+      color: rgba(22, 21, 26, 0.19);
+      font-family: var(--serif);
+      font-size: 96px;
+      font-weight: 300;
+      line-height: 0.9;
+      letter-spacing: 0;
+    }
 
-  /* ----- Strategy: hairline-numbered pillars, no cards/gradient bg ----- */
-  .badge-free {
-    display: inline-flex; align-items: center; gap: 9px;
-    background: var(--purple-soft); color: var(--purple); border: 1px solid rgba(124,58,237,.2);
-    border-radius: 999px; padding: 7px 15px;
-    font-family: 'Outfit'; font-size: 12px; font-weight: 600; letter-spacing: .04em;
-  }
-  .badge-free .ic { width: 14px; height: 14px; color: var(--purple); }
-  .pillars { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 0; border-top: 1px solid var(--line-2); margin-top: 40px; }
-  .pillar { position: relative; padding: 30px 30px 30px 0; border-right: 1px solid var(--line); }
-  .pillar:last-child { border-right: none; padding-right: 0; }
-  .pillar:not(:first-child) { padding-left: 30px; }
-  .pillar .num {
-    font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 30px;
-    color: var(--accent); line-height: 1; margin-bottom: 22px; display: block;
-  }
-  .pillar .pic { color: var(--accent); margin-bottom: 16px; }
-  .pillar .pic .ic { width: 26px; height: 26px; }
-  .pillar h3 { font-size: var(--t-h3); margin-bottom: 10px; letter-spacing: -.02em; }
-  .pillar p { font-size: 15px; color: var(--ink-2); line-height: 1.6; }
+    .section-number::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin-top: clamp(18px, 2vw, 28px);
+      background: var(--line);
+    }
 
-  /* =========================================================
-     SYSTEM DIAGRAM (the engine). A modular grid of 6 pillar
-     nodes locked together by shared hairlines, with a central
-     labeled hub band running through it. Reads as one machine.
-     ========================================================= */
-  .engine { margin-top: 36px; }
-  .engine-hub {
-    display: flex; align-items: center; gap: 16px;
-    border: 1px solid var(--line-2); border-radius: var(--r-md);
-    background: var(--purple-soft);
-    padding: 16px 22px; margin-bottom: 0;
-    position: relative; z-index: 2;
-  }
-  .engine-hub .hub-mark {
-    width: 34px; height: 34px; border-radius: 9px; flex: 0 0 auto;
-    background: linear-gradient(150deg, var(--purple), var(--purple-2));
-    display: grid; place-items: center; box-shadow: 0 6px 16px rgba(124,58,237,.26);
-  }
-  .engine-hub .hub-mark svg { width: 18px; height: 18px; color: #fff; }
-  .engine-hub .hub-txt .hub-eyebrow {
-    font-family: 'Outfit'; font-size: 10.5px; font-weight: 600; letter-spacing: .18em;
-    text-transform: uppercase; color: var(--purple);
-  }
-  .engine-hub .hub-txt .hub-name {
-    font-family: 'Outfit'; font-weight: 600; font-size: 17px; letter-spacing: -.02em; color: var(--ink);
-  }
-  /* the connective stem: a short vertical hairline from hub into the grid */
-  .engine-stem { width: 1px; height: 26px; background: var(--line-2); margin: 0 auto; position: relative; z-index: 1; }
-  .engine-stem::after { content: ""; position: absolute; left: -2.5px; bottom: -1px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-  .engine-grid {
-    display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
-    border: 1px solid var(--line-2); border-radius: var(--r-md); overflow: hidden;
-    background: var(--card);
-  }
-  .node {
-    position: relative; padding: 26px 26px 28px;
-    border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  }
-  .engine-grid .node:nth-child(3n) { border-right: none; }
-  .engine-grid .node:nth-child(n+4) { border-bottom: none; }
-  .node-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .node-ic {
-    width: 38px; height: 38px; flex: 0 0 auto; border-radius: 9px;
-    border: 1px solid var(--line-2); background: var(--paper);
-    display: grid; place-items: center; color: var(--accent);
-  }
-  .node-ic .ic { width: 21px; height: 21px; }
-  .node-n { font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 22px; color: var(--ink-4); line-height: 1; margin-left: auto; }
-  .node h3 { font-size: 17px; letter-spacing: -.02em; margin-bottom: 7px; }
-  .node p { font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+    .section-body {
+      min-width: 0;
+    }
 
-  /* =========================================================
-     CONVERSION FUNNEL. Inline-SVG stacked trapezoids narrowing
-     top to bottom, 3 labeled stages, channels mapped beside each.
-     ========================================================= */
-  .funnel-wrap {
-    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-    gap: 44px; align-items: stretch; margin-top: 36px;
-  }
-  .funnel-svg { width: 100%; height: auto; display: block; }
-  .funnel-svg .seg-fill-1 { fill: rgba(124,58,237,.10); }
-  .funnel-svg .seg-fill-2 { fill: rgba(124,58,237,.18); }
-  .funnel-svg .seg-fill-3 { fill: rgba(124,58,237,.30); }
-  .funnel-svg .seg-stroke { stroke: var(--accent); stroke-width: 1.2; fill: none; }
-  .funnel-svg .seg-label { font-family: 'Outfit', sans-serif; font-weight: 600; letter-spacing: -.01em; }
-  .funnel-svg .seg-label.t1 { fill: #5B23B6; }
-  .funnel-svg .seg-label.t2 { fill: #5B23B6; }
-  .funnel-svg .seg-label.t3 { fill: #fff; }
-  .funnel-svg .seg-sub { font-family: 'Hanken Grotesk', sans-serif; font-weight: 500; fill: var(--ink-3); }
-  .funnel-svg .seg-sub.on { fill: rgba(255,255,255,.92); }
-  .funnel-stages { display: flex; flex-direction: column; gap: 0; }
-  .fstage {
-    display: grid; grid-template-columns: 22px minmax(0,1fr); gap: 16px; align-items: start;
-    padding: 18px 0; border-bottom: 1px solid var(--line); flex: 1; align-content: center;
-  }
-  .fstage:first-child { padding-top: 0; }
-  .fstage:last-child { border-bottom: none; padding-bottom: 0; }
-  .fstage .fn { font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: 17px; color: var(--accent); line-height: 1.2; }
-  .fstage .fs-name { font-family: 'Outfit'; font-weight: 600; font-size: 16px; letter-spacing: -.01em; margin-bottom: 4px; }
-  .fstage .fs-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin-bottom: 10px; }
-  .fchips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .fchip {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-family: 'Outfit'; font-size: 11.5px; font-weight: 500; color: var(--ink-2);
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px;
-  }
-  .fchip .ic { width: 13px; height: 13px; color: var(--accent); }
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
 
-  /* =========================================================
-     EVERYTHING INCLUDED. 4 labeled categories, hairline columns,
-     each a scannable checklist. Optional tailored intro row.
-     ========================================================= */
-  .incl-intro { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 30px; }
-  .incl-intro .it {
-    font-family: 'Outfit'; font-size: 12.5px; font-weight: 500; color: var(--ink);
-    background: var(--purple-soft); border: 1px solid rgba(124,58,237,.18);
-    border-radius: 999px; padding: 6px 13px; display: inline-flex; align-items: center; gap: 7px;
-  }
-  .incl-intro .it .ic { width: 13px; height: 13px; color: var(--purple); }
-  .incl-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-    border: 1px solid var(--line-2); border-radius: var(--r-md); overflow: hidden; background: var(--card);
-  }
-  .incl-cat { padding: 26px 28px 28px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .incl-grid .incl-cat:nth-child(2n) { border-right: none; }
-  .incl-grid .incl-cat:nth-child(n+3) { border-bottom: none; }
-  .incl-cat-head { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
-  .incl-cat-head .ch-ic {
-    width: 34px; height: 34px; flex: 0 0 auto; border-radius: 9px;
-    border: 1px solid var(--line-2); background: var(--paper); display: grid; place-items: center; color: var(--accent);
-  }
-  .incl-cat-head .ch-ic .ic { width: 19px; height: 19px; }
-  .incl-cat-head .ch-t { font-family: 'Outfit'; font-weight: 600; font-size: 16px; letter-spacing: -.01em; }
-  .incl-cat-head .ch-c { margin-left: auto; font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 20px; color: var(--ink-4); }
-  .incl-list { list-style: none; display: grid; gap: 11px; }
-  .incl-list li { display: flex; align-items: flex-start; gap: 11px; font-size: 14px; color: var(--ink); line-height: 1.45; }
-  .incl-list .ck {
-    width: 18px; height: 18px; flex: 0 0 auto; margin-top: 1px; border-radius: 50%;
-    background: var(--purple-soft); color: var(--purple); display: grid; place-items: center;
-  }
-  .incl-list .ck .ic { width: 12px; height: 12px; }
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
 
-  /* =========================================================
-     ALWAYS-ON FOLLOW UP. Lead node -> 4 channel nodes, each with
-     its stat as data. A labeled multi-channel row connected by a
-     shared rail. Communicates the 24/7 system visually.
-     ========================================================= */
-  .auto-wrap { margin-top: 36px; }
-  .auto-lead {
-    display: flex; align-items: center; gap: 14px; justify-content: center;
-    border: 1px dashed var(--line-2); border-radius: var(--r-md);
-    background: var(--paper-2); padding: 14px 22px; max-width: 360px; margin: 0 auto;
-  }
-  .auto-lead .al-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; box-shadow: 0 0 0 5px rgba(124,58,237,.12); }
-  .auto-lead .al-t { font-family: 'Outfit'; font-weight: 600; font-size: 14.5px; letter-spacing: -.01em; }
-  .auto-lead .al-s { font-size: 12.5px; color: var(--ink-3); }
-  .auto-rail { position: relative; height: 38px; }
-  .auto-rail .rail-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .auto-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; }
-  .auto-node {
-    border: 1px solid var(--line-2); border-radius: var(--r-md); background: var(--card);
-    padding: 22px 20px 22px; display: flex; flex-direction: column; gap: 0; position: relative;
-  }
-  .auto-node .an-top { display: flex; align-items: center; gap: 11px; margin-bottom: 14px; }
-  .auto-node .an-ic {
-    width: 36px; height: 36px; flex: 0 0 auto; border-radius: 9px;
-    border: 1px solid var(--line-2); background: var(--paper); display: grid; place-items: center; color: var(--accent);
-  }
-  .auto-node .an-ic .ic { width: 20px; height: 20px; }
-  .auto-node .an-name { font-family: 'Outfit'; font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
-  .auto-node .an-stat {
-    font-family: 'Outfit'; font-weight: 700; font-size: clamp(22px, 2.6vw, 27px);
-    letter-spacing: -.03em; line-height: 1; color: var(--accent); margin-bottom: 9px;
-  }
-  .auto-node .an-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+    h1,
+    h2,
+    h3 {
+      font-family: var(--heading);
+      letter-spacing: 0;
+      line-height: 0.98;
+    }
 
-  /* ----- Proof: real screenshots kept as imagery, calm editorial frame ----- */
-  .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-  .case {
-    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
-    overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
-  }
-  .case-shot { position: relative; aspect-ratio: 16/10.2; overflow: hidden; background: var(--paper-2); border-bottom: 1px solid var(--line); }
-  .case-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
-  .case-shot .ph { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-3); font-family: 'Outfit'; font-weight: 600; }
-  .case-badge {
-    position: absolute; top: 14px; left: 14px;
-    background: rgba(255,255,255,.94); backdrop-filter: blur(6px);
-    border: 1px solid var(--line); border-radius: 999px; padding: 6px 13px;
-    font-family: 'Outfit'; font-size: 11.5px; font-weight: 600; color: var(--ink-2);
-  }
-  .case-body { padding: 26px 28px 28px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
-  .case-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
-  .case-name { font-family: 'Outfit'; font-weight: 600; font-size: 19px; letter-spacing: -.01em; }
-  .case-ind { font-size: 12.5px; color: var(--ink-3); margin-top: 3px; }
-  .case-metric { text-align: right; flex: 0 0 auto; }
-  .case-metric .v {
-    font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: 38px; line-height: .9; letter-spacing: -.02em;
-    color: var(--accent);
-  }
-  .case-metric .l { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .1em; margin-top: 6px; }
-  .case-result { font-size: 14.5px; color: var(--ink-2); line-height: 1.6; }
-  .case-result b { color: var(--ink); font-weight: 600; }
-  .case-subs { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; }
-  .case-subs span {
-    font-size: 12px; color: var(--ink-2); background: var(--paper-2);
-    border: 1px solid var(--line); border-radius: 6px; padding: 5px 11px; font-weight: 500;
-  }
-  .case-press { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding-top: 14px; border-top: 1px solid var(--line); }
-  .case-press .pl { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 13px; color: var(--ink-3); }
+    h1 {
+      max-width: 900px;
+      margin-bottom: 22px;
+      font-size: 100px;
+      font-weight: 800;
+    }
 
-  /* ----- Deliverables: hairline list, no cards ----- */
-  .deliver-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 0; border-top: 1px solid var(--line-2); }
-  .deliver {
-    display: flex; align-items: center; gap: 16px;
-    padding: 24px 28px 24px 0; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
-  }
-  .deliver:nth-child(3n) { border-right: none; padding-right: 0; }
-  .deliver:not(:nth-child(3n)) { padding-right: 28px; }
-  .deliver:nth-child(n+1):not(:nth-child(3n+1)) { padding-left: 28px; }
-  .deliver .dic { color: var(--accent); }
-  .deliver .dic .ic { width: 24px; height: 24px; }
-  .deliver .dl { font-family: 'Outfit'; font-weight: 500; font-size: 15.5px; color: var(--ink); letter-spacing: -.01em; }
+    h1 .company {
+      color: var(--purple);
+      display: block;
+    }
 
-  /* ----- Pricing: 2 calm cards, hairline-led ----- */
-  .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-  .price-card {
-    background: var(--card); border: 1px solid var(--line-2); border-radius: var(--r-md);
-    padding: 36px 34px 34px; position: relative; display: flex; flex-direction: column;
-  }
-  .price-card.featured { border-color: var(--accent); box-shadow: 0 24px 60px rgba(124,58,237,.1); }
-  .price-tag {
-    position: absolute; top: -12px; left: 34px;
-    background: var(--accent); color: #fff;
-    font-family: 'Outfit'; font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-    padding: 5px 13px; border-radius: 999px;
-  }
-  .price-name { font-family: 'Outfit'; font-weight: 600; font-size: 13px; color: var(--ink-3); letter-spacing: .14em; text-transform: uppercase; }
-  .price-amt { font-family: 'Outfit'; font-weight: 700; font-size: 50px; letter-spacing: -.035em; margin: 12px 0 2px; }
-  .price-amt .per { font-size: 15px; font-weight: 500; color: var(--ink-3); letter-spacing: 0; }
-  .price-rule { height: 1px; background: var(--line); margin: 24px 0; }
-  .price-bullets { display: flex; flex-direction: column; gap: 14px; flex: 1; }
-  .price-bullets li { list-style: none; display: flex; align-items: flex-start; gap: 12px; font-size: 14.5px; color: var(--ink); }
-  .price-bullets .chk { width: 19px; height: 19px; flex: 0 0 auto; color: var(--accent); display: grid; place-items: center; margin-top: 2px; }
-  .price-bullets .chk .ic { width: 16px; height: 16px; }
+    .hero-line {
+      max-width: 690px;
+      margin-bottom: 30px;
+      color: var(--muted);
+      font-size: 24px;
+      line-height: 1.25;
+    }
 
-  /* ----- Guarantee + CTA: editorial, one restrained tint ----- */
-  .close { padding: var(--sp-sec) 0 clamp(80px, 9vw, 112px); }
-  .close-card {
-    background: var(--card); color: var(--ink);
-    border: 1px solid var(--line-2); border-radius: var(--r-lg); overflow: hidden; position: relative;
-  }
-  .close-card::before {
-    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    background: linear-gradient(180deg, var(--purple), var(--purple-2));
-  }
-  .close-inner { position: relative; padding: clamp(44px, 6vw, 64px) clamp(36px, 5vw, 60px); display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
-  .guarantee-badge {
-    display: inline-flex; align-items: center; gap: 9px;
-    background: var(--purple-soft); border: 1px solid rgba(124,58,237,.2);
-    border-radius: 999px; padding: 7px 15px; font-family: 'Outfit'; font-size: 12px; font-weight: 600;
-    color: var(--purple); margin-bottom: 22px; letter-spacing: .03em;
-  }
-  .guarantee-badge .ic { width: 15px; height: 15px; color: var(--purple); }
-  .close h2 { color: var(--ink); font-size: clamp(28px, 4vw, 40px); letter-spacing: -.03em; margin-bottom: 18px; max-width: 16ch; }
-  .close .guarantee-line { color: var(--ink-2); font-size: 16.5px; max-width: 40ch; margin-bottom: 10px; line-height: 1.6; }
-  .close .roi-line { color: var(--accent); font-size: 14.5px; font-family: 'Outfit'; font-weight: 500; }
-  .close-cta { display: flex; flex-direction: column; gap: 22px; align-items: stretch; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 11px; text-decoration: none;
-    font-family: 'Outfit'; font-weight: 600; font-size: 16px;
-    background: var(--accent); color: #fff; border-radius: 12px; padding: 17px 26px;
-    box-shadow: 0 14px 34px rgba(124,58,237,.28); transition: transform .2s ease, box-shadow .2s ease;
-    width: 100%; justify-content: center;
-  }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 20px 46px rgba(124,58,237,.36); }
-  .btn .ic { width: 19px; height: 19px; color: #fff; }
-  .sign { display: flex; align-items: center; gap: 14px; padding-top: 4px; border-top: 1px solid var(--line); margin-top: 2px; padding-top: 22px; }
-  .sign .av {
-    width: 46px; height: 46px; border-radius: 50%; flex: 0 0 auto;
-    background: linear-gradient(150deg, var(--purple), var(--purple-2)); color: #fff;
-    display: grid; place-items: center; font-family: 'Outfit'; font-weight: 700; font-size: 17px;
-  }
-  .sign .who { line-height: 1.4; }
-  .sign .who .nm { font-family: 'Outfit'; font-weight: 600; font-size: 15px; color: var(--ink); }
-  .sign .who .rl { font-size: 12.5px; color: var(--ink-3); }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
 
-  footer { padding: 34px 0 52px; border-top: 1px solid var(--line); }
-  footer .foot-grid { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-  footer .fbrand { font-family: 'Outfit'; font-weight: 600; color: var(--ink-2); font-size: 14px; }
-  footer .fcontact { color: var(--ink-3); font-size: 12.5px; }
-  footer a { color: var(--ink-3); text-decoration: none; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 31px;
+      padding: 6px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(250, 249, 245, 0.82);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+    }
 
-  /* ================= RESPONSIVE ================= */
-  @media (max-width: 940px) {
-    :root { --marker-col: 96px; --marker-gap: 28px; --gutter: 32px; }
-    .cover-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-    .cover-grid > * { min-width: 0; }
-    .cover-rail { display: flex; align-items: baseline; gap: 16px; }
-    .cover-rail .rule { display: none; }
-    .cover-rail .tag { margin-left: auto; }
-    .proof-grid { grid-template-columns: 1fr; }
-    .pillars { grid-template-columns: 1fr; border-top: none; margin-top: 28px; }
-    .pillar { border-right: none; border-bottom: 1px solid var(--line); padding: 26px 0 !important; }
-    .pillar:last-child { border-bottom: none; }
-    .deliver-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .deliver { border-right: none !important; padding: 22px 0 !important; }
-    .deliver:nth-child(odd) { border-right: 1px solid var(--line) !important; padding-right: 24px !important; }
-    .deliver:nth-child(even) { padding-left: 24px !important; }
-    .close-inner { grid-template-columns: 1fr; gap: 30px; }
-    /* system diagram: 2-up, recompute borders */
-    .engine-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .engine-grid .node { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .engine-grid .node:nth-child(3n) { border-right: 1px solid var(--line); }
-    .engine-grid .node:nth-child(2n) { border-right: none; }
-    .engine-grid .node:nth-child(n+4) { border-bottom: 1px solid var(--line); }
-    .engine-grid .node:nth-child(n+5) { border-bottom: none; }
-    /* funnel: stack svg over stages */
-    .funnel-wrap { grid-template-columns: 1fr; gap: 28px; }
-    /* automation: 2-up */
-    .auto-grid { grid-template-columns: 1fr 1fr; }
-    .auto-rail { display: none; }
-  }
-  @media (max-width: 640px) {
-    :root { --gutter: 22px; --marker-col: 64px; --marker-gap: 20px; --sp-sec: 60px; }
-    .cover { padding: 30px 0 4px; }
-    .cover-prepared { font-size: 11px; }
-    .cover-grid { padding: 36px 0 30px; }
-    h1.cover-title { max-width: none; overflow-wrap: break-word; }
-    .cover-sub { max-width: none; }
-    .marker .num, .cover-rail .idx { font-size: 48px; }
-    .sec-grid { grid-template-columns: 1fr; gap: 24px; }
-    .sec-grid > .marker { display: flex; align-items: baseline; gap: 14px; }
-    .sec-grid > .marker .rule { flex: 1; margin: 0; align-self: center; }
-    .sec-grid > .marker .marker-sub { display: none; }
-    .trust-press-head, .press-row, .trust-chips { grid-template-columns: 1fr; gap: 18px; }
-    .trust-chips { gap: 24px 18px; grid-template-columns: 1fr 1fr; }
-    .trust-chips .chips-label { grid-column: 1 / -1; padding-bottom: 0; }
-    .price-grid { grid-template-columns: 1fr; gap: 22px; }
-    .deliver-grid { grid-template-columns: 1fr; }
-    .deliver, .deliver:nth-child(odd), .deliver:nth-child(even) { border-right: none !important; padding: 20px 0 !important; }
-    .meta-chip { padding: 10px 16px 10px 0; margin-right: 16px; }
-    /* system diagram: single column, all hairlines become row dividers */
-    .engine-grid { grid-template-columns: 1fr; }
-    .engine-grid .node, .engine-grid .node:nth-child(3n), .engine-grid .node:nth-child(2n) { border-right: none !important; border-bottom: 1px solid var(--line) !important; }
-    .engine-grid .node:last-child { border-bottom: none !important; }
-    .node-n { font-size: 19px; }
-    /* deliverables breakdown: single column */
-    .incl-grid { grid-template-columns: 1fr; }
-    .incl-cat, .incl-grid .incl-cat:nth-child(2n) { border-right: none !important; border-bottom: 1px solid var(--line) !important; }
-    .incl-grid .incl-cat:last-child { border-bottom: none !important; }
-    /* automation: single column row */
-    .auto-grid { grid-template-columns: 1fr; gap: 14px; }
-  }
-  @media (max-width: 380px) {
-    :root { --gutter: 16px; }
-    h1.cover-title { font-size: 29px; letter-spacing: -.02em; max-width: none; overflow-wrap: break-word; }
-    .cover-sub { font-size: 15px; max-width: none; }
-    .price-amt { font-size: 40px; }
-    .trust-chips { grid-template-columns: 1fr; }
-    .press-logo { font-size: 15px; }
-    .case-metric .v { font-size: 32px; }
-    .node-top { gap: 10px; }
-    .auto-node .an-stat { font-size: 24px; }
-  }
+    .chip strong {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .brief-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 44px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brief-item {
+      min-height: 128px;
+      padding: 21px 20px 20px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .brief-item:nth-child(n + 2) {
+      padding-left: 20px;
+    }
+
+    .brief-item:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .brief-label {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .brief-item b {
+      display: block;
+      margin-bottom: 7px;
+      font-family: var(--heading);
+      font-size: 21px;
+      line-height: 1.08;
+    }
+
+    .brief-item span:last-child {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.34;
+    }
+
+    .press-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .press-logo {
+      min-height: 78px;
+      display: grid;
+      place-items: center;
+      padding: 18px 14px;
+      border-right: 1px solid var(--line);
+      color: rgba(22, 21, 26, 0.68);
+      text-align: center;
+      font-family: var(--heading);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .press-logo:last-child {
+      border-right: 0;
+    }
+
+    .press-logo.daily {
+      font-family: Georgia, serif;
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .press-logo.sky {
+      font-size: 29px;
+      letter-spacing: 0;
+      text-transform: lowercase;
+    }
+
+    .press-logo.sun {
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    .press-logo.tatler {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .press-logo.fabulous {
+      font-size: 19px;
+      font-style: italic;
+      letter-spacing: 0;
+    }
+
+    .press-logo.express {
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .result-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 36px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .result {
+      padding: 20px 22px 19px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .result:last-child {
+      border-right: 0;
+      padding-right: 0;
+      padding-left: 22px;
+    }
+
+    .result:nth-child(2) {
+      padding-left: 22px;
+    }
+
+    .result b {
+      display: block;
+      margin-bottom: 3px;
+      font-family: var(--heading);
+      font-size: 46px;
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .result span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .platforms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      align-items: center;
+    }
+
+    .platform {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .platform svg {
+      width: 21px;
+      height: 21px;
+      flex: 0 0 21px;
+      color: var(--purple);
+    }
+
+    .trust-board {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(26px, 4vw, 48px);
+      align-items: start;
+      margin-top: 36px;
+    }
+
+    .trust-proof {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .trust-item {
+      min-height: 124px;
+      padding: 22px 18px 20px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .trust-item:nth-child(n + 2) {
+      padding-left: 18px;
+    }
+
+    .trust-item:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .trust-item b {
+      display: block;
+      margin-bottom: 7px;
+      font-family: var(--heading);
+      font-size: 20px;
+      line-height: 1.08;
+    }
+
+    .trust-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .trust-mini {
+      border-top: 2px solid var(--ink);
+    }
+
+    .trust-mini h3 {
+      margin: 18px 0 14px;
+      font-size: 26px;
+      line-height: 1.02;
+    }
+
+    .trust-mini p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin-bottom: 34px;
+      color: var(--ink);
+      font-size: 36px;
+      font-family: var(--heading);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead-small {
+      max-width: 680px;
+      margin-bottom: 32px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .signals {
+      display: grid;
+      border-top: 1px solid var(--line);
+    }
+
+    .signal {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .signal-index {
+      color: var(--purple);
+      font-family: var(--heading);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .signal b {
+      display: block;
+      margin-bottom: 3px;
+      font-family: var(--heading);
+      font-size: 19px;
+      line-height: 1.2;
+    }
+
+    .signal span {
+      color: var(--muted);
+    }
+
+    .diagnostic-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(260px, 0.82fr);
+      gap: clamp(26px, 5vw, 56px);
+      align-items: start;
+      margin-top: 40px;
+    }
+
+    .visual-frame {
+      min-width: 0;
+      padding: 22px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .visual-frame svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .opportunity-grid {
+      display: grid;
+      border-top: 1px solid var(--line);
+    }
+
+    .opportunity {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 14px;
+      padding: 17px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .opportunity strong {
+      color: var(--purple);
+      font-family: var(--heading);
+      font-size: 13px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .opportunity b {
+      display: block;
+      margin-bottom: 4px;
+      font-family: var(--heading);
+      font-size: 19px;
+      line-height: 1.08;
+    }
+
+    .opportunity span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.34;
+    }
+
+    .strategy-header {
+      max-width: 880px;
+      margin-bottom: clamp(32px, 5vw, 54px);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 8px 11px;
+      border: 1px solid rgba(124, 58, 237, 0.28);
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.06);
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--purple);
+    }
+
+    .strategy-title {
+      max-width: 900px;
+      margin-bottom: 0;
+      font-size: 74px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .pillar {
+      padding: 30px 28px 30px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .pillar:nth-child(2),
+    .pillar:nth-child(3) {
+      padding-left: 28px;
+    }
+
+    .pillar:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .pillar-icon {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 24px;
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      border-radius: 999px;
+      color: var(--purple);
+    }
+
+    .pillar-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .pillar h3 {
+      max-width: 220px;
+      margin-bottom: 9px;
+      font-size: 30px;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .pillar p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.42;
+    }
+
+    .engine-system {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+      gap: clamp(28px, 5vw, 58px);
+      align-items: start;
+      margin-top: 42px;
+    }
+
+    .engine-notes {
+      display: grid;
+      border-top: 1px solid var(--line);
+    }
+
+    .engine-note {
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 14px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .engine-note i {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 50%;
+      color: var(--purple);
+      font-family: var(--heading);
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .engine-note b {
+      display: block;
+      margin-bottom: 4px;
+      font-family: var(--heading);
+      font-size: 20px;
+      line-height: 1.08;
+    }
+
+    .engine-note span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.34;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(22px, 4vw, 48px);
+    }
+
+    .case {
+      min-width: 0;
+    }
+
+    .case-art {
+      position: relative;
+      min-height: 290px;
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 22px;
+      padding: 24px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(250, 249, 245, 0.95), rgba(242, 239, 232, 0.85)),
+        repeating-linear-gradient(90deg, rgba(22, 21, 26, 0.08) 0 1px, transparent 1px 34px);
+    }
+
+    .case-art::before {
+      content: "";
+      position: absolute;
+      inset: 22px 22px auto auto;
+      width: 86px;
+      height: 86px;
+      border: 1px solid rgba(124, 58, 237, 0.32);
+      border-radius: 50%;
+    }
+
+    .case-art::after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      top: 24px;
+      width: 118px;
+      height: 8px;
+      background: linear-gradient(90deg, var(--purple), var(--purple-soft));
+      border-radius: 999px;
+    }
+
+    .case-art span {
+      position: relative;
+      z-index: 1;
+      color: var(--ink);
+      font-family: var(--heading);
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 0.95;
+    }
+
+    .case h3 {
+      margin-bottom: 8px;
+      font-size: 24px;
+      line-height: 1.05;
+    }
+
+    .case p {
+      margin-bottom: 15px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .case-learning {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 34px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .learning-item {
+      min-height: 110px;
+      padding: 20px 18px 18px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .learning-item:nth-child(n + 2) {
+      padding-left: 18px;
+    }
+
+    .learning-item:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .learning-item b {
+      display: block;
+      margin-bottom: 6px;
+      font-family: var(--heading);
+      font-size: 20px;
+      line-height: 1.08;
+    }
+
+    .learning-item span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.34;
+    }
+
+    .deliverables {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .deliverable {
+      min-height: 134px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 24px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      font-family: var(--heading);
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.12;
+    }
+
+    .deliverable svg {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      color: var(--purple);
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .service-map {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .service-lane {
+      min-width: 0;
+      padding: 26px 24px 28px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .service-lane:nth-child(n + 2) {
+      padding-left: 24px;
+    }
+
+    .service-lane:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .service-lane h3 {
+      margin-bottom: 15px;
+      font-size: 25px;
+      line-height: 1.02;
+    }
+
+    .lane-tag {
+      display: inline-flex;
+      margin-bottom: 18px;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .service-list {
+      display: grid;
+      border-top: 1px solid var(--line);
+    }
+
+    .service-item {
+      display: grid;
+      gap: 4px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .service-item b {
+      font-family: var(--heading);
+      font-size: 15px;
+      line-height: 1.15;
+    }
+
+    .service-item span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.32;
+    }
+
+    .asset-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .scope-matrix {
+      margin-top: 34px;
+      border-top: 2px solid var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .scope-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 0.8fr) repeat(3, minmax(0, 1fr));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .scope-row:last-child {
+      border-bottom: 0;
+    }
+
+    .scope-cell {
+      min-width: 0;
+      padding: 16px 15px 15px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .scope-cell:nth-child(n + 2) {
+      padding-left: 15px;
+    }
+
+    .scope-cell:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .scope-head .scope-cell {
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .scope-cell b {
+      display: block;
+      margin-bottom: 4px;
+      font-family: var(--heading);
+      font-size: 17px;
+      line-height: 1.08;
+    }
+
+    .scope-cell span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.32;
+    }
+
+    .funnel-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: clamp(28px, 5vw, 58px);
+      align-items: center;
+    }
+
+    .funnel-visual {
+      min-width: 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 22px 0;
+    }
+
+    .funnel-visual svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .funnel-copy {
+      display: grid;
+      border-top: 1px solid var(--line);
+    }
+
+    .funnel-step {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr);
+      gap: 18px;
+      padding: 19px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .funnel-step strong {
+      color: var(--purple);
+      font-family: var(--heading);
+      font-size: 13px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .funnel-step b {
+      display: block;
+      margin-bottom: 4px;
+      font-family: var(--heading);
+      font-size: 20px;
+      line-height: 1.08;
+    }
+
+    .funnel-step span {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.36;
+    }
+
+    .measurement-loop {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 36px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .loop-item {
+      min-height: 112px;
+      padding: 22px 18px 20px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .loop-item:nth-child(n + 2) {
+      padding-left: 18px;
+    }
+
+    .loop-item:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .loop-item b {
+      display: block;
+      margin-bottom: 7px;
+      font-family: var(--heading);
+      font-size: 19px;
+      line-height: 1.08;
+    }
+
+    .loop-item span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.32;
+    }
+
+    .channel-map {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 34px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .channel {
+      min-height: 122px;
+      padding: 22px 18px 20px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .channel:nth-child(n + 2) {
+      padding-left: 18px;
+    }
+
+    .channel:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .channel-label {
+      display: inline-flex;
+      margin-bottom: 12px;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .channel b {
+      display: block;
+      margin-bottom: 6px;
+      font-family: var(--heading);
+      font-size: 19px;
+      line-height: 1.08;
+    }
+
+    .channel span:last-child {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.32;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .phase {
+      padding: 26px 24px 26px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .phase:nth-child(n + 2) {
+      padding-left: 24px;
+    }
+
+    .phase:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .phase-label {
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .phase h3 {
+      margin: 13px 0 18px;
+      font-size: 30px;
+      line-height: 1.02;
+    }
+
+    .phase ul {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .phase li {
+      display: grid;
+      grid-template-columns: 9px minmax(0, 1fr);
+      gap: 10px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .phase li::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      margin-top: 7px;
+      border-radius: 50%;
+      background: var(--purple);
+    }
+
+    .ops-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(22px, 4vw, 44px);
+      margin-top: 34px;
+    }
+
+    .ops-column {
+      border-top: 1px solid var(--line);
+    }
+
+    .ops-column h3 {
+      margin: 18px 0 16px;
+      font-size: 25px;
+      line-height: 1.04;
+    }
+
+    .ops-column p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .risk-board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 34px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .risk-item {
+      padding: 22px 18px 20px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .risk-item:nth-child(n + 2) {
+      padding-left: 18px;
+    }
+
+    .risk-item:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .risk-item b {
+      display: block;
+      margin-bottom: 7px;
+      font-family: var(--heading);
+      font-size: 20px;
+      line-height: 1.08;
+    }
+
+    .risk-item span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.34;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(22px, 4vw, 44px);
+    }
+
+    .plan {
+      padding: 0 0 26px;
+      border-top: 2px solid var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .plan.recommended {
+      border-top-color: var(--purple);
+    }
+
+    .plan-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 23px 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .plan h3 {
+      margin-bottom: 5px;
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .plan-price {
+      color: var(--ink);
+      font-family: var(--heading);
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .plan-price span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .recommend-tag {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 2px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: var(--purple);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .plan ul {
+      display: grid;
+      gap: 13px;
+      margin: 22px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .plan li {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .plan li::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      margin-top: 9px;
+      border-radius: 50%;
+      background: var(--purple);
+    }
+
+    .pricing-compare {
+      margin-top: 34px;
+      border-top: 2px solid var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .compare-row {
+      display: grid;
+      grid-template-columns: minmax(130px, 0.6fr) repeat(2, minmax(0, 1fr));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .compare-row:last-child {
+      border-bottom: 0;
+    }
+
+    .compare-cell {
+      min-width: 0;
+      padding: 16px 16px 15px 0;
+      border-right: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.34;
+    }
+
+    .compare-cell:nth-child(n + 2) {
+      padding-left: 16px;
+    }
+
+    .compare-cell:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .compare-head .compare-cell {
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .compare-cell b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-family: var(--heading);
+      font-size: 16px;
+      line-height: 1.08;
+    }
+
+    .pricing-note {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .pricing-note span {
+      padding: 16px 16px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.34;
+    }
+
+    .pricing-note span:nth-child(n + 2) {
+      padding-left: 16px;
+      border-left: 1px solid var(--line);
+    }
+
+    .cta-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: clamp(24px, 4vw, 54px);
+      align-items: end;
+      padding: clamp(34px, 5vw, 58px) 0 0;
+      border-top: 2px solid var(--ink);
+    }
+
+    .risk {
+      max-width: 760px;
+      margin-bottom: 18px;
+      font-family: var(--heading);
+      font-size: 68px;
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .signature {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .signature strong {
+      color: var(--ink);
+    }
+
+    .button-wrap {
+      display: grid;
+      justify-items: start;
+      gap: 15px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 54px;
+      padding: 0 22px;
+      border-radius: 999px;
+      background: var(--purple);
+      color: var(--white);
+      font-family: var(--heading);
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      background: var(--purple);
+    }
+
+    .cta svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .micro {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .next-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 38px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .next-step {
+      min-height: 118px;
+      padding: 22px 18px 20px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .next-step:nth-child(n + 2) {
+      padding-left: 18px;
+    }
+
+    .next-step:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .next-step strong {
+      display: inline-flex;
+      margin-bottom: 12px;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .next-step b {
+      display: block;
+      margin-bottom: 6px;
+      font-family: var(--heading);
+      font-size: 20px;
+      line-height: 1.08;
+    }
+
+    .next-step span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.34;
+    }
+
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .js .section:first-of-type.reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    .js .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .cta,
+      .js .reveal {
+        transition: none;
+      }
+
+      .js .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 920px) {
+      body {
+        background:
+          radial-gradient(circle at 88% 8%, rgba(124, 58, 237, 0.055), transparent 24rem),
+          var(--paper);
+      }
+
+      .section {
+        grid-template-columns: 1fr;
+        row-gap: 26px;
+      }
+
+      .section-number {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 18px;
+        align-items: center;
+      }
+
+      .section-number span {
+        font-size: 74px;
+      }
+
+      h1 {
+        font-size: 78px;
+      }
+
+      .hero-line {
+        font-size: 22px;
+      }
+
+      .result b {
+        font-size: 40px;
+      }
+
+      .lead {
+        font-size: 32px;
+      }
+
+      .strategy-title {
+        font-size: 58px;
+      }
+
+      .pillar h3 {
+        font-size: 28px;
+      }
+
+      .case-art span {
+        font-size: 44px;
+      }
+
+      .plan-price {
+        font-size: 48px;
+      }
+
+      .risk {
+        font-size: 54px;
+      }
+
+      .section-number::after {
+        margin-top: 0;
+      }
+
+      .press-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .press-logo:nth-child(3) {
+        border-right: 0;
+      }
+
+      .press-logo:nth-child(-n + 3) {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brief-grid,
+      .trust-proof,
+      .case-learning,
+      .risk-board,
+      .next-steps,
+      .pricing-note {
+        grid-template-columns: 1fr;
+      }
+
+      .brief-item,
+      .brief-item:nth-child(n + 2),
+      .trust-item,
+      .trust-item:nth-child(n + 2),
+      .learning-item,
+      .learning-item:nth-child(n + 2),
+      .risk-item,
+      .risk-item:nth-child(n + 2),
+      .next-step,
+      .next-step:nth-child(n + 2) {
+        padding: 20px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brief-item:last-child,
+      .trust-item:last-child,
+      .learning-item:last-child,
+      .risk-item:last-child,
+      .next-step:last-child {
+        border-bottom: 0;
+      }
+
+      .pillars,
+      .deliverables {
+        grid-template-columns: 1fr;
+      }
+
+      .service-map,
+      .measurement-loop,
+      .channel-map {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .service-lane,
+      .service-lane:nth-child(n + 2),
+      .loop-item,
+      .loop-item:nth-child(n + 2),
+      .channel,
+      .channel:nth-child(n + 2) {
+        padding: 24px 18px 24px 0;
+      }
+
+      .service-lane:nth-child(2n),
+      .loop-item:nth-child(2n),
+      .channel:nth-child(2n) {
+        padding-right: 0;
+        padding-left: 18px;
+        border-right: 0;
+      }
+
+      .service-lane:nth-child(-n + 2),
+      .loop-item:nth-child(-n + 2),
+      .channel:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .trust-board,
+      .diagnostic-shell,
+      .engine-system {
+        grid-template-columns: 1fr;
+      }
+
+      .funnel-shell,
+      .timeline,
+      .ops-board {
+        grid-template-columns: 1fr;
+      }
+
+      .phase,
+      .phase:nth-child(n + 2) {
+        padding: 24px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .phase:last-child {
+        border-bottom: 0;
+      }
+
+      .pillar,
+      .pillar:nth-child(2),
+      .pillar:nth-child(3) {
+        padding: 28px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .pillar:last-child {
+        border-bottom: 0;
+      }
+
+      .deliverable {
+        min-height: 92px;
+      }
+
+      .pricing-grid,
+      .case-grid,
+      .cta-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-note span,
+      .pricing-note span:nth-child(n + 2) {
+        padding: 16px 0;
+        border-left: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .pricing-note span:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    @media (max-width: 620px) {
+      :root {
+        --gutter: 20px;
+      }
+
+      body {
+        font-size: 15px;
+      }
+
+      .page {
+        padding-bottom: 42px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        padding-bottom: 64px;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+      }
+
+      .brand-text span:first-child {
+        font-size: 14px;
+      }
+
+      .brand-text span:last-child {
+        font-size: 10px;
+      }
+
+      .prepared {
+        max-width: 116px;
+        white-space: normal;
+        font-size: 11px;
+        line-height: 1.25;
+      }
+
+      h1 {
+        font-size: 52px;
+      }
+
+      .hero-line {
+        font-size: 18px;
+      }
+
+      .press-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .press-logo {
+        min-height: 70px;
+      }
+
+      .press-logo:nth-child(3) {
+        border-right: 1px solid var(--line);
+      }
+
+      .press-logo:nth-child(2n) {
+        border-right: 0;
+      }
+
+      .press-logo:nth-child(-n + 4) {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .result-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .result,
+      .result:nth-child(2),
+      .result:last-child {
+        padding: 18px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .result:last-child {
+        border-bottom: 0;
+      }
+
+      .lead {
+        font-size: 25px;
+      }
+
+      .lead-small {
+        font-size: 16px;
+      }
+
+      .signal {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .service-map,
+      .measurement-loop,
+      .channel-map {
+        grid-template-columns: 1fr;
+      }
+
+      .service-lane,
+      .service-lane:nth-child(n + 2),
+      .service-lane:nth-child(2n),
+      .loop-item,
+      .loop-item:nth-child(n + 2),
+      .loop-item:nth-child(2n),
+      .channel,
+      .channel:nth-child(n + 2),
+      .channel:nth-child(2n) {
+        padding: 22px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .service-lane:last-child,
+      .loop-item:last-child,
+      .channel:last-child {
+        border-bottom: 0;
+      }
+
+      .opportunity,
+      .engine-note {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .scope-row,
+      .compare-row {
+        grid-template-columns: 1fr;
+      }
+
+      .scope-cell,
+      .scope-cell:nth-child(n + 2),
+      .compare-cell,
+      .compare-cell:nth-child(n + 2) {
+        padding: 13px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .scope-cell:last-child,
+      .compare-cell:last-child {
+        border-bottom: 0;
+      }
+
+      .funnel-step {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .funnel-visual {
+        padding: 12px 0;
+      }
+
+      .phase h3 {
+        font-size: 25px;
+      }
+
+      .strategy-title {
+        font-size: 44px;
+      }
+
+      .case-art {
+        min-height: 230px;
+      }
+
+      .plan-head {
+        display: grid;
+      }
+
+      .plan-price {
+        font-size: 45px;
+      }
+
+      .cta {
+        width: 100%;
+      }
+    }
+  
+    /* ===== v4 additions: real case imagery, roi note, footer, print ===== */
+    .case-art img,
+    .case-art .scrim {
+      display: none;
+    }
+
+    .case-art.has-img img {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .case-art.has-img .scrim {
+      display: block;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(22, 21, 26, 0) 36%, rgba(22, 21, 26, 0.78) 100%);
+      z-index: 1;
+    }
+
+    .case-art.has-img::before {
+      z-index: 2;
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+
+    .case-art.has-img::after {
+      z-index: 2;
+    }
+
+    .case-art.has-img span {
+      z-index: 3;
+      color: var(--white);
+      font-size: 40px;
+    }
+
+    .roi-note {
+      max-width: 560px;
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .site-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 28px;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: clamp(46px, 8vw, 88px);
+      padding-top: 26px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .site-footer .fb {
+      color: var(--ink);
+      font-family: var(--heading);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .site-footer .fc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+    }
+
+    @media print {
+      .js .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .case,
+      .plan,
+      .phase,
+      .pillar,
+      .brief-item,
+      .next-step {
+        break-inside: avoid;
+      }
+    }
+  
 </style>
 </head>
 <body>
-<div id="app"></div>
-<script src="/tge-proposals/assets/platform-logos.js"></script>
+  <noscript>
+    <p style="font-family: system-ui, sans-serif; padding: 48px 24px; text-align: center; color: #16151A;">
+      This proposal needs JavaScript to render. Please open it in a normal browser.
+    </p>
+  </noscript>
+  <div id="app"></div>
 
-<script>
+  <script>
 // __CONFIG_START__
 const CONFIG = {
   "meta": {
     "slug": "pmti",
     "tier": "HIGH",
     "cta_url": "https://cal.com/grawoth/consultation-call-with-allen",
-    "lead_id": 5
+    "lead_id": 5,
+    "generated_at": "2026-06-10"
   },
   "prospect": {
     "company_name": "PMTI",
     "contact_name": "Yad Senapathy",
-    "industry": "Project management training",
+    "industry": "PM certification training",
     "website": "https://www.4pmti.com/",
-    "location": "United States",
-    "promise": "Turn PMTI traffic into course enrollments",
-    "cover_sub": "WordPress pages, GoHighLevel nurture, and tracking built as one system.",
-    "result_chips": [
+    "focus": "course enrollments",
+    "promise": "Turn PMTI's existing traffic into tracked PMP leads, consultation bookings, and course enrollments through WordPress pages and GoHighLevel follow up.",
+    "cover_brief": [
       {
-        "value": "20x",
-        "label": "Frenchify growth"
+        "label": "Goal",
+        "title": "Convert existing traffic",
+        "line": "Move 15,000 monthly visitors into leads, calls, and paid PMP seats."
       },
       {
-        "value": "20M+",
-        "label": "Dr SW impressions"
+        "label": "Lever",
+        "title": "Pages plus nurture",
+        "line": "Rewrite money pages, then trigger GoHighLevel follow up by intent."
       },
       {
-        "value": "616K",
-        "label": "single reel"
+        "label": "First 30 days",
+        "title": "Core funnel live",
+        "line": "Homepage, PMP pages, quiz, guide, and booking flow rebuilt."
+      },
+      {
+        "label": "Owner view",
+        "title": "Weekly enrollment clarity",
+        "line": "See page leads, pipeline stages, bookings, and stalled inquiries."
       }
     ],
     "read": {
-      "summary": "PMTI already has authority, PMP proof, location pages, guides, and 15K monthly visitors. The gap is turning those paths into lead capture, nurture, and enrollment flow.",
+      "summary": "PMTI already has authority most training brands would chase, PMI Premier ATP status, 22 years, strong reviews, schedules, guides, eligibility checks, and real urgency around the July 2026 exam change. The missing piece is one connected conversion system that turns each search visit into a tracked next step.",
+      "sub": "The site has proof and traffic. It now needs tighter intent paths and automated follow up.",
       "signals": [
-        "PMP exam change banner creates urgency",
-        "Guides and eligibility checks exist already",
-        "Location pages need conversion templates"
-      ]
-    },
-    "strategy": {
-      "headline": "Build the enrollment engine around existing authority",
-      "pillars": [
         {
-          "icon": "search",
-          "title": "Rewrite money pages",
-          "line": "Match SEO intent with sharper proof and CTAs."
+          "title": "Authority is already visible",
+          "detail": "Strong proof exists, but visitor paths still split across calls, guides, and enrollments."
         },
         {
-          "icon": "funnel",
-          "title": "Capture every path",
-          "line": "Quizzes, guides, VSL pages, forms, thank you flows."
+          "title": "Exam change urgency",
+          "detail": "July 2026 adds urgency that should drive quizzes, VSLs, and SMS."
         },
         {
-          "icon": "repeat",
-          "title": "Nurture to enrollment",
-          "line": "GoHighLevel email, SMS, tags, pipelines, and booking follow up."
+          "title": "Huge location footprint",
+          "detail": "Existing city pages need one reusable conversion structure and cleaner next steps."
+        }
+      ],
+      "opportunities": [
+        {
+          "phase": "Now",
+          "title": "Map money paths",
+          "detail": "Prioritize PMP training, boot camp, schedule, corporate, and location pages."
+        },
+        {
+          "phase": "Next",
+          "title": "Rewrite for intent",
+          "detail": "Match each page to eligibility, urgency, proof, and one primary CTA."
+        },
+        {
+          "phase": "Then",
+          "title": "Build GHL journeys",
+          "detail": "Connect quizzes, guides, calls, abandoned inquiries, and enrollment reminders."
+        },
+        {
+          "phase": "Always",
+          "title": "Measure every step",
+          "detail": "Track source, page, form, call, pipeline stage, and registration outcome."
         }
       ]
     },
-    "deliverables": [
+    "strategy": {
+      "headline": "Make PMTI's authority behave like an enrollment machine",
+      "pillars": [
+        {
+          "icon": "search",
+          "title": "Intent pages",
+          "line": "Rewrite SEO pages around PMP readiness, schedule choice, and enrollment objections."
+        },
+        {
+          "icon": "funnel",
+          "title": "Capture paths",
+          "line": "Use quizzes, guides, VSLs, and consult forms for every visitor type."
+        },
+        {
+          "icon": "repeat",
+          "title": "GHL follow up",
+          "line": "Automate email, SMS, pipeline stages, reminders, and reactivation campaigns."
+        }
+      ],
+      "engine_notes": [
+        {
+          "title": "Copy follows intent",
+          "detail": "Each page answers the searcher's decision stage before asking for action."
+        },
+        {
+          "title": "Offers follow behavior",
+          "detail": "Blog readers get guides, schedule viewers get urgency, corporate visitors get consults."
+        },
+        {
+          "title": "Nurture follows source",
+          "detail": "Quiz, guide, schedule, and corporate leads receive different GoHighLevel journeys."
+        },
+        {
+          "title": "Optimization follows data",
+          "detail": "Weekly reviews compare page conversion, pipeline movement, and registration friction."
+        }
+      ]
+    },
+    "channels": [
       {
-        "icon": "pen",
-        "label": "SEO page rewrites"
+        "label": "SEO",
+        "role": "Capture intent",
+        "detail": "Rewrite money pages, locations, metadata, FAQs, and internal links."
       },
       {
-        "icon": "funnel",
-        "label": "WordPress funnel pages"
+        "label": "Google",
+        "role": "Harvest demand",
+        "detail": "Use search traffic insights to prioritize page and CTA testing."
       },
       {
-        "icon": "target",
-        "label": "Lead capture system"
+        "label": "Email",
+        "role": "Convert hesitation",
+        "detail": "Run study guide, quiz, urgency, and abandoned inquiry sequences."
       },
       {
-        "icon": "mail",
-        "label": "Email nurture flows"
+        "label": "SMS",
+        "role": "Recover leads",
+        "detail": "Send reminders for consults, schedules, expiring discounts, and incomplete forms."
+      }
+    ],
+    "roadmap": [
+      {
+        "label": "Days 1 to 14",
+        "title": "Build the map",
+        "items": [
+          "Audit homepage and PMP money pages",
+          "Map WordPress to GoHighLevel funnel paths",
+          "Define quiz, guide, VSL, and consult offers",
+          "Set tracking plan for leads and enrollments",
+          "Prioritize first implementation sprint"
+        ]
       },
       {
-        "icon": "sms",
-        "label": "SMS follow up"
+        "label": "Days 15 to 45",
+        "title": "Launch core funnel",
+        "items": [
+          "Rewrite homepage and PMP training pages",
+          "Rebuild schedule and enrollment CTA sections",
+          "Create eligibility quiz and guide landing pages",
+          "Implement forms, tags, triggers, and pipelines",
+          "Write email and SMS nurture sequences"
+        ]
       },
       {
-        "icon": "chart",
-        "label": "Tracking and QA"
+        "label": "Days 46 to 90",
+        "title": "Scale conversion system",
+        "items": [
+          "Roll out location page conversion template",
+          "Build corporate training inquiry journey",
+          "Launch VSL page and follow up path",
+          "Add blog CTAs by search intent",
+          "Review data and ship first tests"
+        ]
       }
     ],
     "pricing": {
       "growth": {
         "bullets": [
-          "Homepage plus money pages",
-          "Core GoHighLevel workflows",
-          "Tracking and launch QA"
+          "SEO CRO page rewrites",
+          "WordPress funnel implementation",
+          "Core GHL automations"
         ],
         "name": "Growth",
         "price": "$3,000"
       },
       "scale": {
         "bullets": [
-          "More course page volume",
-          "VSL and quiz funnels",
-          "Ongoing tests and iteration"
+          "Everything in Growth included",
+          "Quiz, VSL, retention journeys",
+          "Weekly testing and reporting"
         ],
         "name": "Scale",
         "price": "$4,000"
       }
     },
-    "guarantee": "If implementation is unclear, we revise before launch at no extra fee.",
-    "roi_line": "One extra enrollment can justify the funnel build.",
-    "visual": {
-      "accent_hue": "#1E73BE",
-      "motif": "PMP funnel pathway grid",
-      "hero_svg": ""
-    }
+    "guarantee": "If we cannot find growth leverage in 30 days, you do not continue.",
+    "roi_line": "One recovered enrollment can justify weeks of funnel work."
   },
   "static": {
     "proof_metrics": [
@@ -983,8 +2501,31 @@ const CONFIG = {
 // __CONFIG_END__
 
 /* ============================================================
-   ICON SYSTEM. fixed key set, single-weight line icons.
-   Unknown key -> default "sparkles" glyph (never blank, never key text).
+   HELPERS. Defensive everywhere: missing field -> skip cleanly.
+   ============================================================ */
+const esc = (s) => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;');
+const has = (v) => v !== undefined && v !== null && (typeof v !== 'string' || v.trim() !== '');
+const arr = (v) => Array.isArray(v) ? v : [];
+const cleanUrl = (u) => String(u || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
+const firstName = (n) => {
+  const parts = String(n || '').trim().split(/\s+/).filter(Boolean);
+  return parts.length ? parts[0] : '';
+};
+function fmtDate(iso) {
+  if (!has(iso)) return '';
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  } catch (e) { return ''; }
+}
+
+/* ============================================================
+   ICON SYSTEM. Fixed key set, single-weight line icons.
+   Unknown key -> "sparkles" (never blank, never raw key text).
+   Used by strategy pillars (Codex picks the keys).
    ============================================================ */
 const ICON_PATHS = {
   search: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
@@ -1006,697 +2547,686 @@ const ICON_PATHS = {
   trophy: '<path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/><path d="M10 14h4v3h-4z"/><path d="M8 21h8M9 21l.5-4M15 21l-.5-4"/>',
   lightbulb: '<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 1 4 10.5c-.7.7-1 1.5-1 2.5H9c0-1-.3-1.8-1-2.5A6 6 0 0 1 12 3z"/>',
   lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.4"/>',
-  trending: '<path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/>',
-  check: '<path d="M5 12l4 4 10-10"/>',
-  calendar2: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',
-  gift: '<path d="M3 11h18v9H3z"/><path d="M3 7h18v4H3z"/><path d="M12 7v13"/><path d="M12 7C9 7 7 6 7 4.5S9 3 12 7zM12 7c3 0 5-1 5-2.5S15 3 12 7z"/>',
-  arrow: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
-  /* channel + system glyphs (single-weight line) */
-  briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/>',
-  smartphone: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/>',
-  'message-circle': '<path d="M21 11.5a8 8 0 0 1-11.3 7.3L4 20l1.2-4A8 8 0 1 1 21 11.5z"/>',
-  'trending-up': '<path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/>',
-  'play-circle': '<circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/>',
-  zap: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
-  pen2: '<path d="M14 4l6 6L9 21l-5 1 1-5z"/><path d="M13 5l6 6"/>',
-  grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
-  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L17 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 7a2 2 0 0 1 1-3z"/>',
-  database: '<ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path d="M4 11.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
-  layers: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>'
+  trending: '<path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/>'
 };
-function icon(key, cls) {
+function iconSvg(key) {
   const p = ICON_PATHS[key] || ICON_PATHS.sparkles;
-  return '<span class="ic ' + (cls || '') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg></span>';
+  return '<svg viewBox="0 0 24 24" aria-hidden="true">' + p + '</svg>';
 }
 
 /* ============================================================
-   HELPERS. defensive: missing field -> skip cleanly.
+   STATIC CONTENT. TGE's fixed brand sections, universal copy
+   (no industry-specific words; works for clinics, schools,
+   SaaS, DTC alike). Per-lead copy lives in CONFIG.prospect.
    ============================================================ */
-const esc = (s) => String(s == null ? '' : s)
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;');
-const has = (v) => v !== undefined && v !== null && (typeof v !== 'string' || v.trim() !== '');
-const arr = (v) => Array.isArray(v) ? v : [];
+const BRAND_MARK =
+  '<svg viewBox="0 0 40 40" width="28" height="28" role="img" aria-label="">' +
+    '<path d="M10 27.5h20" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>' +
+    '<path d="M12 25l6.8-7 4.7 4.2L30 12" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<path d="M24.5 12H30v5.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+  '</svg>';
 
+const RESULT_STRIP = [
+  { value: '20x', label: 'Growth' },
+  { value: '20M+', label: 'Impressions' },
+  { value: '616K', label: 'Reel views' }
+];
+
+const PRESS_DEFAULT = ['Daily Mail', 'Sky', 'The Sun', 'Tatler', 'Fabulous', 'Daily Express'];
 function pressClass(name) {
-  const n = (name || '').toLowerCase();
-  if (n.includes('daily mail') || n.includes('express') || n.includes('telegraph') || n.includes('times')) return 'serif';
-  if (n.includes('sky') || n.includes('sun') || n.includes('bbc')) return 'caps';
-  return '';
+  const n = String(name || '').toLowerCase();
+  if (n.includes('daily mail')) return 'daily';
+  if (n === 'sky' || n.includes('sky ')) return 'sky';
+  if (n.includes('sun')) return 'sun';
+  if (n.includes('tatler')) return 'tatler';
+  if (n.includes('fabulous')) return 'fabulous';
+  if (n.includes('express')) return 'express';
+  return 'daily';
+}
+function pressText(name) {
+  return pressClass(name) === 'sky' ? String(name).toLowerCase() : name;
 }
 
-function initials(name) {
-  const parts = (name || '').trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return 'A';
-  return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
-}
+const PLATFORMS = [
+  { name: 'Meta', svg: '<path d="M4 14.2c1.2-4.3 3.2-7 5.3-7 1.6 0 2.7 1.4 4.2 3.4 1.4-2 2.7-3.4 4.3-3.4 2.3 0 3.9 2.8 3.9 5.6 0 2.5-1.1 4-2.8 4-1.7 0-3-1.4-5.4-4.6-2.4 3.2-3.6 4.6-5.3 4.6-2.2 0-3.9-1-4.2-2.6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' },
+  { name: 'Google', svg: '<path d="M21.3 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.2a4.5 4.5 0 0 1-1.9 2.9v2.4h3.1c1.8-1.6 2.9-4.1 2.9-7.1Z" fill="currentColor"/><path d="M12 21.6c2.6 0 4.8-.9 6.4-2.3l-3.1-2.4c-.9.6-2 .9-3.3.9-2.5 0-4.7-1.7-5.5-4H3.3v2.5A9.6 9.6 0 0 0 12 21.6Z" fill="currentColor" opacity="0.82"/><path d="M6.5 13.8a5.8 5.8 0 0 1 0-3.6V7.7H3.3a9.6 9.6 0 0 0 0 8.6l3.2-2.5Z" fill="currentColor" opacity="0.68"/><path d="M12 6.2c1.4 0 2.7.5 3.7 1.5l2.8-2.8A9.4 9.4 0 0 0 12 2.4a9.6 9.6 0 0 0-8.7 5.3l3.2 2.5c.8-2.3 3-4 5.5-4Z" fill="currentColor" opacity="0.52"/>' },
+  { name: 'GoHighLevel', svg: '<rect x="3" y="3" width="18" height="18" rx="5" fill="currentColor"/><path d="M7.4 12h9.2M12 7.4v9.2M8.5 8.5l7 7" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/>' },
+  { name: 'Shopify', svg: '<path d="M8.3 8.2h8.6l1.1 12.6H6.8L8.3 8.2Z" fill="currentColor"/><path d="M9.8 8.2c.3-2.4 1.5-4.4 3.3-4.4 1.9 0 2.8 1.9 3 4.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.7 11.4c-.5-.3-1.1-.5-1.8-.5-1 0-1.7.5-1.7 1.2 0 1.8 3.7 1 3.7 3.6 0 1.3-1.1 2.2-2.7 2.2-.8 0-1.6-.2-2.2-.6" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>' },
+  { name: 'YouTube', svg: '<rect x="2.4" y="5.3" width="19.2" height="13.4" rx="3.3" fill="currentColor"/><path d="M10.3 9.1v5.8l5.1-2.9-5.1-2.9Z" fill="#fff"/>' },
+  { name: 'LinkedIn', svg: '<rect x="3" y="3" width="18" height="18" rx="3.5" fill="currentColor"/><path d="M7.3 10.4h2.2v6.9H7.3v-6.9Zm1.1-3.5c.7 0 1.2.5 1.2 1.1 0 .7-.5 1.2-1.2 1.2s-1.2-.5-1.2-1.2c0-.6.5-1.1 1.2-1.1Zm3 3.5h2.1v1c.3-.6 1.1-1.2 2.2-1.2 2.3 0 2.7 1.5 2.7 3.5v3.6h-2.2v-3.2c0-.8 0-1.8-1.1-1.8s-1.3.9-1.3 1.8v3.2h-2.2v-6.9Z" fill="#fff"/>' },
+  { name: 'WhatsApp', svg: '<path d="M12 3.2a8.4 8.4 0 0 0-7.2 12.7l-1 4 4.1-1a8.4 8.4 0 1 0 4.1-15.7Z" fill="currentColor"/><path d="M9.2 8.1c-.2-.4-.4-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.4-1.1 1.1-1.1 2.6s1.1 3 1.2 3.2c.2.2 2.2 3.4 5.4 4.6 2.6 1 3.1.8 3.7.8.6-.1 1.8-.8 2-1.5.3-.7.3-1.3.2-1.5-.1-.1-.3-.2-.7-.4l-2-.9c-.3-.1-.5-.2-.7.2l-.9 1.1c-.2.2-.4.3-.7.1-.4-.2-1.4-.5-2.6-1.6-1-.9-1.6-2-1.8-2.3-.2-.4 0-.5.1-.7l.5-.5c.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6l-.9-2Z" fill="#fff"/>' },
+  { name: 'Slack', svg: '<rect x="5" y="3" width="4" height="9" rx="2" fill="currentColor" opacity="0.48"/><rect x="3" y="10" width="9" height="4" rx="2" fill="currentColor" opacity="0.68"/><rect x="15" y="12" width="4" height="9" rx="2" fill="currentColor" opacity="0.84"/><rect x="12" y="10" width="9" height="4" rx="2" fill="currentColor"/>' }
+];
+
+const TRUST_ITEMS = [
+  { title: 'Owner-grade reporting', line: 'Weekly scorecards translate performance into decisions, not jargon.' },
+  { title: 'Channel discipline', line: 'Spend is moved only when tracking, creative, and funnel signals agree.' },
+  { title: 'Reusable assets', line: 'Every test leaves behind hooks, learnings, and proof blocks {company} owns.' }
+];
+const TRUST_MINI_LINE = 'You get a smaller set of better decisions: where demand is coming from, which proof makes people buy, and what needs to ship next.';
+
+const CASE_LINES = {
+  frenchify: 'A research-driven reels engine that turned a French-teaching channel into a student pipeline.',
+  drsw: 'Less but better. Premium content that turned reputation into a packed booking calendar.'
+};
+
+const LEARNINGS = [
+  { title: 'Proof before spend', line: 'We turn customer evidence into assets before asking media to scale.' },
+  { title: 'Offers before audiences', line: 'Audience testing improves once the first-purchase reason is obvious.' },
+  { title: 'Follow-up before waste', line: 'Retargeting and CRM recover intent that cold traffic leaves behind.' }
+];
+
+const DELIVERABLE_PACKS = [
+  { svg: '<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 15l3-4 3 2 5-7"/>', label: 'Strategy pack' },
+  { svg: '<rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h8"/><path d="M8 13h5"/>', label: 'Creative pack' },
+  { svg: '<path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/><circle cx="18" cy="17" r="2"/>', label: 'Funnel pack' },
+  { svg: '<circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="M10 8.5c2.2.7 3.8 2.3 4.5 4.5"/>', label: 'Media pack' },
+  { svg: '<path d="M5 7h14v10H5z"/><path d="M5 7l7 6 7-6"/>', label: 'Retention pack' },
+  { svg: '<path d="M5 19V5"/><rect x="8" y="11" width="3" height="8"/><rect x="13" y="7" width="3" height="12"/><rect x="18" y="14" width="3" height="5"/>', label: 'Reporting pack' }
+];
+
+const SERVICE_LANES = [
+  { tag: 'Strategy', title: 'Position the offer', items: [
+    { b: 'Growth audit', s: 'Channel gaps, conversion friction, quick wins, priority score.' },
+    { b: 'Offer map', s: 'Lead offer, entry product, trial angle, urgency rules.' },
+    { b: 'Audience map', s: 'Persona triggers, objections, proof points, buying moments.' },
+    { b: 'KPI model', s: 'Cost per sale, customer value, payback window, budget guardrails.' }
+  ] },
+  { tag: 'Creative', title: 'Make ads worth stopping for', items: [
+    { b: 'Hook library', s: 'Problem hooks, proof hooks, offer hooks, founder hooks.' },
+    { b: 'UGC briefs', s: 'Creator angles, shot lists, claims, script beats.' },
+    { b: 'Ad sets', s: 'Static, reel, carousel, testimonial, comparison concepts.' },
+    { b: 'Testing tracker', s: 'Creative status, spend, winner notes, next tests.' }
+  ] },
+  { tag: 'Funnel', title: 'Turn attention into action', items: [
+    { b: 'Landing page wireframe', s: 'Above-fold offer, proof order, objections, conversion path.' },
+    { b: 'Lead capture path', s: 'Quiz, form, pop-up, booking flow, thank-you page.' },
+    { b: 'Email flows', s: 'Welcome, nurture, post-sale, reminders, winback.' },
+    { b: 'CRM pipeline', s: 'Stages, tags, triggers, reminders, WhatsApp follow-up.' }
+  ] },
+  { tag: 'Media', title: 'Scale what proves itself', items: [
+    { b: 'Meta campaigns', s: 'Prospecting, retargeting, catalog, creative testing.' },
+    { b: 'Google demand', s: 'Search, Performance Max, brand defense, intent capture.' },
+    { b: 'Tracking QA', s: 'Pixel, conversion API, UTMs, events, attribution checks.' },
+    { b: 'Weekly optimization', s: 'Budget shifts, creative calls, audience pruning, offer tests.' }
+  ] }
+];
+
+const SCOPE_ROWS = [
+  { cells: [
+    { b: 'Foundation', s: 'Audit, tracking QA, offer map.' },
+    { b: 'Clear baseline', s: 'Know what is working before spend increases.' },
+    { b: 'Less guesswork', s: 'Spend has rules, limits, and a visible payback target.' },
+    { b: 'Approve offer', s: 'Choose the lead offer and entry point.' }
+  ] },
+  { cells: [
+    { b: 'Launch', s: 'Campaigns, creative, landing path, flows.' },
+    { b: 'Controlled tests', s: 'Hooks, proof, formats, and offers are compared cleanly.' },
+    { b: 'Faster learning', s: 'Winners and blockers show up inside the first cycles.' },
+    { b: 'Approve winners', s: 'Pick which claims, offers, and assets get scaled.' }
+  ] },
+  { cells: [
+    { b: 'Scale', s: 'Budget shifts, refreshes, retention push.' },
+    { b: 'Repeatable rhythm', s: 'More of what works, less of what only looks busy.' },
+    { b: 'Compounding value', s: 'Creative, funnel, and CRM learn from the same data.' },
+    { b: 'Approve reinvestment', s: 'Increase spend only when the numbers justify it.' }
+  ] }
+];
+
+const ASSET_CHIPS = ['growth plan', 'funnel map', 'hook bank', 'UGC briefs', 'ad tracker', 'KPI dashboard'];
+
+const FUNNEL_STEPS = [
+  { tag: '01 Reach', b: 'Fill the top', s: 'Paid social, search, and creator assets create qualified demand.' },
+  { tag: '02 Proof', b: 'Build belief', s: 'Press, reviews, and education make the offer feel safer.' },
+  { tag: '03 Sale', b: 'Remove friction', s: 'Landing pages, offers, and retargeting reduce decision time.' },
+  { tag: '04 Value', b: 'Increase repeat', s: 'Email, WhatsApp, and follow-up flows lift customer value.' }
+];
+
+const LOOP_ITEMS = [
+  { b: 'Track', s: 'Pixels, conversion APIs, UTMs, events, lead stages, revenue sources.' },
+  { b: 'Read', s: 'Cost per lead, cost per sale, return on spend, conversion rates.' },
+  { b: 'Decide', s: 'Scale, pause, rewrite, retarget, refresh, or rebuild.' },
+  { b: 'Ship', s: 'New creatives, offer tests, page fixes, CRM improvements.' }
+];
+
+const OPS_COLUMNS = [
+  { h: 'Weekly cadence', p: 'Monday scorecard. Wednesday creative review. Friday budget and funnel decisions.' },
+  { h: 'Handover assets', p: 'Strategy doc, funnel map, ad account structure, creative tracker, reporting dashboard, and CRM flow map.' }
+];
+
+const RISK_ITEMS = [
+  { b: 'Spend control', s: 'Budgets start in clear tests and scale only when cost and quality hold.' },
+  { b: 'Creative fatigue', s: 'New angles are planned before winners decay, using a live hook and proof bank.' },
+  { b: 'Attribution noise', s: 'We read platform numbers against real revenue, so decisions match reality.' }
+];
+
+const COMPARE_ROWS = [
+  { label: 'Best for', g: 'Businesses that need clean launch structure and consistent optimization.', s: 'Businesses that want paid media, funnel, and retention moving together.' },
+  { label: 'Core focus', g: 'Acquisition clarity, creative tests, weekly reporting.', s: 'Full-funnel growth, CRM lift, landing page conversion work.' },
+  { label: 'Review rhythm', g: 'Weekly scorecard and monthly strategy review.', s: 'Weekly scorecard, creative review, and funnel action list.' }
+];
+
+const PRICING_NOTES = [
+  { b: 'Ad spend', s: ' is separate and starts with a controlled test budget.' },
+  { b: 'Recommended term', s: ' is 90 days to give creative and funnel tests enough signal.' },
+  { b: '30-day checkpoint', s: ' confirms whether leverage is visible before continuing.' }
+];
+
+const NEXT_STEPS = [
+  { tag: 'Step 1', b: 'Confirm the growth target', s: 'Agree first 90-day revenue, cost, and payback expectations.' },
+  { tag: 'Step 2', b: 'Review current assets', s: 'Ad accounts, analytics, email flows, landing pages, and proof library.' },
+  { tag: 'Step 3', b: 'Ship the launch plan', s: 'Campaign structure, creative sprint, funnel fixes, and reporting dashboard.' }
+];
 
 /* ============================================================
-   SECTION MARKER. the signature editorial detail, reused on every
-   section: a large light serif numeral + hairline rule + eyebrow.
-   Establishes the columnar grid (fixed marker column, left edges locked).
+   SVG DIAGRAMS. Ported from the approved design; labels are
+   universal so they hold for any industry. Company name is
+   woven into titles for personalization.
    ============================================================ */
-function sectionMarker(num, eyebrow, sub) {
-  return (
-    '<div class="marker reveal">' +
-      '<div class="num"><span class="slash">/</span>' + esc(num) + '</div>' +
-      '<div class="rule"></div>' +
-      '<div class="eyebrow">' + esc(eyebrow) + '</div>' +
-      (has(sub) ? '<div class="marker-sub">' + esc(sub) + '</div>' : '') +
-    '</div>'
-  );
+function diagSvg(company) {
+  const co = esc(company || 'Your business');
+  return '<svg viewBox="0 0 680 390" role="img" aria-label="' + co + ' opportunity map">' +
+    '<defs><marker id="diag-arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#7C3AED"/></marker></defs>' +
+    '<rect x="1" y="1" width="678" height="388" fill="none" stroke="rgba(22,21,26,0.14)"/>' +
+    '<text x="34" y="45" fill="#16151A" font-family="Outfit, sans-serif" font-size="25" font-weight="800">Opportunity diagnosis</text>' +
+    '<text x="34" y="72" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-size="15">Keep what already works. Make the buying path easier to trust.</text>' +
+    '<line x1="94" y1="174" x2="586" y2="174" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 9" marker-end="url(#diag-arrow)"/>' +
+    '<g><circle cx="94" cy="174" r="54" fill="#FAF9F5" stroke="#7C3AED" stroke-opacity="0.62"/>' +
+    '<text x="94" y="166" text-anchor="middle" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="12" font-weight="800">ATTENTION</text>' +
+    '<text x="94" y="190" text-anchor="middle" fill="#16151A" font-family="Outfit, sans-serif" font-size="17" font-weight="800">Visibility</text></g>' +
+    '<g><circle cx="258" cy="174" r="54" fill="#F2EFE8" stroke="#7C3AED" stroke-opacity="0.62"/>' +
+    '<text x="258" y="166" text-anchor="middle" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="12" font-weight="800">BELIEF</text>' +
+    '<text x="258" y="190" text-anchor="middle" fill="#16151A" font-family="Outfit, sans-serif" font-size="17" font-weight="800">Proof</text></g>' +
+    '<g><circle cx="422" cy="174" r="54" fill="#FAF9F5" stroke="#7C3AED" stroke-opacity="0.62"/>' +
+    '<text x="422" y="166" text-anchor="middle" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="12" font-weight="800">ACTION</text>' +
+    '<text x="422" y="190" text-anchor="middle" fill="#16151A" font-family="Outfit, sans-serif" font-size="17" font-weight="800">Offer</text></g>' +
+    '<g><circle cx="586" cy="174" r="54" fill="#7C3AED" stroke="#C069DD" stroke-width="2"/>' +
+    '<text x="586" y="166" text-anchor="middle" fill="#FFFFFF" font-family="Outfit, sans-serif" font-size="12" font-weight="800">REPEAT</text>' +
+    '<text x="586" y="190" text-anchor="middle" fill="#FFFFFF" font-family="Outfit, sans-serif" font-size="17" font-weight="800">Follow-up</text></g>' +
+    '<path d="M258 245 C330 312 448 312 586 245" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#diag-arrow)"/>' +
+    '<text x="422" y="306" text-anchor="middle" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="14" font-weight="800">Value loop</text>' +
+    '<text x="94" y="286" text-anchor="middle" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-size="14">Ads, content, search</text>' +
+    '<text x="258" y="286" text-anchor="middle" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-size="14">Reviews, press, education</text>' +
+    '<text x="422" y="286" text-anchor="middle" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-size="14">Landing page, CTA</text>' +
+    '<text x="586" y="286" text-anchor="middle" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-size="14">Email, WhatsApp</text>' +
+  '</svg>';
 }
 
-/* ============================================================
-   GENERATIVE HERO. used when prospect.visual.hero_svg is empty.
-   Light-appropriate soft mesh + concentric line motif in accent hue.
-   ============================================================ */
-function generativeHero(hue) {
-  const a = hue || '#7C3AED';
-  return (
-    '<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">' +
+function engineSvg() {
+  return '<svg viewBox="0 0 680 440" role="img" aria-label="Growth engine operating model">' +
     '<defs>' +
-      '<linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">' +
-        '<stop offset="0" stop-color="#FFFFFF"/>' +
-        '<stop offset="1" stop-color="#F3F1EA"/>' +
-      '</linearGradient>' +
-      '<radialGradient id="hb" cx="72%" cy="26%" r="70%">' +
-        '<stop offset="0" stop-color="' + a + '" stop-opacity="0.22"/>' +
-        '<stop offset="0.5" stop-color="' + a + '" stop-opacity="0.06"/>' +
-        '<stop offset="1" stop-color="' + a + '" stop-opacity="0"/>' +
-      '</radialGradient>' +
-      '<radialGradient id="hb2" cx="18%" cy="86%" r="60%">' +
-        '<stop offset="0" stop-color="#7C3AED" stop-opacity="0.14"/>' +
-        '<stop offset="1" stop-color="#7C3AED" stop-opacity="0"/>' +
-      '</radialGradient>' +
+      '<linearGradient id="engine-gradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#C069DD"/></linearGradient>' +
+      '<marker id="engine-arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#7C3AED"/></marker>' +
     '</defs>' +
-    '<rect width="400" height="400" fill="url(#hg)"/>' +
-    '<rect width="400" height="400" fill="url(#hb)"/>' +
-    '<rect width="400" height="400" fill="url(#hb2)"/>' +
-    // concentric contour rings (botanical/topographic feel)
-    '<g fill="none" stroke="' + a + '" stroke-opacity="0.5" stroke-width="1">' +
-      ringPath(248, 150, 36) + ringPath(248, 150, 62) + ringPath(248, 150, 90) +
-      ringPath(248, 150, 120, 0.32) + ringPath(248, 150, 152, 0.2) +
+    '<rect x="1" y="1" width="678" height="438" fill="none" stroke="rgba(22,21,26,0.14)"/>' +
+    '<text x="34" y="48" fill="#16151A" font-family="Outfit, sans-serif" font-size="25" font-weight="800">Growth engine operating model</text>' +
+    '<text x="34" y="76" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-size="15">One system that keeps creative, media, funnel, and CRM in sync.</text>' +
+    '<circle cx="340" cy="230" r="70" fill="url(#engine-gradient)" fill-opacity="0.95"/>' +
+    '<text x="340" y="221" text-anchor="middle" fill="#FFFFFF" font-family="Outfit, sans-serif" font-size="14" font-weight="800">WEEKLY</text>' +
+    '<text x="340" y="247" text-anchor="middle" fill="#FFFFFF" font-family="Outfit, sans-serif" font-size="24" font-weight="800">Decisions</text>' +
+    '<g fill="#FAF9F5" stroke="#7C3AED" stroke-opacity="0.62">' +
+      '<rect x="76" y="126" width="150" height="78" rx="6"/><rect x="454" y="126" width="150" height="78" rx="6"/>' +
+      '<rect x="76" y="286" width="150" height="78" rx="6"/><rect x="454" y="286" width="150" height="78" rx="6"/>' +
     '</g>' +
-    // fine flowing lines
-    '<g fill="none" stroke="' + a + '" stroke-opacity="0.28" stroke-width="1">' +
-      '<path d="M-10 300 C 90 250, 150 330, 250 280 S 420 250, 420 300"/>' +
-      '<path d="M-10 330 C 90 285, 150 360, 250 312 S 420 285, 420 332"/>' +
+    '<g fill="#16151A" font-family="Outfit, sans-serif" font-size="20" font-weight="800">' +
+      '<text x="151" y="158" text-anchor="middle">Offer</text>' +
+      '<text x="151" y="184" text-anchor="middle" font-size="14" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-weight="600">reason to buy</text>' +
+      '<text x="529" y="158" text-anchor="middle">Creative</text>' +
+      '<text x="529" y="184" text-anchor="middle" font-size="14" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-weight="600">reason to stop</text>' +
+      '<text x="151" y="318" text-anchor="middle">Funnel</text>' +
+      '<text x="151" y="344" text-anchor="middle" font-size="14" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-weight="600">reason to trust</text>' +
+      '<text x="529" y="318" text-anchor="middle">CRM</text>' +
+      '<text x="529" y="344" text-anchor="middle" font-size="14" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-weight="600">reason to return</text>' +
     '</g>' +
-    // soft accent nodes
-    '<circle cx="248" cy="150" r="7" fill="' + a + '" fill-opacity="0.9"/>' +
-    '<circle cx="110" cy="100" r="4" fill="#7C3AED" fill-opacity="0.55"/>' +
-    '<circle cx="150" cy="250" r="3" fill="' + a + '" fill-opacity="0.5"/>' +
-    '<circle cx="320" cy="250" r="3.5" fill="#C069DD" fill-opacity="0.6"/>' +
-    '</svg>'
-  );
+    '<path d="M226 165 C265 168 292 184 307 205" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#engine-arrow)"/>' +
+    '<path d="M454 165 C415 168 388 184 373 205" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#engine-arrow)"/>' +
+    '<path d="M226 326 C265 318 292 292 309 258" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#engine-arrow)"/>' +
+    '<path d="M454 326 C415 318 388 292 371 258" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#engine-arrow)"/>' +
+    '<path d="M340 300 C340 348 340 372 340 400" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#engine-arrow)"/>' +
+    '<rect x="250" y="384" width="180" height="34" rx="17" fill="#F2EFE8" stroke="#7C3AED" stroke-opacity="0.42"/>' +
+    '<text x="340" y="406" text-anchor="middle" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="13" font-weight="800">dashboard feedback</text>' +
+  '</svg>';
 }
-function ringPath(cx, cy, r, op) {
-  const o = op == null ? '' : ' stroke-opacity="' + op + '"';
-  return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '"' + o + '/>';
+
+function funnelSvg(company) {
+  const co = esc(company || 'Your');
+  return '<svg viewBox="0 0 680 520" role="img" aria-label="' + co + ' growth funnel">' +
+    '<defs>' +
+      '<linearGradient id="tge-funnel-gradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#C069DD"/></linearGradient>' +
+      '<marker id="arrowhead" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#7C3AED"/></marker>' +
+    '</defs>' +
+    '<rect x="1" y="1" width="678" height="518" fill="none" stroke="rgba(22,21,26,0.14)"/>' +
+    '<text x="38" y="50" fill="#16151A" font-family="Outfit, sans-serif" font-size="26" font-weight="800">' + co + ' growth system</text>' +
+    '<text x="38" y="78" fill="#6C6872" font-family="Hanken Grotesk, sans-serif" font-size="15">Paid media, funnel assets, CRM, and reporting in one loop</text>' +
+    '<polygon points="88,118 592,118 542,196 138,196" fill="#FAF9F5" stroke="#7C3AED" stroke-opacity="0.55"/>' +
+    '<polygon points="138,220 542,220 492,298 188,298" fill="#F2EFE8" stroke="#7C3AED" stroke-opacity="0.55"/>' +
+    '<polygon points="188,322 492,322 446,400 234,400" fill="#FAF9F5" stroke="#7C3AED" stroke-opacity="0.55"/>' +
+    '<polygon points="234,424 446,424 408,482 272,482" fill="url(#tge-funnel-gradient)" fill-opacity="0.9"/>' +
+    '<text x="340" y="151" text-anchor="middle" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="14" font-weight="800">01 AWARENESS</text>' +
+    '<text x="340" y="176" text-anchor="middle" fill="#16151A" font-family="Outfit, sans-serif" font-size="24" font-weight="800">Paid social, search, content</text>' +
+    '<text x="340" y="253" text-anchor="middle" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="14" font-weight="800">02 TRUST</text>' +
+    '<text x="340" y="278" text-anchor="middle" fill="#16151A" font-family="Outfit, sans-serif" font-size="24" font-weight="800">Proof, press, education, reviews</text>' +
+    '<text x="340" y="355" text-anchor="middle" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="14" font-weight="800">03 CONVERSION</text>' +
+    '<text x="340" y="380" text-anchor="middle" fill="#16151A" font-family="Outfit, sans-serif" font-size="24" font-weight="800">Offer, landing pages, follow-up</text>' +
+    '<text x="340" y="455" text-anchor="middle" fill="#FFFFFF" font-family="Outfit, sans-serif" font-size="14" font-weight="800">04 RETENTION</text>' +
+    '<text x="340" y="476" text-anchor="middle" fill="#FFFFFF" font-family="Outfit, sans-serif" font-size="20" font-weight="800">Email, WhatsApp, repeat sales</text>' +
+    '<path d="M612 154 C646 210 646 390 420 470" fill="none" stroke="#7C3AED" stroke-width="2" marker-end="url(#arrowhead)"/>' +
+    '<text x="552" y="340" fill="#7C3AED" font-family="Outfit, sans-serif" font-size="14" font-weight="800">data loop</text>' +
+  '</svg>';
 }
 
 /* ============================================================
-   SECTION RENDERERS
+   SECTION SHELL. Numbers are assigned at assembly time so the
+   sequence stays continuous even if a section is skipped.
    ============================================================ */
-function renderCover(p, meta) {
-  const promise = has(p.promise) ? p.promise : 'A growth system built around your business.';
-  const titleHTML = esc(promise);
-
-  const metaChips = [];
-  if (has(p.industry)) metaChips.push(metaChip('sparkles', p.industry));
-  if (has(p.location)) metaChips.push(metaChip('target', p.location));
-  if (has(p.website)) metaChips.push(metaChip('search', cleanUrl(p.website)));
-
-  const preparedFor = has(p.contact_name) ? p.contact_name : (has(p.company_name) ? p.company_name : '');
-
-  return (
-  '<section class="cover"><div class="wrap">' +
-    '<div class="cover-top">' +
-      '<div class="brandmark">' +
-        '<div class="logo">' + icon('trending') + '</div>' +
-        '<div class="name">The Growth Engine</div>' +
-      '</div>' +
-      '<div class="cover-prepared">' +
-        'Prepared for' +
-        (has(preparedFor) ? '<b>' + esc(preparedFor) + '</b>' : '') +
-        (has(meta && meta.generated_at) ? esc(meta.generated_at) : '') +
-      '</div>' +
-    '</div>' +
-    '<div class="cover-grid">' +
-      '<div class="cover-rail reveal" aria-hidden="true">' +
-        '<div class="idx"><span class="slash">/</span>01</div>' +
-        '<div class="rule"></div>' +
-        '<div class="tag">Proposal</div>' +
-      '</div>' +
-      '<div class="reveal">' +
-        '<h1 class="cover-title">A growth proposal for <span class="hl">' + esc(has(p.company_name) ? p.company_name : 'your business') + '</span></h1>' +
-        (has(p.promise) ? '<p class="cover-lead">' + esc(promise) + '</p>' : '') +
-        (metaChips.length ? '<div class="cover-meta">' + metaChips.join('') + '</div>' : '') +
-      '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
-}
-function metaChip(ic, txt) {
-  return '<span class="meta-chip">' + icon(ic) + esc(txt) + '</span>';
-}
-function cleanUrl(u) {
-  return String(u || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
+function sectionShell(num, labelledBy, bodyHTML) {
+  const n = num < 10 ? '0' + num : String(num);
+  return '<section class="section reveal"' + (labelledBy ? ' aria-labelledby="' + labelledBy + '"' : '') + '>' +
+    '<div class="section-number" aria-hidden="true"><span>/' + n + '</span></div>' +
+    '<div class="section-body">' + bodyHTML + '</div>' +
+  '</section>';
 }
 
-function renderTrust(p, stat) {
-  // press = from static drsw media; chips = prospect.result_chips (fallback to static proof_metrics)
-  let chips = arr(p.result_chips).filter(c => has(c.value));
-  if (chips.length < 2) {
-    chips = arr(stat.proof_metrics).slice(0, 3);
+/* ============================================================
+   SECTION RENDERERS. Each returns the section BODY html (or ''
+   to skip). Per-lead copy from p (CONFIG.prospect), shared
+   proof from stat (CONFIG.static), links from meta.
+   ============================================================ */
+function topbarHTML(p, meta) {
+  const who = has(p.contact_name) ? p.contact_name : (has(p.company_name) ? p.company_name : '');
+  const date = fmtDate(meta && meta.generated_at);
+  let prepared = '';
+  if (has(who)) {
+    prepared = 'Prepared for ' + esc(who) + (date ? ' &middot; ' + esc(date) : '');
+  } else if (date) {
+    prepared = esc(date);
   }
-  chips = chips.slice(0, 3);
+  return '<header class="topbar" aria-label="Proposal header">' +
+    '<span class="brand" aria-label="The Growth Engine">' +
+      '<span class="brand-mark" aria-hidden="true">' + BRAND_MARK + '</span>' +
+      '<span class="brand-text"><span>The Growth Engine</span><span>Performance marketing</span></span>' +
+    '</span>' +
+    (prepared ? '<div class="prepared">' + prepared + '</div>' : '') +
+  '</header>';
+}
 
-  // split a value like "20M+" into a numeral + trailing unit so the unit can take accent
-  function splitVal(v) {
-    const s = String(v == null ? '' : v);
-    const m = s.match(/^([\d.,]+)(.*)$/);
-    if (!m) return esc(s);
-    return esc(m[1]) + (m[2] ? '<span class="u">' + esc(m[2]) + '</span>' : '');
-  }
+function coverBody(p) {
+  const company = has(p.company_name) ? p.company_name : 'your business';
+  const chips = [];
+  if (has(p.industry)) chips.push('<span class="chip"><strong>Industry</strong>&nbsp; ' + esc(p.industry) + '</span>');
+  if (has(p.website)) chips.push('<span class="chip"><strong>Website</strong>&nbsp; ' + esc(cleanUrl(p.website)) + '</span>');
+  if (has(p.focus)) chips.push('<span class="chip"><strong>Focus</strong>&nbsp; ' + esc(p.focus) + '</span>');
 
-  const platformsHTML = buildPlatforms();
-
-  const chipsHTML = chips.length ? (
-    '<div class="trust-chips reveal">' +
-      '<div class="chips-label">By the numbers</div>' +
-      chips.map(c =>
-        '<div class="trust-chip">' +
-          '<div class="val">' + splitVal(c.value) + '</div>' +
-          '<div class="lbl">' + esc(c.label) + '</div>' +
+  const tiles = arr(p.cover_brief).slice(0, 4).filter(t => has(t && t.title));
+  const briefHTML = tiles.length ? (
+    '<div class="brief-grid" aria-label="Proposal snapshot">' +
+      tiles.map(t =>
+        '<div class="brief-item">' +
+          (has(t.label) ? '<span class="brief-label">' + esc(t.label) + '</span>' : '') +
+          '<b>' + esc(t.title) + '</b>' +
+          (has(t.line) ? '<span>' + esc(t.line) + '</span>' : '') +
         '</div>'
       ).join('') +
     '</div>'
   ) : '';
 
-  if (!platformsHTML && !chipsHTML) return '';
-  return (
-  '<section class="trust"><div class="wrap">' +
-    platformsHTML + chipsHTML +
-  '</div></section>'
-  );
+  return '<p class="eyebrow">Private growth proposal</p>' +
+    '<h1 id="cover-title">A growth proposal for <span class="company">' + esc(company) + '</span></h1>' +
+    (has(p.promise) ? '<p class="hero-line">' + esc(p.promise) + '</p>' : '') +
+    (chips.length ? '<div class="chips" aria-label="Company details">' + chips.join('') + '</div>' : '') +
+    briefHTML;
 }
 
-// Platforms-we-run marquee. Logos load from /tge-proposals/assets/platform-logos.js
-// (window.__PLATFORM_LOGOS / __PLATFORM_ORDER). If that file is absent (e.g. local
-// file:// preview) this returns '' and the section just shows the numbers.
-function buildPlatforms() {
-  var logos = window.__PLATFORM_LOGOS, order = window.__PLATFORM_ORDER;
-  if (!logos || !order || !order.length) return '';
-  var items = order.map(function (k) {
-    var l = logos[k];
-    if (!l || !l.svg) return '';
-    return '<span class="pf"><span class="pf-ic">' + l.svg + '</span><span class="pf-name">' + esc(l.label) + '</span></span>';
-  }).join('');
-  if (!items) return '';
-  return (
-    '<div class="platforms reveal">' +
-      '<div class="trust-press-head">' +
-        '<div class="lbl">Platforms we run</div>' +
-        '<div class="lbl-note">Your growth, handled across every channel</div>' +
-      '</div>' +
-      '<div class="marquee"><div class="marquee-track">' + items + items + '</div></div>' +
-    '</div>'
-  );
+function trustBody(p, stat) {
+  const cs = (stat && stat.case_studies) || {};
+  const media = arr(cs.drsw && cs.drsw.media);
+  const press = (media.length >= 4 ? media : PRESS_DEFAULT).slice(0, 6);
+  const pressHTML = '<div class="press-grid" aria-label="Press our clients earned">' +
+    press.map(m => '<div class="press-logo ' + pressClass(m) + '">' + esc(pressText(m)) + '</div>').join('') +
+  '</div>';
+
+  const resultsHTML = '<div class="result-strip" aria-label="Client results">' +
+    RESULT_STRIP.map(r => '<div class="result"><b>' + esc(r.value) + '</b><span>' + esc(r.label) + '</span></div>').join('') +
+  '</div>';
+
+  const platformsHTML = '<div class="platforms" aria-label="Platforms we run">' +
+    PLATFORMS.map(pl =>
+      '<span class="platform"><svg viewBox="0 0 24 24" aria-hidden="true">' + pl.svg + '</svg>' + esc(pl.name) + '</span>'
+    ).join('') +
+  '</div>';
+
+  const company = has(p.company_name) ? p.company_name : 'you';
+  const miniName = has(p.contact_name) ? firstName(p.contact_name) : company;
+  const trustItems = TRUST_ITEMS.map(t =>
+    '<div class="trust-item"><b>' + esc(t.title) + '</b><span>' +
+      esc(t.line.replace('{company}', company)) + '</span></div>'
+  ).join('');
+
+  return '<p class="eyebrow">Trust in seconds</p>' +
+    '<h2 id="trust-title" class="lead">Press earned, platforms managed, outcomes measured.</h2>' +
+    pressHTML + resultsHTML + platformsHTML +
+    '<div class="trust-board" aria-label="Trust and operating proof">' +
+      '<div class="trust-proof">' + trustItems + '</div>' +
+      '<aside class="trust-mini">' +
+        '<h3>What this means for ' + esc(miniName) + '</h3>' +
+        '<p>' + esc(TRUST_MINI_LINE) + '</p>' +
+      '</aside>' +
+    '</div>';
 }
 
-/* Text-only editorial read of the prospect. No screenshot, no frame.
-   Built from read.summary (set as a large editorial statement) +
-   read.signals (numbered, hairline-separated list). */
-function renderStudy(p) {
+function diagnosisBody(p) {
   const read = p.read || {};
-  const signals = arr(read.signals).slice(0, 4);
+  const signals = arr(read.signals).slice(0, 3).map(s =>
+    (typeof s === 'string') ? { title: s, detail: '' } : (s || {})
+  ).filter(s => has(s.title));
+  const opps = arr(read.opportunities).slice(0, 4).filter(o => has(o && o.title));
   if (!has(read.summary) && !signals.length) return '';
 
-  // emphasize the closing clause of the summary in accent, kept defensive
-  let summaryHTML = '';
-  if (has(read.summary)) {
-    const s = String(read.summary).trim();
-    const cut = s.lastIndexOf('. ');
-    if (cut > 0 && cut < s.length - 2) {
-      summaryHTML = esc(s.slice(0, cut + 1)) + ' <span class="em">' + esc(s.slice(cut + 2)) + '</span>';
-    } else {
-      summaryHTML = esc(s);
-    }
-  }
+  const signalsHTML = signals.length ? (
+    '<div class="signals">' +
+      signals.map((s, i) =>
+        '<div class="signal">' +
+          '<span class="signal-index">' + ('0' + (i + 1)) + '</span>' +
+          '<div><b>' + esc(s.title) + '</b>' + (has(s.detail) ? '<span>' + esc(s.detail) + '</span>' : '') + '</div>' +
+        '</div>'
+      ).join('') +
+    '</div>'
+  ) : '';
 
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('02', 'What we see', 'A short, honest read on where the growth is leaking.') +
-      '<div class="sec-content">' +
-        (summaryHTML ? '<p class="seen-summary reveal">' + summaryHTML + '</p>' : '') +
-        (signals.length ? '<div class="seen-list reveal">' +
-          signals.map((s, i) =>
-            '<div class="seen">' +
-              '<div class="sn">' + ('0' + (i + 1)) + '</div>' +
-              '<div class="st">' + esc(s) + '</div>' +
-            '</div>'
-          ).join('') +
-        '</div>' : '') +
-      '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
+  const oppsHTML = opps.length ? (
+    '<div class="opportunity-grid" aria-label="Priority opportunities">' +
+      opps.map(o =>
+        '<div class="opportunity">' +
+          '<strong>' + esc(has(o.phase) ? o.phase : 'Now') + '</strong>' +
+          '<div><b>' + esc(o.title) + '</b>' + (has(o.detail) ? '<span>' + esc(o.detail) + '</span>' : '') + '</div>' +
+        '</div>'
+      ).join('') +
+    '</div>'
+  ) : '';
+
+  return '<p class="eyebrow">What we see</p>' +
+    (has(read.summary) ? '<h2 id="see-title" class="lead">' + esc(read.summary) + '</h2>' : '') +
+    (has(read.sub) ? '<p class="lead-small">' + esc(read.sub) + '</p>' : '') +
+    signalsHTML +
+    '<div class="diagnostic-shell">' +
+      '<div class="visual-frame">' + diagSvg(p.company_name) + '</div>' +
+      oppsHTML +
+    '</div>';
 }
 
-function renderStrategy(p) {
+function strategyBody(p) {
   const s = p.strategy || {};
-  const pillars = arr(s.pillars).slice(0, 3);
+  const pillars = arr(s.pillars).slice(0, 3).filter(pl => has(pl && pl.title));
+  const notes = arr(s.engine_notes).slice(0, 4).filter(n => has(n && n.title));
   if (!has(s.headline) && !pillars.length) return '';
 
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('03', 'The strategy', 'Yours free, no catch. This is the plan we would run.') +
-      '<div class="sec-content">' +
-        '<span class="badge-free reveal">' + icon('gift') + 'Your free growth strategy</span>' +
-        (has(s.headline) ? '<h2 class="sec-title reveal" style="margin-top:18px;">' + esc(s.headline) + '</h2>' : '') +
-        (pillars.length ? '<div class="pillars reveal">' +
-          pillars.map((pl, i) =>
-            '<div class="pillar">' +
-              '<span class="num">0' + (i + 1) + '</span>' +
-              '<div class="pic">' + icon(pl.icon) + '</div>' +
-              (has(pl.title) ? '<h3>' + esc(pl.title) + '</h3>' : '') +
-              (has(pl.line) ? '<p>' + esc(pl.line) + '</p>' : '') +
-            '</div>'
-          ).join('') +
-        '</div>' : '') +
-      '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
-}
-
-/* ============================================================
-   SYSTEM DIAGRAM (/04). The 6 system_pillars rendered as one
-   connected machine: a labeled central hub band + connective
-   stem into a modular hairline grid of pillar nodes.
-   This is the 120% signature detail.
-   ============================================================ */
-const PILLAR_ICONS = ['pen', 'megaphone', 'target', 'database', 'phone', 'chart'];
-function renderEngine(stat, p) {
-  const pillars = arr(stat.system_pillars).filter(pl => has(pl.title));
-  if (!pillars.length) return '';
-  const company = (p && has(p.company_name)) ? p.company_name : 'Your business';
-
-  const nodes = pillars.map((pl, i) =>
-    '<div class="node">' +
-      '<div class="node-top">' +
-        '<div class="node-ic">' + icon(PILLAR_ICONS[i] || 'sparkles') + '</div>' +
-        '<div class="node-n">' + ('0' + (i + 1)) + '</div>' +
-      '</div>' +
-      '<h3>' + esc(pl.title) + '</h3>' +
-      (has(pl.description) ? '<p>' + esc(pl.description) + '</p>' : '') +
+  const pillarsHTML = pillars.length ? (
+    '<div class="pillars">' +
+      pillars.map(pl =>
+        '<article class="pillar">' +
+          '<div class="pillar-icon" aria-hidden="true">' + iconSvg(pl.icon) + '</div>' +
+          '<h3>' + esc(pl.title) + '</h3>' +
+          (has(pl.line) ? '<p>' + esc(pl.line) + '</p>' : '') +
+        '</article>'
+      ).join('') +
     '</div>'
-  ).join('');
+  ) : '';
 
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('04', 'The growth engine', 'Six parts, one machine. Built, run, and tuned by us.') +
-      '<div class="sec-content">' +
-        '<h2 class="sec-title reveal">One connected <span class="hl">growth engine.</span></h2>' +
-        '<p class="sec-intro reveal">Not six tools you stitch together. One system where every part feeds the next.</p>' +
-        '<div class="engine reveal">' +
-          '<div class="engine-hub">' +
-            '<div class="hub-mark">' + icon('trending') + '</div>' +
-            '<div class="hub-txt">' +
-              '<div class="hub-eyebrow">Your growth engine</div>' +
-              '<div class="hub-name">' + esc(company) + '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="engine-stem" aria-hidden="true"></div>' +
-          '<div class="engine-grid">' + nodes + '</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
-}
-
-/* ============================================================
-   CONVERSION FUNNEL (/05). Inline-SVG stacked trapezoids that
-   narrow top to bottom, the 3 funnel_stages labeled on the
-   funnel itself, with relevant channels mapped beside each.
-   ============================================================ */
-function findChannel(stat, name) {
-  return arr(stat.channels).find(c => (c.name || '').toLowerCase() === name.toLowerCase());
-}
-function renderFunnel(stat) {
-  const stages = arr(stat.funnel_stages).filter(s => has(s.stage));
-  if (stages.length < 1) return '';
-
-  // map stage -> relevant channel names (defensive: only keep channels that exist)
-  const stageChannelMap = [
-    ['Meta Ads', 'TikTok', 'YouTube', 'SEO'],          // Awareness  / discovery
-    ['Google Ads', 'Email', 'LinkedIn', 'SEO'],        // Consideration / retarget + intent
-    ['SMS', 'WhatsApp', 'Email']                        // Decision   / direct
-  ];
-
-  // build the SVG funnel: stacked trapezoids forming ONE continuous narrowing
-  // profile. Each segment's top width == the previous segment's bottom width,
-  // so the silhouette reads as a single funnel (thin gaps only for legibility).
-  const segFills = ['seg-fill-1', 'seg-fill-2', 'seg-fill-3'];
-  const labelCls = ['t1', 't2', 't3'];
-  const subOn = [false, false, true];
-  const subTxt = ['Strangers', 'Warm leads', 'Customers'];
-  const W = 560, topW = 520, botW = 168, segH = 108, gap = 6;
-  const drawn = stages.slice(0, 3);
-  const N = drawn.length;
-  function widthAt(t) { return topW + (botW - topW) * t; } // t in 0..1 down the funnel
-  const totalH = segH * N + gap * (N - 1);
-  let segs = '';
-  for (let i = 0; i < N; i++) {
-    const st = drawn[i];
-    const y = i * (segH + gap);
-    // continuous profile: parametrize by segment index, not pixel position,
-    // so the top of segment i meets the bottom of segment i-1 in width.
-    const wTop = widthAt(i / N);
-    const wBot = widthAt((i + 1) / N);
-    const xTopL = (W - wTop) / 2, xTopR = xTopL + wTop;
-    const xBotL = (W - wBot) / 2, xBotR = xBotL + wBot;
-    const cy = y + segH / 2;
-    segs +=
-      '<path class="' + segFills[i] + '" d="M' + xTopL + ' ' + y + ' L' + xTopR + ' ' + y +
-        ' L' + xBotR + ' ' + (y + segH) + ' L' + xBotL + ' ' + (y + segH) + ' Z"/>' +
-      '<path class="seg-stroke" d="M' + xTopL + ' ' + y + ' L' + xTopR + ' ' + y +
-        ' L' + xBotR + ' ' + (y + segH) + ' L' + xBotL + ' ' + (y + segH) + ' Z"/>' +
-      '<text class="seg-label ' + labelCls[i] + '" x="' + (W / 2) + '" y="' + (cy - 3) + '" text-anchor="middle" font-size="22">' + esc(st.stage) + '</text>' +
-      '<text class="seg-sub' + (subOn[i] ? ' on' : '') + '" x="' + (W / 2) + '" y="' + (cy + 19) + '" text-anchor="middle" font-size="12.5">' +
-        esc(subTxt[i] || '') + '</text>';
-  }
-  const funnelSvg =
-    '<svg class="funnel-svg" viewBox="0 0 ' + W + ' ' + totalH + '" role="img" aria-label="Conversion funnel from awareness to decision" xmlns="http://www.w3.org/2000/svg">' +
-      segs +
-    '</svg>';
-
-  // stage rows with mapped channel chips
-  const rows = stages.slice(0, 3).map((st, i) => {
-    const chans = (stageChannelMap[i] || [])
-      .map(nm => findChannel(stat, nm))
-      .filter(Boolean)
-      .slice(0, 4);
-    const chips = chans.map(c =>
-      '<span class="fchip">' + icon(c.icon) + esc(c.name) + '</span>'
-    ).join('');
-    return (
-      '<div class="fstage">' +
-        '<div class="fn">' + ('0' + (i + 1)) + '</div>' +
-        '<div>' +
-          '<div class="fs-name">' + esc(st.stage) + '</div>' +
-          (has(st.description) ? '<div class="fs-desc">' + esc(st.description) + '</div>' : '') +
-          (chips ? '<div class="fchips">' + chips + '</div>' : '') +
-        '</div>' +
-      '</div>'
-    );
-  }).join('');
-
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('05', 'Traffic to customers', 'How a stranger becomes a paying customer, stage by stage.') +
-      '<div class="sec-content">' +
-        '<h2 class="sec-title reveal">We turn traffic into <span class="hl">customers.</span></h2>' +
-        '<div class="funnel-wrap reveal">' +
-          '<div class="funnel-col">' + funnelSvg + '</div>' +
-          '<div class="funnel-stages">' + rows + '</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
-}
-
-/* ============================================================
-   EVERYTHING INCLUDED (/06). Full deliverables breakdown from
-   features_list: 4 labeled categories, each a scannable
-   checklist. Prospect-tailored items fold in as a short intro.
-   ============================================================ */
-function renderIncluded(stat, p) {
-  const f = stat.features_list || {};
-  const cats = [
-    { key: 'content_creative',  title: 'Content & Creative',   icon: 'pen' },
-    { key: 'paid_advertising',  title: 'Paid Advertising',     icon: 'target' },
-    { key: 'automation_sales',  title: 'Automation & Sales',   icon: 'repeat' },
-    { key: 'strategy_reporting',title: 'Strategy & Reporting',  icon: 'chart' }
-  ].map(c => ({ ...c, items: arr(f[c.key]).filter(has) }))
-   .filter(c => c.items.length);
-  if (!cats.length) return '';
-
-  // tailored intro chips: fold the prospect's own deliverables in (short)
-  const tailored = arr(p && p.deliverables).filter(d => has(d.label)).slice(0, 6);
-  const introHTML = tailored.length
-    ? '<div class="incl-intro reveal">' +
-        '<span class="it" style="background:transparent;border:none;color:var(--ink-3);padding-left:0;">Tailored for you:</span>' +
-        tailored.map(d => '<span class="it">' + icon(d.icon) + esc(d.label) + '</span>').join('') +
-      '</div>'
-    : '';
-
-  const grid = cats.map(c =>
-    '<div class="incl-cat">' +
-      '<div class="incl-cat-head">' +
-        '<div class="ch-ic">' + icon(c.icon) + '</div>' +
-        '<div class="ch-t">' + esc(c.title) + '</div>' +
-        '<div class="ch-c">' + ('0' + c.items.length) + '</div>' +
-      '</div>' +
-      '<ul class="incl-list">' +
-        c.items.map(it =>
-          '<li><span class="ck">' + icon('check') + '</span>' + esc(it) + '</li>'
-        ).join('') +
-      '</ul>' +
+  const notesHTML = notes.length ? (
+    '<div class="engine-notes" aria-label="How the operating system works">' +
+      notes.map((n, i) =>
+        '<div class="engine-note">' +
+          '<i>' + (i + 1) + '</i>' +
+          '<div><b>' + esc(n.title) + '</b>' + (has(n.detail) ? '<span>' + esc(n.detail) + '</span>' : '') + '</div>' +
+        '</div>'
+      ).join('') +
     '</div>'
-  ).join('');
+  ) : '';
 
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('06', 'Everything included', 'The full scope. One retainer. Nothing for you to manage.') +
-      '<div class="sec-content">' +
-        '<h2 class="sec-title reveal">Everything included.</h2>' +
-        introHTML +
-        '<div class="incl-grid reveal">' + grid + '</div>' +
-      '</div>' +
+  return '<div class="strategy-header">' +
+      '<span class="badge">Your free growth strategy</span>' +
+      (has(s.headline) ? '<h2 id="strategy-title" class="strategy-title">' + esc(s.headline) + '</h2>' : '') +
     '</div>' +
-  '</div></section>'
-  );
+    pillarsHTML +
+    '<div class="engine-system">' +
+      '<div class="visual-frame">' + engineSvg() + '</div>' +
+      notesHTML +
+    '</div>';
 }
 
-/* ============================================================
-   ALWAYS-ON FOLLOW UP (/07). automation_stack as a labeled
-   multi-channel node row, fed by a single lead node, each
-   channel showing its stat as the headline data point.
-   ============================================================ */
-const AUTO_ICONS = ['phone', 'mail', 'sms', 'message-circle'];
-function renderAutomation(stat) {
-  const steps = arr(stat.automation_stack).filter(a => has(a.title));
-  if (!steps.length) return '';
-
-  // connective rail SVG: one trunk from a central origin branching to N nodes
-  const n = Math.min(steps.length, 4);
-  let rail = '';
-  if (n > 1) {
-    const cx = 50; // percent origin
-    const colPct = 100 / n;
-    let branches = '';
-    for (let i = 0; i < n; i++) {
-      const tx = colPct * (i + 0.5);
-      branches += '<path d="M' + cx + ' 0 C ' + cx + ' 20, ' + tx + ' 18, ' + tx + ' 38" />';
-    }
-    rail =
-      '<div class="auto-rail" aria-hidden="true">' +
-        '<svg class="rail-svg" viewBox="0 0 100 38" preserveAspectRatio="none">' +
-          '<g fill="none" stroke="var(--line-2)" stroke-width="0.6" vector-effect="non-scaling-stroke">' + branches + '</g>' +
-        '</svg>' +
-      '</div>';
-  }
-
-  const nodes = steps.slice(0, 4).map((a, i) =>
-    '<div class="auto-node">' +
-      '<div class="an-top">' +
-        '<div class="an-ic">' + icon(AUTO_ICONS[i] || 'sparkles') + '</div>' +
-        '<div class="an-name">' + esc(a.title) + '</div>' +
-      '</div>' +
-      (has(a.stat) ? '<div class="an-stat">' + esc(a.stat) + '</div>' : '') +
-      (has(a.description) ? '<div class="an-desc">' + esc(a.description) + '</div>' : '') +
-    '</div>'
-  ).join('');
-
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('07', 'Always-on follow up', 'Every lead answered in minutes, around the clock, with no one on shift.') +
-      '<div class="sec-content">' +
-        '<h2 class="sec-title reveal">Follow up that never <span class="hl">clocks out.</span></h2>' +
-        '<div class="auto-wrap reveal">' +
-          '<div class="auto-lead">' +
-            '<span class="al-dot"></span>' +
-            '<span class="al-t">New lead</span>' +
-            '<span class="al-s">fans out instantly</span>' +
-          '</div>' +
-          rail +
-          '<div class="auto-grid">' + nodes + '</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
-}
-
-function renderProof(stat) {
-  const cs = stat.case_studies || {};
+function proofBody(stat) {
+  const cs = (stat && stat.case_studies) || {};
   const order = ['frenchify', 'drsw'];
-  const cards = order.map(k => cs[k]).filter(Boolean);
-  if (!cards.length) return '';
+  const cases = order.map(k => ({ key: k, c: cs[k] })).filter(x => x.c);
+  if (!cases.length) return '';
 
-  function caseCard(c) {
-    const subs = arr(c.sub_metrics).slice(0, 3);
-    const press = arr(c.media).slice(0, 6);
-    const phName = esc(c.name || 'Client');
-    const img = has(c.image)
-      ? '<img src="' + esc(c.image) + '" alt="' + esc(c.name) + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\';">' +
-        '<div class="ph" style="display:none;">' + phName + '</div>'
-      : '<div class="ph">' + phName + '</div>';
-    const resultLine = (has(c.before) && has(c.after))
-      ? '<div class="case-result"><b>From:</b> ' + esc(c.before) + '<br><b>To:</b> ' + esc(c.after) + '</div>'
-      : '';
-    return (
-    '<div class="case reveal">' +
-      '<div class="case-shot">' +
-        (has(c.industry) ? '<div class="case-badge">' + esc(c.industry) + '</div>' : '') +
-        img +
-      '</div>' +
-      '<div class="case-body">' +
-        '<div class="case-top">' +
-          '<div>' +
-            '<div class="case-name">' + esc(c.name) + '</div>' +
-          '</div>' +
-          (has(c.hero_metric) ? '<div class="case-metric">' +
-            '<div class="v">' + esc(c.hero_metric) + '</div>' +
-            (has(c.hero_metric_label) ? '<div class="l">' + esc(c.hero_metric_label) + '</div>' : '') +
-          '</div>' : '') +
-        '</div>' +
-        resultLine +
-        (subs.length ? '<div class="case-subs">' + subs.map(m => '<span>' + esc(m) + '</span>').join('') + '</div>' : '') +
-        (press.length ? '<div class="case-press">' + press.map(m => '<span class="pl">' + esc(m) + '</span>').join('') + '</div>' : '') +
-      '</div>' +
-    '</div>'
-    );
+  function caseCard(key, c) {
+    const name = has(c.name) ? c.name : 'Client';
+    const line = CASE_LINES[key] || (arr(c.story)[1] || '');
+    const chips = [];
+    if (has(c.hero_metric)) {
+      chips.push('<span class="chip"><strong>' + esc(c.hero_metric) + '</strong>&nbsp; ' +
+        esc(String(c.hero_metric_label || 'result').toLowerCase()) + '</span>');
+    }
+    arr(c.sub_metrics).slice(0, 2).forEach(m => {
+      chips.push('<span class="chip">' + esc(m) + '</span>');
+    });
+
+    // Placeholder-first: the styled art box is the default; the real client
+    // photo (plus scrim) only switches on when the image actually loads, so a
+    // missing or stalled asset can never leave a broken dark box.
+    const artInner = has(c.image)
+      ? '<img src="' + esc(c.image) + '" alt="" ' +
+          'onload="var a=this.closest(\'.case-art\'); if(a)a.classList.add(\'has-img\');" ' +
+          'onerror="this.remove();">' +
+        '<div class="scrim" aria-hidden="true"></div>' +
+        '<span>' + esc(name) + '</span>'
+      : '<span>' + esc(name) + '</span>';
+
+    return '<article class="case">' +
+      '<div class="case-art" role="img" aria-label="' + esc(name) + ' results">' + artInner + '</div>' +
+      '<h3>' + esc(name) + '</h3>' +
+      (has(line) ? '<p>' + esc(line) + '</p>' : '') +
+      (chips.length ? '<div class="chips">' + chips.join('') + '</div>' : '') +
+    '</article>';
   }
 
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('08', 'Proof, not promises', 'Two businesses we grew from the ground up. The screenshots are theirs.') +
-      '<div class="sec-content">' +
-        '<h2 class="sec-title reveal">Real clients. <span class="hl">Real numbers.</span></h2>' +
-        '<div class="proof-grid">' + cards.map(caseCard).join('') + '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
+  return '<p class="eyebrow">Proof</p>' +
+    '<h2 id="proof-title" class="lead">Two examples of strategy becoming visible growth.</h2>' +
+    '<div class="case-grid">' + cases.map(x => caseCard(x.key, x.c)).join('') + '</div>' +
+    '<div class="case-learning" aria-label="Proof patterns we reuse">' +
+      LEARNINGS.map(l => '<div class="learning-item"><b>' + esc(l.title) + '</b><span>' + esc(l.line) + '</span></div>').join('') +
+    '</div>';
 }
 
-/* renderDeliverables was the thin 6-item section. It is superseded by
-   renderIncluded (/06), which renders the full features_list breakdown and
-   folds the prospect's tailored deliverables in as the intro chips. */
+function getBody() {
+  const delivHTML = '<div class="deliverables">' +
+    DELIVERABLE_PACKS.map(d =>
+      '<div class="deliverable"><svg viewBox="0 0 24 24" aria-hidden="true">' + d.svg + '</svg><span>' + esc(d.label) + '</span></div>'
+    ).join('') +
+  '</div>';
 
-function renderPricing(p) {
+  const lanesHTML = '<div class="service-map" aria-label="Detailed deliverable map">' +
+    SERVICE_LANES.map(lane =>
+      '<article class="service-lane">' +
+        '<span class="lane-tag">' + esc(lane.tag) + '</span>' +
+        '<h3>' + esc(lane.title) + '</h3>' +
+        '<div class="service-list">' +
+          lane.items.map(it => '<div class="service-item"><b>' + esc(it.b) + '</b><span>' + esc(it.s) + '</span></div>').join('') +
+        '</div>' +
+      '</article>'
+    ).join('') +
+  '</div>';
+
+  const scopeHTML = '<div class="scope-matrix" aria-label="Scope clarity matrix">' +
+    '<div class="scope-row scope-head">' +
+      '<div class="scope-cell">Workstream</div><div class="scope-cell">What ships</div>' +
+      '<div class="scope-cell">Why it matters</div><div class="scope-cell">Owner decision</div>' +
+    '</div>' +
+    SCOPE_ROWS.map(row =>
+      '<div class="scope-row">' +
+        row.cells.map(c => '<div class="scope-cell"><b>' + esc(c.b) + '</b><span>' + esc(c.s) + '</span></div>').join('') +
+      '</div>'
+    ).join('') +
+  '</div>';
+
+  const assetsHTML = '<div class="asset-strip" aria-label="Files and assets included">' +
+    ASSET_CHIPS.map(a => '<span class="chip"><strong>Files</strong>&nbsp; ' + esc(a) + '</span>').join('') +
+  '</div>';
+
+  return '<p class="eyebrow">What you get</p>' +
+    '<h2 id="get-title" class="lead">A complete acquisition system, not a bundle of disconnected tasks.</h2>' +
+    delivHTML + lanesHTML + scopeHTML + assetsHTML;
+}
+
+function funnelBody(p) {
+  const stepsHTML = '<div class="funnel-copy">' +
+    FUNNEL_STEPS.map(st =>
+      '<div class="funnel-step"><strong>' + esc(st.tag) + '</strong>' +
+        '<div><b>' + esc(st.b) + '</b><span>' + esc(st.s) + '</span></div></div>'
+    ).join('') +
+  '</div>';
+
+  const loopHTML = '<div class="measurement-loop" aria-label="Measurement loop">' +
+    LOOP_ITEMS.map(l => '<div class="loop-item"><b>' + esc(l.b) + '</b><span>' + esc(l.s) + '</span></div>').join('') +
+  '</div>';
+
+  const channels = arr(p.channels).slice(0, 4).filter(c => has(c && c.label));
+  const channelsHTML = channels.length ? (
+    '<div class="channel-map" aria-label="Channel role map">' +
+      channels.map(c =>
+        '<div class="channel">' +
+          '<span class="channel-label">' + esc(c.label) + '</span>' +
+          (has(c.role) ? '<b>' + esc(c.role) + '</b>' : '') +
+          (has(c.detail) ? '<span>' + esc(c.detail) + '</span>' : '') +
+        '</div>'
+      ).join('') +
+    '</div>'
+  ) : '';
+
+  return '<p class="eyebrow">Funnel architecture</p>' +
+    '<h2 id="funnel-title" class="lead">Every asset points to one movement: discover, trust, convert, repeat.</h2>' +
+    '<div class="funnel-shell">' +
+      '<div class="funnel-visual">' + funnelSvg(p.company_name) + '</div>' +
+      stepsHTML +
+    '</div>' +
+    loopHTML + channelsHTML;
+}
+
+function rolloutBody(p) {
+  const phases = arr(p.roadmap).slice(0, 3).filter(ph => has(ph && ph.title));
+  const timelineHTML = phases.length ? (
+    '<div class="timeline" aria-label="90-day rollout">' +
+      phases.map(ph =>
+        '<article class="phase">' +
+          (has(ph.label) ? '<span class="phase-label">' + esc(ph.label) + '</span>' : '') +
+          '<h3>' + esc(ph.title) + '</h3>' +
+          '<ul>' + arr(ph.items).slice(0, 5).filter(has).map(it => '<li>' + esc(it) + '</li>').join('') + '</ul>' +
+        '</article>'
+      ).join('') +
+    '</div>'
+  ) : '';
+  if (!timelineHTML) return '';
+
+  const opsHTML = '<div class="ops-board">' +
+    OPS_COLUMNS.map(o => '<article class="ops-column"><h3>' + esc(o.h) + '</h3><p>' + esc(o.p) + '</p></article>').join('') +
+  '</div>';
+
+  const riskHTML = '<div class="risk-board" aria-label="Risk controls">' +
+    RISK_ITEMS.map(r => '<div class="risk-item"><b>' + esc(r.b) + '</b><span>' + esc(r.s) + '</span></div>').join('') +
+  '</div>';
+
+  return '<p class="eyebrow">Execution rhythm</p>' +
+    '<h2 id="rollout-title" class="lead">A 90-day rollout that moves from clarity to launch to scale.</h2>' +
+    timelineHTML + opsHTML + riskHTML;
+}
+
+function pricingBody(p) {
   const pr = p.pricing || {};
   const g = pr.growth || {}, sc = pr.scale || {};
-  const gBullets = arr(g.bullets), sBullets = arr(sc.bullets);
-  if (!gBullets.length && !sBullets.length) return '';
+  if (!arr(g.bullets).length && !arr(sc.bullets).length) return '';
 
-  function card(tier, featured) {
-    const name = has(tier.name) ? tier.name : (featured ? 'Scale' : 'Growth');
-    const price = has(tier.price) ? tier.price : '';
-    const bullets = arr(tier.bullets);
-    return (
-    '<div class="price-card ' + (featured ? 'featured' : '') + ' reveal">' +
-      (featured ? '<div class="price-tag">Recommended</div>' : '') +
-      '<div class="price-name">' + esc(name) + '</div>' +
-      (has(price) ? '<div class="price-amt">' + esc(price) + '<span class="per"> /mo</span></div>' : '') +
-      '<div class="price-rule"></div>' +
-      '<ul class="price-bullets">' +
-        bullets.map(b =>
-          '<li><span class="chk">' + icon('check') + '</span>' + esc(b) + '</li>'
-        ).join('') +
-      '</ul>' +
-    '</div>'
-    );
+  function plan(tier, fallbackName, recommended, chipLabel) {
+    const name = has(tier.name) ? tier.name : fallbackName;
+    const bullets = arr(tier.bullets).slice(0, 4).filter(has);
+    return '<article class="plan' + (recommended ? ' recommended' : '') + '">' +
+      '<div class="plan-head">' +
+        '<div><h3>' + esc(name) + '</h3>' +
+          (recommended ? '<span class="recommend-tag">Recommended</span>' : '<span class="chip">' + esc(chipLabel) + '</span>') +
+        '</div>' +
+        (has(tier.price) ? '<div class="plan-price">' + esc(tier.price) + '<span>per month</span></div>' : '') +
+      '</div>' +
+      (bullets.length ? '<ul>' + bullets.map(b => '<li>' + esc(b) + '</li>').join('') + '</ul>' : '') +
+    '</article>';
   }
 
-  return (
-  '<section class="sec"><div class="wrap">' +
-    '<div class="sec-grid">' +
-      sectionMarker('09', 'Simple pricing', 'One flat monthly retainer. Cancel anytime, no lock-in.') +
-      '<div class="sec-content">' +
-        '<h2 class="sec-title reveal">Two ways to start.</h2>' +
-        '<div class="price-grid reveal">' +
-          card(g, false) +
-          card(sc, true) +
-        '</div>' +
-      '</div>' +
+  const compareHTML = '<div class="pricing-compare" aria-label="Plan comparison">' +
+    '<div class="compare-row compare-head">' +
+      '<div class="compare-cell">Decision</div><div class="compare-cell">Growth</div><div class="compare-cell">Scale</div>' +
     '</div>' +
-  '</div></section>'
-  );
+    COMPARE_ROWS.map(r =>
+      '<div class="compare-row">' +
+        '<div class="compare-cell"><b>' + esc(r.label) + '</b></div>' +
+        '<div class="compare-cell">' + esc(r.g) + '</div>' +
+        '<div class="compare-cell">' + esc(r.s) + '</div>' +
+      '</div>'
+    ).join('') +
+  '</div>';
+
+  const notesHTML = '<div class="pricing-note" aria-label="Pricing assumptions">' +
+    PRICING_NOTES.map(n => '<span><strong>' + esc(n.b) + '</strong>' + esc(n.s) + '</span>').join('') +
+  '</div>';
+
+  return '<p class="eyebrow">Pricing</p>' +
+    '<h2 id="pricing-title" class="lead">Choose the pace. Keep the strategy focused.</h2>' +
+    '<div class="pricing-grid">' +
+      plan(g, 'Growth', false, 'Foundation sprint') +
+      plan(sc, 'Scale', true, '') +
+    '</div>' +
+    compareHTML + notesHTML;
 }
 
-function renderClose(p, meta) {
+function ctaBody(p, meta) {
   const cta = (meta && has(meta.cta_url)) ? meta.cta_url : 'https://cal.com/grawoth/consultation-call-with-allen';
-  const guarantee = has(p.guarantee) ? p.guarantee : 'If we do not move the numbers, you do not pay.';
-  const preparedBy = (meta && has(meta.prepared_by)) ? meta.prepared_by : 'Allen Anant Thomas';
+  const guarantee = has(p.guarantee) ? p.guarantee : 'If we cannot find growth leverage in 30 days, you do not continue.';
 
-  return (
-  '<section class="close"><div class="wrap">' +
-    '<div class="close-card reveal">' +
-      '<div class="close-inner">' +
-        '<div>' +
-          '<span class="guarantee-badge">' + icon('shield') + 'Our guarantee</span>' +
-          '<h2>Let us build this with you.</h2>' +
-          '<p class="guarantee-line">' + esc(guarantee) + '</p>' +
-          (has(p.roi_line) ? '<p class="roi-line">' + esc(p.roi_line) + '</p>' : '') +
-        '</div>' +
-        '<div class="close-cta">' +
-          '<a class="btn" href="' + esc(cta) + '" target="_blank" rel="noopener">' + icon('calendar') + 'Book a 20-min call</a>' +
-          '<div class="sign">' +
-            '<div class="av">' + esc(initials(preparedBy)) + '</div>' +
-            '<div class="who">' +
-              '<div class="nm">' + esc(preparedBy) + '</div>' +
-              '<div class="rl">Founder, The Growth Engine</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
+  const stepsHTML = '<div class="next-steps" aria-label="Next steps">' +
+    NEXT_STEPS.map(st =>
+      '<div class="next-step"><strong>' + esc(st.tag) + '</strong><b>' + esc(st.b) + '</b><span>' + esc(st.s) + '</span></div>'
+    ).join('') +
+  '</div>';
+
+  return '<div class="cta-panel">' +
+      '<div>' +
+        '<p class="eyebrow">Guarantee</p>' +
+        '<h2 id="cta-title" class="risk">' + esc(guarantee) + '</h2>' +
+        (has(p.roi_line) ? '<p class="roi-note">' + esc(p.roi_line) + '</p>' : '') +
+        '<p class="signature"><strong>Allen Anant Thomas</strong>, Founder</p>' +
       '</div>' +
-    '</div>' +
-  '</div></section>'
-  );
+      '<div class="button-wrap">' +
+        '<a class="cta" href="' + esc(cta) + '" target="_blank" rel="noopener">Book a 20-minute call' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>' +
+        '<span class="micro">Strategy call, no pitch deck</span>' +
+      '</div>' +
+    '</div>' + stepsHTML;
 }
 
-function renderFooter(stat) {
+function footerHTML(stat) {
   const c = (stat && stat.contact) || {};
   const bits = [];
-  if (has(c.website)) bits.push(esc(c.website));
-  if (has(c.email)) bits.push(esc(c.email));
-  if (has(c.phone)) bits.push(esc(c.phone));
-  return (
-  '<footer><div class="wrap">' +
-    '<div class="foot-grid">' +
-      '<div class="fbrand">The Growth Engine</div>' +
-      (bits.length ? '<div class="fcontact">' + bits.join('  ·  ') + '</div>' : '') +
-    '</div>' +
-  '</div></footer>'
-  );
+  if (has(c.website)) bits.push('<span>' + esc(c.website) + '</span>');
+  if (has(c.email)) bits.push('<span>' + esc(c.email) + '</span>');
+  if (has(c.phone)) bits.push('<span>' + esc(c.phone) + '</span>');
+  return '<footer class="site-footer">' +
+    '<span class="fb">The Growth Engine</span>' +
+    (bits.length ? '<span class="fc">' + bits.join('') + '</span>' : '') +
+  '</footer>';
 }
 
 /* ============================================================
-   BOOT
+   BOOT. Build all sections, number them continuously, mount,
+   then arm the reveal with the bulletproof visibility floor
+   (forceShow safety + print handlers), same as v3.
    ============================================================ */
 function boot() {
   const cfg = (typeof CONFIG !== 'undefined' && CONFIG) ? CONFIG : {};
@@ -1704,32 +3234,35 @@ function boot() {
   const stat = cfg.static || {};
   const meta = cfg.meta || {};
 
-  // Accent is ALWAYS TGE purple (this is TGE's document). The prospect's
-  // accent_hue is intentionally ignored so every deck stays on-brand.
-  document.documentElement.style.setProperty('--accent', '#7C3AED');
+  // This is a TGE document: the accent stays TGE purple no matter what.
+  document.documentElement.style.setProperty('--purple', '#7C3AED');
+  if (has(p.company_name)) {
+    document.title = 'The Growth Engine | ' + p.company_name + ' Proposal';
+  }
 
-  const html = [
-    renderCover(p, meta),
-    renderTrust(p, stat),
-    renderStudy(p),
-    renderStrategy(p),
-    renderEngine(stat, p),
-    renderFunnel(stat),
-    renderIncluded(stat, p),
-    renderAutomation(stat),
-    renderProof(stat),
-    renderPricing(p),
-    renderClose(p, meta),
-    renderFooter(stat)
-  ].join('');
+  const parts = [
+    { id: 'cover-title', body: coverBody(p) },
+    { id: 'trust-title', body: trustBody(p, stat) },
+    { id: 'see-title', body: diagnosisBody(p) },
+    { id: 'strategy-title', body: strategyBody(p) },
+    { id: 'proof-title', body: proofBody(stat) },
+    { id: 'get-title', body: getBody() },
+    { id: 'funnel-title', body: funnelBody(p) },
+    { id: 'rollout-title', body: rolloutBody(p) },
+    { id: 'pricing-title', body: pricingBody(p) },
+    { id: 'cta-title', body: ctaBody(p, meta) }
+  ].filter(x => has(x.body));
 
-  document.getElementById('app').innerHTML = html;
+  const sections = parts.map((x, i) => sectionShell(i + 1, x.id, x.body)).join('');
 
+  document.getElementById('app').innerHTML =
+    '<main class="page">' + topbarHTML(p, meta) + sections + footerHTML(stat) + '</main>';
+
+  // Reveal-on-scroll with a hard visibility floor: content can never stay
+  // hidden (print, headless capture, broken IO, reduced motion all safe).
   const els = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
-  // forceShow makes content visible no matter what, via direct inline style
-  // so it never depends on a class+transition resolving (bulletproof floor).
   const forceShow = () => els.forEach(el => {
-    el.classList.add('in');
+    el.classList.add('is-visible');
     el.style.opacity = '1';
     el.style.transform = 'none';
   });
@@ -1740,23 +3273,18 @@ function boot() {
     return;
   }
 
-  // only NOW arm the hidden-then-animate behavior (CSS gated on body.js-on)
-  document.body.classList.add('js-on');
-
+  document.documentElement.classList.add('js');
   const io = new IntersectionObserver((entries, obs) => {
     entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); }
+      if (en.isIntersecting) { en.target.classList.add('is-visible'); obs.unobserve(en.target); }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   els.forEach(el => io.observe(el));
 
-  // hard safety: if the observer never fires for off-screen items (print,
-  // headless capture, no-scroll views), force EVERYTHING visible after 1.4s.
   setTimeout(forceShow, 1400);
-  // and on print, reveal immediately so PDF/Cmd-P never drops a section
   if (window.matchMedia) {
     const mq = window.matchMedia('print');
-    (mq.addEventListener ? mq.addEventListener('change', forceShow) : mq.addListener && mq.addListener(forceShow));
+    (mq.addEventListener ? mq.addEventListener('change', forceShow) : (mq.addListener && mq.addListener(forceShow)));
   }
   window.addEventListener('beforeprint', forceShow);
 }
@@ -1766,6 +3294,6 @@ if (document.readyState === 'loading') {
 } else {
   boot();
 }
-</script>
+  </script>
 </body>
 </html>
