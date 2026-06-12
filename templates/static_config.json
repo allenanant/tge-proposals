@@ -306,5 +306,25 @@
     "email": "info@thegrowthengine.net",
     "phone": "+91 6397016179",
     "website": "thegrowthengine.net"
-  }
+  },
+  "testimonials": [
+    {
+      "name": "Alan Apolakiatis",
+      "role": "Restart Medical · UK clinic",
+      "video": "/tge-proposals/assets/testimonials/restart-medical-alan.mp4",
+      "poster": "/tge-proposals/assets/testimonials/restart-medical-alan-poster.jpg"
+    },
+    {
+      "name": "KP Singh",
+      "role": "Founder, The NuWav",
+      "video": "/tge-proposals/assets/testimonials/kp-singh.mp4",
+      "poster": "/tge-proposals/assets/testimonials/kp-singh-poster.jpg"
+    },
+    {
+      "name": "Vyom Sharma",
+      "role": "Founder, Frenchify with Vyom",
+      "video": "/tge-proposals/assets/testimonials/vyom-sharma.mp4",
+      "poster": "/tge-proposals/assets/testimonials/vyom-sharma-poster.jpg"
+    }
+  ]
 }
