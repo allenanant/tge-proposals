@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>AI Engineer Hire: Candidate Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --panel: #FFFFFF;
+    --ink: #14120F;
+    --muted: #6B655C;
+    --line: #E7E2D9;
+    --accent: #0E5F45;
+    --accent-soft: #E3EFE9;
+    --warn: #A3401F;
+    --warn-soft: #F7E9E2;
+    --gold: #8A6A1F;
+    --gold-soft: #F5EDD8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header { padding: 56px 0 40px; border-bottom: 2px solid var(--ink); }
+  .kicker {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 28px; flex-wrap: wrap; gap: 8px;
+  }
+  h1 {
+    font-size: clamp(34px, 5.5vw, 58px);
+    font-weight: 800; letter-spacing: -0.03em; line-height: 1.05;
+    max-width: 18ch;
+  }
+  .lede { margin-top: 18px; max-width: 62ch; color: var(--muted); font-size: 17px; font-weight: 500; }
+  .lede strong { color: var(--ink); }
+
+  /* Section headings */
+  section { padding: 52px 0 8px; }
+  .sec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 12px; margin-bottom: 22px;
+  }
+  .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  /* Verdict strip */
+  .verdict { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .v-card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 1.25rem; padding: 22px 22px 20px; position: relative;
+    transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.25s;
+  }
+  .v-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(20,18,15,0.08); }
+  .v-card.first { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .v-rank {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; color: var(--accent); margin-bottom: 10px;
+  }
+  .v-card.first .v-rank { color: #7BC9A6; }
+  .v-name { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; }
+  .v-tag { margin-top: 6px; font-size: 13.5px; font-weight: 600; color: var(--muted); }
+  .v-card.first .v-tag { color: #B9B2A6; }
+
+  /* Role requirements */
+  .req-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .req {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 1rem;
+    padding: 16px 18px; font-size: 14px; font-weight: 600;
+  }
+  .req span { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+
+  /* Scorecards */
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 1.5rem;
+    padding: 30px; margin-bottom: 20px;
+  }
+  .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 6px; }
+  .card-head h3 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+  .rank-chip {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; padding: 6px 12px; border-radius: 100px;
+    background: var(--accent-soft); color: var(--accent); white-space: nowrap;
+  }
+  .rank-chip.horse { background: var(--gold-soft); color: var(--gold); }
+  .meta-row {
+    display: flex; gap: 18px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600;
+    color: var(--muted); margin-bottom: 18px;
+  }
+  .card-body { display: grid; grid-template-columns: 1.35fr 1fr; gap: 30px; }
+  .card ul { list-style: none; }
+  .card ul li { padding: 7px 0 7px 22px; position: relative; font-size: 14.5px; font-weight: 500; border-bottom: 1px dashed var(--line); }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before { content: '+'; position: absolute; left: 0; color: var(--accent); font-weight: 800; }
+  .card ul li.risk::before { content: '!'; color: var(--warn); }
+  .card ul li.risk { color: #7A4530; }
+
+  .bars { display: flex; flex-direction: column; gap: 11px; }
+  .bar-row { display: grid; grid-template-columns: 128px 1fr 30px; align-items: center; gap: 10px; }
+  .bar-label { font-size: 12px; font-weight: 700; letter-spacing: 0.02em; color: var(--muted); }
+  .bar-track { height: 8px; background: var(--line); border-radius: 100px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--accent); border-radius: 100px; }
+  .bar-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-align: right; }
+
+  /* Full field table */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 1.25rem; background: var(--panel); }
+  table { width: 100%; border-collapse: collapse; min-width: 760px; }
+  th {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    text-align: left; padding: 14px 16px; border-bottom: 2px solid var(--ink);
+    background: var(--bg);
+  }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 500; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.num { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .tier {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+    padding: 3px 10px; border-radius: 100px; white-space: nowrap;
+  }
+  .tier.a { background: var(--accent-soft); color: var(--accent); }
+  .tier.b { background: var(--gold-soft); color: var(--gold); }
+  .tier.c { background: #EEEBE4; color: var(--muted); }
+  td .note { color: var(--muted); }
+
+  /* Callout boxes */
+  .box { border-radius: 1.5rem; padding: 28px 30px; margin-bottom: 20px; }
+  .box h3 { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .box ul { list-style: none; }
+  .box ul li { padding: 6px 0 6px 22px; position: relative; font-size: 14.5px; font-weight: 500; }
+  .box.flags { background: var(--warn-soft); border: 1px solid #E8CDBE; }
+  .box.flags ul li::before { content: '!'; position: absolute; left: 2px; color: var(--warn); font-weight: 800; }
+  .box.trial { background: var(--ink); color: var(--bg); }
+  .box.trial p { font-size: 15px; font-weight: 500; color: #CFC9BD; max-width: 68ch; }
+  .box.trial p strong { color: var(--bg); }
+  .box.trial .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+  .box.trial .step { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 14px 16px; font-size: 13.5px; font-weight: 600; }
+  .box.trial .step span { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7BC9A6; margin-bottom: 4px; }
+
+  /* Verdict paragraph */
+  .bottomline { font-size: 17px; font-weight: 600; max-width: 66ch; }
+  .bottomline .hl { background: var(--accent-soft); padding: 1px 6px; border-radius: 6px; }
+
+  footer {
+    margin-top: 56px; padding: 28px 0 48px; border-top: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+
+  @media (max-width: 760px) {
+    .verdict, .req-grid, .box.trial .steps { grid-template-columns: 1fr; }
+    .card-body { grid-template-columns: 1fr; gap: 22px; }
+    .card { padding: 22px; }
+    header { padding: 40px 0 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">
+    <span>The Growth Engine · Hiring Dossier</span>
+    <span>8 July 2026</span>
+  </div>
+  <h1>AI Engineer Hire: Candidate Review</h1>
+  <p class="lede"><strong>23 resumes screened</strong> (20 primary + 3 alternatives) for one role: an operator who runs the agency's back office through Claude Code. Bots, MCP servers, browser automation, content pipelines, voice, SEO, deploys. Not a model-training job. That filter decided everything below.</p>
+</header>
+
+<section>
+  <div class="sec-label">The Verdict</div>
+  <div class="verdict">
+    <div class="v-card first">
+      <div class="v-rank">#1 PICK</div>
+      <div class="v-name">Deepshikhar Saxena</div>
+      <div class="v-tag">Agent-builder platform + voice AI + the marketing gene. Closest shape to the actual job.</div>
+    </div>
+    <div class="v-card">
+      <div class="v-rank">#2</div>
+      <div class="v-name">Shashidhar Karravula</div>
+      <div class="v-tag">Most Claude-native resume in the pile. MCP tools in production, self-healing agents.</div>
+    </div>
+    <div class="v-card">
+      <div class="v-rank">#3</div>
+      <div class="v-name">Charan Kurakula</div>
+      <div class="v-tag">Safest hands. Real 3 years, live products, broadest production maturity.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label">What The Role Actually Needs</div>
+  <div class="req-grid">
+    <div class="req"><span>01 · Agentic tooling</span>Claude Code, MCP servers, multi-agent workflows run daily, not demoed once</div>
+    <div class="req"><span>02 · Automation breadth</span>Cron bots, VPS deploys, messy third-party APIs, browser automation</div>
+    <div class="req"><span>03 · Full-stack shipping</span>Ships an entire product alone: backend, frontend, deploy, monitoring</div>
+    <div class="req"><span>04 · Voice + content pipelines</span>TTS/STT, LLM content generation with taste, anti-slop instinct</div>
+    <div class="req"><span>05 · Marketing sensibility</span>This is an agency. Output must read human and sell</div>
+    <div class="req"><span>06 · Autonomy</span>Finishes end to end without hand-holding. Evidence, not adjectives</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label">Shortlist Scorecards</div>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>Deepshikhar Saxena</h3>
+      <span class="rank-chip">#1 · STRONGEST SHAPE MATCH</span>
+    </div>
+    <div class="meta-row"><span>~1 yr total exp</span><span>3.6L current</span><span>Kanpur · B.Tech Mech (self-taught)</span></div>
+    <div class="card-body">
+      <ul>
+        <li>Built a no-code agent builder: users create text + voice AI agents via natural language. LangGraph, MCP servers, custom tools, auto-configured RAG ingestion</li>
+        <li>Voice stack is the one already in use here: ElevenLabs, Deepgram, Twilio, Pipecat</li>
+        <li>Unified LLM gateway across OpenAI, Anthropic, Gemini, Ollama with streaming + provider switching</li>
+        <li>Grew an AI Instagram community to 10,000+ followers. Automated proposals, reports and decks at a previous job. Builder gene plus marketing gene</li>
+        <li class="risk">Sheet says 4 months; real total is ~1 year across 3 short stints. Verify depth hard, probe flight risk</li>
+      </ul>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">Agentic tooling</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span class="bar-num">4.5</span></div>
+        <div class="bar-row"><span class="bar-label">Claude / MCP</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="bar-num">3.5</span></div>
+        <div class="bar-row"><span class="bar-label">Automation</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+        <div class="bar-row"><span class="bar-label">Full-stack</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="bar-num">3.5</span></div>
+        <div class="bar-row"><span class="bar-label">Marketing instinct</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+        <div class="bar-row"><span class="bar-label">Autonomy evidence</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>Shashidhar Karravula</h3>
+      <span class="rank-chip">#2 · MOST CLAUDE-NATIVE</span>
+    </div>
+    <div class="meta-row"><span>1.5 yrs exp</span><span>3.6L current</span><span>Hyderabad · B.Tech EEE</span></div>
+    <div class="card-body">
+      <ul>
+        <li>Built MCP server pipelines integrating Claude for live crypto market analysis and autonomous trade execution</li>
+        <li>Custom MCP tools (Market, DB, ML, Generation, Exchange) registered in Claude Desktop. Full loop from chat to live trade</li>
+        <li>Self-healing LangGraph workflows that auto-recover failed processes, 99%+ uptime claim</li>
+        <li>If the job skews to unattended bots and automation, he is the #1</li>
+        <li class="risk">Everything is fintech. Zero content, frontend or marketing signal. Percentage metrics smell inflated</li>
+      </ul>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">Agentic tooling</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span class="bar-num">4.5</span></div>
+        <div class="bar-row"><span class="bar-label">Claude / MCP</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-num">5.0</span></div>
+        <div class="bar-row"><span class="bar-label">Automation</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+        <div class="bar-row"><span class="bar-label">Full-stack</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bar-num">2.0</span></div>
+        <div class="bar-row"><span class="bar-label">Marketing instinct</span><div class="bar-track"><div class="bar-fill" style="width:20%"></div></div><span class="bar-num">1.0</span></div>
+        <div class="bar-row"><span class="bar-label">Autonomy evidence</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>Charan Kurakula</h3>
+      <span class="rank-chip">#3 · SAFEST HANDS</span>
+    </div>
+    <div class="meta-row"><span>3 yrs exp</span><span>3.0L current</span><span>Guntur · M.Tech SRM</span></div>
+    <div class="card-body">
+      <ul>
+        <li>Live ed-tech products in production: intervu.in (AI interview prep) and sasthra.in (AI tutor + attendance)</li>
+        <li>n8n automation workflows, multi-model routing across GPT-4, Gemini, DeepSeek, Qwen and Claude with cost fallback</li>
+        <li>Real breadth: Whisper voice, OCR pipelines, CV proctoring, AWS deploys</li>
+        <li>Most production maturity for the lowest ask on the shortlist</li>
+        <li class="risk">Least Claude-Code-specific. A strong reliable operator rather than a founder-clone</li>
+      </ul>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">Agentic tooling</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="bar-num">3.5</span></div>
+        <div class="bar-row"><span class="bar-label">Claude / MCP</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bar-num">2.0</span></div>
+        <div class="bar-row"><span class="bar-label">Automation</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+        <div class="bar-row"><span class="bar-label">Full-stack</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="bar-num">3.5</span></div>
+        <div class="bar-row"><span class="bar-label">Marketing instinct</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bar-num">2.0</span></div>
+        <div class="bar-row"><span class="bar-label">Autonomy evidence</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span class="bar-num">4.5</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>Asthalochan Mohanta</h3>
+      <span class="rank-chip horse">DARK HORSE · WORTH A CALL</span>
+    </div>
+    <div class="meta-row"><span>2 yrs exp</span><span>3.3L current</span><span>Bhubaneswar · M.Sc Data Science</span></div>
+    <div class="card-body">
+      <ul>
+        <li>Built an AI SEO multi-agent system: automated keyword and content analysis workflows. Directly overlaps a standing agency mandate</li>
+        <li>Playwright and n8n in the daily toolkit: browser automation covered</li>
+        <li>Writes technical articles on Medium: rare communication signal in this pool</li>
+        <li>Top 5, India AI Grand Challenge (IIT Delhi)</li>
+        <li class="risk">CrewAI/LangChain-centric, no Claude/MCP production work yet</li>
+      </ul>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">Agentic tooling</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+        <div class="bar-row"><span class="bar-label">Claude / MCP</span><div class="bar-track"><div class="bar-fill" style="width:30%"></div></div><span class="bar-num">1.5</span></div>
+        <div class="bar-row"><span class="bar-label">Automation</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+        <div class="bar-row"><span class="bar-label">Full-stack</span><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><span class="bar-num">2.5</span></div>
+        <div class="bar-row"><span class="bar-label">Marketing instinct</span><div class="bar-track"><div class="bar-fill" style="width:60%"></div></div><span class="bar-num">3.0</span></div>
+        <div class="bar-row"><span class="bar-label">Autonomy evidence</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="bar-num">3.5</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>Dhruvil Agrahari</h3>
+      <span class="rank-chip horse">DARK HORSE · FROM THE ALTERNATIVES LIST</span>
+    </div>
+    <div class="meta-row"><span>~1 yr real (3 claimed)</span><span>3.5L current</span><span>Jabalpur · B.Tech CSE 2025</span></div>
+    <div class="card-body">
+      <ul>
+        <li>Built an n8n-style drag-and-drop workflow builder, an agent studio with MCP support, and AI UI/PPT builders</li>
+        <li>Lists Claude and Codex as daily developer tools</li>
+        <li>Platform work credited with helping the company raise ~$400K</li>
+        <li>Employee of the month 4 consecutive times</li>
+        <li class="risk">Sheet claims 3 years but he graduated in 2025. Real experience is ~1 year. Inflation flag on the whole profile</li>
+      </ul>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">Agentic tooling</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span class="bar-num">4.5</span></div>
+        <div class="bar-row"><span class="bar-label">Claude / MCP</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="bar-num">3.5</span></div>
+        <div class="bar-row"><span class="bar-label">Automation</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span class="bar-num">4.5</span></div>
+        <div class="bar-row"><span class="bar-label">Full-stack</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+        <div class="bar-row"><span class="bar-label">Marketing instinct</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bar-num">2.0</span></div>
+        <div class="bar-row"><span class="bar-label">Autonomy evidence</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-num">4.0</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label">The Full Field · All 23</div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Candidate</th><th>Exp</th><th>Salary</th><th>Tier</th><th>One-line read</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">01</td><td><strong>Deepshikhar Saxena</strong></td><td class="num">~1 yr</td><td class="num">3.6L</td><td><span class="tier a">A</span></td><td class="note">Agent-builder platform, MCP, ElevenLabs voice, marketing instinct</td></tr>
+        <tr><td class="num">02</td><td><strong>Shashidhar Karravula</strong></td><td class="num">1.5 yr</td><td class="num">3.6L</td><td><span class="tier a">A</span></td><td class="note">Claude Desktop MCP tools in production, self-healing agents</td></tr>
+        <tr><td class="num">03</td><td><strong>Charan Kurakula</strong></td><td class="num">3 yr</td><td class="num">3.0L</td><td><span class="tier a">A</span></td><td class="note">Broadest production maturity, n8n, two live products</td></tr>
+        <tr><td class="num">04</td><td><strong>Asthalochan Mohanta</strong></td><td class="num">2 yr</td><td class="num">3.3L</td><td><span class="tier a">A-</span></td><td class="note">AI SEO multi-agent system, Playwright, technical writing</td></tr>
+        <tr><td class="num">05</td><td><strong>Dhruvil Agrahari</strong> (alt)</td><td class="num">~1 yr</td><td class="num">3.5L</td><td><span class="tier a">A-</span></td><td class="note">Workflow-builder platform with MCP; experience overstated on sheet</td></tr>
+        <tr><td class="num">06</td><td>Aswathaman R</td><td class="num">2+ yr</td><td class="num">3.0L</td><td><span class="tier b">B</span></td><td class="note">Solid enterprise multi-agent + MLOps (Dell, Hallmark), corporate-shaped</td></tr>
+        <tr><td class="num">07</td><td>Mohd. Faraz Khan</td><td class="num">1.3 yr</td><td class="num">3.6L</td><td><span class="tier b">B</span></td><td class="note">Shipped two full-stack GenAI products solo, GCP + CI/CD</td></tr>
+        <tr><td class="num">08</td><td>Gowtham Gali</td><td class="num">6 mo</td><td class="num">2.5L</td><td><span class="tier b">B</span></td><td class="note">Claude Code certified, MCP, strong projects. Too junior today</td></tr>
+        <tr><td class="num">09</td><td>Prashant Dimri</td><td class="num">1.5 yr</td><td class="num">3.0L</td><td><span class="tier b">B</span></td><td class="note">Strong CS fundamentals (800+ LeetCode), voice RAG bot, backend-only</td></tr>
+        <tr><td class="num">10</td><td>Meenatchi Sundaram K</td><td class="num">3 yr</td><td class="num">3.8L</td><td><span class="tier b">B</span></td><td class="note">NielsenIQ RAG + agent work, resume leans on unverifiable metrics</td></tr>
+        <tr><td class="num">11</td><td>Praveenraj S</td><td class="num">1.5 yr</td><td class="num">3.0L</td><td><span class="tier c">C</span></td><td class="note">Generic RAG chatbot work, no shipped-product evidence</td></tr>
+        <tr><td class="num">12</td><td>Naveenkumar Koli</td><td class="num">1.2 yr</td><td class="num">2.8L</td><td><span class="tier c">C</span></td><td class="note">Resume parser + transcription tools, breadth over depth</td></tr>
+        <tr><td class="num">13</td><td>Rohit Kumar</td><td class="num">2 yr</td><td class="num">3.6L</td><td><span class="tier c">C</span></td><td class="note">Classic ML background, one OpenAI web app, dated stack</td></tr>
+        <tr><td class="num">14</td><td>Raghav S</td><td class="num">1.2 yr</td><td class="num">3.0L</td><td><span class="tier c">C</span></td><td class="note">YOLO document layout + n8n dashboards, scattered profile</td></tr>
+        <tr><td class="num">15</td><td>Srinivas B</td><td class="num">2 yr</td><td class="num">3.8L</td><td><span class="tier c">C</span></td><td class="note">Generic enterprise RAG bullets, nothing shipped to point at</td></tr>
+        <tr><td class="num">16</td><td>Megha</td><td class="num">1 yr</td><td class="num">3.0L</td><td><span class="tier c">C</span></td><td class="note">Prompt evaluation and annotation work, not engineering</td></tr>
+        <tr><td class="num">17</td><td>G. Parthipan</td><td class="num">2 yr</td><td class="num">2.5L</td><td><span class="tier c">C</span></td><td class="note">CV projects + one RAG chatbot, thin production signal</td></tr>
+        <tr><td class="num">18</td><td>Sunkara Sujay</td><td class="num">1 yr</td><td class="num">3.6L</td><td><span class="tier c">C</span></td><td class="note">Prompt work; employment dates overlap and do not add up</td></tr>
+        <tr><td class="num">19</td><td>Chitharanjani K</td><td class="num">1.5 yr</td><td class="num">2.5L</td><td><span class="tier c">C</span></td><td class="note">One finance RAG project, fresh graduate depth</td></tr>
+        <tr><td class="num">20</td><td>Avhad Nikita Sanjay</td><td class="num">1 yr</td><td class="num">3.0L</td><td><span class="tier c">C</span></td><td class="note">Intern-level RAG + an MCP mention, too early</td></tr>
+        <tr><td class="num">21</td><td>John Mark</td><td class="num">2+ yr</td><td class="num">2.4L</td><td><span class="tier c">C</span></td><td class="note">WordPress/frontend developer, no AI depth. Wrong role</td></tr>
+        <tr><td class="num">22</td><td>Aryan Bansode (alt)</td><td class="num">1.5 yr</td><td class="num">2.5L</td><td><span class="tier c">C</span></td><td class="note">Generic RAG chatbots, nothing distinctive</td></tr>
+        <tr><td class="num">23</td><td>Sai Prasad (alt)</td><td class="num">2 yr</td><td class="num">3.0L</td><td><span class="tier c">C</span></td><td class="note">Django/WordPress + manual testing, no AI. Wrong role</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label">Red Flags Across The Pool</div>
+  <div class="box flags">
+    <h3>Verify before any offer</h3>
+    <ul>
+      <li>Sheet vs resume mismatches: Dhruvil is listed at 3 years but graduated in 2025. Sujay's stints overlap. Megha's year is annotation work, not engineering.</li>
+      <li>Percentage-metric inflation is endemic in this pool ("improved X by 35%", "reduced Y by 60%"). Treat every number as unverified until they walk through it live.</li>
+      <li>Nobody at this band walks in and runs the whole operation on day one. These are 1 to 3 year engineers. The hire is for trajectory + agentic-tooling fluency + autonomy, then ramp.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label">How To Decide</div>
+  <div class="box trial">
+    <h3>Do not decide off resumes. Run a paid trial task.</h3>
+    <p>Give the top 3 the same one-day work sample, paid, using <strong>Claude Code</strong>. Whoever ships cleanest without hand-holding is the hire.</p>
+    <div class="steps">
+      <div class="step"><span>STEP 1</span>Pull tasks from a ClickUp list via REST API</div>
+      <div class="step"><span>STEP 2</span>Generate a client-ready HTML report from the data</div>
+      <div class="step"><span>STEP 3</span>Deploy it on a cron so it refreshes daily</div>
+    </div>
+  </div>
+  <p class="bottomline">Bottom line: <span class="hl">interview Deepshikhar and Shashidhar first.</span> Deepshikhar if the role is the full job (build + content + taste). Shashidhar if it skews to unattended automation. Charan is the fallback that will not blow up.</p>
+</section>
+
+<footer>
+  <span>Prepared by Allen's EA · from the screening sheet of 8 July 2026</span>
+  <span>Candidate phone numbers + emails withheld from this public copy</span>
+</footer>
+
+</div>
+</body>
+</html>
