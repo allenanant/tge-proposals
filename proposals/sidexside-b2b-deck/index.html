@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>A partnership for university leadership · sidexside</title>
+<meta name="description" content="A peer-to-peer safety companion for women on campus. Free for students. Funded by the partnership. Book a 20-minute call with the founder."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#076cc7;
+  --blue-deep:#054a8a;
+  --blue-tint:#e8f1fb;
+  --yellow:#fef200;
+  --ink:#0a0d12;
+  --ink-2:#2a3038;
+  --muted:#6b7280;
+  --paper:#fafaf7;
+  --paper-2:#f3f0e8;
+  --line:rgba(10,13,18,.09);
+  --white:#ffffff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ink);background:var(--white);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,64px)}
+
+/* ============== Type ============== */
+h1,h2,h3,h4{font-weight:700;letter-spacing:-0.025em;line-height:1.05}
+h1{font-size:clamp(40px,6.5vw,84px);font-weight:800;letter-spacing:-0.038em;line-height:1.02}
+h2{font-size:clamp(32px,4.5vw,58px);letter-spacing:-0.03em}
+h3{font-size:clamp(20px,1.6vw,24px);font-weight:600;letter-spacing:-0.014em}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue);margin-bottom:24px}
+.lead{font-size:clamp(17px,1.4vw,21px);line-height:1.55;color:var(--ink-2);max-width:720px}
+
+/* ============== Buttons ============== */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:18px 32px;border-radius:999px;font-size:16px;font-weight:600;transition:all .25s;white-space:nowrap;cursor:pointer;border:none}
+.btn-primary{background:var(--yellow);color:var(--ink)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(254,242,0,.42)}
+.btn-secondary{color:rgba(255,255,255,.92);border-bottom:1px solid rgba(255,255,255,.4);padding:8px 0;border-radius:0;font-weight:500;font-size:15px}
+.btn-secondary:hover{color:var(--yellow);border-color:var(--yellow)}
+.btn-arrow{display:inline-block;transition:transform .25s}
+.btn:hover .btn-arrow{transform:translateX(4px)}
+.btn-light{color:var(--ink);border-bottom:1px solid var(--ink);padding:8px 0;border-radius:0;font-weight:500;font-size:15px}
+.btn-light:hover{color:var(--blue);border-color:var(--blue)}
+
+/* ============== Brandbar (logo mark only, centered) ============== */
+.brandbar{position:absolute;top:0;left:0;right:0;z-index:50;padding:24px 0;pointer-events:none}
+.brandbar-inner{max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:center;pointer-events:auto}
+.brandbar-logo{display:inline-block}
+.brandbar-logo img{height:38px;width:auto;display:block}
+@media (max-width:880px){.brandbar{padding:18px 0}.brandbar-logo img{height:32px}}
+
+/* ============== Hero ============== */
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:80px 0 80px;overflow:hidden;color:var(--white)}
+.hero-bg{position:absolute;inset:0;z-index:-1}
+.hero-bg img{width:100%;height:100%;object-fit:cover}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,52,108,.42) 0%,rgba(5,33,68,.6) 50%,rgba(2,16,38,.93) 100%)}
+.hero-content{position:relative;z-index:2;width:100%}
+.hero .eyebrow{color:var(--yellow)}
+.hero h1{color:var(--white);max-width:980px;margin-bottom:28px}
+.hero .lead{color:rgba(255,255,255,.86);max-width:640px;margin-bottom:44px}
+.hero-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:80px}
+.hero-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-top:30px;border-top:1px solid rgba(255,255,255,.22)}
+.hero-bar-cell{padding:20px 16px 4px 20px;border-left:1px solid rgba(255,255,255,.14)}
+.hero-bar-cell:first-child{padding-left:0;border-left:none}
+.hero-bar-label{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px}
+.hero-bar-name{font-size:clamp(15px,1.2vw,17px);font-weight:600;color:var(--white);line-height:1.25}
+@media (max-width:900px){
+  .hero-bar{grid-template-columns:1fr 1fr;gap:0}
+  .hero-bar-cell{border-right:none;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+  .hero-bar-cell:nth-child(2n){padding-left:24px;border-left:1px solid rgba(255,255,255,.12)}
+  .hero-bar-cell:nth-last-child(-n+2){border-bottom:none}
+}
+@media (max-width:560px){.hero-bar{grid-template-columns:1fr}.hero-bar-cell{border-left:none!important;padding-left:0!important}}
+
+/* ============== Section base ============== */
+.sec{padding:clamp(80px,12vw,140px) 0}
+.sec.cream{background:var(--paper)}
+.sec.dark{background:var(--ink);color:var(--white)}
+.sec.dark .lead{color:rgba(255,255,255,.78)}
+.sec.dark h2,.sec.dark h3{color:var(--white)}
+.sec-head{max-width:920px;margin-bottom:72px}
+.sec-head h2{margin-bottom:24px}
+.sec-head .lead{margin-top:0}
+
+/* ============== Stats (problem section) ============== */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.stat{padding:40px 24px 40px 24px;border-left:1px solid var(--line)}
+.stat:first-child{padding-left:0;border-left:none}
+.stat:last-child{padding-right:0}
+.stat-fig{font-size:clamp(56px,6.5vw,92px);font-weight:800;letter-spacing:-0.04em;line-height:1;margin-bottom:18px;color:var(--ink);font-feature-settings:'tnum'}
+.stat-fig em{font-style:normal;color:var(--blue);font-weight:700}
+.stat-text{font-size:15px;line-height:1.45;color:var(--ink-2);margin-bottom:14px}
+.stat-src{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+@media (max-width:900px){
+  .stats{grid-template-columns:1fr 1fr}
+  .stat{border-right:none;border-bottom:1px solid var(--line);padding:28px 0}
+  .stat:nth-child(2n){padding-left:28px;border-left:1px solid var(--line)}
+  .stat:nth-last-child(-n+2){border-bottom:none}
+}
+@media (max-width:560px){.stats{grid-template-columns:1fr}.stat{padding-left:0!important;border-left:none!important}}
+
+.callout-line{margin-top:56px;font-size:clamp(20px,2vw,28px);font-weight:600;letter-spacing:-0.022em;line-height:1.32;max-width:820px;color:var(--ink)}
+.callout-line em{font-style:normal;color:var(--blue)}
+
+/* ============== Stack (why nothing else works) ============== */
+.stack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media (max-width:900px){.stack-grid{grid-template-columns:1fr}}
+.stack-card{padding:36px 32px;background:var(--white);border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column}
+.stack-tag{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.stack-card h3{margin-bottom:14px}
+.stack-card p{font-size:15px;line-height:1.55;color:var(--ink-2);margin-bottom:24px;flex:1}
+.stack-verdict{font-size:13px;font-weight:500;color:var(--blue);padding-top:16px;border-top:1px solid var(--line);letter-spacing:.005em}
+
+/* ============== Insight ============== */
+.insight-pull{margin-top:48px;padding-top:40px;border-top:1px solid rgba(255,255,255,.2)}
+.insight-pull blockquote{font-size:clamp(22px,2.4vw,32px);font-weight:600;letter-spacing:-0.022em;line-height:1.3;max-width:880px;margin-bottom:18px;color:var(--white)}
+.insight-pull cite{font-style:normal;font-size:13px;color:rgba(255,255,255,.62)}
+.insight-pull cite b{color:var(--white);font-weight:600}
+
+/* ============== Product (dark section) ============== */
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:24px}
+@media (max-width:900px){.prod-grid{grid-template-columns:1fr;gap:64px}}
+.prod-card{display:flex;flex-direction:column;align-items:flex-start}
+.iphone-frame{width:100%;max-width:240px;aspect-ratio:240/490;background:linear-gradient(180deg,#23272f,#13161c);border-radius:34px;padding:10px;margin:0 auto 36px;box-shadow:0 28px 56px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06),inset 0 0 0 1.5px rgba(255,255,255,.04);position:relative}
+.iphone-frame::before{content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);width:96px;height:24px;background:#000;border-radius:999px;z-index:2}
+.iphone-screen{width:100%;height:100%;border-radius:26px;overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center}
+.iphone-screen img{width:100%;height:100%;object-fit:cover;display:block}
+.prod-card-num{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px}
+.prod-card h3{margin-bottom:12px;color:var(--white)}
+.prod-card p{font-size:15px;line-height:1.55;color:rgba(255,255,255,.78)}
+.trust-strip{display:flex;flex-wrap:wrap;gap:14px 28px;margin-top:80px;padding:24px 28px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px}
+.trust-strip span{font-size:13px;font-weight:500;color:rgba(255,255,255,.86);display:inline-flex;align-items:center;gap:10px}
+.trust-strip span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--yellow)}
+
+/* ============== Outcomes ============== */
+.out-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+@media (max-width:720px){.out-grid{grid-template-columns:1fr}}
+.out-card{padding:44px 38px;background:var(--white);border:1px solid var(--line);border-radius:6px}
+.out-card.feature{background:var(--ink);color:var(--white);border-color:var(--ink);grid-column:span 2}
+.out-card.feature p{color:rgba(255,255,255,.82)}
+@media (max-width:720px){.out-card.feature{grid-column:auto}}
+.out-tag{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:18px}
+.out-card.feature .out-tag{color:var(--yellow)}
+.out-card h3{margin-bottom:14px}
+.out-card p{font-size:15px;line-height:1.55;color:var(--ink-2)}
+.banner-img{position:relative;border-radius:8px;overflow:hidden;margin-top:64px;aspect-ratio:16/9}
+.banner-img img{width:100%;height:100%;object-fit:cover}
+.banner-cap{position:absolute;left:24px;bottom:24px;background:rgba(10,13,18,.84);color:var(--white);padding:10px 18px;border-radius:999px;font-size:12px;font-weight:500;letter-spacing:.04em;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+
+/* ============== Pilot ============== */
+.pilot-rows{border-top:1px solid var(--line)}
+.pilot-row{display:grid;grid-template-columns:96px 1fr 160px;gap:36px;padding:36px 0;border-bottom:1px solid var(--line);align-items:start}
+@media (max-width:720px){.pilot-row{grid-template-columns:1fr;gap:10px}}
+.pilot-step{font-size:13px;font-weight:600;color:var(--blue);letter-spacing:.04em}
+.pilot-body h4{font-size:20px;font-weight:600;margin-bottom:10px;letter-spacing:-0.014em;line-height:1.25}
+.pilot-body p{font-size:15px;line-height:1.55;color:var(--ink-2);max-width:640px}
+.pilot-meta{font-size:12px;color:var(--muted);letter-spacing:.06em;text-align:right;text-transform:uppercase;font-weight:500}
+@media (max-width:720px){.pilot-meta{text-align:left}}
+.exit-clause{margin-top:64px;padding:40px 44px;background:var(--blue);color:var(--white);border-radius:6px;display:grid;grid-template-columns:48px 1fr;gap:24px;align-items:start}
+@media (max-width:560px){.exit-clause{grid-template-columns:1fr;padding:32px 28px}}
+.exit-mark{font-size:32px;font-weight:700;line-height:1;color:var(--yellow)}
+.exit-clause h4{font-size:22px;font-weight:600;margin-bottom:12px;letter-spacing:-0.018em;color:var(--white)}
+.exit-clause p{font-size:15px;line-height:1.6;color:rgba(255,255,255,.9)}
+
+/* ============== Founder ============== */
+.founder-grid{display:grid;grid-template-columns:380px 1fr;gap:72px;align-items:flex-start}
+@media (max-width:900px){.founder-grid{grid-template-columns:1fr;gap:40px}}
+.founder-portrait{aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--paper-2)}
+.founder-portrait img{width:100%;height:100%;object-fit:cover}
+.founder-quote{font-size:clamp(20px,1.8vw,26px);font-weight:500;letter-spacing:-0.02em;line-height:1.35;color:var(--ink);margin:28px 0;padding-left:24px;border-left:3px solid var(--blue)}
+.founder-bio{font-size:16px;line-height:1.65;color:var(--ink-2);margin-bottom:28px;max-width:640px}
+.founder-sign{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:14px;padding-top:24px;border-top:1px solid var(--line);align-items:center}
+.founder-sign b{color:var(--ink);font-weight:600}
+.founder-sign span{color:var(--muted)}
+.founder-sign a{color:var(--blue);border-bottom:1px solid transparent;transition:border-color .2s}
+.founder-sign a:hover{border-color:var(--blue)}
+
+/* ============== FAQ ============== */
+.faq-grid{display:grid;grid-template-columns:360px 1fr;gap:72px;align-items:flex-start}
+@media (max-width:900px){.faq-grid{grid-template-columns:1fr;gap:40px}}
+.faq-l h2{margin-bottom:20px}
+.faq-l p{font-size:16px;line-height:1.6;color:var(--ink-2);margin-bottom:28px}
+.faq-list{border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{display:grid;grid-template-columns:48px 1fr 32px;gap:20px;padding:28px 0;cursor:pointer;align-items:flex-start}
+.faq-q-num{font-size:12px;font-weight:600;color:var(--blue);padding-top:5px;letter-spacing:.04em}
+.faq-q-text{font-size:18px;font-weight:500;line-height:1.4;color:var(--ink);letter-spacing:-0.012em}
+.faq-q-toggle{font-size:24px;font-weight:300;color:var(--muted);transition:transform .25s;line-height:1;text-align:right;padding-top:2px}
+.faq-item.open .faq-q-toggle{transform:rotate(45deg);color:var(--blue)}
+.faq-a{display:none;padding:0 0 28px 68px}
+.faq-item.open .faq-a{display:block}
+.faq-a p{font-size:15px;line-height:1.65;color:var(--ink-2);max-width:680px}
+
+/* ============== Final CTA ============== */
+.final-cta{position:relative;padding:clamp(100px,14vw,160px) 0;color:var(--white);overflow:hidden}
+.final-cta-bg{position:absolute;inset:0;z-index:-2}
+.final-cta-bg img{width:100%;height:100%;object-fit:cover}
+.final-cta::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(7,108,199,.86) 0%,rgba(2,32,72,.95) 100%);z-index:-1}
+.final-cta h2{color:var(--white);max-width:900px;margin-bottom:24px}
+.final-cta .lead{color:rgba(255,255,255,.88);margin-bottom:44px}
+.final-meta{margin-top:36px;display:flex;flex-wrap:wrap;gap:8px 32px;font-size:14px;color:rgba(255,255,255,.78)}
+.final-meta a{transition:color .2s}
+.final-meta a:hover{color:var(--yellow)}
+
+/* ============== Footer ============== */
+.foot{padding:60px 0 40px;background:#06080c;color:rgba(255,255,255,.65);font-size:14px;border-top:1px solid rgba(255,255,255,.06)}
+.foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+.foot a{transition:color .2s}
+.foot a:hover{color:var(--yellow)}
+.foot img{height:24px;width:auto;filter:brightness(0) invert(1);opacity:.7}
+
+/* ============== Reveal animations ============== */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.22,.61,.36,1),transform .9s cubic-bezier(.22,.61,.36,1)}
+.reveal.show{opacity:1;transform:translateY(0)}
+
+/* Reduce motion */
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* ============== Mobile optimizations ============== */
+@media (max-width:720px){
+  .sec{padding:72px 0}
+  .sec-head{margin-bottom:48px}
+  .hero{padding:80px 0 60px;min-height:auto}
+  .hero h1{font-size:clamp(34px,8vw,46px);line-height:1.05;margin-bottom:20px}
+  .hero .lead{font-size:16px;margin-bottom:32px}
+  .hero-actions{gap:16px;margin-bottom:48px}
+  .btn{padding:16px 26px;font-size:15px}
+  .hero-bar{padding-top:22px}
+  .stat-fig{font-size:48px;margin-bottom:12px}
+  .callout-line{margin-top:36px;font-size:18px;line-height:1.4}
+  .stack-card{padding:28px 24px}
+  .stack-card p{margin-bottom:18px}
+  .insight-pull{margin-top:32px;padding-top:28px}
+  .prod-card{align-items:center;text-align:center}
+  .iphone-frame{margin:0 auto 24px}
+  .prod-card p{max-width:520px}
+  .trust-strip{margin-top:48px;padding:18px 20px;gap:10px 18px}
+  .trust-strip span{font-size:12px}
+  .out-card{padding:32px 26px}
+  .out-card h3{font-size:18px}
+  .banner-img{margin-top:40px;border-radius:6px}
+  .banner-cap{left:14px;bottom:14px;padding:8px 14px;font-size:11px}
+  .pilot-row{padding:24px 0}
+  .pilot-body h4{font-size:18px}
+  .pilot-body p{font-size:14px}
+  .exit-clause{margin-top:40px;padding:28px 24px}
+  .exit-clause h4{font-size:19px}
+  .founder-portrait{max-width:300px;margin:0 auto;width:100%}
+  .founder-quote{font-size:18px;margin:20px 0;padding-left:18px}
+  .founder-bio{font-size:15px}
+  .founder-sign{gap:6px 18px;font-size:13px;padding-top:18px}
+  .faq-q{grid-template-columns:42px 1fr 24px;gap:14px;padding:22px 0}
+  .faq-q-text{font-size:16px}
+  .faq-q-toggle{font-size:22px}
+  .faq-a{padding:0 0 22px 56px}
+  .faq-a p{font-size:14px}
+  .final-cta h2{font-size:36px;margin-bottom:18px}
+  .final-cta .btn{width:100%;justify-content:center}
+  .final-meta{margin-top:28px;gap:6px 20px;font-size:13px;flex-direction:column;align-items:flex-start}
+  .foot-row{flex-direction:column;align-items:flex-start;gap:14px;text-align:left}
+}
+
+@media (max-width:480px){
+  .hero h1{font-size:34px}
+  .sec-head h2{font-size:28px}
+  .stat-fig{font-size:42px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero .btn-primary{justify-content:center}
+  .hero .btn-secondary{align-self:flex-start;padding-top:6px}
+  .stack-card{padding:24px 20px}
+  .out-card{padding:26px 22px}
+  .pilot-rows{margin-top:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ============== Brandbar (logo mark only, centered) ============== -->
+<div class="brandbar">
+  <div class="brandbar-inner">
+    <a href="https://sidexside.ai/" class="brandbar-logo" aria-label="sidexside">
+      <img src="images/sidexside-logo-mark.png" alt="sidexside"/>
+    </a>
+  </div>
+</div>
+
+<!-- ============== Hero ============== -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="images/b2b-hero.jpg" alt="Two college students walking home together on a brick campus path at dusk"/>
+  </div>
+  <div class="hero-content">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">For US university leadership</div>
+        <h1>The safest thing on your campus tonight is a group text.</h1>
+        <p class="lead">We turned that into something your Title IX office can stand behind. Free for every student. Funded by the partnership.</p>
+        <div class="hero-actions">
+          <a href="https://calendly.com/sidexside-ai/15min" class="btn btn-primary">Book a 20-minute call <span class="btn-arrow">→</span></a>
+          <a href="#brief" class="btn btn-secondary">See how it works <span>↓</span></a>
+        </div>
+      </div>
+
+      <div class="hero-bar reveal">
+        <div class="hero-bar-cell">
+          <div class="hero-bar-label">Built for</div>
+          <div class="hero-bar-name">VPs of Student Affairs</div>
+        </div>
+        <div class="hero-bar-cell">
+          <div class="hero-bar-label">Built for</div>
+          <div class="hero-bar-name">Deans of Students</div>
+        </div>
+        <div class="hero-bar-cell">
+          <div class="hero-bar-label">Built for</div>
+          <div class="hero-bar-name">Title IX Coordinators</div>
+        </div>
+        <div class="hero-bar-cell">
+          <div class="hero-bar-label">Built for</div>
+          <div class="hero-bar-name">Campus Safety Directors</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== The gap ============== -->
+<section class="sec" id="brief">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The gap</div>
+      <h2>You've already paid for the safety stack. Your students aren't using it.</h2>
+      <p class="lead">Blue lights. Escort vans. Panic-button apps. Every campus has the stack. None of it opens at 11 pm. The stack was built for the moment after something went wrong. Women need the system before.</p>
+    </div>
+
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="stat-fig">1<em>/5</em></div>
+        <div class="stat-text">Undergraduate women experience sexual assault during college.</div>
+        <div class="stat-src">AAU Climate Survey · 2019</div>
+      </div>
+      <div class="stat">
+        <div class="stat-fig">90<em>%</em></div>
+        <div class="stat-text">Of campus sexual assaults go unreported to authorities.</div>
+        <div class="stat-src">RAINN</div>
+      </div>
+      <div class="stat">
+        <div class="stat-fig">1<em>/3</em></div>
+        <div class="stat-text">Women feel unsafe walking home alone at night.</div>
+        <div class="stat-src">Gallup · 2024</div>
+      </div>
+      <div class="stat">
+        <div class="stat-fig">2<em>x</em></div>
+        <div class="stat-text">Women avoid places on campus due to safety concerns, vs. men.</div>
+        <div class="stat-src">AAUW</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== Why nothing else works ============== -->
+<section class="sec cream">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Why the existing stack falls short</div>
+      <h2>Three solutions every campus owns. Three reasons your students don't open them.</h2>
+    </div>
+
+    <div class="stack-grid reveal">
+      <div class="stack-card">
+        <div class="stack-tag">Tool 01 · Emergency apps</div>
+        <h3>LiveSafe. Rave Guardian. The "after" tools.</h3>
+        <p>Built for the 1% of moments after something has already gone wrong. Women don't open an app when they're scared. They text the friend who picks up. So the app sits at near-zero engagement until contract renewal.</p>
+        <div class="stack-verdict">Built for the 1%. Used by almost no one.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-tag">Tool 02 · Blue lights &amp; call boxes</div>
+        <h3>A 1990s answer to a 2026 question.</h3>
+        <p>Most students walk past four of them every night and couldn't tell you where the nearest one is. Capital expense, zero behavior change.</p>
+        <div class="stack-verdict">Visible on the map. Invisible in the routine.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-tag">Tool 03 · Campus escort services</div>
+        <h3>A small team. A long wait.</h3>
+        <p>Students don't want to feel like they're "making a thing of it," so they walk anyway. The escort office logs another night with three rides and twelve no-shows.</p>
+        <div class="stack-verdict">A last resort. Never a first choice.</div>
+      </div>
+    </div>
+
+    <p class="callout-line reveal">The campus paid for the moment after. Women need the system before.</p>
+  </div>
+</section>
+
+<!-- ============== The insight (dark) ============== -->
+<section class="sec dark">
+  <div class="wrap">
+    <div class="reveal" style="max-width:920px">
+      <div class="eyebrow" style="color:var(--yellow)">The insight</div>
+      <h2>Women already have a safety system. It runs on group texts.</h2>
+      <p class="lead" style="margin-top:24px">Every night, millions of texts cross your campus. <em style="font-style:normal;color:#fff">Home safe?</em> · <em style="font-style:normal;color:#fff">Made it.</em> · <em style="font-style:normal;color:#fff">Text me when you're back.</em> That's not a gap in your safety stack. That's infrastructure your students already built.</p>
+      <p class="lead" style="margin-top:20px">My job is to make that infrastructure verifiable, reportable, and survivable for your office, without breaking the part that makes it work in the first place: it's between women, on their terms, for their reasons.</p>
+    </div>
+
+    <div class="insight-pull reveal">
+      <blockquote>"You don't need another panic button. You need the thing that stops your students from needing one."</blockquote>
+      <cite><b>Kaylyn Waycaster</b> · Founder, sidexside</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ============== The product (dark continues) ============== -->
+<section class="sec dark" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:48px">
+      <div class="eyebrow" style="color:var(--yellow)">The product</div>
+      <h2>A peer-to-peer safety companion. Verified. Women-only. Campus-scoped.</h2>
+      <p class="lead" style="margin-top:24px">Three behaviors your students already do every night, made faster, structured, and backed by a verified network.</p>
+    </div>
+
+    <div class="prod-grid reveal">
+      <div class="prod-card">
+        <div class="iphone-frame">
+          <div class="iphone-screen">
+            <img src="images/app-screen-1.png" alt="Walk Together app screen showing matched walking partner"/>
+          </div>
+        </div>
+        <div class="prod-card-num">01 · Walk Together</div>
+        <h3>Five-minute walks, paired in real time.</h3>
+        <p>Another verified student is heading the same way, half a block from her. They pair up. Walk together. Optional chat and voice. Mutual rating after every walk. Real-time. Campus-only.</p>
+      </div>
+      <div class="prod-card">
+        <div class="iphone-frame">
+          <div class="iphone-screen">
+            <img src="images/app-screen-2.png" alt="Check-In Timer app screen with running countdown"/>
+          </div>
+        </div>
+        <div class="prod-card-num">02 · Check-In Timers</div>
+        <h3>The check-in that sends itself.</h3>
+        <p>She sets a timer for the walk home. If she doesn't check in, her trusted circle is pinged with her live location. Snooze, extend, or cancel any time. Location data is purged after 24 hours.</p>
+      </div>
+      <div class="prod-card">
+        <div class="iphone-frame">
+          <div class="iphone-screen">
+            <img src="images/app-screen-3.png" alt="Trusted Circles app screen showing private group"/>
+          </div>
+        </div>
+        <div class="prod-card-num">03 · Trusted Circles</div>
+        <h3>Her group text, except it actually shows up.</h3>
+        <p>A private circle of three to ten women she trusts. Share plans, share locations, share the load. Private, opt-in, fully revocable. Student-owned data. No data sold.</p>
+      </div>
+    </div>
+
+    <div class="trust-strip reveal">
+      <span>.edu email required</span>
+      <span>Campus-scoped</span>
+      <span>Women-only</span>
+      <span>Student-owned data</span>
+      <span>No data sold</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============== What your office gets ============== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">What lives in your office</div>
+      <h2>Outcomes you can put in a board deck. Not another vendor to manage.</h2>
+      <p class="lead" style="margin-top:24px">We don't promise numbers we haven't earned. Here's what your quarterly partner report will actually contain.</p>
+    </div>
+
+    <div class="out-grid reveal">
+      <div class="out-card feature">
+        <div class="out-tag">Section 01 · Student safety</div>
+        <h3>A ledger of what your students actually did to feel safer this semester.</h3>
+        <p>Walks completed. Check-ins met. Time-of-day patterns. Anonymized pulse-survey deltas. Real numbers from your campus, not industry averages.</p>
+      </div>
+      <div class="out-card">
+        <div class="out-tag">Section 02 · Title IX &amp; Cleary</div>
+        <h3>A board-ready PDF your compliance team can drop straight in.</h3>
+        <p>Slides into accreditation reviews and Cleary Act documentation without a redraft. Built with peer Title IX coordinators in mind.</p>
+      </div>
+      <div class="out-card">
+        <div class="out-tag">Section 03 · Admissions</div>
+        <h3>A safety story you can actually tell.</h3>
+        <p>Safety is the No. 2 factor parents cite after cost. You become the campus that answered the question, not the one defending the record.</p>
+      </div>
+      <div class="out-card feature">
+        <div class="out-tag">Section 04 · Community</div>
+        <h3>A student-led program with founder access.</h3>
+        <p>Kaylyn personally trains 8 to 12 ambassadors per campus. They run orientation integrations, residence hall demos, and Greek house events. Internal champions, not a vendor's mailing list.</p>
+      </div>
+    </div>
+
+    <div class="banner-img reveal">
+      <img src="images/two-women-walking-night.png" alt="Two women students walking together on a campus path at night"/>
+      <div class="banner-cap">Built for the women who already do this every night.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== How the partnership works ============== -->
+<section class="sec cream">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The partnership</div>
+      <h2>One semester. Founder-led setup. A clean exit if it doesn't move the needle.</h2>
+      <p class="lead" style="margin-top:24px">Free for every student. Funded by the partnership. We do almost everything operationally. Your office gets the outcomes and the paper trail, not another vendor to manage.</p>
+    </div>
+
+    <div class="pilot-rows reveal">
+      <div class="pilot-row">
+        <div class="pilot-step">Step 01</div>
+        <div class="pilot-body">
+          <h4>Discovery call &amp; tailored proposal</h4>
+          <p>Twenty minutes with Kaylyn. We map a pilot for your specific institution: campus size, residence patterns, Greek life, current safety stack. Written proposal in your inbox within 48 hours.</p>
+        </div>
+        <div class="pilot-meta">Week 1</div>
+      </div>
+      <div class="pilot-row">
+        <div class="pilot-step">Step 02</div>
+        <div class="pilot-body">
+          <h4>Legal review</h4>
+          <p>Your counsel reviews our Data Processing Agreement. We answer your counsel's questions directly and turn around requested redlines.</p>
+        </div>
+        <div class="pilot-meta">Pre-launch</div>
+      </div>
+      <div class="pilot-row">
+        <div class="pilot-step">Step 03</div>
+        <div class="pilot-body">
+          <h4>Ambassador cohort recruited &amp; trained</h4>
+          <p>Kaylyn personally recruits and trains 8 to 12 ambassadors from your student body. They run launch events, orientation integrations, and become the campus face of the partnership.</p>
+        </div>
+        <div class="pilot-meta">Pre-launch</div>
+      </div>
+      <div class="pilot-row">
+        <div class="pilot-step">Step 04</div>
+        <div class="pilot-body">
+          <h4>Soft launch &amp; verification onboarding</h4>
+          <p>.edu verification opens to your students. Ambassadors host walking events, dorm visits, and Greek house demos. We handle 24/7 moderation and trust &amp; safety from day one.</p>
+        </div>
+        <div class="pilot-meta">Launch semester</div>
+      </div>
+      <div class="pilot-row">
+        <div class="pilot-step">Step 05</div>
+        <div class="pilot-body">
+          <h4>Full operation + quarterly reporting</h4>
+          <p>Pilot runs through the semester. Your Title IX office gets a board-ready PDF every quarter: usage, sentiment, walks completed, time-of-day patterns. All anonymized.</p>
+        </div>
+        <div class="pilot-meta">Ongoing</div>
+      </div>
+    </div>
+
+    <div class="exit-clause reveal">
+      <div class="exit-mark">↳</div>
+      <div>
+        <h4>The exit clause we put in writing.</h4>
+        <p>If the pilot doesn't move the needle, you walk. No fees. No contracts to unwind. We send you the full data set so you keep everything you learned. We'd rather you leave than stay in something that isn't working.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== Founder ============== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="founder-grid">
+      <div class="founder-portrait reveal">
+        <img src="images/kaylyn-waycaster.jpg" alt="Kaylyn Waycaster, Founder of sidexside"/>
+      </div>
+      <div class="reveal">
+        <div class="eyebrow">The founder</div>
+        <h2 style="margin-bottom:0">Built by a woman who lived it.</h2>
+        <div class="founder-quote">"Every woman I know has a version of the same story. I built sidexside because 'it's just how things are' isn't an answer. It's a design flaw."</div>
+        <p class="founder-bio">Kaylyn Waycaster built the first version of sidexside while still in college in Texas, after one too many nights walking home alone and one too many friends saying "yeah, same." Today she runs sidexside full-time from Austin, trains every campus ambassador personally, and takes every partnership call herself.</p>
+        <div class="founder-sign">
+          <span><b>Kaylyn Waycaster</b> · Founder, Austin TX</span>
+          <a href="https://www.linkedin.com/in/kaylynwaycaster/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:kaylyn@sidexside.ai">kaylyn@sidexside.ai</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FAQ ============== -->
+<section class="sec cream">
+  <div class="wrap">
+    <div class="faq-grid">
+      <div class="faq-l reveal">
+        <div class="eyebrow">Risk &amp; reversal</div>
+        <h2>The questions every decision-maker asks.</h2>
+        <p>The honest ones. If yours aren't here, Kaylyn will answer them on the call. Directly. No gatekeeping.</p>
+        <a href="https://calendly.com/sidexside-ai/15min" class="btn btn-light">Book the call <span class="btn-arrow">→</span></a>
+      </div>
+
+      <div class="faq-list reveal">
+        <div class="faq-item open">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <div class="faq-q-num">Q.01</div>
+            <div class="faq-q-text">What happens to student data? Who owns it?</div>
+            <div class="faq-q-toggle">+</div>
+          </div>
+          <div class="faq-a">
+            <p>The student owns her data. sidexside processes it under a Data Processing Agreement reviewed by your counsel before signing. Location data is purged after 24 hours. Nothing is sold, rented, or shared with third parties.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <div class="faq-q-num">Q.02</div>
+            <div class="faq-q-text">How is this different from LiveSafe or Rave Guardian?</div>
+            <div class="faq-q-toggle">+</div>
+          </div>
+          <div class="faq-a">
+            <p>Those are emergency-response tools, built for the 1% of moments after something has gone wrong. sidexside is an everyday companion, built for the 99%: routine walks, short cab rides, "text me when you're home." Different problem, different product. Most partner campuses run both.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <div class="faq-q-num">Q.03</div>
+            <div class="faq-q-text">Why women-only? Is that legally defensible?</div>
+            <div class="faq-q-toggle">+</div>
+          </div>
+          <div class="faq-a">
+            <p>Yes. sidexside operates as a private affinity platform, well-established under Title IX as a permissible safety resource targeted at a disproportionately affected population. We share the legal memo with your counsel before signing.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <div class="faq-q-num">Q.04</div>
+            <div class="faq-q-text">What does our Title IX office actually have to do?</div>
+            <div class="faq-q-toggle">+</div>
+          </div>
+          <div class="faq-a">
+            <p>Operationally, almost nothing. We need one named contact to coordinate the launch email and approve ambassador recruitment. We handle onboarding, training, moderation, and reporting. Your office gets a quarterly PDF that drops straight into compliance documentation.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <div class="faq-q-num">Q.05</div>
+            <div class="faq-q-text">What does the partnership actually cost?</div>
+            <div class="faq-q-toggle">+</div>
+          </div>
+          <div class="faq-a">
+            <p>It's not a SaaS license. It's a partnership sized to your enrollment, contracted as a one-line institutional spend. We share the number on the discovery call so the proposal you receive matches your reality, not a price card. The pilot semester carries an exit clause: walk away with full data and no fees if it doesn't perform.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <div class="faq-q-num">Q.06</div>
+            <div class="faq-q-text">If the pilot doesn't perform, what happens?</div>
+            <div class="faq-q-toggle">+</div>
+          </div>
+          <div class="faq-a">
+            <p>You exit. No fees. No contracts to unwind. We send the full pilot data set so you keep everything you learned, even if it's just to convince leadership why a future safety initiative needs to be student-led. We'd rather you walk than stay in a partnership that isn't moving the needle.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== Final CTA ============== -->
+<section class="final-cta">
+  <div class="final-cta-bg">
+    <img src="images/b2b-cta-bg.jpg" alt=""/>
+  </div>
+  <div class="wrap reveal">
+    <div class="eyebrow" style="color:var(--yellow)">The next step</div>
+    <h2>Let's get this on your campus.</h2>
+    <p class="lead">Twenty minutes with the founder. We map what a pilot looks like at your specific institution. A written proposal in your inbox within 48 hours.</p>
+    <a href="https://calendly.com/sidexside-ai/15min" class="btn btn-primary">Book the call <span class="btn-arrow">→</span></a>
+    <div class="final-meta">
+      <a href="mailto:kaylyn@sidexside.ai">kaylyn@sidexside.ai</a>
+      <a href="https://www.linkedin.com/in/kaylynwaycaster/" target="_blank" rel="noopener">linkedin.com/in/kaylynwaycaster</a>
+      <span>sidexside.ai</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============== Footer ============== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-row">
+      <img src="images/sxs-logo-white.png" alt="sidexside" onerror="this.src='images/sxs-logo-mark.png';this.style.filter='brightness(0) invert(1);opacity:.7'"/>
+      <span>© 2026 sidexside Inc. · Walking beside you, not behind you.</span>
+      <a href="mailto:kaylyn@sidexside.ai">kaylyn@sidexside.ai</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>
