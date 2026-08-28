@@ -143,11 +143,31 @@
   }
 
   .stationery .writing {
-    font-size: 35px;
+    --copy-size: 35px;
+    --line-size: 43px;
+    --copy-gap: 17px;
+    --date-size: 25px;
+    --date-gap: 34px;
+    --greeting-size: 34px;
+    --greeting-gap: 24px;
+    --signature-size: 50px;
+    font-size: var(--copy-size);
     line-height: 1.42;
     letter-spacing: -.12px;
   }
-  .notebook .writing { font-size: 39px; line-height: 1.28; letter-spacing: -.35px; }
+  .notebook .writing {
+    --copy-size: 39px;
+    --line-size: 50px;
+    --copy-gap: 24px;
+    --date-size: 31px;
+    --date-gap: 40px;
+    --greeting-size: 42px;
+    --greeting-gap: 31px;
+    --signature-size: 59px;
+    font-size: var(--copy-size);
+    line-height: 1.28;
+    letter-spacing: -.35px;
+  }
 
   .dateline,
   .greeting,
@@ -162,21 +182,18 @@
     opacity: .82;
     transform: rotate(-.18deg) translateX(-3px);
   }
-  .stationery .dateline { font-size: 25px; margin-bottom: 34px; }
-  .notebook .dateline { font-size: 31px; margin-bottom: 40px; }
+  .dateline { font-size: var(--date-size); margin-bottom: var(--date-gap); }
 
   .greeting {
     transform: rotate(.12deg) translateX(1px);
   }
-  .stationery .greeting { font-size: 34px; margin-bottom: 24px; }
-  .notebook .greeting { font-size: 42px; margin-bottom: 31px; }
+  .greeting { font-size: var(--greeting-size); margin-bottom: var(--greeting-gap); }
 
   .copy-block {
     margin: 0;
     width: 100%;
   }
-  .stationery .copy-block { margin-bottom: 17px; }
-  .notebook .copy-block { margin-bottom: 24px; }
+  .copy-block { margin-bottom: var(--copy-gap); }
 
   .hand-line {
     display: block;
@@ -185,8 +202,7 @@
     white-space: nowrap;
     transform-origin: left center;
   }
-  .stationery .hand-line { min-height: 43px; line-height: 43px; }
-  .notebook .hand-line { min-height: 50px; line-height: 50px; }
+  .hand-line { min-height: var(--line-size); line-height: var(--line-size); }
 
   .word { display: inline-block; white-space: nowrap; transform-origin: left 74%; }
   .glyph {
@@ -210,11 +226,11 @@
   }
   .stationery .signature {
     font-family: "Segoe Script", "Shantell Human", cursive;
-    font-size: 50px;
+    font-size: var(--signature-size);
   }
   .notebook .signature {
     font-family: "Segoe Script", "Ink Free", cursive;
-    font-size: 59px;
+    font-size: var(--signature-size);
   }
 
   .camera-noise {
@@ -379,6 +395,39 @@
     line.lastElementChild.style.marginRight = "0";
   }
 
+  function fitWriting() {
+    const writing = document.querySelector(".writing");
+    const signature = document.querySelector(".signature");
+    const base = variant === "notebook"
+      ? { copy: 39, line: 50, gap: 24, date: 31, dateGap: 40, greeting: 42, greetingGap: 31, signature: 59 }
+      : { copy: 35, line: 43, gap: 17, date: 25, dateGap: 34, greeting: 34, greetingGap: 24, signature: 50 };
+    const applyFit = (fit) => {
+      writing.style.setProperty("--copy-size", `${(base.copy * fit).toFixed(2)}px`);
+      writing.style.setProperty("--line-size", `${(base.line * fit).toFixed(2)}px`);
+      writing.style.setProperty("--copy-gap", `${(base.gap * fit).toFixed(2)}px`);
+      writing.style.setProperty("--date-size", `${(base.date * fit).toFixed(2)}px`);
+      writing.style.setProperty("--date-gap", `${(base.dateGap * fit).toFixed(2)}px`);
+      writing.style.setProperty("--greeting-size", `${(base.greeting * fit).toFixed(2)}px`);
+      writing.style.setProperty("--greeting-gap", `${(base.greetingGap * fit).toFixed(2)}px`);
+      writing.style.setProperty("--signature-size", `${(base.signature * fit).toFixed(2)}px`);
+    };
+
+    const available = writing.clientHeight - 12;
+    let fit = 1;
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const used = signature.offsetTop + signature.offsetHeight;
+      if (used <= available) break;
+      const next = Math.max(.70, Math.min(fit - .01, fit * (available / used) * .985));
+      if (Math.abs(next - fit) < .002) break;
+      fit = next;
+      applyFit(fit);
+    }
+    const used = signature.offsetTop + signature.offsetHeight;
+    const overflow = used > available + 1;
+    document.body.dataset.letterFit = fit.toFixed(3);
+    document.body.dataset.letterOverflow = overflow ? "true" : "false";
+  }
+
   document.fonts.ready.then(async () => {
     await Promise.all([
       document.fonts.load('38px "Mynerve Human"'),
@@ -388,6 +437,7 @@
     document.querySelectorAll(".dateline, .greeting, .closing").forEach(element => humanizeInline(element, true));
     document.querySelectorAll(".signature").forEach(element => humanizeInline(element, false));
     document.querySelectorAll(".copy-block").forEach(layoutBlock);
+    fitWriting();
     document.title = "letter-ready";
   });
 </script>
