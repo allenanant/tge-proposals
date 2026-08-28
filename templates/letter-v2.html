@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>letter</title>
+<!--
+  TGE handwritten outreach letter, v2.
+  Rendered by upwork-leads-crm/scripts/render-letter.mjs.
+  Blanks: {{GREETING}} {{BODY}} {{DATELINE}} {{SEED}} {{VARIANT}}
+
+  Design rule: this should look like an ordinary phone photo of a real note.
+  No fake pen, coffee ring, branded footer, theatrical vignette, or glyph-by-glyph
+  jitter. Variation happens at the writer and line level so the note stays neat.
+-->
+<style>
+  @font-face {
+    font-family: "Shantell Human";
+    src: url("data:font/ttf;base64,{{SHANTELL_FONT_DATA}}") format("truetype");
+    font-style: normal;
+    font-weight: 300 800;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Mynerve Human";
+    src: url("data:font/ttf;base64,{{MYNERVE_FONT_DATA}}") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { width: 1200px; height: 1560px; margin: 0; overflow: hidden; }
+
+  body {
+    --ink: #203752;
+    --paper: #f5f1e7;
+    --hand: "Mynerve Human", "Shantell Human", sans-serif;
+    position: relative;
+    display: grid;
+    place-items: center;
+    color: var(--ink);
+    background: #bdb6ac;
+  }
+
+  body.stationery {
+    --ink: #263d54;
+    display: block;
+    background-color: #cbb793;
+    background-image: url("data:image/png;base64,{{TABLE_PHOTO_DATA}}");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  body.notebook {
+    --ink: #273f68;
+    --paper: #f7f5ed;
+    --hand: "Ink Free", "Segoe Print", sans-serif;
+    background:
+      radial-gradient(ellipse at 76% 18%, rgba(255,255,255,.32), transparent 40%),
+      linear-gradient(143deg, #aaa8a2 0%, #96958f 57%, #888781 100%);
+  }
+
+  .surface-light {
+    position: fixed;
+    inset: -100px;
+    pointer-events: none;
+    background: linear-gradient(116deg, rgba(255,255,255,.10), transparent 34%, rgba(0,0,0,.08));
+  }
+  .stationery .surface-light { display: none; }
+
+  .paper {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    background-color: var(--paper);
+    color: var(--ink);
+    transform-origin: center center;
+  }
+
+  .stationery .paper {
+    position: absolute;
+    left: 205px;
+    top: 250px;
+    width: 800px;
+    height: 1080px;
+    padding: 50px 50px 25px;
+    transform: rotate(-3.7deg);
+    clip-path: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .notebook .paper {
+    width: 910px;
+    height: 1280px;
+    padding: 84px 92px 72px 126px;
+    transform: perspective(2400px) rotateX(.35deg) rotateY(.65deg) rotate(-1.05deg) translate(-7px, 5px);
+    clip-path: polygon(.2% 0, 99.92% .15%, 99.78% 99.92%, 0 99.78%);
+    background-image:
+      radial-gradient(ellipse at 80% 4%, rgba(255,255,255,.52), transparent 35%),
+      linear-gradient(96deg, rgba(91,79,60,.025), transparent 22%, rgba(255,255,255,.09) 65%, rgba(91,79,60,.025));
+    box-shadow:
+      -8px 15px 26px rgba(27,27,25,.23),
+      -1px 4px 7px rgba(27,27,25,.14);
+  }
+
+  .paper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .035;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' seed='21'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='.45'/%3E%3C/svg%3E");
+  }
+  .stationery .paper::after { display: none; }
+
+  .rule-layer { display: none; }
+  .notebook .rule-layer {
+    display: block;
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(to right, transparent 0 102px, rgba(189,83,84,.31) 103px, transparent 104px),
+      repeating-linear-gradient(to bottom, transparent 0 49px, rgba(97,137,171,.20) 50px, transparent 51px);
+    background-position: 0 0, 0 9px;
+  }
+
+  .writing {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    font-family: var(--hand);
+    font-weight: 400;
+    font-synthesis: none;
+    font-kerning: normal;
+    text-rendering: geometricPrecision;
+    mix-blend-mode: multiply;
+    filter: url(#ink-edge);
+  }
+
+  .stationery .writing {
+    font-size: 35px;
+    line-height: 1.42;
+    letter-spacing: -.12px;
+  }
+  .notebook .writing { font-size: 39px; line-height: 1.28; letter-spacing: -.35px; }
+
+  .dateline,
+  .greeting,
+  .closing,
+  .signature {
+    width: max-content;
+    white-space: nowrap;
+  }
+
+  .dateline {
+    margin-left: auto;
+    opacity: .82;
+    transform: rotate(-.18deg) translateX(-3px);
+  }
+  .stationery .dateline { font-size: 25px; margin-bottom: 34px; }
+  .notebook .dateline { font-size: 31px; margin-bottom: 40px; }
+
+  .greeting {
+    transform: rotate(.12deg) translateX(1px);
+  }
+  .stationery .greeting { font-size: 34px; margin-bottom: 24px; }
+  .notebook .greeting { font-size: 42px; margin-bottom: 31px; }
+
+  .copy-block {
+    margin: 0;
+    width: 100%;
+  }
+  .stationery .copy-block { margin-bottom: 17px; }
+  .notebook .copy-block { margin-bottom: 24px; }
+
+  .hand-line {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    white-space: nowrap;
+    transform-origin: left center;
+  }
+  .stationery .hand-line { min-height: 43px; line-height: 43px; }
+  .notebook .hand-line { min-height: 50px; line-height: 50px; }
+
+  .word { display: inline-block; white-space: nowrap; transform-origin: left 74%; }
+  .glyph {
+    display: inline-block;
+    position: relative;
+    transform-origin: 50% 74%;
+    will-change: transform;
+  }
+
+  .closing {
+    margin-top: 8px;
+    transform: rotate(-.08deg) translateX(4px);
+  }
+  .stationery .closing { font-size: 32px; }
+  .notebook .closing { font-size: 39px; }
+
+  .signature {
+    margin-top: 3px;
+    color: var(--ink);
+    transform: rotate(-1.25deg) translateX(3px);
+  }
+  .stationery .signature {
+    font-family: "Segoe Script", "Shantell Human", cursive;
+    font-size: 50px;
+  }
+  .notebook .signature {
+    font-family: "Segoe Script", "Ink Free", cursive;
+    font-size: 59px;
+  }
+
+  .camera-noise {
+    position: fixed;
+    z-index: 4;
+    inset: 0;
+    pointer-events: none;
+    opacity: .018;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.84' numOctaves='2' seed='7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .stationery .camera-noise { display: none; }
+</style>
+</head>
+<body class="{{VARIANT}}" data-variant="{{VARIANT}}" data-letter-format="v2">
+  <svg width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="ink-edge" x="-3%" y="-4%" width="106%" height="108%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.19" numOctaves="2" seed="{{SEED}}" result="paperNoise"/>
+      <feDisplacementMap in="SourceGraphic" in2="paperNoise" scale="0.54" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <div class="surface-light"></div>
+  <main class="paper">
+    <div class="rule-layer"></div>
+    <section class="writing">
+      <div class="dateline">{{DATELINE}}</div>
+      <div class="greeting">{{GREETING}}</div>
+
+      {{BODY}}
+
+      <div class="signature">Allen</div>
+    </section>
+  </main>
+  <div class="camera-noise"></div>
+
+<script>
+  function mulberry32(a) {
+    return function() {
+      a |= 0;
+      a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  const rand = mulberry32({{SEED}});
+  const between = (min, max) => min + (max - min) * rand();
+  const variant = document.body.dataset.variant;
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const hand = {
+    baseline: between(-.35, .35),
+    width: between(.985, 1.015),
+    height: between(.99, 1.01),
+    angle: between(-.28, .28),
+    pressure: between(.88, .96),
+    informal: between(75, 94),
+    bounce: between(-16, 20),
+  };
+
+  function walk(key, center, step, pull, min, max) {
+    hand[key] += between(-step, step) + (center - hand[key]) * pull;
+    hand[key] = clamp(hand[key], min, max);
+    return hand[key];
+  }
+
+  function makeLine() {
+    const line = document.createElement("span");
+    line.className = "hand-line";
+    const x = variant === "notebook" ? between(-4.5, 8) : between(-5.5, 8.5);
+    const angle = variant === "notebook" ? between(-0.3, 0.3) : between(-0.26, 0.26);
+    const width = between(0.985, 1.015);
+    line.style.transform = `translateX(${x.toFixed(2)}px) rotate(${angle.toFixed(3)}deg) scaleX(${width.toFixed(4)})`;
+    line.style.opacity = between(.86, .98).toFixed(3);
+    line.style.letterSpacing = `${between(-.58, .38).toFixed(2)}px`;
+    line.style.fontSize = `${between(.975, 1.025).toFixed(3)}em`;
+    return line;
+  }
+
+  function makeWord(text, allowAlternate = true) {
+    const word = document.createElement("span");
+    word.className = "word";
+    const endsSentence = /[.!?]$/.test(text);
+    word.style.marginRight = `${between(endsSentence ? 15 : 9.5, endsSentence ? 21 : 15.5).toFixed(2)}px`;
+    const y = between(-.85, .95);
+    const skew = between(-.48, .48);
+    const width = between(.98, 1.025);
+    word.style.transform = `translateY(${y.toFixed(2)}px) skewX(${skew.toFixed(3)}deg) scaleX(${width.toFixed(4)})`;
+    word.style.opacity = between(.89, 1).toFixed(3);
+
+    for (const character of [...text]) {
+      const glyph = document.createElement("span");
+      glyph.className = "glyph";
+      glyph.textContent = character;
+
+      const baseline = walk("baseline", 0, .92, .16, -3.1, 3.1);
+      const glyphWidth = walk("width", 1, .045, .18, .88, 1.12);
+      const glyphHeight = walk("height", 1, .034, .18, .92, 1.085);
+      const angle = walk("angle", 0, .58, .17, -2.35, 2.35);
+      const pressure = walk("pressure", .9, .07, .14, .69, .995);
+      const informal = walk("informal", 82, 13, .16, 26, 100);
+      const bounce = walk("bounce", 5, 27, .17, -90, 90);
+      const shear = between(-.9, .9);
+
+      glyph.style.transform = `translateY(${baseline.toFixed(2)}px) rotate(${angle.toFixed(2)}deg) skewX(${shear.toFixed(2)}deg) scale(${glyphWidth.toFixed(4)}, ${glyphHeight.toFixed(4)})`;
+      glyph.style.marginRight = `${between(-1.15, 1.45).toFixed(2)}px`;
+      glyph.style.opacity = pressure.toFixed(3);
+      glyph.style.textShadow = `${between(-.16, .18).toFixed(2)}px ${between(-.12, .22).toFixed(2)}px ${between(.04, .24).toFixed(2)}px currentColor`;
+
+      const alternateGlyph = allowAlternate && /[aeinorstuvmydg]/i.test(character) && rand() < (variant === "stationery" ? .19 : .15);
+      if (variant === "stationery" && alternateGlyph) {
+        const weight = 345 + pressure * 115 + between(-12, 12);
+        const spacing = between(-18, 26);
+        glyph.style.fontFamily = '"Shantell Human"';
+        glyph.style.fontSize = `${between(.82, .9).toFixed(3)}em`;
+        glyph.style.fontVariationSettings = `'wght' ${weight.toFixed(1)}, 'INFM' ${informal.toFixed(1)}, 'BNCE' ${bounce.toFixed(1)}, 'SPAC' ${spacing.toFixed(1)}`;
+      } else if (variant === "notebook" && alternateGlyph) {
+        glyph.style.fontFamily = '"Mynerve Human"';
+        glyph.style.fontSize = `${between(.9, .98).toFixed(3)}em`;
+      }
+      word.appendChild(glyph);
+    }
+    return word;
+  }
+
+  function humanizeInline(element, allowAlternate = true) {
+    const words = element.textContent.trim().split(/\s+/).filter(Boolean);
+    element.textContent = "";
+    words.forEach((text, index) => {
+      const word = makeWord(text, allowAlternate);
+      if (index === words.length - 1) word.style.marginRight = "0";
+      element.appendChild(word);
+    });
+  }
+
+  function layoutBlock(block, blockIndex) {
+    const words = block.textContent.trim().split(/\s+/).filter(Boolean);
+    block.textContent = "";
+    if (!words.length) return;
+
+    const usable = block.clientWidth;
+    let line = makeLine();
+    block.appendChild(line);
+    let lineIndex = 0;
+    let target = usable * between(.875, .985);
+
+    for (const text of words) {
+      const word = makeWord(text);
+      line.appendChild(word);
+      if (line.getBoundingClientRect().width > target && line.children.length > 1) {
+        line.removeChild(word);
+        line.lastElementChild.style.marginRight = "0";
+        line = makeLine();
+        block.appendChild(line);
+        line.appendChild(word);
+        lineIndex++;
+        const tailBias = blockIndex === 2 ? .98 : 1;
+        target = usable * between(.86, .985) * tailBias;
+      }
+    }
+    line.lastElementChild.style.marginRight = "0";
+  }
+
+  document.fonts.ready.then(async () => {
+    await Promise.all([
+      document.fonts.load('38px "Mynerve Human"'),
+      document.fonts.load('38px "Shantell Human"'),
+      document.fonts.load('54px "Segoe Script"'),
+    ]);
+    document.querySelectorAll(".dateline, .greeting, .closing").forEach(element => humanizeInline(element, true));
+    document.querySelectorAll(".signature").forEach(element => humanizeInline(element, false));
+    document.querySelectorAll(".copy-block").forEach(layoutBlock);
+    document.title = "letter-ready";
+  });
+</script>
+</body>
+</html>
